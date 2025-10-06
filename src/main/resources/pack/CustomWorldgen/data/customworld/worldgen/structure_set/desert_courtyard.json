@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:desert_courtyard",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 145145151,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

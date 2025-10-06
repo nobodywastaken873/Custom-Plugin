@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:massive_ocean_monument",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 1456415155,
+        "spacing": 154,
+        "separation": 39,
+        "frequency": 1.0
+    }
+}

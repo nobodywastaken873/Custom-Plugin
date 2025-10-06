@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:marble_fort",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 13452452,
+        "spacing": 109,
+        "separation": 27,
+        "frequency": 1.0
+    }
+}

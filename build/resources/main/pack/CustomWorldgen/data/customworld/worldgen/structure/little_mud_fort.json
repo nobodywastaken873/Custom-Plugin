@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:jigsaw",
+    "biomes": [
+        "customworld:dead_forest",
+        "customworld:shattered_ashen_forest"
+    ],
+    "step": "top_layer_modification",
+    "terrain_adaptation": "beard_box",
+    "spawn_overrides": {},
+    "start_pool": "customworld:little_mud_fort",
+    "max_distance_from_center": 1,
+    "size": 1,
+    "project_start_to_heightmap": "OCEAN_FLOOR",
+    "start_height": {
+        "absolute": 1
+    },
+    "use_expansion_hack": false
+}

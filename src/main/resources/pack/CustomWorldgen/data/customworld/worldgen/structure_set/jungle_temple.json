@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:jungle_temple",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 14613541,
+        "spacing": 24,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

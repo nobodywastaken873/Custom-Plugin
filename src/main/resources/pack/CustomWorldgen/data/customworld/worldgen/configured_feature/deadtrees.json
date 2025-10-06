@@ -1,0 +1,31 @@
+{
+    "type": "minecraft:simple_random_selector",
+    "config": {
+      "features": [
+        {
+          "feature": "customworld:dead/acacia",
+          "placement": []
+        },
+        {
+            "feature": "customworld:dead/azalea",
+            "placement": []
+        },
+        {
+            "feature": "customworld:dead/cherry",
+            "placement": []
+        },
+        {
+            "feature": "customworld:dead/dark_oak",
+            "placement": []
+        },
+        {
+            "feature": "customworld:dead/jungle",
+            "placement": []
+        },
+        {
+            "feature": "customworld:dead/spruce",
+            "placement": []
+        }
+      ]
+    }
+  }

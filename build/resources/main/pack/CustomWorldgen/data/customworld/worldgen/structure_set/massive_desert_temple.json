@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:massive_desert_temple",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 34524515432,
+        "spacing": 73,
+        "separation": 18,
+        "frequency": 1.0
+    }
+}

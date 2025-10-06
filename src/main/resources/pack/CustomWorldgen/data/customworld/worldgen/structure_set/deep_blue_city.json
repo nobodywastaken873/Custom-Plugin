@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:deep_blue_city",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 143515125,
+        "spacing": 91,
+        "separation": 23,
+        "frequency": 1.0
+    }
+}

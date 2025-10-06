@@ -1,0 +1,6 @@
+name: Custom-Items
+version: '1.0'
+main: me.newburyminer.customItems.CustomItems
+description: Custom Items
+api-version: '1.21.5'
+bootstrapper: me.newburyminer.customItems.CustomPluginBootstrapper

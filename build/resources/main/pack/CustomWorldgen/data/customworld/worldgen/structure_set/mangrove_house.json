@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:mangrove_house",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 34151241,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:ocean_ruins",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 123412512,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

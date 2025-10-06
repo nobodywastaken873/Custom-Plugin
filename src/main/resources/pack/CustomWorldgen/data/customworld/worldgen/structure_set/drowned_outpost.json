@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:drowned_outpost",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 346264152,
+        "spacing": 82,
+        "separation": 21,
+        "frequency": 1.0
+    }
+}

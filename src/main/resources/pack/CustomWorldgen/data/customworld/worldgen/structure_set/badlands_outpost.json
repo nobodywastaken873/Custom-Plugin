@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:badlands_outpost",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 4315134513,
+        "spacing": 72,
+        "separation": 18,
+        "frequency": 1.0
+    }
+}

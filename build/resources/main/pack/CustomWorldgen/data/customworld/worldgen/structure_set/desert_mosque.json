@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:desert_mosque",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 125435123,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

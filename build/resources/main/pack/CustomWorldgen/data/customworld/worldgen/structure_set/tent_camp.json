@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:tent_camp",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 15124323,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:purple_towers",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 23145124,
+        "spacing": 44,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

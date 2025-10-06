@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:desert_ruins",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 1235145145,
+        "spacing": 40,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

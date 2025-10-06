@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:stone_fort",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 123412512,
+        "spacing": 73,
+        "separation": 18,
+        "frequency": 1.0
+    }
+}

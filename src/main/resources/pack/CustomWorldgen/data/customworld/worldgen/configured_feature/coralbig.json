@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:simple_random_selector",
+    "config": {
+      "features": [
+        {
+          "feature": "customworld:coral/braintree",
+          "placement": []
+        },
+        {
+            "feature": "customworld:coral/firetree",
+            "placement": []
+        },
+        {
+            "feature": "customworld:coral/tubetree",
+            "placement": []
+        },
+        {
+            "feature": "customworld:coral/bubbletree",
+            "placement": []
+        },
+        {
+            "feature": "customworld:coral/horntree",
+            "placement": []
+        }
+      ]
+    }
+  }

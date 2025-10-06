@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:ocean_quarry",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 245234523,
+        "spacing": 45,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

@@ -1,0 +1,7 @@
+name: CustomItems
+version: '1.0'
+main: me.newburyminer.customItems.CustomItems
+api-version: '1.21'
+commands:
+  craft:
+    description: Opens the custom crafting menu

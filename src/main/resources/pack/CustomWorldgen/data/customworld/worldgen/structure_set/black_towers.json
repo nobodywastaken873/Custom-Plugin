@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:black_towers",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 1334235121,
+        "spacing": 68,
+        "separation": 17,
+        "frequency": 1.0
+    }
+}

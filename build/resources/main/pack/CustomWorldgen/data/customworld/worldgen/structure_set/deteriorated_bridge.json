@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:deteriorated_bridge",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 413561364,
+        "spacing": 24,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

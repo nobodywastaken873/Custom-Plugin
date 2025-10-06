@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:little_mud_fort",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 214514532,
+        "spacing": 42,
+        "separation": 16,
+        "frequency": 1.0
+    }
+}

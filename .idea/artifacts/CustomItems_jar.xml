@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CustomItems:jar">
+    <output-path>$PROJECT_DIR$/../../../mcss_win-x86-64_v13.8.0/servers/testing v2/plugins</output-path>
+    <root id="archive" name="CustomItems.jar">
+      <element id="module-output" name="CustomItems.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.0-Beta1/15bc9aa9c2379bc9213c33f4e6316c870992fd60/kotlin-stdlib-2.1.0-Beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/2.1.0-Beta1/ea352c1f1ebca4dc2010838dacc829b87617a05/kotlin-stdlib-jdk8-2.1.0-Beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/2.1.0-Beta1/18da6611319eebaa9da5d426825f3d182a1cf217/kotlin-stdlib-jdk7-2.1.0-Beta1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
