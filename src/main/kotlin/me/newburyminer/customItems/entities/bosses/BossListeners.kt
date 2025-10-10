@@ -94,7 +94,7 @@ class BossListeners: Listener, Runnable {
         e.isCancelled = true
     }
 
-    @EventHandler fun onPlayerInteract(e: PlayerInteractEvent) {
+    /*@EventHandler fun onPlayerInteract(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
         if (e.player.isBeingTracked()) return
@@ -134,7 +134,7 @@ class BossListeners: Listener, Runnable {
             CustomBoss.GUARDIAN -> {}
         }
 
-    }
+    }*/
 
     @EventHandler fun onEntityTakeDamage(e: EntityDamageEvent) {
         miniWardenDamage(e)
@@ -236,7 +236,7 @@ class BossListeners: Listener, Runnable {
         e.player.gameMode = GameMode.SURVIVAL
     }
 
-    private fun witherSummon() {
+    fun witherSummon() {
         val wardenBoss = CustomItems.bossWorld.spawn(CustomBoss.WITHER.getCenter(), Wither::class.java)
         wardenBoss.setAttr(Attribute.MAX_HEALTH, 375.0)
         wardenBoss.health = 375.0
@@ -261,7 +261,7 @@ class BossListeners: Listener, Runnable {
         }
     }
 
-    private fun wardenSummon() {
+    fun wardenSummon() {
         val wardenBoss = CustomItems.bossWorld.spawn(CustomBoss.WARDEN.getCenter(), Warden::class.java)
         wardenBoss.setAttr(Attribute.MAX_HEALTH, 250.0)
         wardenBoss.health = 250.0

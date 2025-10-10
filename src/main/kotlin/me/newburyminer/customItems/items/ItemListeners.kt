@@ -287,7 +287,7 @@ class ItemListeners: Listener, Runnable {
         //e.isCancelled = true
     }
 
-    @EventHandler fun onEntityDespawn(e: EntityRemoveEvent) {
+    /*@EventHandler fun onEntityDespawn(e: EntityRemoveEvent) {
         cancelLandmineDespawn(e)
     }
     private fun cancelLandmineDespawn(e: EntityRemoveEvent) {
@@ -298,7 +298,7 @@ class ItemListeners: Listener, Runnable {
             it.setTag("id", CustomEntity.LANDMINE_SHOT.id)
             it.color = (e.entity as Arrow).color
         }
-    }
+    }*/
 
     @EventHandler fun onPlayerMove(e: PlayerMoveEvent) {
         restoreFlight(e)
@@ -325,12 +325,14 @@ class ItemListeners: Listener, Runnable {
         e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
     }
 
+    // should be in a broader systems file
     @EventHandler fun onCooldownSet(e: PlayerItemGroupCooldownEvent) {
         if (e.cooldownGroup.namespace != "customitems") return
         if (e.cooldown != 1) return
         e.isCancelled = true
     }
 
+    // one specific tag-based debuff, maybe need an actual debuff system
     @EventHandler fun onPlayerGlide(e: EntityToggleGlideEvent) {
         if (!e.isGliding) return
         if (e.entity.getTag<Int>("elytradisabled") == 0 || e.entity.getTag<Int>("elytradisabled") == null) return
@@ -339,6 +341,7 @@ class ItemListeners: Listener, Runnable {
         }, 1)
     }
 
+    // item cycling functionality
     @EventHandler fun onPlayerSwapHeldSlot(e: PlayerItemHeldEvent) {
         cycleRedstonePlacers(e)
     }
@@ -384,11 +387,12 @@ class ItemListeners: Listener, Runnable {
         }
     }
 
+    // both inventory-based items entirely, maybe move to inventory events
     @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
-        enderNode(e)
+        //enderNode(e)
         openShulker(e)
     }
-    private fun enderNode(e: InventoryClickEvent) {
+    /*private fun enderNode(e: InventoryClickEvent) {
         if ((e.whoClicked as Player).isBeingTracked()) return
         val player = e.inventory.viewers.first() as Player
         if (e.slot < 0) return
@@ -402,7 +406,7 @@ class ItemListeners: Listener, Runnable {
             player.closeInventory()
             player.openInventory(player.enderChest)
         })
-    }
+    }*/
     private fun openShulker(e: InventoryClickEvent) {
         if (e.action != InventoryAction.PICKUP_HALF) return
         if (e.whoClicked.getTag<Boolean>("inventoryshulker") != true) return
@@ -425,7 +429,8 @@ class ItemListeners: Listener, Runnable {
         })
     }
 
-    @EventHandler fun onFoodEat(e: PlayerItemConsumeEvent) {
+    // item eat event
+    /*@EventHandler fun onFoodEat(e: PlayerItemConsumeEvent) {
         mysticalGreenApple(e)
         shulkerFruit(e)
     }
@@ -448,9 +453,10 @@ class ItemListeners: Listener, Runnable {
         }
         e.player.setTag("inventoryshulker", true)
         CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.4F)
-    }
+    }*/
 
-    @EventHandler fun knockbackEntity(e: EntityKnockbackByEntityEvent) {
+    // another direct weapon hit
+    /*@EventHandler fun knockbackEntity(e: EntityKnockbackByEntityEvent) {
         hookedCutlass(e)
     }
     private fun hookedCutlass(e: EntityKnockbackByEntityEvent) {
@@ -462,8 +468,10 @@ class ItemListeners: Listener, Runnable {
         val newKnockback = e.knockback.clone()
         newKnockback.x *= -1
         newKnockback.z *= -1
-    }
+        e.knockback = newKnockback
+    }*/
 
+    // all grave handling functions
     @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {
         createGrave(e)
     }
@@ -726,81 +734,19 @@ class ItemListeners: Listener, Runnable {
     }
 
     @EventHandler fun onEntityAttackEntity(e: EntityDamageByEntityEvent) {
-        axeOfPeace(e)
-        enderBladeHit(e)
-        heavyGreathammer(e)
-        crestedDagger(e)
-        sniperRifleHit(e)
-        gravityHammerHit(e)
+        //axeOfPeace(e)
+        //enderBladeHit(e)
+        //heavyGreathammer(e)
+        //crestedDagger(e)
+        //sniperRifleHit(e)
+        //gravityHammerHit(e)
         maceShieldedPlating(e)
-        darkSteelRapierHit(e)
-        frozenShardHit(e)
-        barbedBladeHit(e)
-        dualBarreledCrossbowHit(e)
+        //darkSteelRapierHit(e)
+        //frozenShardHit(e)
+        //barbedBladeHit(e)
+        //dualBarreledCrossbowHit(e)
     }
-    private fun axeOfPeace(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Player) return
-        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.AXE_OF_PEACE)) return
-        if (e.damage >= 15) (e.damager as Player).heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
-    }
-    private fun enderBladeHit(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Player) return
-        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.ENDER_BLADE)) return
-        if ((e.damager as Player).getTag<Int>("enderbladecrittime") == 0 || (e.damager as Player).getTag<Int>("enderbladecrittime") == null) return
-        if (e.isCritical) return
-        e.damage *= 1.5
-        CustomEffects.playSound(e.entity.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.8F, 1.0F)
-        CustomEffects.particle(Particle.CRIT.builder(), e.entity.location, 20, 0.5, 0.5)
-    }
-    private fun heavyGreathammer(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Player) return
-        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.HEAVY_GREATHAMMER)) return
-        if (!e.isCritical) return
-        val player = e.damager as Player
-        player.inventory.itemInMainHand.setTag("criticalcount", player.inventory.itemInMainHand.getTag<Int>("criticalcount")!!+1)
-        if (player.inventory.itemInMainHand.getTag<Int>("criticalcount")!! % 3 != 0) return
-        e.damage *= 2
-        CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.5F, 0.7F)
-        CustomEffects.particle(Particle.CRIMSON_SPORE.builder(), e.entity.location, 20, 0.5, 0.5)
-        if (e.entity !is Player) return
-        for (armor in (e.entity as Player).inventory.armorContents) {
-            if (armor?.itemMeta?.isUnbreakable != true) armor?.reduceDura(10)
-        }
-    }
-    private fun crestedDagger(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Player) return
-        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.CRESTED_DAGGER)) return
-        if (e.entity !is LivingEntity) return
-        if (e.damageSource.damageType == DamageType.STARVE) return
-        e.isCancelled = true
-        val damage = 20.0 / 13 * (e.damager as Player).attackCooldown
-        (e.entity as LivingEntity).damage(damage, DamageSource.builder(DamageType.STARVE).withDirectEntity(e.damager).withCausingEntity(e.damager).build())
-        (e.entity as LivingEntity).noDamageTicks = 5
-    }
-    private fun sniperRifleHit(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Arrow) return
-        if (e.damager.getTag<Int>("id") != CustomEntity.SNIPER_RIFLE_SHOT.id) return
-        if (e.entity !is LivingEntity) return
-        if (e.damageSource.damageType == CustomDamageType.ALL_BYPASS) return
-        e.isCancelled = true
-        val damage = 13.0
-        (e.entity as LivingEntity).damage(damage,
-            DamageSource.builder(CustomDamageType.ALL_BYPASS)
-                .withDirectEntity(e.damageSource.directEntity ?: e.damageSource.causingEntity!!)
-                .withCausingEntity(e.damageSource.causingEntity ?: e.damageSource.directEntity!!).build()
-        )
-        e.damager.remove()
-    }
-    private fun gravityHammerHit(e: EntityDamageByEntityEvent) {
-        if (e.damager !is Player) return
-        if (e.entity !is Player) return
-        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.GRAVITY_HAMMER)) return
-        if (!(e.damager as Player).offCooldown(CustomItem.GRAVITY_HAMMER)) return
-        if ((e.damager as Player).attackCooldown.toDouble() != 1.0) return
-        CustomEffects.playSound(e.entity.location, Sound.ITEM_MACE_SMASH_AIR, 1.0F, 1.2F)
-        (e.entity as Player).tempAttribute(Attribute.GRAVITY, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 2.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1), 7.0, "a")
-        (e.damager as Player).setCooldown(CustomItem.GRAVITY_HAMMER, 20.0)
-    }
+    // reducing damage via armor
     private fun maceShieldedPlating(e: EntityDamageByEntityEvent) {
         if (e.entity !is Player) return
         if (e.damager !is Player) return
@@ -808,6 +754,8 @@ class ItemListeners: Listener, Runnable {
         if ((e.entity as Player).inventory.chestplate?.isItem(CustomItem.MACE_SHIELDED_PLATING) != true) return
         e.damage *= 0.4
     }
+
+    /*// direct weapon hits
     private fun darkSteelRapierHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Player) return
         if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.DARK_STEEL_RAPIER)) return
@@ -838,21 +786,87 @@ class ItemListeners: Listener, Runnable {
         (e.entity as Player).tempAttribute(Attribute.ARMOR, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), -4.0, AttributeModifier.Operation.ADD_NUMBER), 4.0, "barbedblade", checkForDupe = true)
         (e.damager as Player).inventory.itemInMainHand.setCooldown(e.damager as Player, 15.0)
     }
-    private fun dualBarreledCrossbowHit(e: EntityDamageByEntityEvent) {
+    private fun gravityHammerHit(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Player) return
+        if (e.entity !is Player) return
+        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.GRAVITY_HAMMER)) return
+        if (!(e.damager as Player).offCooldown(CustomItem.GRAVITY_HAMMER)) return
+        if ((e.damager as Player).attackCooldown.toDouble() != 1.0) return
+        CustomEffects.playSound(e.entity.location, Sound.ITEM_MACE_SMASH_AIR, 1.0F, 1.2F)
+        (e.entity as Player).tempAttribute(Attribute.GRAVITY, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 2.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1), 7.0, "a")
+        (e.damager as Player).setCooldown(CustomItem.GRAVITY_HAMMER, 20.0)
+    }
+    private fun crestedDagger(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Player) return
+        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.CRESTED_DAGGER)) return
+        if (e.entity !is LivingEntity) return
+        // prevent infinite looping with damage
+        if (e.damageSource.damageType == DamageType.STARVE) return
+        e.isCancelled = true
+        val damage = 20.0 / 13 * (e.damager as Player).attackCooldown
+        (e.entity as LivingEntity).damage(damage, DamageSource.builder(DamageType.STARVE).withDirectEntity(e.damager).withCausingEntity(e.damager).build())
+        (e.entity as LivingEntity).noDamageTicks = 5
+    }
+    private fun axeOfPeace(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Player) return
+        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.AXE_OF_PEACE)) return
+        if (e.damage >= 15) (e.damager as Player).heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
+    }
+    private fun enderBladeHit(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Player) return
+        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.ENDER_BLADE)) return
+        if ((e.damager as Player).getTag<Int>("enderbladecrittime") == 0 || (e.damager as Player).getTag<Int>("enderbladecrittime") == null) return
+        if (e.isCritical) return
+        e.damage *= 1.5
+        CustomEffects.playSound(e.entity.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.8F, 1.0F)
+        CustomEffects.particle(Particle.CRIT.builder(), e.entity.location, 20, 0.5, 0.5)
+    }
+    private fun heavyGreathammer(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Player) return
+        if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.HEAVY_GREATHAMMER)) return
+        if (!e.isCritical) return
+        val player = e.damager as Player
+        player.inventory.itemInMainHand.setTag("criticalcount", player.inventory.itemInMainHand.getTag<Int>("criticalcount")!!+1)
+        if (player.inventory.itemInMainHand.getTag<Int>("criticalcount")!! % 3 != 0) return
+        e.damage *= 2
+        CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.5F, 0.7F)
+        CustomEffects.particle(Particle.CRIMSON_SPORE.builder(), e.entity.location, 20, 0.5, 0.5)
+        if (e.entity !is Player) return
+        for (armor in (e.entity as Player).inventory.armorContents) {
+            if (armor?.itemMeta?.isUnbreakable != true) armor?.reduceDura(10)
+        }
+        }*/
+
+    // projectile hits
+    /*private fun dualBarreledCrossbowHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.damager.getTag<Int>("id") != CustomEntity.DUAL_BARRELED_CROSSBOW_SHOT.id) return
         if (e.entity !is LivingEntity) return
         e.damage = 17.0
-    }
+    }*/
+    /*private fun sniperRifleHit(e: EntityDamageByEntityEvent) {
+        if (e.damager !is Arrow) return
+        if (e.damager.getTag<Int>("id") != CustomEntity.SNIPER_RIFLE_SHOT.id) return
+        if (e.entity !is LivingEntity) return
+        if (e.damageSource.damageType == CustomDamageType.ALL_BYPASS) return
+        e.isCancelled = true
+        val damage = 13.0
+        (e.entity as LivingEntity).damage(damage,
+            DamageSource.builder(CustomDamageType.ALL_BYPASS)
+                .withDirectEntity(e.damageSource.directEntity ?: e.damageSource.causingEntity!!)
+                .withCausingEntity(e.damageSource.causingEntity ?: e.damageSource.directEntity!!).build()
+        )
+        e.damager.remove()
+    }*/
 
-    @EventHandler fun onBlockBreak(e: BlockBreakEvent) {
-        veinyPickaxe(e)
-        treecapitator(e)
-        excavator(e)
-        removeDurability(e)
-        hoe(e)
+    /*@EventHandler fun onBlockBreak(e: BlockBreakEvent) {
+        //veinyPickaxe(e)
+        //treecapitator(e)
+        //excavator(e)
+        //removeDurability(e)
+        //hoe(e)
     }
-    private fun veinyPickaxe(e: BlockBreakEvent) {
+    /*private fun veinyPickaxe(e: BlockBreakEvent) {
         //for (item in e.block.drops) e.player.sendMessage(item.type.toString() + item.amount.toString())
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.VEINY_PICKAXE)) return
         val pickaxe = e.player.inventory.itemInMainHand
@@ -888,8 +902,8 @@ class ItemListeners: Listener, Runnable {
             e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
         }
         pickaxe.setCooldown(e.player, 3.0)
-    }
-    private fun treecapitator(e: BlockBreakEvent) {
+    }*/
+    /*private fun treecapitator(e: BlockBreakEvent) {
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.TREECAPITATOR)) return
         val axe = e.player.inventory.itemInMainHand
         val material = e.block.type
@@ -923,8 +937,8 @@ class ItemListeners: Listener, Runnable {
         for (drop in drops) {
             e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
         }
-    }
-    private fun excavator(e: BlockBreakEvent) {
+    }*/
+    /*private fun excavator(e: BlockBreakEvent) {
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.EXCAVATOR)) return
         val pickaxe = e.player.inventory.itemInMainHand
         val drops = mutableListOf<ItemStack>()
@@ -942,8 +956,8 @@ class ItemListeners: Listener, Runnable {
         for (drop in drops) {
             e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
         }
-    }
-    private fun getAround(loc: Location): MutableList<Location> {
+    }*/
+    /*private fun getAround(loc: Location): MutableList<Location> {
         val locs = mutableListOf<Location>()
         for (x in -1..1) {
             for (y in -1..1) {
@@ -954,7 +968,7 @@ class ItemListeners: Listener, Runnable {
             }
         }
         return locs
-    }
+    }*/
     private fun removeDurability(e: BlockBreakEvent) {
         val item = e.player.inventory.itemInMainHand
         if (!item.isItem(CustomItem.HOEVEL) && !item.isItem(CustomItem.AXEPICK) && !item.isItem(CustomItem.NETHERITE_MATTOCK)) return
@@ -964,7 +978,7 @@ class ItemListeners: Listener, Runnable {
         if (newMeta.damage == 2031) {item.amount = 0; CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)}
         item.itemMeta = newMeta
     }
-    private fun hoe(e: BlockBreakEvent) {
+    /*private fun hoe(e: BlockBreakEvent) {
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.HOE)) return
         val hoe = e.player.inventory.itemInMainHand
         if (!Tag.CROPS.isTagged(e.block.type) && e.block.type !in arrayOf(Material.BAMBOO, Material.COCOA, Material.PITCHER_CROP)) return
@@ -982,7 +996,7 @@ class ItemListeners: Listener, Runnable {
             block.blockData = newMeta
         }
         for (drop in drops) e.player.addItemorDrop(drop)
-    }
+    }*/*/
 
     @EventHandler fun onBlockDropItems(e: BlockDropItemEvent) {
         autoSmelt(e)
@@ -998,10 +1012,10 @@ class ItemListeners: Listener, Runnable {
         CustomEffects.particle(Particle.FLAME.builder(), e.block.location.add(Vector(0.5, 0.5, 0.5)), 10, 0.5)
     }
 
-    @EventHandler fun onCrossbowLoad(e: EntityLoadCrossbowEvent) {
-        redstoneRepeaterLoad(e)
-        multiloadShotgunLoad(e)
-        dualBarreledCrossbowLoad(e)
+    /*@EventHandler fun onCrossbowLoad(e: EntityLoadCrossbowEvent) {
+        //redstoneRepeaterLoad(e)
+        //multiloadShotgunLoad(e)
+        //dualBarreledCrossbowLoad(e)
     }
     private fun redstoneRepeaterLoad(e: EntityLoadCrossbowEvent) {
         if (e.entity !is Player) return
@@ -1087,12 +1101,12 @@ class ItemListeners: Listener, Runnable {
         val shooter = e.entity as Player
         e.isCancelled = true
         e.crossbow.crossbowProj(ItemStack(Material.ARROW), 2)
-    }
+    }*/
 
     @EventHandler fun onSwapHands(e: PlayerSwapHandItemsEvent) {
         cycleRedstoneItem(e)
-        cycleRedstoneRepeater(e)
-        cycleMultiloadShotgun(e)
+        //cycleRedstoneRepeater(e)
+        //cycleMultiloadShotgun(e)
     }
     private fun cycleRedstoneItem(e: PlayerSwapHandItemsEvent) {
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.REDSTONE_AMALGAMATION)) return
@@ -1106,7 +1120,7 @@ class ItemListeners: Listener, Runnable {
         e.player.inventory.itemInMainHand.type = getRedstoneItems(outerLayer)[newInnerLayer]
         CustomEffects.playSound(e.player.location, Sound.UI_STONECUTTER_SELECT_RECIPE, 1.0F, 1.1F)
     }
-    private fun cycleRedstoneRepeater(e: PlayerSwapHandItemsEvent) {
+    /*private fun cycleRedstoneRepeater(e: PlayerSwapHandItemsEvent) {
         var crossbow: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.REDSTONE_REPEATER)) {crossbow = e.player.inventory.itemInOffHand}
         if (e.player.inventory.itemInMainHand.isItem(CustomItem.REDSTONE_REPEATER)) {crossbow = e.player.inventory.itemInMainHand}
@@ -1120,8 +1134,8 @@ class ItemListeners: Listener, Runnable {
             crossbow.clearCrossbowProj()
         }
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
-    }
-    private fun cycleMultiloadShotgun(e: PlayerSwapHandItemsEvent) {
+    }*/
+    /*private fun cycleMultiloadShotgun(e: PlayerSwapHandItemsEvent) {
         var crossbow: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.MULTI_LOAD_CROSSBOW)) {crossbow = e.player.inventory.itemInOffHand}
         if (e.player.inventory.itemInMainHand.isItem(CustomItem.MULTI_LOAD_CROSSBOW)) {crossbow = e.player.inventory.itemInMainHand}
@@ -1136,7 +1150,7 @@ class ItemListeners: Listener, Runnable {
             crossbow.clearCrossbowProj()
         }
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
-    }
+    }*/
 
     @EventHandler fun onBoatEnter(e: EntityMountEvent) {
         badBoy(e)
@@ -1171,22 +1185,22 @@ class ItemListeners: Listener, Runnable {
     }
 
     @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
-        windHookLand(e)
-        redstoneRepeaterLand(e)
-        multiloadShotgunLand(e)
-        llamaSpitLand(e)
-        surfaceToAirMissileHit(e)
+        //windHookLand(e)
+        //redstoneRepeaterLand(e)
+        //multiloadShotgunLand(e)
+        //llamaSpitLand(e)
+        //surfaceToAirMissileHit(e)
         assassinsCloakDodge(e)
     }
-    private fun windHookLand(e: ProjectileHitEvent) {
+    /*private fun windHookLand(e: ProjectileHitEvent) {
         if (e.entity.getTag<Int>("id") != CustomEntity.WIND_HOOK_SHOT.id) return
         val arrow = e.entity as Arrow
         arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
         val shooter = e.entity.shooter as Player
         shooter.setTag("windhookpullcoords", "${e.entity.location.x},${e.entity.location.y},${e.entity.location.z}")
         shooter.setTag("windhookpulltime", 50)
-    }
-    private fun redstoneRepeaterLand(e: ProjectileHitEvent) {
+    }*/
+    /*private fun redstoneRepeaterLand(e: ProjectileHitEvent) {
         if (e.entity.getTag<Int>("id") != CustomEntity.REDSTONE_REPEATER_SHOT.id) return
         val arrow = e.entity as Arrow
         val shooter = e.entity.shooter as Player
@@ -1196,8 +1210,8 @@ class ItemListeners: Listener, Runnable {
         hit.damage(10.5, DamageSource.builder(DamageType.ARROW).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
         hit.noDamageTicks = 0
         e.entity.remove()
-    }
-    private fun multiloadShotgunLand(e: ProjectileHitEvent) {
+    }*/
+    /*private fun multiloadShotgunLand(e: ProjectileHitEvent) {
         if (e.entity.getTag<Int>("id") != CustomEntity.MULTI_LOAD_CROSSBOW_SHOT.id) return
         if (e.hitEntity == null || e.hitEntity!! !is LivingEntity) return
         e.isCancelled = true
@@ -1205,8 +1219,8 @@ class ItemListeners: Listener, Runnable {
         hit.damage(10.0, DamageSource.builder(DamageType.ARROW).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
         hit.noDamageTicks = 0
         e.entity.remove()
-    }
-    private fun llamaSpitLand(e: ProjectileHitEvent) {
+    }*/
+    /*private fun llamaSpitLand(e: ProjectileHitEvent) {
         if (e.entity.getTag<Int>("id") != CustomEntity.TRUE_LLAMA_SPIT.id) return
         if (e.hitEntity == null || e.hitEntity!! !is LivingEntity) return
         e.isCancelled = true
@@ -1214,8 +1228,8 @@ class ItemListeners: Listener, Runnable {
         hit.damage(1.5, DamageSource.builder(DamageType.STARVE).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
         hit.noDamageTicks = 0
         e.entity.remove()
-    }
-    private fun surfaceToAirMissileHit(e: ProjectileHitEvent) {
+    }*/
+    /*private fun surfaceToAirMissileHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_ARROW.id) return
         if (e.hitEntity !is Player) return
@@ -1225,7 +1239,7 @@ class ItemListeners: Listener, Runnable {
         (e.hitEntity!! as Player).setCooldown(Material.ELYTRA, 500)
         (e.hitEntity as Player).isGliding = false
         //(e.hitEntity as Player).setCool
-    }
+    }*/
     private fun assassinsCloakDodge(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.hitEntity == null || e.hitEntity!! !is Player) return
@@ -1241,18 +1255,18 @@ class ItemListeners: Listener, Runnable {
         CustomEffects.playSound(hit.location, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.2F)
     }
 
-    @EventHandler fun onProjectileLaunch(e: ProjectileLaunchEvent) {
+    /*@EventHandler fun onProjectileLaunch(e: ProjectileLaunchEvent) {
         customArrows(e)
-        windHook(e)
-        redstoneRepeater(e)
-        multiloadShotgun(e)
-        surfaceToAirMissileLauncher(e)
-        homingWindChargeCannon(e)
-        sniperRifle(e)
-        ridableCrossbow(e)
-        landmineLauncher(e)
-        dualBarreledCrossbowShoot(e)
-        sonicCrossbowShoot(e)
+        //windHook(e)
+        //redstoneRepeater(e)
+        //multiloadShotgun(e)
+        //surfaceToAirMissileLauncher(e)
+        //homingWindChargeCannon(e)
+        //sniperRifle(e)
+        //ridableCrossbow(e)
+        //landmineLauncher(e)
+        //dualBarreledCrossbowShoot(e)
+        //sonicCrossbowShoot(e)
     }
     private fun customArrows(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Player) return
@@ -1292,7 +1306,7 @@ class ItemListeners: Listener, Runnable {
             e.entity.remove()
         }
     }
-    private fun windHook(e: ProjectileLaunchEvent) {
+    /*private fun windHook(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Player) return
         val shooter = e.entity.shooter as Player
         var mainHand: Boolean? = null
@@ -1484,23 +1498,23 @@ class ItemListeners: Listener, Runnable {
 
         shooter.setCooldown(CustomItem.SONIC_CROSSBOW, 20.0)
         e.entity.remove()
-    }
+    }*/*/
 
-    @EventHandler fun onEntityInteract(e: PlayerInteractEntityEvent) {
-        jerryIdol(e)
-        villagerAtomizer(e)
-        goldenZombie(e)
-        fletcherUpgrade(e)
-        tradingScrambler(e)
-        reinforcedCagePick(e)
+    /*@EventHandler fun onEntityInteract(e: PlayerInteractEntityEvent) {
+        //jerryIdol(e)
+        //villagerAtomizer(e)
+        //goldenZombie(e)
+        //fletcherUpgrade(e)
+        //tradingScrambler(e)
+        //reinforcedCagePick(e)
     }
-    private fun jerryIdol(e: PlayerInteractEntityEvent) {
+    /*private fun jerryIdol(e: PlayerInteractEntityEvent) {
         if (e.rightClicked !is Villager) return
         if (e.rightClicked.getTag<Int>("id") != CustomEntity.JERRY_IDOL.id) return
         e.isCancelled = true
         if (e.player.inventory.itemInMainHand.type == Material.AIR) {
             val emBlockStacks = e.rightClicked.getTag<Int>("emeraldstacks")
-            val newJerryIdol = Items.get(CustomItem.JERRY_IDOL.id)
+            val newJerryIdol = Items.get(CustomItem.JERRY_IDOL)
             newJerryIdol.setTag("emeraldstacks", emBlockStacks)
             e.player.addItemorDrop(newJerryIdol)
             CustomEffects.playSound(e.rightClicked.location, Sound.ENTITY_ITEM_PICKUP, 20F, 0.5F)
@@ -1513,8 +1527,8 @@ class ItemListeners: Listener, Runnable {
             for (i in 0..5+emBlockStacks/2) CustomEffects.particleCircle(Particle.HAPPY_VILLAGER.builder(), e.rightClicked.location.clone().add(Vector(0.0, i.toDouble()/2.5, 0.0)), 0.5 * (1 + emBlockStacks*0.1), (20 * (1 + emBlockStacks*0.1)).toInt(), 0.01)
             CustomEffects.playSound(e.rightClicked.location, Sound.ENTITY_VILLAGER_YES, 20F, 1.5F)
         }
-    }
-    private fun villagerAtomizer(e: PlayerInteractEntityEvent) {
+    }*/
+    /*private fun villagerAtomizer(e: PlayerInteractEntityEvent) {
         if (e.rightClicked !is Villager) return
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.VILLAGER_ATOMIZER)) return
         e.isCancelled = true
@@ -1530,8 +1544,8 @@ class ItemListeners: Listener, Runnable {
         )
         villager.remove()
         e.player.addItemorDrop(newItem)
-    }
-    private fun goldenZombie(e: PlayerInteractEntityEvent) {
+    }*/
+    /*private fun goldenZombie(e: PlayerInteractEntityEvent) {
         if (e.rightClicked !is Villager && e.rightClicked !is ZombieVillager) return
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.GOLDEN_ZOMBIE)) return
         if (e.rightClicked.getTag<Int>("id") == CustomEntity.JERRY_IDOL.id) return
@@ -1544,14 +1558,14 @@ class ItemListeners: Listener, Runnable {
             zombieVillager.conversionTime = 50
             zombieVillager.conversionPlayer = e.player
         }
-    }
-    private fun fletcherUpgrade(e: PlayerInteractEntityEvent) {
+    }*/
+    /*private fun fletcherUpgrade(e: PlayerInteractEntityEvent) {
         if (e.rightClicked !is Villager) return
         val villager: Villager = e.rightClicked as Villager
         if (villager.profession != Villager.Profession.FLETCHER || villager.villagerLevel != 5 || villager.getTag<Int>("id") == CustomEntity.MAX_FLETCHER.id) return
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.FLETCHER_UPGRADE)) return
         e.isCancelled = true
-        val arrowTypes = arrayOf(CustomItem.DRIPSTONE_ARROW.id, CustomItem.ENDER_PEARL_ARROW.id, CustomItem.WITHER_SKULL_ARROW.id, CustomItem.LLAMA_SPIT_ARROW.id, CustomItem.SHULKER_BULLET_ARROW.id)
+        val arrowTypes = arrayOf(CustomItem.DRIPSTONE_ARROW, CustomItem.ENDER_PEARL_ARROW, CustomItem.WITHER_SKULL_ARROW, CustomItem.LLAMA_SPIT_ARROW, CustomItem.SHULKER_BULLET_ARROW)
         val newRecipes = Lists.newArrayList(villager.recipes)
         val newRecipe = MerchantRecipe(Items.get(arrowTypes.random()), 0, 10000, true, 0, 0F)
         newRecipe.addIngredient(ItemStack(Material.EMERALD_BLOCK, 4))
@@ -1562,8 +1576,8 @@ class ItemListeners: Listener, Runnable {
         e.player.inventory.itemInMainHand.amount -= 1
         CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 5F, 1.4F)
         CustomEffects.particleCloud(Particle.HAPPY_VILLAGER.builder(), villager.location, 100, 1.0, 0.5)
-    }
-    private fun tradingScrambler(e: PlayerInteractEntityEvent) {
+    }*/
+    /*private fun tradingScrambler(e: PlayerInteractEntityEvent) {
         if (e.rightClicked !is Villager) return
         if (!e.player.inventory.itemInMainHand.isItem(CustomItem.TRADING_SCRAMBLER)) return
         if (e.rightClicked.getTag<Int>("id") != null) return
@@ -1583,8 +1597,8 @@ class ItemListeners: Listener, Runnable {
         villager.addTrades(2)
         villager.villagerExperience = experience
         CustomEffects.playSound(e.player.location, Sound.BLOCK_BAMBOO_BREAK, 1.0F, 1.0F)
-    }
-    private fun reinforcedCagePick(e: PlayerInteractEntityEvent) {
+    }*/
+    /*private fun reinforcedCagePick(e: PlayerInteractEntityEvent) {
         if (e.rightClicked.type in arrayOf(
                 EntityType.WARDEN, EntityType.ENDER_DRAGON, EntityType.ARROW, EntityType.TEXT_DISPLAY, EntityType.BLOCK_DISPLAY, EntityType.ITEM_DISPLAY,
                 EntityType.AREA_EFFECT_CLOUD, EntityType.BREEZE_WIND_CHARGE, EntityType.DRAGON_FIREBALL, EntityType.END_CRYSTAL, EntityType.ENDER_PEARL,
@@ -1613,35 +1627,35 @@ class ItemListeners: Listener, Runnable {
         if (entity is InventoryHolder) entity.inventory.clear()
         entity.remove()
         e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
-    }
+    }*/*/
 
     @EventHandler fun onInteract(e: PlayerInteractEvent) {
-        jerryIdolPlace(e)
-        villagerPlace(e)
-        fangedStaffTick(e)
+        //jerryIdolPlace(e)
+        //villagerPlace(e)
+        //fangedStaffTick(e)
         cancelProjectileCharge(e)
-        arrowCountRedstoneRepeater(e)
+        //arrowCountRedstoneRepeater(e)
         polarizedMagnet(e)
         lastPrism(e)
         pewMaticHorn(e)
         experienceFlask(e)
-        netheriteMultitool(e)
-        pocketknifeMultitool(e)
-        hoeHoe(e)
+        //netheriteMultitool(e)
+        //pocketknifeMultitool(e)
+        //hoeHoe(e)
         ancientTome(e)
-        enderBlade(e)
-        autoSmeltUpgrade(e)
-        soulCrystal(e)
-        netheriteCoating(e)
-        witherCoating(e)
-        reinforcingStruts(e)
-        tripleSwipeBlade(e)
-        windChargeCannonMode(e)
-        landmineLauncherTrigger(e)
+        //enderBlade(e)
+        //autoSmeltUpgrade(e)
+        //soulCrystal(e)
+        //netheriteCoating(e)
+        //witherCoating(e)
+        //reinforcingStruts(e)
+        //tripleSwipeBlade(e)
+        //windChargeCannonMode(e)
+        //landmineLauncherTrigger(e)
         jetpackControllerPack(e)
         jetpackController(e)
-        reinforcedCagePlace(e)
-        darkSteelRapierActivate(e)
+        //reinforcedCagePlace(e)
+        //darkSteelRapierActivate(e)
     }
     private fun cancelProjectileCharge(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
@@ -1651,7 +1665,7 @@ class ItemListeners: Listener, Runnable {
             if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
         }
     }
-    private fun jerryIdolPlace(e: PlayerInteractEvent) {
+    /*private fun jerryIdolPlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.JERRY_IDOL)) return
@@ -1667,8 +1681,8 @@ class ItemListeners: Listener, Runnable {
         villager.setAI(false)
         e.item!!.amount -= 1
         CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 20F, 0.9F)
-    }
-    private fun villagerPlace(e: PlayerInteractEvent) {
+    }*/
+    /*private fun villagerPlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.VILLAGER)) return
@@ -1679,8 +1693,8 @@ class ItemListeners: Listener, Runnable {
         else Bukkit.getEntityFactory().createEntitySnapshot(villagerAsString).createEntity(loc)
         e.item!!.amount -= 1
         CustomEffects.playSound(loc, Sound.ENTITY_VILLAGER_TRADE, 20F, 1.2F)
-    }
-    private fun fangedStaffTick(e: PlayerInteractEvent) {
+    }*/
+    /*private fun fangedStaffTick(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.FANGED_STAFF)) return
         if ((e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) && e.item!!.offCooldown(e.player, "Vexing")) {
@@ -1702,8 +1716,8 @@ class ItemListeners: Listener, Runnable {
             e.item!!.setCooldown(e.player, 0.5, "Fangs")
             CustomEffects.playSound(e.player.location, Sound.ENTITY_EVOKER_CAST_SPELL, 1F, 0.7F)
         }
-    }
-    private fun arrowCountRedstoneRepeater(e: PlayerInteractEvent) {
+    }*/
+    /*private fun arrowCountRedstoneRepeater(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.REDSTONE_REPEATER)) return
         if (e.action != Action.LEFT_CLICK_BLOCK && e.action != Action.LEFT_CLICK_AIR) return
@@ -1718,7 +1732,7 @@ class ItemListeners: Listener, Runnable {
         }
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_LOADING_START, 1.0F, 1.5F)
         e.player.setCooldown(CustomItem.REDSTONE_REPEATER, 0.5)
-    }
+    }*/
     private fun polarizedMagnet(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
@@ -1832,7 +1846,7 @@ class ItemListeners: Listener, Runnable {
             e.player.setCooldown(CustomItem.EXPERIENCE_FLASK, 0.5)
         }
     }
-    private fun netheriteMultitool(e: PlayerInteractEvent) {
+    /*private fun netheriteMultitool(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.NETHERITE_MULTITOOL)) return
         if (!e.player.offCooldown(CustomItem.NETHERITE_MULTITOOL)) return
@@ -1849,8 +1863,8 @@ class ItemListeners: Listener, Runnable {
         e.item!!.type = newMat
         e.item!!.setTag("tool", if (toolNum == 3) 0 else toolNum + 1)
         e.player.setCooldown(CustomItem.NETHERITE_MULTITOOL, 0.5)
-    }
-    private fun pocketknifeMultitool(e: PlayerInteractEvent) {
+    }*/
+    /*private fun pocketknifeMultitool(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.POCKETKNIFE_MULTITOOL)) return
         if (!e.player.offCooldown(CustomItem.POCKETKNIFE_MULTITOOL)) return
@@ -1866,8 +1880,8 @@ class ItemListeners: Listener, Runnable {
         e.item!!.type = newMat
         e.item!!.setTag("tool", if (toolNum == 2) 0 else toolNum + 1)
         e.player.setCooldown(CustomItem.POCKETKNIFE_MULTITOOL, 0.5)
-    }
-    private fun hoeHoe(e: PlayerInteractEvent) {
+    }*/
+    /*private fun hoeHoe(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.HOE)) return
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
@@ -1878,7 +1892,7 @@ class ItemListeners: Listener, Runnable {
             if (!Tag.DIRT.isTagged(e.player.world.getBlockAt(loc).type)) continue
             e.player.world.getBlockAt(loc).type = Material.FARMLAND
         }
-    }
+    }*/
     private fun ancientTome(e: PlayerInteractEvent) {
         var tome: ItemStack? = null
         for (custom in arrayOf<CustomItem>()) if (e.player.inventory.itemInOffHand.isItem(custom)) tome = e.player.inventory.itemInOffHand
@@ -1892,7 +1906,7 @@ class ItemListeners: Listener, Runnable {
         tome.amount -= 1
         CustomEffects.playSound(e.player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 1.1F)
     }
-    private fun enderBlade(e: PlayerInteractEvent) {
+    /*private fun enderBlade(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.ENDER_BLADE)) return
         if (!e.item!!.offCooldown(e.player)) return
@@ -1915,8 +1929,8 @@ class ItemListeners: Listener, Runnable {
         } else {
             e.item!!.setCooldown(e.player, 6.5)
         }
-    }
-    private fun autoSmeltUpgrade(e: PlayerInteractEvent) {
+    }*/
+    /*private fun autoSmeltUpgrade(e: PlayerInteractEvent) {
         var smelt: ItemStack? = null
         for (custom in arrayOf(CustomItem.FIERY_SHARD)) if (e.player.inventory.itemInOffHand.isItem(custom)) smelt = e.player.inventory.itemInOffHand
         if (smelt == null) return
@@ -1927,8 +1941,8 @@ class ItemListeners: Listener, Runnable {
         smelt.amount -= 1
         smeltable.addUnsafeEnchantment(CustomEnchantments.AUTOSMELT, 1)
         CustomEffects.playSound(e.player.location, Sound.BLOCK_BLASTFURNACE_FIRE_CRACKLE, 1.0F, 1.1F)
-    }
-    private fun soulCrystal(e: PlayerInteractEvent) {
+    }*/
+    /*private fun soulCrystal(e: PlayerInteractEvent) {
         var upgrade: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.SOUL_CRYSTAL)) upgrade = e.player.inventory.itemInOffHand
         if (upgrade == null) return
@@ -1939,8 +1953,8 @@ class ItemListeners: Listener, Runnable {
         upgrade.amount -= 1
         toSoulbind.addUnsafeEnchantment(CustomEnchantments.SOULBOUND, 1)
         CustomEffects.playSound(e.player.location, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1.0F, 1.1F)
-    }
-    private fun netheriteCoating(e: PlayerInteractEvent) {
+    }*/
+    /*private fun netheriteCoating(e: PlayerInteractEvent) {
         var upgrade: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.NETHERITE_COATING)) upgrade = e.player.inventory.itemInOffHand
         if (upgrade == null) return
@@ -1953,8 +1967,8 @@ class ItemListeners: Listener, Runnable {
         toUpgrade.addUnsafeEnchantment(CustomEnchantments.FIREPROOF, 1)
         //lore
         CustomEffects.playSound(e.player.location, Sound.BLOCK_SMITHING_TABLE_USE, 1.0F, 1.1F)
-    }
-    private fun witherCoating(e: PlayerInteractEvent) {
+    }*/
+    /*private fun witherCoating(e: PlayerInteractEvent) {
         var upgrade: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.WITHER_COATING)) upgrade = e.player.inventory.itemInOffHand
         if (upgrade == null) return
@@ -1966,8 +1980,8 @@ class ItemListeners: Listener, Runnable {
         toUpgrade.resist(DamageTypeTagKeys.IS_EXPLOSION)
         toUpgrade.addUnsafeEnchantment(CustomEnchantments.BLAST_RESISTANT, 1)
         CustomEffects.playSound(e.player.location, Sound.ENTITY_WITHER_AMBIENT, 1.0F, 1.1F)
-    }
-    private fun reinforcingStruts(e: PlayerInteractEvent) {
+    }*/
+    /*private fun reinforcingStruts(e: PlayerInteractEvent) {
         var upgrade: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.REINFORCING_STRUTS)) upgrade = e.player.inventory.itemInOffHand
         if (upgrade == null) return
@@ -1982,8 +1996,8 @@ class ItemListeners: Listener, Runnable {
         else toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, toUpgrade.type.maxDurability + 200)
         toUpgrade.addUnsafeEnchantment(CustomEnchantments.REINFORCED, (toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) + 1)
         CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_HIT, 1.0F, 1.1F)
-    }
-    private fun tripleSwipeBlade(e: PlayerInteractEvent) {
+    }*/
+    /*private fun tripleSwipeBlade(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.TRIPLE_SWIPE_SWORD)) return
         if (!e.item!!.offCooldown(e.player)) return
@@ -2033,8 +2047,8 @@ class ItemListeners: Listener, Runnable {
 
             k--
         }}.runTaskTimer(CustomItems.plugin, 0L, 4L).taskId)
-    }
-    private fun windChargeCannonMode(e: PlayerInteractEvent) {
+    }*/
+    /*private fun windChargeCannonMode(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.WIND_CHARGE_CANNON)) return
         if (e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return
@@ -2042,8 +2056,8 @@ class ItemListeners: Listener, Runnable {
         e.item!!.setTag("mode", if (mode == 1) 0 else 1)
         e.item!!.name(text("Wind Charge Cannon - ${if (mode == 1) "Homing" else "Straight"}", arrayOf(201, 240, 238), bold = true))
         e.player.playSound(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.0F)
-    }
-    private fun landmineLauncherTrigger(e: PlayerInteractEvent) {
+    }*/
+    /*private fun landmineLauncherTrigger(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.LANDMINE_LAUNCHER)) return
         if (e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return
@@ -2053,7 +2067,7 @@ class ItemListeners: Listener, Runnable {
             entity.world.createExplosion(entity.location, 6.0F, false, true, e.player)
             entity.remove()
         }
-    }
+    }*/
     private fun jetpackControllerPack(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.item?.isItem(CustomItem.JETPACK_CONTROLLER_SET) != true) return
@@ -2069,7 +2083,7 @@ class ItemListeners: Listener, Runnable {
         e.player.setTag("jetpackactive", !mode)
         e.item!!.name(text("Jetpack Controller - ${if (!mode) "ON" else "OFF"}", arrayOf(148, 134, 111), bold = true))
     }
-    private fun reinforcedCagePlace(e: PlayerInteractEvent) {
+    /*private fun reinforcedCagePlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.REINFORCED_CAGE)) return
@@ -2088,8 +2102,8 @@ class ItemListeners: Listener, Runnable {
             text("Right click a non-boss, non-custom mob to pick it up and store it in this item. Right click again on the ground to place it down. You can only store one mob in this item at a time.", Utils.GRAY),
         )
         e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
-    }
-    private fun darkSteelRapierActivate(e: PlayerInteractEvent) {
+    }*/
+    /*private fun darkSteelRapierActivate(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.DARK_STEEL_RAPIER)) return
         if (!e.item!!.offCooldown(e.player)) return
@@ -2101,7 +2115,7 @@ class ItemListeners: Listener, Runnable {
             Bukkit.getLogger().info(player.name)
         }
         e.player.tempAttribute(Attribute.MOVEMENT_SPEED, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 0.06, AttributeModifier.Operation.ADD_NUMBER), 15.0, "darksteelsword")
-    }
+    }*/
 
     @EventHandler fun onEntityPlace(e: EntityPlaceEvent) {
         redstonePlacersMinecart(e)
@@ -2583,6 +2597,7 @@ class ItemListeners: Listener, Runnable {
 
     private var counter: Int = 0
     private lateinit var mainFuture: BukkitTask
+
     override fun run() {
         mainFuture = Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {
             counter = if (counter == 2400) 0 else counter + 1

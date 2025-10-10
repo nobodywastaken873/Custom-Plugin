@@ -1,12 +1,7 @@
 package me.newburyminer.customItems
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.Consumable
-import io.papermc.paper.datacomponent.item.DamageResistant
-import io.papermc.paper.datacomponent.item.Equippable
-import io.papermc.paper.datacomponent.item.Fireworks
-import io.papermc.paper.datacomponent.item.FoodProperties
-import io.papermc.paper.datacomponent.item.Tool
+import io.papermc.paper.datacomponent.item.*
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
@@ -16,6 +11,7 @@ import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.remainingCompassTime
+import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.useStoredEnch
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -315,8 +311,10 @@ class Utils {
             return this.getTag<Int>("id") == item.id
         }
         fun ItemStack.offCooldown(p: Player, order: String = ""): Boolean {
+            // if an item does not have a custom then it probably doesnt have a cooldown, check anyways in case epearl
+            val custom = this.getCustom() ?: return !p.hasCooldown(this)
             return if (order != "") {
-                p.getTag<Double>(this.getCustom()!!.getCooldown(order))!! < 0.1
+                p.getTag<Double>(custom.getCooldown(order))!! < 0.1
             } else {
                 p.getCooldown(Key.key("customitems", this.getCustom()!!.name.lowercase())) < 0.1
             }
@@ -666,6 +664,65 @@ class Utils {
             this.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
         }
 
+        fun ItemStack.loreList(loreList: MutableList<Component>): ItemStack {
+            this.lore(loreList)
+            return this
+        }
+        private fun Attribute.readName(): String {
+            val value = this.key.value()
+            val words = value.split("_").toMutableList()
+            var totalAttr = ""
+            words.forEach {
+                totalAttr += it.capitalize() + " "
+            }
+            return totalAttr
+        }
+        private fun Double.trimToString(): String {
+            val initial = this.toString()
+            var endIndex = (initial.length - 1).coerceAtMost(6)
+            while (initial[endIndex] == "0".first() || initial[endIndex] == ".".first()) {
+                if (endIndex == 0) break
+                endIndex--
+                if (initial[endIndex] == ".".first()) break
+            }
+            return initial.substring(0, endIndex + 1)
+        }
+        fun ItemStack.cleanAttributeLore(): ItemStack {
+            val description = this.lore()?.toMutableList() ?: mutableListOf()
+            if (this.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.modifiers()?.size !in arrayOf(0, null) && !this.hasData(DataComponentTypes.EQUIPPABLE)) {
+                val modifiers = this.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)
+                if (!modifiers!!.modifiers().any { it.modifier().slotGroup != EquipmentSlotGroup.MAINHAND }) {
+                    val newLines = mutableListOf<Component>()
+                    //newLines.add(Utils.text(""))
+                    newLines.add(text("When in Main Hand: ", Utils.GRAY))
+                    for (modifier in modifiers.modifiers()) {
+                        val attribute = modifier.attribute()
+                        val amount = modifier.modifier().amount.round(3)
+                        val trimmedAmount = if (attribute == Attribute.ATTACK_SPEED) (amount + 4).trimToString() else amount.trimToString()
+                        val modification = modifier.modifier().operation
+                        val sign = if (modifier.modifier().amount > 0 || attribute == Attribute.ATTACK_SPEED) "+" else ""
+                        val attrString = "$sign$trimmedAmount${if (modification != AttributeModifier.Operation.ADD_NUMBER) "%" else ""} ${attribute.readName()}"
+                        newLines.add(text(attrString, Utils.BLUE))
+                    }
+                    description.add(text(""))
+                    description.addAll(newLines)
+                    this.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build())
+                    this.lore(description)
+                } else {
+                    this.lore(description)
+                }
+            } else {
+                this.lore(description)
+            }
+
+            return this
+        }
+        fun ItemStack.setCustomData(custom: CustomItem): ItemStack {
+            this.setTag("id", custom.id)
+            this.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addString(custom.id.toString()))
+            this.setData(DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(0.05F).cooldownGroup(Key.key("customitems", custom.name.lowercase())))
+            return this
+        }
         fun ItemStack.smeltIf(vararg tags: Tag<Material>): ItemStack {
             for (tag in tags) {
                 if (tag.isTagged(this.type)) {
@@ -693,6 +750,12 @@ class Utils {
         fun ItemStack.getCustom(): CustomItem? {
             val id = this.getTag<Int>("id") ?: return null
             return CustomItem.entries[id]
+        }
+        fun ItemStack.customName(component: Component): ItemStack {
+            this.name(
+                component.style(Style.style(component.color(), TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE))
+            )
+            return this
         }
         fun ItemStack.name(component: Component): ItemStack {
             this.setData(DataComponentTypes.CUSTOM_NAME, component)

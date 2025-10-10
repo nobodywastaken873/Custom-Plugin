@@ -83,6 +83,7 @@ enum class CustomEntity {
     SNIPER_RIFLE_SHOT,
     LANDMINE_SHOT,
     DUAL_BARRELED_CROSSBOW_SHOT,
+    PLAYER_SHOT_PROJECTILE,
 
     ;
 

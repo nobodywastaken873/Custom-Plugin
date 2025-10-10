@@ -34,11 +34,11 @@ class CustomItems : JavaPlugin() {
         lateinit var plugin: Plugin
         lateinit var aridWorld: World
         lateinit var bossWorld: World
+        lateinit var bossListener: BossListeners
     }
 
     private lateinit var cooldownTask: BukkitTask
     private lateinit var entityListener: EntityListeners
-    private lateinit var bossListener: BossListeners
     private lateinit var customItemListener: ItemListeners
     private lateinit var attributeListener: AttributeManager
     private lateinit var systemsListener: SystemsListener
@@ -54,7 +54,7 @@ class CustomItems : JavaPlugin() {
         bossWorld.time = 20000
         loadBosses()
         CustomBoss.init()
-        Items.init()
+        ItemBootstrapper().registerAll(this)
         Recipes.init()
         entityListener = EntityListeners()
         bossListener = BossListeners()
@@ -84,6 +84,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(bossListener, this)
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
+        server.pluginManager.registerEvents(ItemEventHandler(), this)
     }
 
     private fun run() {
