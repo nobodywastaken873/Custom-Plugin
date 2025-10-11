@@ -130,6 +130,7 @@ class ItemListeners: Listener, Runnable {
         }
     }
 
+    // Should also be in a different systems file or smth
     @EventHandler fun onPlayerJoin(e: PlayerJoinEvent) {
         e.player.getAttribute(Attribute.MAX_ABSORPTION)!!.baseValue = 2048.0
     }
@@ -143,12 +144,12 @@ class ItemListeners: Listener, Runnable {
     }
 
     @EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
-        xrayGoggles(e)
-        aqueousSandals(e)
+        //xrayGoggles(e)
+        //aqueousSandals(e)
         tankSetActivate(e)
-        mechanizedElytraActivate(e)
+        //mechanizedElytraActivate(e)
     }
-    private fun xrayGoggles(e: PlayerToggleSneakEvent) {
+    /*private fun xrayGoggles(e: PlayerToggleSneakEvent) {
         if (!e.isSneaking) return
         if (e.player.inventory.helmet?.isItem(CustomItem.XRAY_GOGGLES) != true) return
         if (!e.player.offCooldown(CustomItem.XRAY_GOGGLES)) return
@@ -160,15 +161,15 @@ class ItemListeners: Listener, Runnable {
         }
         e.player.setCooldown(CustomItem.XRAY_GOGGLES, 20.0)
         CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
-    }
-    private fun aqueousSandals(e: PlayerToggleSneakEvent) {
+    }*/
+    /*private fun aqueousSandals(e: PlayerToggleSneakEvent) {
         if (!e.isSneaking) return
         if (e.player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) != true) return
         if (!e.player.offCooldown(CustomItem.AQUEOUS_SANDALS)) return
         e.player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 100, 0, true, true, true))
         e.player.setCooldown(CustomItem.AQUEOUS_SANDALS, 25.0)
         CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
-    }
+    }*/
     private fun tankSetActivate(e: PlayerToggleSneakEvent) {
         if (!e.isSneaking) return
         val fullSet = (
@@ -185,16 +186,16 @@ class ItemListeners: Listener, Runnable {
         }
         CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
     }
-    private fun mechanizedElytraActivate(e: PlayerToggleSneakEvent) {
+    /*private fun mechanizedElytraActivate(e: PlayerToggleSneakEvent) {
         if (!e.isSneaking) return
         if (!e.player.isGliding) return
         if (e.player.inventory.chestplate?.isItem(CustomItem.MECHANIZED_ELYTRA) != true) return
         if (!e.player.offCooldown(CustomItem.MECHANIZED_ELYTRA, "Boost")) return
         e.player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
         e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
-    }
+    }*/
 
-    @EventHandler fun onTotemPop(e: EntityResurrectEvent) {
+    /*@EventHandler fun onTotemPop(e: EntityResurrectEvent) {
         shadowLegs(e)
         repellantPants(e)
     }
@@ -222,13 +223,13 @@ class ItemListeners: Listener, Runnable {
             if (entity == e.entity) continue
             entity.velocity = entity.velocity.add(entity.location.subtract(e.entity.location).toVector().normalize().multiply(3).add(Vector(0.0, 1.0, 0.0)))
         }
-    }
+    }*/
 
     @EventHandler fun onPotionApply(e: EntityPotionEffectEvent) {
-        drinkingCapDouble(e)
+        //drinkingCapDouble(e)
         debuffSetBlock(e)
     }
-    private fun drinkingCapDouble(e: EntityPotionEffectEvent) {
+    /*private fun drinkingCapDouble(e: EntityPotionEffectEvent) {
         if (e.entity !is Player) return
         if ((e.entity as Player).inventory.helmet?.isItem(CustomItem.DRINKING_HAT) != true) return
         if (e.cause !in arrayOf(
@@ -241,7 +242,7 @@ class ItemListeners: Listener, Runnable {
         if (e.newEffect == null) return
         e.isCancelled = true
         (e.entity as Player).addPotionEffect(PotionEffect(e.newEffect!!.type, e.newEffect!!.duration * 2, e.newEffect!!.amplifier, e.newEffect!!.isAmbient, e.newEffect!!.hasParticles()))
-    }
+    }*/
     private fun debuffSetBlock(e: EntityPotionEffectEvent) {
         if (e.entity !is Player) return
         if (e.action != EntityPotionEffectEvent.Action.ADDED && e.action != EntityPotionEffectEvent.Action.CHANGED) return
@@ -300,7 +301,7 @@ class ItemListeners: Listener, Runnable {
         }
     }*/
 
-    @EventHandler fun onPlayerMove(e: PlayerMoveEvent) {
+    /*@EventHandler fun onPlayerMove(e: PlayerMoveEvent) {
         restoreFlight(e)
     }
     private fun restoreFlight(e: PlayerMoveEvent) {
@@ -323,7 +324,7 @@ class ItemListeners: Listener, Runnable {
         e.player.allowFlight = false
         e.player.velocity = e.player.location.direction.multiply(1.0).setY(0.7)
         e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
-    }
+    }*/
 
     // should be in a broader systems file
     @EventHandler fun onCooldownSet(e: PlayerItemGroupCooldownEvent) {
@@ -1652,8 +1653,8 @@ class ItemListeners: Listener, Runnable {
         //tripleSwipeBlade(e)
         //windChargeCannonMode(e)
         //landmineLauncherTrigger(e)
-        jetpackControllerPack(e)
-        jetpackController(e)
+        //jetpackControllerPack(e)
+        //jetpackController(e)
         //reinforcedCagePlace(e)
         //darkSteelRapierActivate(e)
     }
@@ -1665,7 +1666,20 @@ class ItemListeners: Listener, Runnable {
             if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
         }
     }
-    /*private fun jerryIdolPlace(e: PlayerInteractEvent) {
+    private fun ancientTome(e: PlayerInteractEvent) {
+        var tome: ItemStack? = null
+        for (custom in arrayOf<CustomItem>()) if (e.player.inventory.itemInOffHand.isItem(custom)) tome = e.player.inventory.itemInOffHand
+        if (tome == null) return
+        val tomeEnchant = tome.enchantments.entries.random()
+        val enchantable = e.player.inventory.itemInMainHand
+        if (enchantable.enchantments[tomeEnchant.key] != tomeEnchant.value-1) return
+        e.isCancelled = true
+        enchantable.removeEnchantment(tomeEnchant.key)
+        enchantable.addUnsafeEnchantment(tomeEnchant.key, tomeEnchant.value)
+        tome.amount -= 1
+        CustomEffects.playSound(e.player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 1.1F)
+    }
+    /*/*private fun jerryIdolPlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.JERRY_IDOL)) return
@@ -1893,19 +1907,6 @@ class ItemListeners: Listener, Runnable {
             e.player.world.getBlockAt(loc).type = Material.FARMLAND
         }
     }*/
-    private fun ancientTome(e: PlayerInteractEvent) {
-        var tome: ItemStack? = null
-        for (custom in arrayOf<CustomItem>()) if (e.player.inventory.itemInOffHand.isItem(custom)) tome = e.player.inventory.itemInOffHand
-        if (tome == null) return
-        val tomeEnchant = tome.enchantments.entries.random()
-        val enchantable = e.player.inventory.itemInMainHand
-        if (enchantable.enchantments[tomeEnchant.key] != tomeEnchant.value-1) return
-        e.isCancelled = true
-        enchantable.removeEnchantment(tomeEnchant.key)
-        enchantable.addUnsafeEnchantment(tomeEnchant.key, tomeEnchant.value)
-        tome.amount -= 1
-        CustomEffects.playSound(e.player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 1.1F)
-    }
     /*private fun enderBlade(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.ENDER_BLADE)) return
@@ -2068,21 +2069,21 @@ class ItemListeners: Listener, Runnable {
             entity.remove()
         }
     }*/
-    private fun jetpackControllerPack(e: PlayerInteractEvent) {
+    /*private fun jetpackControllerPack(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.item?.isItem(CustomItem.JETPACK_CONTROLLER_SET) != true) return
         e.item!!.amount -= 1
         e.player.addItemorDrop(Items.get(CustomItem.JETPACK))
         e.player.addItemorDrop(Items.get(CustomItem.JETPACK_CONTROLLER))
-    }
-    private fun jetpackController(e: PlayerInteractEvent) {
+    }*/
+    /*private fun jetpackController(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.JETPACK_CONTROLLER)) return
         if (e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return
         val mode = e.player.getTag<Boolean>("jetpackactive") ?: false
         e.player.setTag("jetpackactive", !mode)
         e.item!!.name(text("Jetpack Controller - ${if (!mode) "ON" else "OFF"}", arrayOf(148, 134, 111), bold = true))
-    }
+    }*/
     /*private fun reinforcedCagePlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
@@ -2115,7 +2116,7 @@ class ItemListeners: Listener, Runnable {
             Bukkit.getLogger().info(player.name)
         }
         e.player.tempAttribute(Attribute.MOVEMENT_SPEED, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 0.06, AttributeModifier.Operation.ADD_NUMBER), 15.0, "darksteelsword")
-    }*/
+    }*/*/
 
     @EventHandler fun onEntityPlace(e: EntityPlaceEvent) {
         redstonePlacersMinecart(e)

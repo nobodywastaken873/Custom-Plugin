@@ -17,7 +17,9 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.entity.EntityMountEvent
+import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.entity.EntityRemoveEvent
+import org.bukkit.event.entity.EntityResurrectEvent
 import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
@@ -28,6 +30,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
@@ -106,6 +109,11 @@ class ItemEventHandler: Listener {
             val customItemId = e.damager.getTag<String>("source") ?: return
             val item = Items.get(CustomItem.valueOf(customItemId))
             dispatch(null, item, e)
+        }
+
+        if (e.entity is Player) {
+            val player = e.entity as Player
+            handleArmor(player, e)
         }
         // send to armor stuff? if receiver is player
         // send to weapon stuff if damager is player
@@ -205,6 +213,21 @@ class ItemEventHandler: Listener {
         if (e.player.gameMode in arrayOf(GameMode.ADVENTURE, GameMode.SURVIVAL)) e.isCancelled = true
         val boots = e.player.inventory.boots ?: return
         dispatch(e.player, boots, e, EventItemType.BOOTS)
+    }
+
+    @EventHandler fun onApplyPotionEffect(e: EntityPotionEffectEvent) {
+        val player = e.entity as? Player ?: return
+        handleArmor(player, e)
+    }
+
+    @EventHandler fun onTotemPop(e: EntityResurrectEvent) {
+        val player = e.entity as? Player ?: return
+        handleArmor(player, e)
+    }
+
+    @EventHandler fun onPlayerToggleSneak(e: PlayerToggleSneakEvent) {
+        val player = e.player
+        handleArmor(player, e)
     }
 
 }
