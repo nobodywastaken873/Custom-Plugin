@@ -1152,7 +1152,7 @@ class ItemListeners: Listener, Runnable {
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
     }*/
 
-    @EventHandler fun onBoatEnter(e: EntityMountEvent) {
+    /*@EventHandler fun onBoatEnter(e: EntityMountEvent) {
         badBoy(e)
         cowboyHat(e)
     }
@@ -1172,9 +1172,9 @@ class ItemListeners: Listener, Runnable {
             PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2, true, false),
             PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 4, true, false),
         ))
-    }
+    }*/
 
-    @EventHandler fun onDismount(e: EntityDismountEvent) {
+    /*@EventHandler fun onDismount(e: EntityDismountEvent) {
         cowboyHatRemove(e)
     }
     private fun cowboyHatRemove(e: EntityDismountEvent) {
@@ -1182,7 +1182,7 @@ class ItemListeners: Listener, Runnable {
         if (e.dismounted !is Horse) return
         if ((e.dismounted as Horse).hasPotionEffect(PotionEffectType.RESISTANCE))
         (e.dismounted as Horse).clearActivePotionEffects()
-    }
+    }*/
 
     @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         //windHookLand(e)
@@ -1635,10 +1635,10 @@ class ItemListeners: Listener, Runnable {
         //fangedStaffTick(e)
         cancelProjectileCharge(e)
         //arrowCountRedstoneRepeater(e)
-        polarizedMagnet(e)
-        lastPrism(e)
-        pewMaticHorn(e)
-        experienceFlask(e)
+        //polarizedMagnet(e)
+        //lastPrism(e)
+        //pewMaticHorn(e)
+        //experienceFlask(e)
         //netheriteMultitool(e)
         //pocketknifeMultitool(e)
         //hoeHoe(e)
@@ -1733,7 +1733,7 @@ class ItemListeners: Listener, Runnable {
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_LOADING_START, 1.0F, 1.5F)
         e.player.setCooldown(CustomItem.REDSTONE_REPEATER, 0.5)
     }*/
-    private fun polarizedMagnet(e: PlayerInteractEvent) {
+    /*private fun polarizedMagnet(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
             if (!e.player.isSneaking) return
@@ -1752,8 +1752,8 @@ class ItemListeners: Listener, Runnable {
             e.player.setTag("polarizedmagnetpulling", 4)
             CustomEffects.playSound(e.player.location, Sound.BLOCK_BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, 1.0F, 1.1F)
         }
-    }
-    private fun lastPrism(e: PlayerInteractEvent) {
+    }*/
+    /*private fun lastPrism(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
             var prism: ItemStack? = null
@@ -1790,8 +1790,8 @@ class ItemListeners: Listener, Runnable {
             if (!prism.offCooldown(e.player, "Beam")) return
             e.player.setTag("lastprismused", true)
         }
-    }
-    private fun pewMaticHorn(e: PlayerInteractEvent) {
+    }*/
+    /*private fun pewMaticHorn(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
         var horn: ItemStack? = null
         if (e.player.inventory.itemInOffHand.isItem(CustomItem.PEW_MATIC_HORN)) horn = e.player.inventory.itemInOffHand
@@ -1799,8 +1799,8 @@ class ItemListeners: Listener, Runnable {
         if (horn == null) return
         if (!horn.offCooldown(e.player)) return
         e.player.setTag("pewmatichornused", true)
-    }
-    private fun experienceFlask(e: PlayerInteractEvent) {
+    }*/
+    /*private fun experienceFlask(e: PlayerInteractEvent) {
         if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
             if (e.item == null) return
             if (!e.item!!.isItem(CustomItem.EXPERIENCE_FLASK)) return
@@ -1845,7 +1845,7 @@ class ItemListeners: Listener, Runnable {
                 text("Left click to retrieve all experience, left click while sneaking to deposit all experience. Right click to retrieve 30 levels, or sneak right click to retrieve 30 levels which will mend gear.", Utils.GRAY))
             e.player.setCooldown(CustomItem.EXPERIENCE_FLASK, 0.5)
         }
-    }
+    }*/
     /*private fun netheriteMultitool(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (!e.item!!.isItem(CustomItem.NETHERITE_MULTITOOL)) return

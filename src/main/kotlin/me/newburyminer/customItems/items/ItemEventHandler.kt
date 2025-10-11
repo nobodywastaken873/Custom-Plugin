@@ -7,6 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
@@ -14,6 +15,8 @@ import org.bukkit.entity.Projectile
 import org.bukkit.event.*
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDismountEvent
+import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.event.entity.EntityRemoveEvent
 import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.entity.ProjectileHitEvent
@@ -22,7 +25,9 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.event.player.PlayerToggleFlightEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
@@ -54,6 +59,20 @@ class ItemEventHandler: Listener {
                     targetEntity = target
                 )
             )
+        }
+
+        private fun handleArmor(player: Player, e: Event) {
+            val inv = player.inventory
+            val slots = mapOf(
+                EventItemType.HELMET to inv.helmet,
+                EventItemType.CHESTPLATE to inv.chestplate,
+                EventItemType.LEGGINGS to inv.leggings,
+                EventItemType.BOOTS to inv.boots
+            )
+
+            for ((slot, item) in slots) {
+                if (item != null) dispatch(player, item, e, slot)
+            }
         }
     }
 
@@ -93,7 +112,7 @@ class ItemEventHandler: Listener {
         // send to arrow stuff if damager is arrow
     }
 
-    @EventHandler(priority = EventPriority.LOWEST) fun playerInteract(e: PlayerInteractEvent) {
+    @EventHandler fun playerInteract(e: PlayerInteractEvent) {
         val hand = if (e.hand == EquipmentSlot.OFF_HAND) EventItemType.OFFHAND else EventItemType.MAINHAND
         dispatch(e.player, e.item, e, hand, e.player)
     }
@@ -165,6 +184,27 @@ class ItemEventHandler: Listener {
         val player = e.entity as? Player ?: return
         val item = e.consumable ?: return
         dispatch(player, item, e, EventItemType.PROJECTILE)
+    }
+
+    @EventHandler fun entityMountEvent(e: EntityMountEvent) {
+        val player = e.entity as? Player ?: return
+        handleArmor(player, e)
+    }
+
+    @EventHandler fun entityDismountEvent(e: EntityDismountEvent) {
+        val player = e.entity as? Player ?: return
+        handleArmor(player, e)
+    }
+
+    @EventHandler fun playerMoveEvent(e: PlayerMoveEvent) {
+        val boots = e.player.inventory.boots ?: return
+        dispatch(e.player, boots, e, EventItemType.BOOTS)
+    }
+
+    @EventHandler fun toggleFlightEvent(e: PlayerToggleFlightEvent) {
+        if (e.player.gameMode in arrayOf(GameMode.ADVENTURE, GameMode.SURVIVAL)) e.isCancelled = true
+        val boots = e.player.inventory.boots ?: return
+        dispatch(e.player, boots, e, EventItemType.BOOTS)
     }
 
 }
