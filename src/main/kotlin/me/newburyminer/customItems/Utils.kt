@@ -273,6 +273,11 @@ class Utils {
             (this as Attributable).getAttribute(attr)!!.baseValue = value
         }
 
+        fun Enum<*>.readableName(): String =
+            name.lowercase()
+                .replace('_', ' ')
+                .split(' ')
+                .joinToString(" ") { it.replaceFirstChar { c -> c.uppercaseChar() } }
         fun ByteArray.decodeToDouble(): Double {
             return ByteBuffer.wrap(this).getDouble()
         }

@@ -1,14 +1,13 @@
-package me.newburyminer.customItems
+package me.newburyminer.customItems.systems
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.LodestoneTracker
 import io.papermc.paper.event.player.AsyncChatEvent
+import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.afkTime
-import me.newburyminer.customItems.Utils.Companion.combatTime
 import me.newburyminer.customItems.Utils.Companion.compassCooldown
 import me.newburyminer.customItems.Utils.Companion.decrementTag
 import me.newburyminer.customItems.Utils.Companion.getCustom
-import me.newburyminer.customItems.Utils.Companion.getListTag
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.incrementTag
 import me.newburyminer.customItems.Utils.Companion.isAfk
@@ -18,50 +17,30 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
-import me.newburyminer.customItems.Utils.Companion.remainingCompassTime
-import me.newburyminer.customItems.Utils.Companion.serializeAsBytes
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.gui.GuiInventory
 import me.newburyminer.customItems.items.CustomItem
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextComponent
-import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.*
-import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityTeleportEvent
 import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.CompassMeta
-import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitTask
 import org.bukkit.util.Vector
-import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
-import kotlin.math.cos
 import kotlin.math.pow
 
 class SystemsListener: Listener, Runnable  {
@@ -92,11 +71,21 @@ class SystemsListener: Listener, Runnable  {
             return
         }
         if (toTrack.world == CustomItems.bossWorld) {
-            e.player.sendMessage(Utils.text("That player is currently in a boss. Please wait a few minutes and try again.", Utils.FAILED_COLOR))
+            e.player.sendMessage(
+                Utils.text(
+                    "That player is currently in a boss. Please wait a few minutes and try again.",
+                    Utils.FAILED_COLOR
+                )
+            )
             return
         }
         if (toTrack.isAfk()) {
-            e.player.sendMessage(Utils.text("That player is currently AFK. Please pick a different player and try again.", Utils.FAILED_COLOR))
+            e.player.sendMessage(
+                Utils.text(
+                    "That player is currently AFK. Please pick a different player and try again.",
+                    Utils.FAILED_COLOR
+                )
+            )
             return
         }
         e.player.playSound(e.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F)
@@ -105,10 +94,28 @@ class SystemsListener: Listener, Runnable  {
 
         toTrack.sendMessage(Utils.text("A player has started tracking you.", Utils.FAILED_COLOR, bold = true))
         toTrack.sendMessage(Utils.text("Tracking will begin in one minute.", Utils.FAILED_COLOR, bold = true))
-        toTrack.sendMessage(Utils.text("Logging out will give them your location and drop a random gear item of yours on the ground.", Utils.FAILED_COLOR, bold = true))
+        toTrack.sendMessage(
+            Utils.text(
+                "Logging out will give them your location and drop a random gear item of yours on the ground.",
+                Utils.FAILED_COLOR,
+                bold = true
+            )
+        )
         toTrack.sendMessage(Utils.text("You cannot use an ender chest or elytra.", Utils.FAILED_COLOR, bold = true))
-        toTrack.sendMessage(Utils.text("The tracking will last for 30 minutes after it begins.", Utils.FAILED_COLOR, bold = true))
-        if (toTrack.isBeingTracked()) toTrack.sendMessage(Utils.text("Whoever was previously tracking you can still see your location.", Utils.FAILED_COLOR, bold = true))
+        toTrack.sendMessage(
+            Utils.text(
+                "The tracking will last for 30 minutes after it begins.",
+                Utils.FAILED_COLOR,
+                bold = true
+            )
+        )
+        if (toTrack.isBeingTracked()) toTrack.sendMessage(
+            Utils.text(
+                "Whoever was previously tracking you can still see your location.",
+                Utils.FAILED_COLOR,
+                bold = true
+            )
+        )
         toTrack.playSound(toTrack, Sound.ENTITY_WITHER_DEATH, 2.0F, 0.8F)
         // 31 minutes * 60 seconds * 1000 ms
         toTrack.setTag("compassend", System.currentTimeMillis() + 31 * 60 * 1000)
@@ -117,9 +124,20 @@ class SystemsListener: Listener, Runnable  {
         e.player.setTag("compassuses", (e.player.getTag<Int>("compassuses") ?: 0) + 1)
 
         futures.add(Bukkit.getScheduler().runTaskLater(CustomItems.plugin, Runnable {
-            toTrack.sendMessage(Utils.text("The player tracking you can now see your location.", Utils.FAILED_COLOR, bold = true))
+            toTrack.sendMessage(
+                Utils.text(
+                    "The player tracking you can now see your location.",
+                    Utils.FAILED_COLOR,
+                    bold = true
+                )
+            )
 
-            e.player.sendMessage(Utils.text("Tracking has begun. Right click your compass to update it.", Utils.SUCCESS_COLOR))
+            e.player.sendMessage(
+                Utils.text(
+                    "Tracking has begun. Right click your compass to update it.",
+                    Utils.SUCCESS_COLOR
+                )
+            )
         }, 1200L).taskId)
     }
     @EventHandler fun onPlayerInteract(e: PlayerInteractEvent) {

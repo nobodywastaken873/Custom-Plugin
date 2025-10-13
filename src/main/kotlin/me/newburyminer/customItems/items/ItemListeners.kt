@@ -343,10 +343,10 @@ class ItemListeners: Listener, Runnable {
     }
 
     // item cycling functionality
-    @EventHandler fun onPlayerSwapHeldSlot(e: PlayerItemHeldEvent) {
-        cycleRedstonePlacers(e)
+    /*@EventHandler fun onPlayerSwapHeldSlot(e: PlayerItemHeldEvent) {
+        //cycleRedstonePlacers(e)
     }
-    private fun cycleRedstonePlacers(e: PlayerItemHeldEvent) {
+    /*private fun cycleRedstonePlacers(e: PlayerItemHeldEvent) {
         val slotDiff = e.previousSlot - e.newSlot
         if (abs(slotDiff) != 1 && abs(slotDiff) != 8) return
         val item = e.player.inventory.getItem(e.previousSlot) ?: return
@@ -386,7 +386,7 @@ class ItemListeners: Listener, Runnable {
             else -> arrayOf(Material.BARREL, Material.HOPPER, Material.CHEST, Material.CRAFTER,
                 Material.DISPENSER, Material.DROPPER, Material.NOTE_BLOCK, Material.PISTON, Material.STICKY_PISTON, Material.SLIME_BLOCK)
         }
-    }
+    }*/*/
 
     // both inventory-based items entirely, maybe move to inventory events
     @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
@@ -734,7 +734,7 @@ class ItemListeners: Listener, Runnable {
         }
     }
 
-    @EventHandler fun onEntityAttackEntity(e: EntityDamageByEntityEvent) {
+    /*@EventHandler fun onEntityAttackEntity(e: EntityDamageByEntityEvent) {
         //axeOfPeace(e)
         //enderBladeHit(e)
         //heavyGreathammer(e)
@@ -756,7 +756,7 @@ class ItemListeners: Listener, Runnable {
         e.damage *= 0.4
     }
 
-    /*// direct weapon hits
+    // direct weapon hits
     private fun darkSteelRapierHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Player) return
         if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.DARK_STEEL_RAPIER)) return
@@ -836,7 +836,7 @@ class ItemListeners: Listener, Runnable {
         for (armor in (e.entity as Player).inventory.armorContents) {
             if (armor?.itemMeta?.isUnbreakable != true) armor?.reduceDura(10)
         }
-        }*/
+    }
 
     // projectile hits
     /*private fun dualBarreledCrossbowHit(e: EntityDamageByEntityEvent) {
@@ -858,7 +858,7 @@ class ItemListeners: Listener, Runnable {
                 .withCausingEntity(e.damageSource.causingEntity ?: e.damageSource.directEntity!!).build()
         )
         e.damager.remove()
-    }*/
+    }*/*/
 
     /*@EventHandler fun onBlockBreak(e: BlockBreakEvent) {
         //veinyPickaxe(e)
@@ -1104,7 +1104,7 @@ class ItemListeners: Listener, Runnable {
         e.crossbow.crossbowProj(ItemStack(Material.ARROW), 2)
     }*/
 
-    @EventHandler fun onSwapHands(e: PlayerSwapHandItemsEvent) {
+    /*@EventHandler fun onSwapHands(e: PlayerSwapHandItemsEvent) {
         cycleRedstoneItem(e)
         //cycleRedstoneRepeater(e)
         //cycleMultiloadShotgun(e)
@@ -1151,7 +1151,7 @@ class ItemListeners: Listener, Runnable {
             crossbow.clearCrossbowProj()
         }
         CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
-    }*/
+    }*/*/
 
     /*@EventHandler fun onBoatEnter(e: EntityMountEvent) {
         badBoy(e)
@@ -2118,7 +2118,7 @@ class ItemListeners: Listener, Runnable {
         e.player.tempAttribute(Attribute.MOVEMENT_SPEED, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 0.06, AttributeModifier.Operation.ADD_NUMBER), 15.0, "darksteelsword")
     }*/*/
 
-    @EventHandler fun onEntityPlace(e: EntityPlaceEvent) {
+    /*@EventHandler fun onEntityPlace(e: EntityPlaceEvent) {
         redstonePlacersMinecart(e)
     }
     private fun redstonePlacersMinecart(e: EntityPlaceEvent) {
@@ -2326,7 +2326,7 @@ class ItemListeners: Listener, Runnable {
                 e.player!!.inventory.setItem(slot, savedItem)
             }
         })
-    }
+    }*/
 
     @EventHandler fun onItemCraft(e: CraftItemEvent) {
         cancelCustomCrafts(e)
@@ -2367,7 +2367,7 @@ class ItemListeners: Listener, Runnable {
             }
         })
     }
-    @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
+    /*@EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
         if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
                 CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
                 CustomItem.POCKETKNIFE_MULTITOOL, CustomItem.TREECAPITATOR
@@ -2586,7 +2586,7 @@ class ItemListeners: Listener, Runnable {
             Material.SLIME_BALL -> Material.SLIME_BLOCK
             else -> Material.STONE
         }
-    }
+    }*/
 
     private val tasks = mutableListOf<Int>()
     fun cancelTasks() {

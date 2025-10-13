@@ -16,11 +16,11 @@ import me.newburyminer.customItems.gui.GuiListeners
 import me.newburyminer.customItems.helpers.AttributeManager
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.structures.LootListener
+import me.newburyminer.customItems.systems.SystemsListener
+import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.World
@@ -68,6 +68,7 @@ class CustomItems : JavaPlugin() {
         entityListener.run()
         bossListener.run()
         attributeListener.run()
+        MaterialConverterBootstrapper.registerAll()
     }
 
     private fun loadBosses() {

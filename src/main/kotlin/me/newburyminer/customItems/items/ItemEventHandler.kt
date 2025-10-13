@@ -14,9 +14,11 @@ import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.*
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.entity.EntityMountEvent
+import org.bukkit.event.entity.EntityPlaceEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.entity.EntityRemoveEvent
 import org.bukkit.event.entity.EntityResurrectEvent
@@ -27,6 +29,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
@@ -228,6 +231,26 @@ class ItemEventHandler: Listener {
     @EventHandler fun onPlayerToggleSneak(e: PlayerToggleSneakEvent) {
         val player = e.player
         handleArmor(player, e)
+    }
+
+    @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
+        val player = e.player
+        val item = e.itemInHand
+        val hand = if (e.hand == EquipmentSlot.OFF_HAND) EventItemType.OFFHAND else EventItemType.MAINHAND
+        dispatch(player, item, e, hand)
+    }
+
+    @EventHandler fun onEntityPlace(e: EntityPlaceEvent) {
+        val player = e.player ?: return
+        val item = player.inventory.getItem(e.hand)
+        val hand = if (e.hand == EquipmentSlot.OFF_HAND) EventItemType.OFFHAND else EventItemType.MAINHAND
+        dispatch(player, item, e, hand)
+    }
+
+    @EventHandler fun onPlayerSwapItems(e: PlayerItemHeldEvent) {
+        val player = e.player
+        val currentItem = player.inventory.getItem(e.previousSlot) ?: return
+        dispatch(player, currentItem, e, EventItemType.MAINHAND)
     }
 
 }

@@ -3,6 +3,7 @@ package me.newburyminer.customItems.gui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getListTag
 import me.newburyminer.customItems.Utils.Companion.getTag
@@ -19,6 +20,8 @@ import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 
 class GuiListeners: Listener {
     @EventHandler() fun onGuiInteract(e: InventoryClickEvent) {
@@ -304,10 +307,42 @@ class GuiListeners: Listener {
         (e.inventory.holder as ShulkerHolder).closeShulker()
     }
 
+    @EventHandler fun onMaterialInteract(e: InventoryClickEvent) {
+        val clickedInventory = e.clickedInventory ?: return
+        val materialsHolder = e.inventory.holder as? MaterialsHolder ?: return
+        val player = e.whoClicked as? Player ?: return
+        if (clickedInventory.holder is MaterialsHolder) {
+            e.isCancelled = true
+            if (e.action in arrayOf(InventoryAction.PLACE_ALL, InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.SWAP_WITH_CURSOR)) {
+                val toAdd = e.cursor
+                if (materialsHolder.attemptInsert(toAdd)) e.cursor.amount = 0
+            } else if (e.action in arrayOf(InventoryAction.PICKUP_ALL, InventoryAction.PICKUP_ONE, InventoryAction.PICKUP_SOME, InventoryAction.PICKUP_HALF)
+                && clickedInventory.getItem(e.slot)?.type != Material.LIGHT_GRAY_STAINED_GLASS_PANE) {
+                val icon = clickedInventory.getItem(e.slot) ?: return
+                val amountToTake = materialsHolder.attemptRemove(icon)
+                if (amountToTake == 0) return
+                Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                    if (player.itemOnCursor.type == Material.AIR) player.setItemOnCursor(ItemStack(icon.type, amountToTake))
+                    else player.addItemorDrop(ItemStack(icon.type, amountToTake))
+                })
+            } else if (e.action == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedInventory.getItem(e.slot)?.type != Material.LIGHT_GRAY_STAINED_GLASS_PANE) {
+                val icon = clickedInventory.getItem(e.slot) ?: return
+                val amountToTake = materialsHolder.attemptRemove(icon)
+                if (amountToTake == 0) return
+                Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                    player.addItemorDrop(ItemStack(icon.type, amountToTake))
+                })
+            }
+        } else if (clickedInventory is PlayerInventory && e.action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            val toAdd = clickedInventory.getItem(e.slot) ?: return
+            if (materialsHolder.attemptInsert(toAdd)) toAdd.amount = 0
+        }
+    }
+
     //use persistent data container with bool to check whether to use nbt
     //schedule setting item after 1 tick
     //schedule clearing grid after 1 tick as well
-    @EventHandler() fun onGuiChange(e: InventoryClickEvent) {
+    @EventHandler fun onGuiChange(e: InventoryClickEvent) {
         if (e.whoClicked !is Player) return
         val player = e.whoClicked
         if (e.inventory.holder !is GuiInventory) return
@@ -319,7 +354,7 @@ class GuiListeners: Listener {
             })
         }
     }
-    @EventHandler() fun onGuiChange(e: InventoryDragEvent) {
+    @EventHandler fun onGuiChange(e: InventoryDragEvent) {
         if (e.whoClicked !is Player) return
         val player = e.whoClicked
         if (e.inventory.holder !is GuiInventory) return
@@ -332,7 +367,7 @@ class GuiListeners: Listener {
         }
     }
 
-    @EventHandler() fun onGuiClose(e: InventoryCloseEvent) {
+    @EventHandler fun onGuiClose(e: InventoryCloseEvent) {
         if (e.inventory.holder == null) return
         if (e.inventory.holder!! !is GuiInventory) return
         val holder: GuiInventory = e.inventory.holder as GuiInventory
