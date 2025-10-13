@@ -16,6 +16,7 @@ import me.newburyminer.customItems.Utils.Companion.useStoredEnch
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.armorsets.ArmorSet
 import me.newburyminer.customItems.persistent.PersistentCustomType
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
@@ -386,22 +387,6 @@ class Utils {
             return 0
         }
 
-        fun flipPotion(type: PotionEffectType): PotionEffectType {
-            return when (type) {
-                PotionEffectType.SLOWNESS -> PotionEffectType.SPEED
-                PotionEffectType.MINING_FATIGUE -> PotionEffectType.HASTE
-                PotionEffectType.NAUSEA -> PotionEffectType.FIRE_RESISTANCE
-                PotionEffectType.BLINDNESS -> PotionEffectType.INVISIBILITY
-                PotionEffectType.HUNGER -> PotionEffectType.SATURATION
-                PotionEffectType.WEAKNESS -> PotionEffectType.STRENGTH
-                PotionEffectType.POISON -> PotionEffectType.REGENERATION
-                PotionEffectType.WITHER -> PotionEffectType.REGENERATION
-                PotionEffectType.LEVITATION -> PotionEffectType.RESISTANCE
-                PotionEffectType.SLOW_FALLING -> PotionEffectType.HEALTH_BOOST
-                PotionEffectType.DARKNESS -> PotionEffectType.RESISTANCE
-                else -> PotionEffectType.UNLUCK
-            }
-        }
         private fun convertEnch(ench: String): Pair<Enchantment, Int> {
             val lvl = ench.substring(2).toInt()
             when (ench.substring(0,2)) {
@@ -691,6 +676,13 @@ class Utils {
                 if (initial[endIndex] == ".".first()) break
             }
             return initial.substring(0, endIndex + 1)
+        }
+        fun ItemStack.setArmorSet(armorSet: ArmorSet): ItemStack {
+            this.setTag("armorset", armorSet.name)
+            return this
+        }
+        fun ItemStack.getArmorSet(): ArmorSet? {
+            return ArmorSet.valueOf(this.getTag<String>("armorset") ?: return null)
         }
         fun ItemStack.cleanAttributeLore(): ItemStack {
             val description = this.lore()?.toMutableList() ?: mutableListOf()

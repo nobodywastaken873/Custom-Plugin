@@ -2,10 +2,8 @@ package me.newburyminer.customItems.items
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -110,7 +108,7 @@ class ItemEventHandler: Listener {
         } else if (e.damager is Projectile) {
             // todo: make this not weird as shit
             val customItemId = e.damager.getTag<String>("source") ?: return
-            val item = Items.get(CustomItem.valueOf(customItemId))
+            val item = ItemRegistry.get(CustomItem.valueOf(customItemId))
             dispatch(null, item, e)
         }
 
@@ -141,7 +139,7 @@ class ItemEventHandler: Listener {
     @EventHandler fun projectileHit(e: ProjectileHitEvent) {
         val player = e.entity.shooter as? Player ?: return
         val customItemId = e.entity.getTag<String>("source") ?: return
-        val item = Items.get(CustomItem.valueOf(customItemId))
+        val item = ItemRegistry.get(CustomItem.valueOf(customItemId))
         dispatch(player, item, e, EventItemType.PROJECTILE)
     }
 
@@ -166,7 +164,7 @@ class ItemEventHandler: Listener {
     @EventHandler fun onEntityDespawn(e: EntityRemoveEvent) {
         val entity = e.entity
         val customItem = CustomItem.valueOf(entity.getTag<String>("source") ?: return)
-        val item = Items.get(customItem)
+        val item = ItemRegistry.get(customItem)
         dispatch(null, item, e)
     }
 
@@ -186,7 +184,7 @@ class ItemEventHandler: Listener {
         val interacted = e.rightClicked
         val sourceTag = interacted.getTag<String>("source")
         if (sourceTag != null) {
-            val item = Items.get(CustomItem.valueOf(sourceTag))
+            val item = ItemRegistry.get(CustomItem.valueOf(sourceTag))
             dispatch(e.player, item, e, EventItemType.SUMMONED_ENTITY)
         }
     }

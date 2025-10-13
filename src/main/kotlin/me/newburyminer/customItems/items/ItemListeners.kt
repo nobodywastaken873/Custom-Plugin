@@ -225,7 +225,7 @@ class ItemListeners: Listener, Runnable {
         }
     }*/
 
-    @EventHandler fun onPotionApply(e: EntityPotionEffectEvent) {
+    /*@EventHandler fun onPotionApply(e: EntityPotionEffectEvent) {
         //drinkingCapDouble(e)
         debuffSetBlock(e)
     }
@@ -286,7 +286,7 @@ class ItemListeners: Listener, Runnable {
             e.isCancelled = true
         }
         //e.isCancelled = true
-    }
+    }*/
 
     /*@EventHandler fun onEntityDespawn(e: EntityRemoveEvent) {
         cancelLandmineDespawn(e)

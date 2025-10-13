@@ -15,6 +15,8 @@ import me.newburyminer.customItems.entities.bosses.CustomBoss
 import me.newburyminer.customItems.gui.GuiListeners
 import me.newburyminer.customItems.helpers.AttributeManager
 import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
+import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
@@ -54,7 +56,8 @@ class CustomItems : JavaPlugin() {
         bossWorld.time = 20000
         loadBosses()
         CustomBoss.init()
-        ItemBootstrapper().registerAll(this)
+        ItemBootstrapper.registerAll(this)
+        ArmorSetBootstrapper.registerAll(this)
         Recipes.init()
         entityListener = EntityListeners()
         bossListener = BossListeners()
@@ -69,6 +72,7 @@ class CustomItems : JavaPlugin() {
         bossListener.run()
         attributeListener.run()
         MaterialConverterBootstrapper.registerAll()
+
     }
 
     private fun loadBosses() {
@@ -86,6 +90,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
         server.pluginManager.registerEvents(ItemEventHandler(), this)
+        server.pluginManager.registerEvents(ArmorSetEventHandler(), this)
     }
 
     private fun run() {

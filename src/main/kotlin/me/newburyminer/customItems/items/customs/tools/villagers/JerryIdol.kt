@@ -70,7 +70,7 @@ class JerryIdol: CustomItemDefinition {
                 e.isCancelled = true
                 if (e.player.inventory.itemInMainHand.type == Material.AIR) {
                     val emBlockStacks = e.rightClicked.getTag<Int>("emeraldstacks")
-                    val newJerryIdol = Items.get(CustomItem.JERRY_IDOL)
+                    val newJerryIdol = ItemRegistry.get(CustomItem.JERRY_IDOL)
                     newJerryIdol.setTag("emeraldstacks", emBlockStacks)
                     e.player.addItemorDrop(newJerryIdol)
                     CustomEffects.playSound(e.rightClicked.location, Sound.ENTITY_ITEM_PICKUP, 20F, 0.5F)

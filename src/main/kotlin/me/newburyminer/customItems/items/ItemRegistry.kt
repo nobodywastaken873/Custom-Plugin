@@ -4,7 +4,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 // todo: refactor back to ItemRegistry
-class Items {
+class ItemRegistry {
     companion object {
 
         private val items = mutableMapOf<CustomItem, ItemStack>()

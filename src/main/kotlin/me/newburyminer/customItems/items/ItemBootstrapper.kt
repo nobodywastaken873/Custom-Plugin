@@ -3,7 +3,7 @@ package me.newburyminer.customItems.items
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 
-class ItemBootstrapper {
+object ItemBootstrapper {
     fun registerAll(plugin: JavaPlugin) {
         val reflections: Reflections = Reflections("me.newburyminer.customItems.items")
         val classes = reflections.getSubTypesOf(CustomItemDefinition::class.java)
@@ -12,7 +12,7 @@ class ItemBootstrapper {
             val instance = cls.getDeclaredConstructor().newInstance()
             val customId = instance.custom
             val item = instance.item
-            Items.register(customId, item)
+            ItemRegistry.register(customId, item)
             ItemEventHandler.register(customId, instance)
             plugin.logger.info("Successfully registered ${customId.realName}")
         }

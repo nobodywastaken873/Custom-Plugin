@@ -17,7 +17,7 @@ class Recipe(grid: Array<Array<Any?>>, result: Any) {
             for (item in grid[row]) {
                 if (item is Array<*>) {
                     if (item[0] is CustomItem) {
-                        val itemStack = Items.get(item[0] as CustomItem)
+                        val itemStack = ItemRegistry.get(item[0] as CustomItem)
                         itemStack.amount = item[1] as Int
                         items[row].add(itemStack)
                     } else if (item[0] is Material) {
@@ -28,7 +28,7 @@ class Recipe(grid: Array<Array<Any?>>, result: Any) {
                         items[row].add(newItem)
                     }
                 } else if (item is CustomItem) {
-                    items[row].add(Items.get(item))
+                    items[row].add(ItemRegistry.get(item))
                 } else if (item is Material) {
                     items[row].add(ItemStack(item))
                 } else if (item is ItemStack) {
@@ -41,7 +41,7 @@ class Recipe(grid: Array<Array<Any?>>, result: Any) {
 
         if (result is Array<*>) {
             if (result[0] is CustomItem) {
-                val itemStack = Items.get(result[0] as CustomItem)
+                val itemStack = ItemRegistry.get(result[0] as CustomItem)
                 itemStack.amount = result[1] as Int
                 resultItem = itemStack
             } else if (result[0] is Material) {
@@ -52,7 +52,7 @@ class Recipe(grid: Array<Array<Any?>>, result: Any) {
                 resultItem = newItem
             }
         } else if (result is CustomItem) {
-            resultItem = Items.get(result)
+            resultItem = ItemRegistry.get(result)
         } else if (result is Material) {
             resultItem = ItemStack(result)
         } else if (result is ItemStack) {

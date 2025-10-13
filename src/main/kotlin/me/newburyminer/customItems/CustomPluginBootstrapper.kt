@@ -24,7 +24,7 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.commands.*
 import me.newburyminer.customItems.entities.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.Items
+import me.newburyminer.customItems.items.ItemRegistry
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
@@ -247,10 +247,10 @@ class CustomPluginBootstrapper: PluginBootstrap {
         }
         if (item == CustomItem.ALL) {
             for (customItem in CustomItem.entries) {
-                sender.addItemorDrop(Items.get(customItem))
+                sender.addItemorDrop(ItemRegistry.get(customItem))
             }
         } else {
-            sender.addItemorDrop(Items.get(item))
+            sender.addItemorDrop(ItemRegistry.get(item))
         }
     }
     private fun customEntityExecutor(sender: CommandSender, entity: CustomEntity) { // add another difficulty argument
