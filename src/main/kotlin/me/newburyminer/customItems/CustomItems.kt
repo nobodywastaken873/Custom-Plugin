@@ -9,6 +9,9 @@ import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.remainingCompassTime
 import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.effects.CustomEffectBootstrapper
+import me.newburyminer.customItems.effects.EffectEventHandler
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.EntityListeners
 import me.newburyminer.customItems.entities.bosses.BossListeners
 import me.newburyminer.customItems.entities.bosses.CustomBoss
@@ -20,6 +23,7 @@ import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
+import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
@@ -68,11 +72,13 @@ class CustomItems : JavaPlugin() {
         systemsListener.run()
         this.run()
         customItemListener.run()
-        ItemTaskHandler.runTaskTimer(this, 0L, 1L)
+        PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
+        EffectManager.runTaskTimer(this, 0L, 1L)
         entityListener.run()
         bossListener.run()
         attributeListener.run()
         MaterialConverterBootstrapper.registerAll()
+        CustomEffectBootstrapper.registerAll()
 
     }
 
@@ -92,6 +98,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(systemsListener, this)
         server.pluginManager.registerEvents(ItemEventHandler(), this)
         server.pluginManager.registerEvents(ArmorSetEventHandler(), this)
+        server.pluginManager.registerEvents(EffectEventHandler(), this)
     }
 
     private fun run() {

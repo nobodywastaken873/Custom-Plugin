@@ -47,4 +47,11 @@ class BerserkerChestplate: CustomItemDefinition {
 
     override fun handle(ctx: EventContext) {}
 
+    override val period: Int
+        get() = 60
+    override fun runTask(player: Player) {
+        if (player.inventory.chestplate?.isItem(CustomItem.BERSERKER_CHESTPLATE) == true)
+            player.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 65, 0, false, false))
+    }
+
 }

@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.items
 
+import me.newburyminer.customItems.systems.playertask.PlayerTask
+import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 
@@ -15,7 +17,7 @@ object ItemBootstrapper {
             ItemRegistry.register(customId, item)
             ItemEventHandler.register(customId, instance)
             if (cls.declaredMethods.any { it.name == "runTask" })
-                ItemTaskHandler.registerTask(instance.period, ItemTask { player ->  instance.runTask(player)})
+                PlayerTaskHandler.registerTask(instance.period, PlayerTask { player ->  instance.runTask(player)})
 
             plugin.logger.info("Successfully registered ${customId.realName}")
         }

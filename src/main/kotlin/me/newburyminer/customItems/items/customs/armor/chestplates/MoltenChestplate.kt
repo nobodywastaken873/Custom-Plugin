@@ -47,4 +47,11 @@ class MoltenChestplate: CustomItemDefinition {
 
     override fun handle(ctx: EventContext) {}
 
+    override val period: Int
+        get() = 60
+    override fun runTask(player: Player) {
+        if (player.inventory.chestplate?.isItem(CustomItem.MOLTEN_CHESTPLATE) == true)
+            player.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, 65, 0, false, false))
+    }
+
 }

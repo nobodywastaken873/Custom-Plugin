@@ -33,7 +33,6 @@ class ItemEventHandler: Listener {
 
         fun register(customItem: CustomItem, behavior: CustomItemBehavior) {
             behaviors[customItem] = behavior
-            println()
         }
 
         private fun dispatch(

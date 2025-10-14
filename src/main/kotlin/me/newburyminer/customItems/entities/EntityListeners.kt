@@ -10,6 +10,9 @@ import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.getDifficultyIndex
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Arrow
@@ -444,7 +447,8 @@ class EntityListeners: Listener, Runnable {
         val difficulty = e.damager.getTag<Double>("difficulty")!!
         (e.entity as Player).isGliding = false
         //seconds
-        e.entity.setTag("elytradisabled", (10 + difficulty.pow(0.55)).toInt())
+        EffectManager.applyEffect((e.entity as Player), CustomEffectType.ELYTRA_DISABLED, 20 * (10 + difficulty.pow(0.55)).toInt())
+        //e.entity.setTag("elytradisabled", (10 + difficulty.pow(0.55)).toInt())
         CustomEffects.playSound(e.entity.location, Sound.ITEM_SHIELD_BREAK, 1F, 1F)
     }
     private fun sniperSkeletonHit(e: EntityDamageByEntityEvent) {

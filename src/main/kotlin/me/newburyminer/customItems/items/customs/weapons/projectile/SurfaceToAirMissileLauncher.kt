@@ -16,6 +16,9 @@ import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.CustomEntity
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -85,7 +88,7 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
                 if (e.entity !is Arrow) return
                 val hitPlayer = e.hitEntity as? Player ?: return
                 e.entity.remove()
-                hitPlayer.setTag("elytradisabled", 25)
+                EffectManager.applyEffect(hitPlayer, CustomEffectType.ELYTRA_DISABLED, 25 * 20)
                 hitPlayer.playSound(e.hitEntity!!, Sound.ITEM_SHIELD_BREAK, 1.0F, 1.0F)
                 hitPlayer.setCooldown(Material.ELYTRA, 500)
                 hitPlayer.isGliding = false

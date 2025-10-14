@@ -89,4 +89,16 @@ class JerryIdol: CustomItemDefinition {
 
     }
 
+    override val period: Int
+        get() = 60
+
+    override fun runTask(player: Player) {
+        for (entity in player.getNearbyEntities(50.0, 128.0, 50.0)) {
+            if (entity.getTag<Int>("id") == CustomEntity.JERRY_IDOL.id) {
+                val amp = (entity.getTag<Int>("emeraldstacks") ?: 0)
+                player.addPotionEffect(PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 340, amp))
+            }
+        }
+    }
+
 }

@@ -15,6 +15,8 @@ import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -66,7 +68,7 @@ class EnderBlade: CustomItemDefinition {
             is EntityDamageByEntityEvent -> {
                 if (ctx.itemType != EventItemType.MAINHAND) return
                 val damager = e.damager as? Player ?: return
-                if (damager.getTag<Int>("enderbladecrittime") == 0 || damager.getTag<Int>("enderbladecrittime") == null) return
+                if (!EffectManager.hasEffect(damager, CustomEffectType.ENDER_CRIT)) return
                 if (e.isCritical) return
                 e.damage *= 1.5
                 CustomEffects.playSound(e.entity.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.8F, 1.0F)
@@ -92,7 +94,7 @@ class EnderBlade: CustomItemDefinition {
                 CustomEffects.playSound(e.player.location, Sound.ENTITY_SHULKER_TELEPORT, 1.0F, 0.94F)
                 if (e.player.isSneaking) {
                     item.setCooldown(e.player, 15.0)
-                    e.player.setTag("enderbladecrittime", 6)
+                    EffectManager.applyEffect(e.player, CustomEffectType.ENDER_CRIT, 6 * 20)
                 } else {
                     item.setCooldown(e.player, 6.5)
                 }

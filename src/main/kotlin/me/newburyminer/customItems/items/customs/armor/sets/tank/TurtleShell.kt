@@ -49,9 +49,13 @@ class TurtleShell: CustomItemDefinition {
         .attr("ARM+12.0CH","ART+6.0CH","KNR+0.3CH","MOS-0.05CH","MAH+4.0CH")
         .setArmorSet(ArmorSet.TANK)
 
-    override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-        }
+    override fun handle(ctx: EventContext) {}
+
+    override val period: Int
+        get() = 60
+    override fun runTask(player: Player) {
+        if (player.inventory.chestplate?.isItem(CustomItem.TURTLE_SHELL) == true)
+            player.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, 65, 0, false, false))
     }
 
 }

@@ -334,13 +334,13 @@ class ItemListeners: Listener, Runnable {
     }
 
     // one specific tag-based debuff, maybe need an actual debuff system
-    @EventHandler fun onPlayerGlide(e: EntityToggleGlideEvent) {
+    /*@EventHandler fun onPlayerGlide(e: EntityToggleGlideEvent) {
         if (!e.isGliding) return
         if (e.entity.getTag<Int>("elytradisabled") == 0 || e.entity.getTag<Int>("elytradisabled") == null) return
         Bukkit.getScheduler().runTaskLater(CustomItems.plugin, Runnable {
             (e.entity as Player).isGliding = false
         }, 1)
-    }
+    }*/
 
     // item cycling functionality
     /*@EventHandler fun onPlayerSwapHeldSlot(e: PlayerItemHeldEvent) {
@@ -2605,16 +2605,16 @@ class ItemListeners: Listener, Runnable {
             //every 3 seconds
             //Bukkit.getServer().getPlayer("NewburyMiner")?.sendMessage(counter.toString())
             //hotv beacon effect
-            if ((counter % 60) == 0) {
+            /*if ((counter % 60) == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
-                    villagerIdolApply(player)
-                    armorEffectApply(player)
+                    //villagerIdolApply(player)
+                    //armorEffectApply(player)
                 }
-            }
+            }*/
             //ender blade crit, elytra disable time reduce time
             if ((counter % 20) == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
-                    decrementOneSecond(player)
+                    //decrementOneSecond(player)
                     assassinsSetUpdate(player)
                 }
             }
@@ -2734,7 +2734,7 @@ class ItemListeners: Listener, Runnable {
             player.inventory.chestplate!!.attr("ARM+8.0CH","ART+3.0CH","KNR+0.1CH", "GRA${gravityString}CH", "FAD-1.0CH")
         }
     }
-    private fun armorEffectApply(player: Player) {
+    /*private fun armorEffectApply(player: Player) {
         if (player.inventory.chestplate?.isItem(CustomItem.TURTLE_SHELL) == true) player.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, 65, 0, false, false))
         if (player.inventory.chestplate?.isItem(CustomItem.BERSERKER_CHESTPLATE) == true) player.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 65, 0, false, false))
         if (player.inventory.chestplate?.isItem(CustomItem.MOLTEN_CHESTPLATE) == true) player.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, 65, 0, false, false))
@@ -2742,7 +2742,7 @@ class ItemListeners: Listener, Runnable {
         if (player.inventory.helmet?.isItem(CustomItem.INVISIBILITY_CLOAK) == true) player.addPotionEffect(PotionEffect(PotionEffectType.INVISIBILITY, 65, 0, false, false))
         if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) player.addPotionEffect(PotionEffect(PotionEffectType.WATER_BREATHING, 65, 0, false, false))
         if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) player.addPotionEffect(PotionEffect(PotionEffectType.CONDUIT_POWER, 65, 0, false, false))
-    }
+    }*/
     private fun homingWindChargeUpdate(player: Player) {
         for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
             if (entity.type != EntityType.WIND_CHARGE) continue
@@ -2996,15 +2996,15 @@ class ItemListeners: Listener, Runnable {
             player.setTag("evokerstafftime", player.getTag<Int>("evokerstafftime")!! - 1)
         }
     }
-    private fun decrementOneSecond(player: Player) {
+    /*private fun decrementOneSecond(player: Player) {
         if (player.getTag<Int>("enderbladecrittime") != 0 && player.getTag<Int>("enderbladecrittime") != null) {
             player.setTag("enderbladecrittime", player.getTag<Int>("enderbladecrittime")!! - 1)
         }
-        if (player.getTag<Int>("elytradisabled") != 0 && player.getTag<Int>("elytradisabled") != null) {
+        /*if (player.getTag<Int>("elytradisabled") != 0 && player.getTag<Int>("elytradisabled") != null) {
             player.setTag("elytradisabled", player.getTag<Int>("elytradisabled")!! - 1)
-        }
-    }
-    private fun villagerIdolApply(player: Player) {
+        }*/
+    }*/
+    /*private fun villagerIdolApply(player: Player) {
         for (entity in player.getNearbyEntities(50.0, 128.0, 50.0)) {
             if (entity.getTag<Int>("id") == CustomEntity.JERRY_IDOL.id) {
                 //player.sendMessage("found")
@@ -3012,7 +3012,7 @@ class ItemListeners: Listener, Runnable {
                 player.addPotionEffect(PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 340, amp))
             }
         }
-    }
+    }*/
     private fun castFangStaffVexing(p: Player) {
         val centerLoc = p.location.clone().add(Vector(0.0, 1.6, 0.0))
         CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), centerLoc, 5.5, 60)

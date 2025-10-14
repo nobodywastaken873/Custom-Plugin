@@ -1,19 +1,19 @@
-package me.newburyminer.customItems.items
+package me.newburyminer.customItems.systems.playertask
 
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 
-object ItemTaskHandler : BukkitRunnable() {
+object PlayerTaskHandler : BukkitRunnable() {
 
 
 
-    fun registerTask(period: Int, itemTask: ItemTask) {
+    fun registerTask(period: Int, itemTask: PlayerTask) {
         val periodTasks = tasks[period] ?: mutableListOf()
         periodTasks.add(itemTask)
         tasks[period] = periodTasks
     }
 
-    private val tasks = mutableMapOf<Int, MutableList<ItemTask>>()
+    private val tasks = mutableMapOf<Int, MutableList<PlayerTask>>()
 
     override fun run() {
         tasks.forEach { (period, itemTasks) ->
@@ -30,7 +30,7 @@ object ItemTaskHandler : BukkitRunnable() {
         tasks.clear()
     }
 
-    fun cancel(task: ItemTask) {
+    fun cancel(task: PlayerTask) {
         tasks.forEach { (_, itemTasks) ->
             itemTasks.removeIf { task == it }
         }

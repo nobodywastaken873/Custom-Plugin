@@ -14,6 +14,7 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
 import org.bukkit.*
+import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -50,6 +51,15 @@ class AqueousSandals: CustomItemDefinition {
                 CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
             }
 
+        }
+    }
+
+    override val period: Int
+        get() = 60
+    override fun runTask(player: Player) {
+        if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) {
+            player.addPotionEffect(PotionEffect(PotionEffectType.WATER_BREATHING, 65, 0, false, false))
+            player.addPotionEffect(PotionEffect(PotionEffectType.CONDUIT_POWER, 65, 0, false, false))
         }
     }
 
