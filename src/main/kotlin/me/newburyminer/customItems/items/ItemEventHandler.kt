@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -13,16 +14,7 @@ import org.bukkit.entity.Projectile
 import org.bukkit.event.*
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDismountEvent
-import org.bukkit.event.entity.EntityMountEvent
-import org.bukkit.event.entity.EntityPlaceEvent
-import org.bukkit.event.entity.EntityPotionEffectEvent
-import org.bukkit.event.entity.EntityRemoveEvent
-import org.bukkit.event.entity.EntityResurrectEvent
-import org.bukkit.event.entity.EntityShootBowEvent
-import org.bukkit.event.entity.ProjectileHitEvent
-import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.entity.*
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
@@ -41,6 +33,7 @@ class ItemEventHandler: Listener {
 
         fun register(customItem: CustomItem, behavior: CustomItemBehavior) {
             behaviors[customItem] = behavior
+            println()
         }
 
         private fun dispatch(
@@ -249,6 +242,13 @@ class ItemEventHandler: Listener {
         val player = e.player
         val currentItem = player.inventory.getItem(e.previousSlot) ?: return
         dispatch(player, currentItem, e, EventItemType.MAINHAND)
+    }
+
+    @EventHandler fun onEnemyAggro(e: EntityTargetEvent) {
+        val target = e.target as? Player ?: return
+        for (player in target.location.getNearbyPlayers(40.0)) {
+            handleArmor(player, e)
+        }
     }
 
 }

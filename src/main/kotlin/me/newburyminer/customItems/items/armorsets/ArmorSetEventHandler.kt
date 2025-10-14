@@ -12,6 +12,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
 
 class ArmorSetEventHandler: Listener {
@@ -30,7 +31,7 @@ class ArmorSetEventHandler: Listener {
         ) {
             val setMap = mutableMapOf<ArmorSet, Int>()
             val armor = player.inventory.armorContents
-            
+
             for (item in armor) {
                 if (item == null) continue
                 val armorSet = item.getArmorSet() ?: continue
@@ -49,5 +50,9 @@ class ArmorSetEventHandler: Listener {
     @EventHandler fun onPotionApply(e: EntityPotionEffectEvent) {
         val player = e.entity as? Player ?: return
         dispatch(player, e)
+    }
+
+    @EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
+        dispatch(e.player, e)
     }
 }

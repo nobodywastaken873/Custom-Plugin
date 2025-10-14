@@ -135,13 +135,13 @@ class ItemListeners: Listener, Runnable {
         e.player.getAttribute(Attribute.MAX_ABSORPTION)!!.baseValue = 2048.0
     }
 
-    @EventHandler fun onEnemyAggro(e: EntityTargetEvent) {
+    /*@EventHandler fun onEnemyAggro(e: EntityTargetEvent) {
         if (e.target !is Player) return
         for (player in e.target!!.location.getNearbyPlayers(40.0)) {
             if (player.inventory.leggings?.isItem(CustomItem.ENCRUSTED_PANTS) != true) continue
             e.target = player
         }
-    }
+    }*/
 
     @EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
         //xrayGoggles(e)

@@ -68,6 +68,7 @@ class CustomItems : JavaPlugin() {
         systemsListener.run()
         this.run()
         customItemListener.run()
+        ItemTaskHandler.runTaskTimer(this, 0L, 1L)
         entityListener.run()
         bossListener.run()
         attributeListener.run()
@@ -136,6 +137,7 @@ class CustomItems : JavaPlugin() {
         systemsListener.cancel()
         closeMenus()
     }
+
     private fun closeMenus() {
         for (player in Bukkit.getServer().onlinePlayers) {
             player.closeInventory()
