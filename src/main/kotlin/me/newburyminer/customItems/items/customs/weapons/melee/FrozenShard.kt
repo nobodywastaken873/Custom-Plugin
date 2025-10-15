@@ -12,6 +12,10 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -58,9 +62,14 @@ class FrozenShard: CustomItemDefinition {
                 }
                 if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
                 val hitPlayer = e.entity as? Player ?: return
-                hitPlayer.tempAttribute(Attribute.MOVEMENT_SPEED, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), -100.0, AttributeModifier.Operation.ADD_SCALAR), 6.0, "frozenshard")
-                hitPlayer.tempAttribute(Attribute.JUMP_STRENGTH, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), -100.0, AttributeModifier.Operation.ADD_SCALAR), 6.0, "frozenshard")
-                hitPlayer.tempAttribute(Attribute.KNOCKBACK_RESISTANCE, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 100.0, AttributeModifier.Operation.ADD_NUMBER), 6.0, "frozenshard")
+
+                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                    EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR)))
+                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                    EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.JUMP_STRENGTH, AttributeModifier.Operation.ADD_SCALAR)))
+                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                    EffectData(6 * 20, attributeData = AttributeData(100.0, Attribute.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_NUMBER)))
+
                 player.inventory.itemInMainHand.setCooldown(e.damager as Player, 60.0)
             }
 

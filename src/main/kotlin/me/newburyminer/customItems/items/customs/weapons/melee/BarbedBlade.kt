@@ -12,6 +12,10 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -58,7 +62,8 @@ class BarbedBlade: CustomItemDefinition {
                     damaged.addPotionEffect(PotionEffect(PotionEffectType.DARKNESS, 100, 0))
                 }
                 if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
-                (damaged as? Player ?: return).tempAttribute(Attribute.ARMOR, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), -4.0, AttributeModifier.Operation.ADD_NUMBER), 4.0, "barbedblade", checkForDupe = true)
+                EffectManager.applyEffect(damaged as? Player ?: return, CustomEffectType.ATTRIBUTE,
+                    EffectData(4 * 20, attributeData = AttributeData(-4.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER)))
                 player.inventory.itemInMainHand.setCooldown(e.damager as Player, 15.0)
             }
 

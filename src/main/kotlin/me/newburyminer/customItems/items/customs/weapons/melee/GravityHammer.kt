@@ -12,6 +12,10 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -59,7 +63,9 @@ class GravityHammer: CustomItemDefinition {
                 if (!damager.offCooldown(CustomItem.GRAVITY_HAMMER)) return
                 if (damager.attackCooldown.toDouble() != 1.0) return
                 CustomEffects.playSound(damaged.location, Sound.ITEM_MACE_SMASH_AIR, 1.0F, 1.2F)
-                damaged.tempAttribute(Attribute.GRAVITY, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 2.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1), 7.0, "a")
+                EffectManager.applyEffect(damaged, CustomEffectType.ATTRIBUTE,
+                    EffectData(7 * 20, attributeData = AttributeData(2.0, Attribute.GRAVITY, AttributeModifier.Operation.MULTIPLY_SCALAR_1))
+                )
                 damager.setCooldown(CustomItem.GRAVITY_HAMMER, 20.0)
             }
 

@@ -12,6 +12,10 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -68,7 +72,8 @@ class DarkSteelRapier: CustomItemDefinition {
                     if (e.player == player) continue
                     player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 160, 0))
                 }
-                e.player.tempAttribute(Attribute.MOVEMENT_SPEED, AttributeModifier(NamespacedKey(CustomItems.plugin, "abc"), 0.06, AttributeModifier.Operation.ADD_NUMBER), 15.0, "darksteelsword")
+                EffectManager.applyEffect(e.player, CustomEffectType.ATTRIBUTE,
+                    EffectData(15 * 20, attributeData = AttributeData(0.06, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_NUMBER)))
             }
 
         }
