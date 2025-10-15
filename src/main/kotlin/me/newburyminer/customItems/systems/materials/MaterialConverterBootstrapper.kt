@@ -87,7 +87,7 @@ object MaterialConverterBootstrapper {
                     MaterialType.OAK_WOOD to 0.08,
                     MaterialType.REDSTONE to 0.16
                 ),
-                Material.RAIL to mutableMapOf(
+                Material.ACTIVATOR_RAIL to mutableMapOf(
                     MaterialType.IRON to 1.0,
                     MaterialType.REDSTONE to 0.16,
                     MaterialType.OAK_WOOD to 0.25

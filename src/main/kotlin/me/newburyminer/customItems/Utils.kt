@@ -684,23 +684,42 @@ class Utils {
         fun ItemStack.getArmorSet(): ArmorSet? {
             return ArmorSet.valueOf(this.getTag<String>("armorset") ?: return null)
         }
+        private fun Double.getDecimalPlaces(): Int {
+            if (this % 1.0 < 0.001) return 0
+            val string = this.toString()
+            val decimalIndex = string.indexOf(".") + 1
+            return string.length - decimalIndex
+        }
         fun ItemStack.cleanAttributeLore(): ItemStack {
             val description = this.lore()?.toMutableList() ?: mutableListOf()
+            // If it has modifiers, and it is not equippable (equippable attributes work fine, just attack speed that doesnt)
             if (this.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)?.modifiers()?.size !in arrayOf(0, null) && !this.hasData(DataComponentTypes.EQUIPPABLE)) {
                 val modifiers = this.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS)
+
+                // Only change if they are all mainhand modifiers (ats), others work fine
                 if (!modifiers!!.modifiers().any { it.modifier().slotGroup != EquipmentSlotGroup.MAINHAND }) {
                     val newLines = mutableListOf<Component>()
-                    //newLines.add(Utils.text(""))
-                    newLines.add(text("When in Main Hand: ", Utils.GRAY))
+
+                    // Initial line, again only for attack speed items
+                    newLines.add(text("When in Main Hand: ", GRAY))
                     for (modifier in modifiers.modifiers()) {
+
                         val attribute = modifier.attribute()
-                        val amount = modifier.modifier().amount.round(3)
-                        val trimmedAmount = if (attribute == Attribute.ATTACK_SPEED) (amount + 4).trimToString() else amount.trimToString()
+                        val amount = modifier.modifier().amount
+                        val roundedAmount =
+                            if (attribute == Attribute.ATTACK_SPEED) (4 + amount).round(3)
+                            else amount.round(3)
+                        val decimals = roundedAmount.getDecimalPlaces()
+
+                        val trimmedAmount = "%.${decimals}f".format(roundedAmount)
+                        //val trimmedAmount = if (attribute == Attribute.ATTACK_SPEED) (amount + 4).trimToString() else amount.trimToString()
                         val modification = modifier.modifier().operation
                         val sign = if (modifier.modifier().amount > 0 || attribute == Attribute.ATTACK_SPEED) "+" else ""
                         val attrString = "$sign$trimmedAmount${if (modification != AttributeModifier.Operation.ADD_NUMBER) "%" else ""} ${attribute.readName()}"
-                        newLines.add(text(attrString, Utils.BLUE))
+                        newLines.add(text(attrString, BLUE))
+
                     }
+
                     description.add(text(""))
                     description.addAll(newLines)
                     this.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build())

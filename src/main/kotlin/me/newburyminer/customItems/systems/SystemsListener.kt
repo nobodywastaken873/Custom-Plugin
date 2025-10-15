@@ -434,7 +434,8 @@ class SystemsListener: Listener, Runnable  {
     @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
         if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
                 CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
-                CustomItem.POCKETKNIFE_MULTITOOL, CustomItem.TREECAPITATOR, CustomItem.NETHERITE_MULTITOOL, CustomItem.HOE
+                CustomItem.POCKETKNIFE_MULTITOOL, CustomItem.TREECAPITATOR, CustomItem.NETHERITE_MULTITOOL, CustomItem.HOE,
+                CustomItem.REDSTONE_AMALGAMATION
             )) {
             e.isCancelled = true
         }

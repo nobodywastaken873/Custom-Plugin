@@ -141,6 +141,8 @@ class MinecartMaterials: CustomItemDefinition, ItemCycler {
                         player.inventory.setItem(slot, savedItem)
                     else
                         player.addItemorDrop(savedItem)
+
+                    e.entity.customName(null)
                 })
             }
 

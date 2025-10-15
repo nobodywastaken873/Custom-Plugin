@@ -53,6 +53,7 @@ class GraveHolder(private val armorStand: Interaction): InventoryHolder {
             if (player != null) {
                 val graves = player.getListTag<Location>("gravelist")!!
                 for (i in graves.indices.reversed()) {
+                    if (armorStand.location.clone().world != graves[i].world) continue
                     if (armorStand.location.clone().subtract(Vector(0.5, 0.0, 0.5)).subtract(graves[i]).length() < 0.5) {
                         graves.removeAt(i)
                         break
