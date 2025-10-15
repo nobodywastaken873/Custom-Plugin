@@ -21,6 +21,8 @@ import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.structures.LootListener
+import me.newburyminer.customItems.systems.EnchantmentListener
+import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
@@ -45,7 +47,6 @@ class CustomItems : JavaPlugin() {
 
     private lateinit var cooldownTask: BukkitTask
     private lateinit var entityListener: EntityListeners
-    private lateinit var customItemListener: ItemListeners
     private lateinit var attributeListener: AttributeManager
     private lateinit var systemsListener: SystemsListener
 
@@ -65,7 +66,6 @@ class CustomItems : JavaPlugin() {
         Recipes.init()
         entityListener = EntityListeners()
         bossListener = BossListeners()
-        customItemListener = ItemListeners()
         attributeListener = AttributeManager()
         systemsListener = SystemsListener()
         registerListeners()
@@ -88,7 +88,6 @@ class CustomItems : JavaPlugin() {
 
     private fun registerListeners() {
         server.pluginManager.registerEvents(GuiListeners(), this)
-        server.pluginManager.registerEvents(customItemListener, this)
         server.pluginManager.registerEvents(entityListener, this)
         server.pluginManager.registerEvents(LootListener(), this)
         server.pluginManager.registerEvents(bossListener, this)
@@ -97,6 +96,8 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(ItemEventHandler(), this)
         server.pluginManager.registerEvents(ArmorSetEventHandler(), this)
         server.pluginManager.registerEvents(EffectEventHandler(), this)
+        server.pluginManager.registerEvents(GraveListener(), this)
+        server.pluginManager.registerEvents(EnchantmentListener(), this)
     }
 
     private fun run() {
