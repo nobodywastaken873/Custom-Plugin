@@ -43,6 +43,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.potion.PotionEffect
@@ -56,7 +57,10 @@ class ReinforcingStruts: CustomItemDefinition {
     private val material = Material.CHAIN
     private val color = arrayOf(154, 161, 158)
     private val name = text("Reinforcing Struts", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("This item adds 200 durability to any item, up to 5 times. " +
+                "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
+    )
 
     override val item: ItemStack = ItemStack(material)
         .setCustomData(custom)
@@ -68,8 +72,9 @@ class ReinforcingStruts: CustomItemDefinition {
 
         when (val e = ctx.event) {
 
-            is PlayerInteractEvent -> {
+            is PlayerSwapHandItemsEvent -> {
                 if (ctx.itemType != EventItemType.OFFHAND) return
+                if (!e.player.isSneaking) return
                 val upgrade = ctx.item ?: return
                 val toUpgrade = e.player.inventory.itemInMainHand
                 if (e.player.inventory.itemInMainHand.type == Material.AIR) return

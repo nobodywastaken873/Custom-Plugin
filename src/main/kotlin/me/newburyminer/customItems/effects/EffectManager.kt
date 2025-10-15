@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.UUID
+import kotlin.system.exitProcess
 
 object EffectManager: BukkitRunnable() {
 
@@ -30,6 +31,7 @@ object EffectManager: BukkitRunnable() {
         effectList.add(effect)
         effect.behavior.onApply(player)
         effectMap[behavior.period] = effectList
+        activeEffects[player.uniqueId] = effectMap
     }
 
     override fun run() {
@@ -39,11 +41,14 @@ object EffectManager: BukkitRunnable() {
             map.forEach { (period, list) ->
                 if (currentTick % period == 0) {
                     val iterator = list.iterator()
-                    iterator.forEachRemaining { effect ->
+                    while (iterator.hasNext()) {
+                        val effect = iterator.next()
                         effect.remaining -= period
                         effect.behavior.onTick(player)
-                        if (effect.remaining <= 0) effect.behavior.onRemove(player)
-                        list.remove(effect)
+                        if (effect.remaining <= 0) {
+                            effect.behavior.onRemove(player)
+                            iterator.remove()
+                        }
                     }
                 }
             }
@@ -63,6 +68,22 @@ object EffectManager: BukkitRunnable() {
 
     fun hasEffect(player: Player, type: CustomEffectType): Boolean {
         return getActiveEffects(player).any { it.type == type }
+    }
+
+    private fun removeEffect(player: Player, activeEffect: ActiveEffect) {
+        val effectMap = activeEffects[player.uniqueId] ?: return
+        effectMap.forEach { (_, list) ->
+            list.removeIf { it == activeEffect }
+        }
+    }
+
+    fun removeEffect(player: Player, type: CustomEffectType? = null) {
+        val activeEffects = getActiveEffects(player)
+        activeEffects.forEach {
+            if (it.type == type || type == null) {
+                removeEffect(player, it)
+            }
+        }
     }
 
 

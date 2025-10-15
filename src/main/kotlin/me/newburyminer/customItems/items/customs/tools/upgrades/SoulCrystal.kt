@@ -40,6 +40,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -52,7 +53,10 @@ class SoulCrystal: CustomItemDefinition {
     private val material = Material.NETHER_STAR
     private val color = arrayOf(189, 154, 219)
     private val name = text("Soul Crystal", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("This item adds the Soulbound enchantment to items, allowing them to be kept on death. " +
+                "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
+    )
 
     override val item: ItemStack = ItemStack(material)
         .setCustomData(custom)
@@ -64,8 +68,9 @@ class SoulCrystal: CustomItemDefinition {
 
         when (val e = ctx.event) {
 
-            is PlayerInteractEvent -> {
+            is PlayerSwapHandItemsEvent -> {
                 if (ctx.itemType != EventItemType.OFFHAND) return
+                if (!e.player.isSneaking) return
                 val upgrade = ctx.item ?: return
                 val toSoulbind = e.player.inventory.itemInMainHand
                 if (e.player.inventory.itemInMainHand.type == Material.AIR) return

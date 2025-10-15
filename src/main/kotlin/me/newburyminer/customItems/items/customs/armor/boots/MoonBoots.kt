@@ -59,9 +59,7 @@ class MoonBoots: CustomItemDefinition {
     private val material = Material.NETHERITE_BOOTS
     private val color = arrayOf(191, 218, 245)
     private val name = text("Moon Boots", color)
-    private val lore = Utils.loreBlockToList(
-        text("Hold right click to pull in all nearby entities. Left click while sneaking to toggle an item pull mode that pulls in all nearby items even when you are not holding it.", Utils.GRAY),
-    )
+    private val lore = mutableListOf<Component>()
 
     override val item: ItemStack = ItemStack(material)
         .setCustomData(custom)

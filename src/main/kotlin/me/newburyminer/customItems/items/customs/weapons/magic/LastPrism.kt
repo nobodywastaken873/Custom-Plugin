@@ -24,6 +24,7 @@ import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.CustomEntity
 import me.newburyminer.customItems.entities.bosses.BossListeners
@@ -89,7 +90,7 @@ class LastPrism: CustomItemDefinition {
                                     if (!entity.boundingBox.overlaps(
                                             startingLocation.clone().add(Vector(0.75, 0.75, 0.75)).toVector(),
                                             startingLocation.clone().add(Vector(-0.75, -0.75, -0.75)).toVector())) continue
-                                    if (entity is Player) EffectManager.applyEffect(entity, CustomEffectType.LAST_PRISM_ZAP, 2 * 20)
+                                    if (entity is Player) EffectManager.applyEffect(entity, CustomEffectType.LAST_PRISM_ZAP, EffectData(2 * 20, unique = true))
                                     else entity.damage(21.0, DamageSource.builder(DamageType.LIGHTNING_BOLT).withDirectEntity(e.player as Entity).withCausingEntity(e.player as Entity).build())
                                 }
                             }

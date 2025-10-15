@@ -129,7 +129,8 @@ class CustomItems : JavaPlugin() {
                         Utils.text("Tracking Remaining - ${((player.compassCooldown() / 20.0) * 10).toInt() / 10.0}s ",
                             Utils.SUCCESS_COLOR, bold = true))
                 }
-                if (!component.content().all { it == " ".first() }) player.sendActionBar(component)
+                if (!component.content().all { it == " ".first() } || player.isInCombat() || player.isBeingTracked() || player.isTracking())
+                    player.sendActionBar(component)
             }
         }, 0L, 2L)
     }

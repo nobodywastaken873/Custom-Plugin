@@ -42,6 +42,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -54,7 +55,11 @@ class WitherCoating: CustomItemDefinition {
     private val material = Material.IRON_INGOT
     private val color = arrayOf(191, 242, 224)
     private val name = text("Wither Coating", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("This item applies the Blast Resistant enchantment to any item, which prevents it from being blown up by explosions. " +
+                "You may apply Fireproof to an item with Blast Resistant, but it will overwrite the bonus. " +
+                "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
+    )
 
     override val item: ItemStack = ItemStack(material)
         .setCustomData(custom)
@@ -66,8 +71,9 @@ class WitherCoating: CustomItemDefinition {
 
         when (val e = ctx.event) {
 
-            is PlayerInteractEvent -> {
+            is PlayerSwapHandItemsEvent -> {
                 if (ctx.itemType != EventItemType.OFFHAND) return
+                if (!e.player.isSneaking) return
                 val upgrade = ctx.item ?: return
                 val toUpgrade = e.player.inventory.itemInMainHand
                 if (e.player.inventory.itemInMainHand.type == Material.AIR) return

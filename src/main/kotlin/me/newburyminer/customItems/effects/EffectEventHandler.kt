@@ -5,6 +5,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityToggleGlideEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 
 class EffectEventHandler: Listener {
 
@@ -30,6 +31,11 @@ class EffectEventHandler: Listener {
                 )
             )
         }
+    }
+
+    @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {
+        if (e.isCancelled) return
+        EffectManager.removeEffect(e.player)
     }
 
     @EventHandler fun onPlayerElytra(e: EntityToggleGlideEvent) {

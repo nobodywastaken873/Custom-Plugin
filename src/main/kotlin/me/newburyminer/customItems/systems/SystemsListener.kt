@@ -35,6 +35,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -428,6 +429,14 @@ class SystemsListener: Listener, Runnable  {
         if (e.item!!.type != Material.BOW && e.item!!.type != Material.CROSSBOW) return
         for (custom in arrayOf(CustomItem.WIND_HOOK)) {
             if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
+        }
+    }
+    @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
+        if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
+                CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
+                CustomItem.POCKETKNIFE_MULTITOOL, CustomItem.TREECAPITATOR, CustomItem.NETHERITE_MULTITOOL, CustomItem.HOE
+            )) {
+            e.isCancelled = true
         }
     }
 
