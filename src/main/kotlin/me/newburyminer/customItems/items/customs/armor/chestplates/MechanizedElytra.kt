@@ -11,14 +11,13 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
-import net.kyori.adventure.text.Component
-import org.bukkit.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.EventItemType
+import org.bukkit.Material
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 
 class MechanizedElytra: CustomItemDefinition {
 

@@ -1,7 +1,6 @@
 package me.newburyminer.customItems.gui
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getListTag
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.removeTag
@@ -17,7 +16,7 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
-import java.util.UUID
+import java.util.*
 
 class GraveHolder(private val armorStand: Interaction): InventoryHolder {
     private var inventory: Inventory

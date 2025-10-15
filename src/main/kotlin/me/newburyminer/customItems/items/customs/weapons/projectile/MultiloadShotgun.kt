@@ -1,50 +1,33 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
-import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
 import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.clearCrossbowProj
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
 import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.name
-import me.newburyminer.customItems.Utils.Companion.offCooldown
-import me.newburyminer.customItems.Utils.Companion.pushOut
-import me.newburyminer.customItems.Utils.Companion.reduceDura
-import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entities.CustomEntity
-import me.newburyminer.customItems.helpers.AttributeManager.Companion.tempAttribute
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
 import net.kyori.adventure.text.Component
-import org.bukkit.*
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
+import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.*
-import org.bukkit.event.block.Action
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityRegainHealthEvent
+import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
-import org.bukkit.util.Vector
 
 class MultiloadShotgun: CustomItemDefinition {
 

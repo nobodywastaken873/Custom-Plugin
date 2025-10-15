@@ -6,9 +6,11 @@ import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
-import org.bukkit.*
-import org.bukkit.entity.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.EventContext
+import org.bukkit.Material
+import org.bukkit.entity.Horse
 import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.entity.EntityMountEvent
 import org.bukkit.inventory.ItemStack

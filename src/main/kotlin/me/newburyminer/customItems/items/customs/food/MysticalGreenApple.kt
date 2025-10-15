@@ -6,7 +6,6 @@ import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.food
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text

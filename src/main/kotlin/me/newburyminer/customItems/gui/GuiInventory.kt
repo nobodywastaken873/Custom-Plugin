@@ -3,23 +3,19 @@ package me.newburyminer.customItems.gui
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.lock
-import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.items.Recipe
 import me.newburyminer.customItems.items.Recipes
-import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.entity.Item
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
-import java.util.UUID
+import java.util.*
 
 class GuiInventory(val name: String): InventoryHolder {
     companion object {

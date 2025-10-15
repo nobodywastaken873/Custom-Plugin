@@ -3,7 +3,6 @@ package me.newburyminer.customItems.items.customs.weapons.melee
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem

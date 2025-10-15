@@ -1,23 +1,17 @@
 package me.newburyminer.customItems.gui
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getListTag
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.lock
-import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setListTag
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectManager
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder

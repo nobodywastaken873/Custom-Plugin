@@ -9,8 +9,11 @@ import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entities.bosses.CustomBoss
-import me.newburyminer.customItems.items.*
-import org.bukkit.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.EventContext
+import org.bukkit.GameMode
+import org.bukkit.Material
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
