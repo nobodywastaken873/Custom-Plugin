@@ -6,13 +6,6 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
-import me.newburyminer.customItems.Utils.Companion.compassCooldown
-import me.newburyminer.customItems.Utils.Companion.isTracking
-import me.newburyminer.customItems.Utils.Companion.lore
-import me.newburyminer.customItems.Utils.Companion.loreBlock
-import me.newburyminer.customItems.Utils.Companion.remainingCompassTime
-import me.newburyminer.customItems.Utils.Companion.round
-import me.newburyminer.customItems.Utils.Companion.useStoredEnch
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
@@ -44,14 +37,7 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.FurnaceRecipe
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ArmorMeta
-import org.bukkit.inventory.meta.CrossbowMeta
-import org.bukkit.inventory.meta.Damageable
-import org.bukkit.inventory.meta.EnchantmentStorageMeta
-import org.bukkit.inventory.meta.FireworkMeta
-import org.bukkit.inventory.meta.MusicInstrumentMeta
-import org.bukkit.inventory.meta.OminousBottleMeta
-import org.bukkit.inventory.meta.PotionMeta
+import org.bukkit.inventory.meta.*
 import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
@@ -60,7 +46,7 @@ import org.bukkit.potion.PotionType
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import java.nio.ByteBuffer
-import java.util.UUID
+import java.util.*
 import kotlin.math.*
 
 class Utils {

@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.items
 
-import me.newburyminer.customItems.CustomItems
-
 enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String = "") {
     ALL,
     JERRY_IDOL,

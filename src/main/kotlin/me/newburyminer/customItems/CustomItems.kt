@@ -2,8 +2,8 @@ package me.newburyminer.customItems
 
 import me.newburyminer.customItems.Utils.Companion.combatTime
 import me.newburyminer.customItems.Utils.Companion.compassCooldown
-import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.remainingCompassTime

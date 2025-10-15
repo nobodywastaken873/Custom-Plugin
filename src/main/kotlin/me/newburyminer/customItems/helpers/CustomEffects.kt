@@ -7,7 +7,9 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
 import org.bukkit.util.Vector
-import kotlin.math.*
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class CustomEffects {
     companion object {

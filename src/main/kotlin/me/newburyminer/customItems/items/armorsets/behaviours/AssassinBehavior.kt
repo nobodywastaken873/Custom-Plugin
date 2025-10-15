@@ -17,7 +17,6 @@ import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType

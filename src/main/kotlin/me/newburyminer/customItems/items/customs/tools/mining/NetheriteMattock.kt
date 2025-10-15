@@ -13,11 +13,13 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import me.newburyminer.customItems.items.EventItemType
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.Tag
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.player.PlayerItemBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 
@@ -53,8 +55,13 @@ class NetheriteMattock: CustomItemDefinition {
                 val newMeta = item.itemMeta as Damageable
                 if (Math.random() < (1.0 - 1.0 / (1 + (item.enchantments[Enchantment.UNBREAKING] ?: 0)))) return
                 newMeta.damage += 1
-                if (newMeta.damage == 2031) {item.amount = 0; CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)}
+                //if (newMeta.damage == 2031) {item.amount = 0; CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)}
                 item.itemMeta = newMeta
+                if (newMeta.damage == 2031) {
+                    val event = PlayerItemBreakEvent(e.player, item)
+                    Bukkit.getPluginManager().callEvent(event)
+                    CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)
+                }
             }
 
         }

@@ -3,9 +3,6 @@ package me.newburyminer.customItems.commands
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import me.newburyminer.customItems.gui.GuiInventory
-import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class RecipeCommand: BasicCommand {

@@ -3,8 +3,7 @@ package me.newburyminer.customItems.effects
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.UUID
-import kotlin.system.exitProcess
+import java.util.*
 
 object EffectManager: BukkitRunnable() {
 

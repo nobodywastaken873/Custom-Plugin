@@ -3,14 +3,7 @@ package me.newburyminer.customItems.entities
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import org.bukkit.attribute.Attribute
-import org.bukkit.entity.Creeper
-import org.bukkit.entity.Entity
-import org.bukkit.entity.MagmaCube
-import org.bukkit.entity.Skeleton
-import org.bukkit.entity.Slime
-import org.bukkit.entity.Spider
-import org.bukkit.entity.TNTPrimed
-import org.bukkit.entity.Zombie
+import org.bukkit.entity.*
 
 enum class CustomEntity {
 

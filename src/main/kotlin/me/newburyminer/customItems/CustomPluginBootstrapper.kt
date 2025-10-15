@@ -31,14 +31,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Creeper
-import org.bukkit.entity.MagmaCube
-import org.bukkit.entity.Player
-import org.bukkit.entity.Skeleton
-import org.bukkit.entity.Slime
-import org.bukkit.entity.Spider
-import org.bukkit.entity.Witch
-import org.bukkit.entity.Zombie
+import org.bukkit.entity.*
 import org.bukkit.inventory.EquipmentSlotGroup
 import java.io.IOException
 import java.net.URI

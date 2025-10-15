@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.structures
 
-import me.newburyminer.customItems.helpers.RandomSelector
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.helpers.RandomSelector
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration

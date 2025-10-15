@@ -2,10 +2,8 @@ package me.newburyminer.customItems.commands
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import io.papermc.paper.datacomponent.DataComponentType
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.UseCooldown
-import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
@@ -15,12 +13,12 @@ import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.getDifficultyIndex
 import me.newburyminer.customItems.Utils.Companion.removeTag
 import me.newburyminer.customItems.Utils.Companion.toByteArray
+import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
-import org.bukkit.inventory.meta.components.UseCooldownComponent
 
 class TestCommand : BasicCommand {
     override fun execute(stack: CommandSourceStack, args: Array<out String>) {

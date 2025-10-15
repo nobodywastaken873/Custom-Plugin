@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.systems.materials
 
-import kotlin.math.abs
-
 data class MaterialCollection(private val materials: MutableMap<MaterialType, Double> = mutableMapOf()) {
 
     companion object {

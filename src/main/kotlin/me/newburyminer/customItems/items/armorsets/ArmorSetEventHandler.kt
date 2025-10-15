@@ -1,12 +1,6 @@
 package me.newburyminer.customItems.items.armorsets
 
 import me.newburyminer.customItems.Utils.Companion.getArmorSet
-import me.newburyminer.customItems.Utils.Companion.getCustom
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemBehavior
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
@@ -15,7 +9,6 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
-import org.bukkit.inventory.ItemStack
 
 class ArmorSetEventHandler: Listener {
     companion object {

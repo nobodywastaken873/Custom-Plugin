@@ -1,6 +1,5 @@
 package me.newburyminer.customItems.items.armorsets.behaviours
 
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -9,10 +8,7 @@ import me.newburyminer.customItems.items.armorsets.ArmorSet
 import me.newburyminer.customItems.items.armorsets.ArmorSetBehavior
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventContext
 import org.bukkit.Sound
-import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 
 class TankBehavior : ArmorSetBehavior {
 
