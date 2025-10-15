@@ -51,9 +51,10 @@ class TurtleShell: CustomItemDefinition {
 
     override fun handle(ctx: EventContext) {}
 
-    override val period: Int
-        get() = 60
-    override fun runTask(player: Player) {
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(60 to {player -> runTask(player)})
+
+    private fun runTask(player: Player) {
         if (player.inventory.chestplate?.isItem(CustomItem.TURTLE_SHELL) == true)
             player.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, 65, 0, false, false))
     }

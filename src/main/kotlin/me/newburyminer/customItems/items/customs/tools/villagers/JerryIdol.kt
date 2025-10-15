@@ -89,10 +89,10 @@ class JerryIdol: CustomItemDefinition {
 
     }
 
-    override val period: Int
-        get() = 60
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(60 to {player -> applyHOTV(player)})
 
-    override fun runTask(player: Player) {
+    private fun applyHOTV(player: Player) {
         for (entity in player.getNearbyEntities(50.0, 128.0, 50.0)) {
             if (entity.getTag<Int>("id") == CustomEntity.JERRY_IDOL.id) {
                 val amp = (entity.getTag<Int>("emeraldstacks") ?: 0)

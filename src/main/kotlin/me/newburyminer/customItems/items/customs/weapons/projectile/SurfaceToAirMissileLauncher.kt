@@ -32,10 +32,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
-import org.bukkit.entity.AbstractArrow
-import org.bukkit.entity.Arrow
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityRegainHealthEvent
@@ -46,6 +43,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import java.util.*
 
 class SurfaceToAirMissileLauncher: CustomItemDefinition {
 
@@ -82,6 +80,7 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
                 shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
                 e.entity.setTag("id", CustomEntity.ELYTRA_BREAKER_ARROW.id)
                 e.entity.setTag("source", CustomItem.SURFACE_TO_AIR_MISSILE.name)
+                activeHomingTime = 400
             }
 
             is ProjectileHitEvent -> {
@@ -97,6 +96,26 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
 
         }
 
+    }
+
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(1 to {player -> surfaceToAirMissile(player)})
+
+    private var activeHomingTime = 0
+    private fun surfaceToAirMissile(player: Player) {
+        if (activeHomingTime > 0) --activeHomingTime
+        else return
+
+        for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
+            if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) continue
+            if (entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_ARROW.id) continue
+            if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
+            entity.setTag("tick", Bukkit.getServer().currentTick)
+            // here is null
+            val target = Bukkit.getEntity(entity.getTag<UUID>("target") ?: continue) ?: continue
+            val newDirection = target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0))
+            entity.velocity = newDirection.normalize().multiply((target.location.subtract(entity.location).length() / 8).coerceAtLeast(8.0))
+        }
     }
 
 }

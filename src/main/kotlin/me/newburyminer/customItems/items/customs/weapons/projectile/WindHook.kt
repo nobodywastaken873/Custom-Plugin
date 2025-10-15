@@ -43,6 +43,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import java.util.*
 
 class WindHook: CustomItemDefinition {
 
@@ -81,12 +82,46 @@ class WindHook: CustomItemDefinition {
                 val arrow = e.entity as Arrow
                 arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
                 val shooter = e.entity.shooter as Player
+                val uuid = shooter.uniqueId
+                pullTime[uuid] = 50
+                pullCoords[uuid] = e.entity.location.clone()
                 shooter.setTag("windhookpullcoords", "${e.entity.location.x},${e.entity.location.y},${e.entity.location.z}")
                 shooter.setTag("windhookpulltime", 50)
             }
 
         }
 
+    }
+
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(1 to {player -> windHookPull(player)})
+
+    private val pullTime = mutableMapOf<UUID, Int>()
+    private val pullCoords = mutableMapOf<UUID, Location>()
+    private fun windHookPull(player: Player) {
+        val uuid = player.uniqueId
+        if ((pullTime[uuid] ?: 0) > 0) {
+            val timeLeft = pullTime[uuid] ?: return
+            pullTime[uuid] = timeLeft - 1
+            val pullLoc = (pullCoords[uuid] ?: return).clone()
+            if (pullLoc.world != player.world) return
+            val direction = pullLoc.subtract(player.location)
+
+            if (direction.length() < 6.0) pullTime[uuid] = 0
+            val toAdd = direction.toVector().normalize().multiply(3)
+            player.velocity = toAdd.clone().add(Vector(0.0, 0.4, 0.0))
+            CustomEffects.particleLine(
+                Particle.DOLPHIN.builder(), player.location, pullLoc, 400
+            )
+            if (Bukkit.getCurrentTick() % 20 == 0) {
+                CustomEffects.playSound(
+                    player.location,
+                    arrayOf(Sound.ENTITY_BREEZE_IDLE_AIR, Sound.ENTITY_BREEZE_IDLE_GROUND).random(),
+                    1F,
+                    1.2F
+                )
+            }
+        }
     }
 
 }

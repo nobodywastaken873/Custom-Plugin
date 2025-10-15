@@ -8,7 +8,7 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import java.util.*
 
-class AttributeEffect(private val attributeData: AttributeData): EffectBehavior {
+open class AttributeEffect(private val attributeData: AttributeData): EffectBehavior {
 
     val key: NamespacedKey
 

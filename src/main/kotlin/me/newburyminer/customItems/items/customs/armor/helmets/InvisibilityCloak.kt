@@ -33,9 +33,10 @@ class InvisibilityCloak: CustomItemDefinition {
 
     override fun handle(ctx: EventContext) {}
 
-    override val period: Int
-        get() = 60
-    override fun runTask(player: Player) {
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(60 to {player -> runTask(player)})
+
+    private fun runTask(player: Player) {
         if (player.inventory.helmet?.isItem(CustomItem.INVISIBILITY_CLOAK) == true)
             player.addPotionEffect(PotionEffect(PotionEffectType.INVISIBILITY, 65, 0, false, false))
     }

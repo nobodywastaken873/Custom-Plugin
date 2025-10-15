@@ -8,6 +8,7 @@ import me.newburyminer.customItems.Utils.Companion.attr
 import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.hasCustom
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.loreBlock
@@ -51,6 +52,7 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import java.util.*
 
 class PolarizedMagnet: CustomItemDefinition {
 
@@ -86,13 +88,38 @@ class PolarizedMagnet: CustomItemDefinition {
                     e.player.setCooldown(CustomItem.POLARIZED_MAGNET, 0.5)
                 } else {
                     if (!ctx.itemType.isHand()) return
-                    e.player.setTag("polarizedmagnetpulling", 4)
+                    pullCount[e.player.uniqueId] = 4
                     CustomEffects.playSound(e.player.location, Sound.BLOCK_BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, 1.0F, 1.1F)
                 }
             }
 
         }
 
+    }
+
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(1 to {player -> polarizedMagnetPull(player)})
+
+    private val pullCount = mutableMapOf<UUID, Int>()
+    private fun polarizedMagnetPull(player: Player) {
+        val uuid = player.uniqueId
+        if ((pullCount[uuid] ?: 0) > 0) {
+            for (entity in player.getNearbyEntities(7.0, 7.0, 7.0)) {
+                if (entity is EnderPearl || entity is Arrow) continue
+                val dist = player.location.subtract(entity.location).toVector()
+                dist.multiply(0.05)
+                entity.velocity = entity.velocity.add(dist)
+            }
+            pullCount[uuid] = (pullCount[uuid] ?: 0) - 1
+        }
+        if (player.getTag<Boolean>("polarizedmagnetitempull") == true && player.hasCustom(CustomItem.POLARIZED_MAGNET)) {
+            for (entity in player.getNearbyEntities(12.0, 12.0, 12.0)) {
+                if (entity.type != EntityType.ITEM && entity.type != EntityType.EXPERIENCE_ORB) continue
+                val dist = player.location.subtract(entity.location).toVector()
+                dist.multiply(0.07)
+                entity.velocity = entity.velocity.add(dist)
+            }
+        }
     }
 
 }

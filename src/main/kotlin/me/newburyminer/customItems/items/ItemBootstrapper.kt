@@ -16,8 +16,8 @@ object ItemBootstrapper {
             val item = instance.item
             ItemRegistry.register(customId, item)
             ItemEventHandler.register(customId, instance)
-            if (cls.declaredMethods.any { it.name == "runTask" })
-                PlayerTaskHandler.registerTask(instance.period, PlayerTask { player ->  instance.runTask(player)})
+            instance.extraTasks.forEach { (period, runTask) ->
+                PlayerTaskHandler.registerTask(period, PlayerTask { player ->  runTask(player)})}
 
             plugin.logger.info("Successfully registered ${customId.realName}")
         }

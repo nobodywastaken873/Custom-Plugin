@@ -2,6 +2,7 @@ package me.newburyminer.customItems.systems
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.event.player.AsyncChatEvent
+import io.papermc.paper.event.player.PlayerItemGroupCooldownEvent
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.afkTime
@@ -17,23 +18,32 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
+import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.GuiInventory
+import me.newburyminer.customItems.gui.ShulkerHolder
+import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.inventory.CraftItemEvent
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
@@ -339,6 +349,86 @@ class SystemsListener: Listener, Runnable  {
             return
         }
         return
+    }
+
+    @EventHandler fun onPlayerJoin(e: PlayerJoinEvent) {
+        e.player.getAttribute(Attribute.MAX_ABSORPTION)!!.baseValue = 2048.0
+    }
+    @EventHandler fun onCooldownSet(e: PlayerItemGroupCooldownEvent) {
+        if (e.cooldownGroup.namespace != "customitems") return
+        if (e.cooldown != 1) return
+        e.isCancelled = true
+    }
+    @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
+        if (e.action != InventoryAction.PICKUP_HALF) return
+        if (e.whoClicked.getTag<Boolean>("inventoryshulker") != true) return
+        if (e.clickedInventory?.type !in
+            arrayOf(InventoryType.ENDER_CHEST, InventoryType.PLAYER)
+        ) return
+        if (!Tag.SHULKER_BOXES.isTagged(e.clickedInventory!!.getItem(e.slot)?.type ?: Material.AIR)) return
+        e.isCancelled = true
+        val shulker = e.clickedInventory!!.getItem(e.slot)!!
+        if (shulker.getTag<Boolean>("shulkeropen") == true) {
+            CustomEffects.playSound(e.whoClicked.location, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
+            return
+        }
+        CustomEffects.playSound(e.whoClicked.location, Sound.BLOCK_SHULKER_BOX_OPEN, 1.0F, 1.0F)
+        val player = e.whoClicked as Player
+        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+            shulker.setTag("shulkeropen", true)
+            player.closeInventory()
+            player.openInventory(ShulkerHolder(shulker).inventory)
+        })
+    }
+    @EventHandler fun onItemCraft(e: CraftItemEvent) {
+        cancelCustomCrafts(e)
+        duplicateArmorTrims(e)
+    }
+    private fun cancelCustomCrafts(e: CraftItemEvent) {
+        for (item in e.inventory) {
+            if (item == null) continue
+            if (item.itemMeta == null) continue
+            if (item.getTag<Int>("id") != null) e.isCancelled = true
+        }
+    }
+    private fun duplicateArmorTrims(e: CraftItemEvent) {
+        val result = e.recipe.result
+        if (result.type !in arrayOf(
+                Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Material.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
+                Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Material.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
+            )) return
+        if (e.inventory.getItem(2)!!.enchantments[CustomEnchantments.DUPLICATE] == 1) {
+            e.whoClicked.sendMessage(text("You cannot use duplicated trims in this recipe.", Utils.FAILED_COLOR))
+            (e.whoClicked as Player).playSound(e.whoClicked, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
+            e.isCancelled = true
+            return
+        }
+        if (e.isShiftClick) {
+            e.isCancelled = true
+            return
+        }
+        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+            if (e.inventory.getItem(2)?.type != result.type) {
+                val newResult = ItemStack(result.type)
+                e.inventory.setItem(2, newResult)
+            } else {
+                e.inventory.getItem(2)!!.amount = 2
+            }
+        })
+    }
+    @EventHandler fun onInteract(e: PlayerInteractEvent) {
+        cancelProjectileCharge(e)
+    }
+    private fun cancelProjectileCharge(e: PlayerInteractEvent) {
+        if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
+        if (e.item == null) return
+        if (e.item!!.type != Material.BOW && e.item!!.type != Material.CROSSBOW) return
+        for (custom in arrayOf(CustomItem.WIND_HOOK)) {
+            if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
+        }
     }
 
     private var futures = mutableListOf<Int>()

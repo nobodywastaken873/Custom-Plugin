@@ -10,6 +10,8 @@ import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectManager
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -49,14 +51,7 @@ class GraveOptionsHolder(val player: Player, val location: Location, val page: I
 
     //can add cost later here
     fun teleport() {
-        player.getAttribute(Attribute.GRAVITY)?.removeModifier(NamespacedKey(CustomItems.plugin, "gravity"))
-        player.getAttribute(Attribute.GRAVITY)?.addModifier(AttributeModifier(
-            NamespacedKey(CustomItems.plugin, "gravity"),
-            -1.0,
-            AttributeModifier.Operation.MULTIPLY_SCALAR_1
-        ))
-        player.isInvulnerable = true
-        player.setTag("graveinvulnerability", 25)
+        EffectManager.applyEffect(player, CustomEffectType.GRAVE_INVULNERABILITY, 5 * 20)
         player.teleport(location.clone().add(Vector(0.5, 0.0, 0.5)))
     }
 

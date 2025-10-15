@@ -1,9 +1,7 @@
 package me.newburyminer.customItems.effects
 
 import me.newburyminer.customItems.effects.behaviors.ElytraDisableEffect
-import me.newburyminer.customItems.effects.factories.AttributeEffectFactory
-import me.newburyminer.customItems.effects.factories.ElytraDisableEffectFactory
-import me.newburyminer.customItems.effects.factories.EnderCritEffectFactory
+import me.newburyminer.customItems.effects.factories.*
 
 object CustomEffectBootstrapper {
     fun registerAll() {
@@ -11,7 +9,10 @@ object CustomEffectBootstrapper {
             mapOf(
                 CustomEffectType.ATTRIBUTE to AttributeEffectFactory(),
                 CustomEffectType.ELYTRA_DISABLED to ElytraDisableEffectFactory(),
-                CustomEffectType.ENDER_CRIT to EnderCritEffectFactory()
+                CustomEffectType.ENDER_CRIT to EnderCritEffectFactory(),
+                CustomEffectType.FANG_STAFF_VEXING to FangStaffVexingEffectFactory(),
+                CustomEffectType.GRAVE_INVULNERABILITY to GraveInvulnerabilityEffectFactory(),
+                CustomEffectType.LAST_PRISM_ZAP to LastPrismZapEffectFactory(),
             )
         )
 

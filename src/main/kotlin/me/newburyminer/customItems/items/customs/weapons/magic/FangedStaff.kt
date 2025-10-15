@@ -26,6 +26,8 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.Utils.Companion.unb
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.CustomEntity
 import me.newburyminer.customItems.entities.bosses.BossListeners
 import me.newburyminer.customItems.entities.bosses.CustomBoss
@@ -56,6 +58,7 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import java.util.UUID
 
 class FangedStaff: CustomItemDefinition {
 
@@ -81,7 +84,7 @@ class FangedStaff: CustomItemDefinition {
             is PlayerInteractEvent -> {
                 if (!ctx.itemType.isHand()) return
                 if ((e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) && e.item!!.offCooldown(e.player, "Vexing")) {
-                    e.player.setTag("evokerstaffused", true)
+                    usedMap[e.player.uniqueId] = true
                 } else if ((e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) && e.item!!.offCooldown(e.player, "Fangs")) {
                     val facing = e.player.location.direction.normalize().clone().multiply(0.1)
                     val startingLocation = e.player.location.clone().add(Vector(0.0, 1.6, 0.0))
@@ -103,6 +106,32 @@ class FangedStaff: CustomItemDefinition {
 
         }
 
+    }
+
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(6 to {player -> updateCounter(player)})
+
+    private val counterMap = mutableMapOf<UUID , Int>()
+    private val usedMap = mutableMapOf<UUID , Boolean>()
+    private fun updateCounter(player: Player) {
+        val uuid = player.uniqueId
+        if (counterMap[uuid] == 13) {
+            player.setCooldown(CustomItem.FANGED_STAFF, 55.0, "Vexing")
+            counterMap[uuid] = 0
+            usedMap[uuid] = false
+            CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_CAST_SPELL, 20F, 0.9F)
+            EffectManager.applyEffect(player, CustomEffectType.FANG_STAFF_VEXING, 10 * 20)
+        }
+        if (usedMap[uuid] == true) {
+            counterMap[uuid] = (counterMap[uuid] ?: 0) + 1
+            CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_PREPARE_ATTACK, 1F, 1.2F)
+        } else {
+            if ((counterMap[uuid] ?: 0) != 0) {
+                CustomEffects.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1F, 1.2F)
+            }
+            counterMap[uuid] = 0
+        }
+        usedMap[uuid] = false
     }
 
 }

@@ -71,7 +71,6 @@ class CustomItems : JavaPlugin() {
         registerListeners()
         systemsListener.run()
         this.run()
-        customItemListener.run()
         PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
         EffectManager.runTaskTimer(this, 0L, 1L)
         entityListener.run()
@@ -79,7 +78,6 @@ class CustomItems : JavaPlugin() {
         attributeListener.run()
         MaterialConverterBootstrapper.registerAll()
         CustomEffectBootstrapper.registerAll()
-
     }
 
     private fun loadBosses() {
@@ -137,11 +135,11 @@ class CustomItems : JavaPlugin() {
 
     override fun onDisable() {
         cooldownTask.cancel()
-        customItemListener.cancelTasks()
         entityListener.cancel()
         bossListener.cancelAll()
         attributeListener.cancel()
         systemsListener.cancel()
+        PlayerTaskHandler.cancelAll()
         closeMenus()
     }
 

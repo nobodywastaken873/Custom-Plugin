@@ -40,6 +40,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import java.util.*
 import kotlin.math.abs
 
 class WindChargeCannon: CustomItemDefinition {
@@ -97,6 +98,7 @@ class WindChargeCannon: CustomItemDefinition {
                         windCharge.setTag("target", target)
                         windCharge.setTag("id", CustomEntity.WIND_CANNON_CHARGE.id)
                         windCharge.setTag("source", CustomItem.WIND_CHARGE_CANNON.name)
+                        activeHomingTime = 600
                     }
                 } else {
                     shooter.setCooldown(CustomItem.WIND_CHARGE_CANNON, 5.0)
@@ -118,6 +120,29 @@ class WindChargeCannon: CustomItemDefinition {
 
         }
 
+    }
+
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(1 to {player -> homingWindChargeUpdate(player)})
+
+    private var activeHomingTime = 0
+    private fun homingWindChargeUpdate(player: Player) {
+        if (activeHomingTime > 0) --activeHomingTime
+        else return
+
+        for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
+            if (entity.type != EntityType.WIND_CHARGE) continue
+            if (entity.getTag<Int>("id") != CustomEntity.WIND_CANNON_CHARGE.id) continue
+            if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
+            entity.setTag("tick", Bukkit.getServer().currentTick)
+            val target = Bukkit.getEntity(entity.getTag<UUID>("target")!!) ?: continue
+            //val newDirection = entity.velocity.add(target.location.subtract(entity.location).toVector().normalize().multiply(1.5))
+            //entity.velocity = newDirection.normalize().multiply(currentVelocity)
+            val cross = entity.velocity.getCrossProduct(target.location.subtract(entity.location).toVector())
+            val angle = entity.velocity.angle(target.location.subtract(entity.location).toVector())
+            val newDirection = entity.velocity.rotateAroundAxis(cross, angle.coerceAtMost((Math.PI / 24).toFloat()).toDouble())
+            entity.velocity = newDirection
+        }
     }
 
 }

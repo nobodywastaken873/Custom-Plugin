@@ -54,9 +54,10 @@ class AqueousSandals: CustomItemDefinition {
         }
     }
 
-    override val period: Int
-        get() = 60
-    override fun runTask(player: Player) {
+    override val extraTasks: Map<Int, (Player) -> Unit>
+        get() = mapOf(60 to {player -> runTask(player)})
+
+    private fun runTask(player: Player) {
         if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) {
             player.addPotionEffect(PotionEffect(PotionEffectType.WATER_BREATHING, 65, 0, false, false))
             player.addPotionEffect(PotionEffect(PotionEffectType.CONDUIT_POWER, 65, 0, false, false))

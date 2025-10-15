@@ -99,7 +99,7 @@ import java.time.ZonedDateTime
 import java.util.*
 import kotlin.math.*
 
-class ItemListeners: Listener, Runnable {
+class ItemListeners: Listener {
 
     //@EventHandler fun onMapFind(e: Map)
     /*@EventHandler fun onTradeAdd(e: VillagerAcquireTradeEvent) {
@@ -108,7 +108,7 @@ class ItemListeners: Listener, Runnable {
         }
     }*/
 
-    @EventHandler fun onEntityTakeDamage(e: EntityDamageEvent) {
+    /*@EventHandler fun onEntityTakeDamage(e: EntityDamageEvent) {
         assassinsCancel(e)
     }
     private fun assassinsCancel(e: EntityDamageEvent) {
@@ -128,12 +128,9 @@ class ItemListeners: Listener, Runnable {
             player.getAttribute(Attribute.ATTACK_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsattackspeed"))
             player.getAttribute(Attribute.SCALE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsscale"))
         }
-    }
+    }*/
 
     // Should also be in a different systems file or smth
-    @EventHandler fun onPlayerJoin(e: PlayerJoinEvent) {
-        e.player.getAttribute(Attribute.MAX_ABSORPTION)!!.baseValue = 2048.0
-    }
 
     /*@EventHandler fun onEnemyAggro(e: EntityTargetEvent) {
         if (e.target !is Player) return
@@ -143,7 +140,7 @@ class ItemListeners: Listener, Runnable {
         }
     }*/
 
-    @EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
+    /*@EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
         //xrayGoggles(e)
         //aqueousSandals(e)
         tankSetActivate(e)
@@ -193,7 +190,7 @@ class ItemListeners: Listener, Runnable {
         if (!e.player.offCooldown(CustomItem.MECHANIZED_ELYTRA, "Boost")) return
         e.player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
         e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
-    }*/
+    }*/*/
 
     /*@EventHandler fun onTotemPop(e: EntityResurrectEvent) {
         shadowLegs(e)
@@ -327,11 +324,6 @@ class ItemListeners: Listener, Runnable {
     }*/
 
     // should be in a broader systems file
-    @EventHandler fun onCooldownSet(e: PlayerItemGroupCooldownEvent) {
-        if (e.cooldownGroup.namespace != "customitems") return
-        if (e.cooldown != 1) return
-        e.isCancelled = true
-    }
 
     // one specific tag-based debuff, maybe need an actual debuff system
     /*@EventHandler fun onPlayerGlide(e: EntityToggleGlideEvent) {
@@ -389,10 +381,6 @@ class ItemListeners: Listener, Runnable {
     }*/*/
 
     // both inventory-based items entirely, maybe move to inventory events
-    @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
-        //enderNode(e)
-        openShulker(e)
-    }
     /*private fun enderNode(e: InventoryClickEvent) {
         if ((e.whoClicked as Player).isBeingTracked()) return
         val player = e.inventory.viewers.first() as Player
@@ -408,27 +396,6 @@ class ItemListeners: Listener, Runnable {
             player.openInventory(player.enderChest)
         })
     }*/
-    private fun openShulker(e: InventoryClickEvent) {
-        if (e.action != InventoryAction.PICKUP_HALF) return
-        if (e.whoClicked.getTag<Boolean>("inventoryshulker") != true) return
-        if (e.clickedInventory?.type !in
-            arrayOf(InventoryType.ENDER_CHEST, InventoryType.PLAYER)
-            ) return
-        if (!Tag.SHULKER_BOXES.isTagged(e.clickedInventory!!.getItem(e.slot)?.type ?: Material.AIR)) return
-        e.isCancelled = true
-        val shulker = e.clickedInventory!!.getItem(e.slot)!!
-        if (shulker.getTag<Boolean>("shulkeropen") == true) {
-            CustomEffects.playSound(e.whoClicked.location, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
-            return
-        }
-        CustomEffects.playSound(e.whoClicked.location, Sound.BLOCK_SHULKER_BOX_OPEN, 1.0F, 1.0F)
-        val player = e.whoClicked as Player
-        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-            shulker.setTag("shulkeropen", true)
-            player.closeInventory()
-            player.openInventory(ShulkerHolder(shulker).inventory)
-        })
-    }
 
     // item eat event
     /*@EventHandler fun onFoodEat(e: PlayerItemConsumeEvent) {
@@ -473,266 +440,6 @@ class ItemListeners: Listener, Runnable {
     }*/
 
     // all grave handling functions
-    @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {
-        createGrave(e)
-    }
-    private fun createGrave(e: PlayerDeathEvent) {
-        // soulbound, perm consumable to keep xp
-        // change settings for custom worlds
-        // prevent chest from being broken,
-        if (e.player.world == CustomItems.bossWorld) {
-            e.keepInventory = true
-            e.keepLevel = true
-            e.drops.clear()
-            e.droppedExp = 0
-            return
-        }
-        if (e.player.world != Bukkit.getServer().worlds[0] && e.player.world != Bukkit.getServer().worlds[1]
-            && e.player.world != Bukkit.getServer().worlds[2] && e.player.world != CustomItems.aridWorld) return
-        if (e.isCancelled) return
-        if ((e.player.getTag<Int>("experiencekept") ?: 0) != 0) {
-            val extraExp = e.player.exp * (Utils.toExpAmount(e.player.level + 1) - Utils.toExpAmount(e.player.level))
-            val totalExp = (Utils.toExpAmount(e.player.level, extraExp.toInt())) * (e.player.getTag<Int>("experiencekept")!! / 4.0)
-            val newAmounts = Utils.toExpLevel(totalExp.toInt())
-            e.newLevel = newAmounts.first
-            e.newExp = newAmounts.second
-            e.newTotalExp = totalExp.toInt()
-            e.setShouldDropExperience(false)
-        }
-        if (e.drops.size == 0) return
-        // finding location
-        val loc = e.player.location
-        loc.y = if (e.player.world == Bukkit.getServer().worlds[0] && loc.y < -64.0) -64.0 else loc.y
-        loc.y = if (e.player.world != Bukkit.getServer().worlds[0] && loc.y < 0.0) 0.0 else loc.y
-        if (loc.world.getBlockAt(loc).type != Material.AIR && loc.world.getBlockAt(loc).type != Material.WATER) {
-            while (loc.world.getBlockAt(loc).type != Material.AIR && loc.world.getBlockAt(loc).type != Material.WATER) {
-                loc.y += 1
-                if (loc.y >= 255) {
-                    e.keepInventory = true
-                    e.drops.clear()
-                    return
-                }
-            }
-        } else {
-            while (loc.world.getBlockAt(loc).type == Material.AIR || loc.world.getBlockAt(loc).type == Material.WATER) {
-                loc.y -= 1
-            }
-            loc.y += 1
-        }
-        val graveList = (e.player.getListTag<Location>("gravelist") ?: listOf()).toMutableList()
-        graveList.add(loc.world.getBlockAt(loc).location)
-        e.player.setListTag("gravelist", graveList)
-        val chestDisplay: BlockDisplay = e.player.world.spawn(loc.world.getBlockAt(loc).location, BlockDisplay::class.java)
-        val armorStand: Interaction = e.player.world.spawn(loc.world.getBlockAt(loc).location.add(0.5, 0.0, 0.5), Interaction::class.java) {
-            it.interactionHeight = 1.0F
-            it.interactionWidth = 1.0F
-        }
-        val textDisplay: TextDisplay = e.player.world.spawn(loc.world.getBlockAt(loc).location.add(0.5, 1.2, 0.5), TextDisplay::class.java)
-        // remove anything not to be dropped here
-        var helmet: ItemStack? = null
-        var chestplate: ItemStack? = null
-        var leggings: ItemStack? = null
-        var boots: ItemStack? = null
-        var offhand: ItemStack? = null
-        val drops = e.drops.toMutableList()
-        if (e.player.inventory.itemInOffHand.type != Material.AIR) offhand = drops.removeLast()
-        for (item in drops) {
-            if (CustomEnchantments.SOULBOUND in item.enchantments) {e.itemsToKeep.add(item); continue}
-            if (Tag.ITEMS_HEAD_ARMOR.isTagged(item.type)) helmet = item
-            if (Tag.ITEMS_CHEST_ARMOR.isTagged(item.type)) chestplate = item
-            if (Tag.ITEMS_LEG_ARMOR.isTagged(item.type)) leggings = item
-            if (Tag.ITEMS_FOOT_ARMOR.isTagged(item.type)) boots = item
-        }
-        helmet?.setTag("graveslot", 0)
-        chestplate?.setTag("graveslot", 1)
-        leggings?.setTag("graveslot", 2)
-        boots?.setTag("graveslot", 3)
-        offhand?.setTag("graveslot", 4)
-        for (item in e.itemsToKeep) {
-            e.drops.remove(item)
-        }
-        armorStand.setListTag("graveitems", e.drops.toMutableList())
-        // can change this later to for loop and skip anything
-        saveGrave(e, e.drops.toMutableList())
-        e.drops.clear()
-        chestDisplay.isInvulnerable = true
-        chestDisplay.block = Material.CHEST.createBlockData()
-        chestDisplay.displayWidth = 1F
-        chestDisplay.displayHeight = 1F
-        chestDisplay.setGravity(false)
-        chestDisplay.setNoPhysics(true)
-        armorStand.isInvulnerable = true
-        armorStand.isInvisible = true
-        armorStand.setGravity(false)
-        armorStand.setNoPhysics(true)
-        //armorStand.customName(text("${e.player.name}'s grave", arrayOf(199, 4, 30)))
-        //armorStand.isCustomNameVisible = false
-        armorStand.setTag("id", CustomEntity.GRAVE_MARKER.id)
-        armorStand.setTag("currentlyopen", false)
-        armorStand.setTag("owner", e.player.uniqueId)
-        if (e.damageSource.causingEntity is Player) {
-            armorStand.setTag("killer", (e.damageSource.causingEntity as Player).uniqueId)
-            armorStand.setTag("looted", false)
-        } else if (e.damageSource.damageType == DamageType.GENERIC && e.player.lastDamageCause!!.damageSource.causingEntity is Player) {
-            armorStand.setTag("killer", (e.player.lastDamageCause!!.damageSource.causingEntity as Player).uniqueId)
-            armorStand.setTag("looted", false)
-        }
-        e.player.setTag("gravetpcooldown", (5 * 60 * 1000 + System.currentTimeMillis()))
-        textDisplay.billboard = Display.Billboard.CENTER
-        textDisplay.text(text("${e.player.name}'s grave", arrayOf(199, 4, 30)))
-    }
-    private fun saveGrave(e: PlayerDeathEvent, drops: MutableList<ItemStack>) {
-        val fileName = System.getProperty("user.dir") + "/plugins/customItems/savedGraves.txt"
-        val file = File("plugins/customItems/savedGraves.txt")
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        val locBytes = Base64.getEncoder().encodeToString(e.player.location.serializeAsBytes())
-        val itemBytes = Base64.getEncoder().encodeToString(drops.first().serializeAsBytes())
-        var totalStr = ("NEWLINE${e.player.name},${ZonedDateTime.now(ZoneId.systemDefault())}LOCATION${locBytes}")
-        for (item in drops) {
-            totalStr += "ITEMSTACK${Base64.getEncoder().encodeToString(item.serializeAsBytes())}"
-        }
-        //e.player.sendMessage(locBytes)
-        //e.player.sendMessage(itemBytes)
-        totalStr += "\n"
-        val total = totalStr.toByteArray()
-        try {
-            Files.write(Paths.get(fileName), total, StandardOpenOption.APPEND)
-        } catch (e: IOException) {Bukkit.getLogger().info(e.toString())}
-    }
-
-    @EventHandler fun onPlayerInteractThing(e: PlayerInteractAtEntityEvent) {
-        openGrave(e)
-    }
-    private fun openGrave(e: PlayerInteractAtEntityEvent) {
-        e.player.activeBossBars()
-        if (e.rightClicked !is Interaction) return
-        if (e.rightClicked.getTag<Int>("id") != CustomEntity.GRAVE_MARKER.id) return
-        val armorStand: Interaction = e.rightClicked as Interaction
-        if (armorStand.getTag<Boolean>("currentlyopen") == true) {e.player.sendActionBar(text("Grave is currently opened by another player", arrayOf(199, 4, 30))); return}
-        val owner = armorStand.getTag<UUID>("owner")!!
-        if (e.player.uniqueId != owner) {
-            if (e.player.uniqueId == armorStand.getTag<UUID>("killer")) {
-                if (armorStand.getTag<Boolean>("looted") == true) {
-                    e.player.sendMessage(text("You have already looted this grave.", Utils.FAILED_COLOR))
-                    e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
-                    e.isCancelled = true
-                    return
-                }
-                val items: MutableList<ItemStack> = armorStand.getListTag<ItemStack>("graveitems")!!.toMutableList()
-                val possibleSteals = mutableListOf<ItemStack>()
-                for (item in items) {
-                    if (item.getCustom() != null) {
-                        possibleSteals.add(item)
-                    }
-                    var overMax = false
-                    var totalMax = 0
-                    for (enchantment in item.enchantments.keys) {
-                        if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
-                            overMax = true
-                            totalMax++
-                        } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
-                            totalMax++
-                        }
-                    }
-                    if (totalMax > 2 || overMax) {
-                        possibleSteals.add(item)
-                    }
-                }
-                if (possibleSteals.isEmpty()) {
-                    for (item in items) {
-                        if (item.hasData(DataComponentTypes.MAX_DAMAGE)) {
-                            possibleSteals.add(item)
-                        }
-                    }
-                }
-                armorStand.setTag("looted", true)
-                if (possibleSteals.isEmpty()) {
-                    e.player.sendMessage(text("No possible items to steal.", Utils.FAILED_COLOR))
-                    e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
-                    e.isCancelled = true
-                    return
-                }
-                val steal = possibleSteals.random()
-                items.remove(steal.clone())
-                armorStand.setListTag("graveitems", items)
-                e.player.sendMessage(text("Item stolen.", Utils.SUCCESS_COLOR))
-                CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_CLOSE, 1.0F, 1.2F)
-                e.player.addItemorDrop(steal)
-            }
-            return
-        }
-        if (e.player.isSneaking) {
-            val items: MutableList<ItemStack> = armorStand.getListTag<ItemStack>("graveitems")!!.toMutableList()
-            val toRemove = mutableListOf<ItemStack>()
-            val toAdd = mutableListOf<ItemStack>()
-
-            for (item in items) {
-                if (item.getTag<Int>("graveslot") != null) {
-                    var extraItem: ItemStack? = null
-                    when (item.getTag<Int>("graveslot")) {
-                        0 -> {if (e.player.inventory.helmet != null) extraItem = e.player.inventory.helmet!!.clone(); e.player.inventory.helmet = item}
-                        1 -> {if (e.player.inventory.chestplate != null) extraItem = e.player.inventory.chestplate!!.clone(); e.player.inventory.chestplate = item}
-                        2 -> {if (e.player.inventory.leggings != null) extraItem = e.player.inventory.leggings!!.clone(); e.player.inventory.leggings = item}
-                        3 -> {if (e.player.inventory.boots != null) extraItem = e.player.inventory.boots!!.clone(); e.player.inventory.boots = item}
-                        4 -> {if (e.player.inventory.itemInOffHand.type != Material.AIR) extraItem = e.player.inventory.itemInOffHand.clone(); e.player.inventory.setItemInOffHand(item)}
-                    }
-                    if (extraItem != null) {
-                        if (e.player.inventory.firstEmpty() == -1) {
-                            toAdd.add(extraItem.clone())
-                            item.removeTag("graveslot")
-                            toRemove.add(item)
-                            break
-                        }
-                        e.player.inventory.addItem(extraItem)
-                    }
-                    item.removeTag("graveslot")
-                    toRemove.add(item)
-                } else {
-                    if (e.player.inventory.firstEmpty() == -1) break
-                    toRemove.add(item.clone())
-                    e.player.inventory.addItem(item.clone())
-                }
-            }
-            for (item in toRemove) {
-                items.remove(item)
-            }
-            for (item in toAdd) {
-                items.add(item)
-            }
-            items.removeIf { it.type == Material.AIR }
-            if (items.size == 0) {
-                for (entity in armorStand.location.subtract(0.5, 0.0, 0.5).getNearbyEntities(0.1, 0.1, 0.1))  {
-                    if (entity.type == EntityType.BLOCK_DISPLAY) {entity.remove(); break}
-                }
-                for (entity in armorStand.location.add(0.0,1.2, 0.0).getNearbyEntities(0.1, 0.1, 0.1)) {
-                    if (entity.type == EntityType.TEXT_DISPLAY) {entity.remove(); break}
-                }
-                val uuid = armorStand.getTag<UUID>("owner")!!
-                val player: Player? = if (Bukkit.getServer().getPlayer(uuid) == null) Bukkit.getServer().getOfflinePlayer(uuid).player else Bukkit.getServer().getPlayer(uuid)
-                if (player != null) {
-                    val graves = player.getListTag<Location>("gravelist")!!
-                    for (i in graves.indices.reversed()) {
-                        if (armorStand.world == graves[i].world && armorStand.location.clone().subtract(Vector(0.5, 0.0, 0.5)).subtract(graves[i]).length() < 0.5) {
-                            graves.removeAt(i)
-                            break
-                        }
-                    }
-                    player.removeTag("gravelist")
-                    player.setListTag("gravelist", graves)
-                }
-                armorStand.remove()
-            }
-            armorStand.setListTag("graveitems", items)
-            CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_CLOSE, 1.0F, 1.2F)
-        } else {
-            val graveHolder = GraveHolder(armorStand)
-            e.player.openInventory(graveHolder.inventory)
-            armorStand.setTag("currentlyopen", true)
-            CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_OPEN, 1.0F, 1.2F)
-        }
-    }
 
     /*@EventHandler fun onEntityAttackEntity(e: EntityDamageByEntityEvent) {
         //axeOfPeace(e)
@@ -999,19 +706,7 @@ class ItemListeners: Listener, Runnable {
         for (drop in drops) e.player.addItemorDrop(drop)
     }*/*/
 
-    @EventHandler fun onBlockDropItems(e: BlockDropItemEvent) {
-        autoSmelt(e)
-    }
-    private fun autoSmelt(e: BlockDropItemEvent) {
-        if (CustomEnchantments.AUTOSMELT !in e.player.inventory.itemInMainHand.enchantments) return
-        for (drop in e.items) {
-            drop.itemStack.smelt()
-            if (drop.itemStack.type == Material.RAW_GOLD_BLOCK) drop.itemStack.type = Material.GOLD_BLOCK
-            if (drop.itemStack.type == Material.RAW_IRON_BLOCK) drop.itemStack.type = Material.IRON_BLOCK
-            if (drop.itemStack.type == Material.RAW_COPPER_BLOCK) drop.itemStack.type = Material.COPPER_BLOCK
-        }
-        CustomEffects.particle(Particle.FLAME.builder(), e.block.location.add(Vector(0.5, 0.5, 0.5)), 10, 0.5)
-    }
+
 
     /*@EventHandler fun onCrossbowLoad(e: EntityLoadCrossbowEvent) {
         //redstoneRepeaterLoad(e)
@@ -1185,7 +880,7 @@ class ItemListeners: Listener, Runnable {
         (e.dismounted as Horse).clearActivePotionEffects()
     }*/
 
-    @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
+    /*@EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         //windHookLand(e)
         //redstoneRepeaterLand(e)
         //multiloadShotgunLand(e)
@@ -1241,7 +936,7 @@ class ItemListeners: Listener, Runnable {
         (e.hitEntity as Player).isGliding = false
         //(e.hitEntity as Player).setCool
     }*/
-    private fun assassinsCloakDodge(e: ProjectileHitEvent) {
+    /*private fun assassinsCloakDodge(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.hitEntity == null || e.hitEntity!! !is Player) return
         val hit = e.hitEntity as Player
@@ -1254,7 +949,7 @@ class ItemListeners: Listener, Runnable {
         e.isCancelled = true
         e.entity.remove()
         CustomEffects.playSound(hit.location, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.2F)
-    }
+    }*/*/
 
     /*@EventHandler fun onProjectileLaunch(e: ProjectileLaunchEvent) {
         customArrows(e)
@@ -1630,11 +1325,11 @@ class ItemListeners: Listener, Runnable {
         e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
     }*/*/
 
-    @EventHandler fun onInteract(e: PlayerInteractEvent) {
+    /*@EventHandler fun onInteract(e: PlayerInteractEvent) {
         //jerryIdolPlace(e)
         //villagerPlace(e)
         //fangedStaffTick(e)
-        cancelProjectileCharge(e)
+        //cancelProjectileCharge(e)
         //arrowCountRedstoneRepeater(e)
         //polarizedMagnet(e)
         //lastPrism(e)
@@ -1643,7 +1338,7 @@ class ItemListeners: Listener, Runnable {
         //netheriteMultitool(e)
         //pocketknifeMultitool(e)
         //hoeHoe(e)
-        ancientTome(e)
+        //ancientTome(e)
         //enderBlade(e)
         //autoSmeltUpgrade(e)
         //soulCrystal(e)
@@ -1657,16 +1352,9 @@ class ItemListeners: Listener, Runnable {
         //jetpackController(e)
         //reinforcedCagePlace(e)
         //darkSteelRapierActivate(e)
-    }
-    private fun cancelProjectileCharge(e: PlayerInteractEvent) {
-        if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
-        if (e.item == null) return
-        if (e.item!!.type != Material.BOW && e.item!!.type != Material.CROSSBOW) return
-        for (custom in arrayOf(CustomItem.WIND_HOOK)) {
-            if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
-        }
-    }
-    private fun ancientTome(e: PlayerInteractEvent) {
+    }*/
+
+    /*private fun ancientTome(e: PlayerInteractEvent) {
         var tome: ItemStack? = null
         for (custom in arrayOf<CustomItem>()) if (e.player.inventory.itemInOffHand.isItem(custom)) tome = e.player.inventory.itemInOffHand
         if (tome == null) return
@@ -1678,7 +1366,7 @@ class ItemListeners: Listener, Runnable {
         enchantable.addUnsafeEnchantment(tomeEnchant.key, tomeEnchant.value)
         tome.amount -= 1
         CustomEffects.playSound(e.player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1.0F, 1.1F)
-    }
+    }*/
     /*/*private fun jerryIdolPlace(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK) return
         if (e.item == null) return
@@ -2328,45 +2016,6 @@ class ItemListeners: Listener, Runnable {
         })
     }*/
 
-    @EventHandler fun onItemCraft(e: CraftItemEvent) {
-        cancelCustomCrafts(e)
-        duplicateArmorTrims(e)
-    }
-    private fun cancelCustomCrafts(e: CraftItemEvent) {
-        for (item in e.inventory) {
-            if (item == null) continue
-            if (item.itemMeta == null) continue
-            if (item.getTag<Int>("id") != null) e.isCancelled = true
-        }
-    }
-    private fun duplicateArmorTrims(e: CraftItemEvent) {
-        val result = e.recipe.result
-        if (result.type !in arrayOf(
-            Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
-            Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
-            Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,
-            Material.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
-            Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Material.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
-        )) return
-        if (e.inventory.getItem(2)!!.enchantments[CustomEnchantments.DUPLICATE] == 1) {
-            e.whoClicked.sendMessage(text("You cannot use duplicated trims in this recipe.", Utils.FAILED_COLOR))
-            (e.whoClicked as Player).playSound(e.whoClicked, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
-            e.isCancelled = true
-            return
-        }
-        if (e.isShiftClick) {
-            e.isCancelled = true
-            return
-        }
-        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-            if (e.inventory.getItem(2)?.type != result.type) {
-                val newResult = ItemStack(result.type)
-                e.inventory.setItem(2, newResult)
-            } else {
-                e.inventory.getItem(2)!!.amount = 2
-            }
-        })
-    }
     /*@EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
         if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
                 CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
@@ -2588,15 +2237,7 @@ class ItemListeners: Listener, Runnable {
         }
     }*/
 
-    private val tasks = mutableListOf<Int>()
-    fun cancelTasks() {
-        for (task in tasks) {
-            Bukkit.getScheduler().cancelTask(task)
-        }
-        mainFuture.cancel()
-    }
-
-    private var counter: Int = 0
+    /*private var counter: Int = 0
     private lateinit var mainFuture: BukkitTask
 
     override fun run() {
@@ -2612,51 +2253,51 @@ class ItemListeners: Listener, Runnable {
                 }
             }*/
             //ender blade crit, elytra disable time reduce time
-            if ((counter % 20) == 0) {
+            /*if ((counter % 20) == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
                     //decrementOneSecond(player)
                     assassinsSetUpdate(player)
                 }
-            }
+            }*/
             //fang staff aura
-            if ((counter % 10) == 0) {
+            /*if ((counter % 10) == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
                     decrementTenTicks(player)
                 }
-            }
+            }*/
             //fang staff hold right click
-            if (counter % 6 == 0) {
+            /*if (counter % 6 == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
-                    evokerStaffTick(player)
-                    lastPrismTick(player)
-                    pewmaticHornTick(player)
+                    //evokerStaffTick(player)
+                    //lastPrismTick(player)
+                    //pewmaticHornTick(player)
                 }
-            }
+            }*/
             //pewmatic horn shoot
-            if (counter % 4 == 0) {
+            /*if (counter % 4 == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
-                    pewmaticHornShoot(player)
-                    graveInvulnerabilityTick(player)
+                    //pewmaticHornShoot(player)
+                    //graveInvulnerabilityTick(player)
                 }
-            }
+            }*/
             //zap debuff tick
-            if (counter % 2 == 0) {
+            /*if (counter % 2 == 0) {
                 for (player in Bukkit.getServer().onlinePlayers) {
-                    lastPrismZapDebuffTick(player)
+                    //lastPrismZapDebuffTick(player)
                 }
-            }
+            }*/
             for (player in Bukkit.getServer().onlinePlayers) {
-                windHookPull(player)
-                polarizedMagnetPull(player)
-                lastPrismDamage(player)
-                surfaceToAirMissile(player)
-                homingWindChargeUpdate(player)
-                updateJetpack(player)
+                //windHookPull(player)
+                //polarizedMagnetPull(player)
+                //lastPrismDamage(player)
+                //surfaceToAirMissile(player)
+                //homingWindChargeUpdate(player)
+                //updateJetpack(player)
             }
         }, 0L, 1L)
-    }
+    }*/
 
-    private fun assassinsSetUpdate(player: Player) {
+    /*private fun assassinsSetUpdate(player: Player) {
         if (player.getAttribute(Attribute.MOVEMENT_SPEED)!!.getModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed")) != null) {
             player.getAttribute(Attribute.MOVEMENT_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed"))
             player.getAttribute(Attribute.ATTACK_DAMAGE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsdamage"))
@@ -2677,8 +2318,8 @@ class ItemListeners: Listener, Runnable {
         player.getAttribute(Attribute.ATTACK_DAMAGE)!!.addModifier(AttributeModifier(NamespacedKey(CustomItems.plugin, "assassinsdamage"), 0.6 * currentStep, AttributeModifier.Operation.ADD_NUMBER))
         player.getAttribute(Attribute.ATTACK_SPEED)!!.addModifier(AttributeModifier(NamespacedKey(CustomItems.plugin, "assassinsattackspeed"), 0.02 * currentStep, AttributeModifier.Operation.ADD_NUMBER))
         player.getAttribute(Attribute.SCALE)!!.addModifier(AttributeModifier(NamespacedKey(CustomItems.plugin, "assassinsscale"), -0.03 * currentStep, AttributeModifier.Operation.ADD_NUMBER))
-    }
-    private fun updateJetpack(player: Player) {
+    }*/
+    /*private fun updateJetpack(player: Player) {
         val jetpackEquipped = player.inventory.chestplate?.isItem(CustomItem.JETPACK) ?: false
         val jetpackActive = player.getTag<Boolean>("jetpackactive") ?: false
         if (jetpackActive && player.isInCombat()) {
@@ -2733,7 +2374,7 @@ class ItemListeners: Listener, Runnable {
             player.inventory.chestplate!!.removeAttr()
             player.inventory.chestplate!!.attr("ARM+8.0CH","ART+3.0CH","KNR+0.1CH", "GRA${gravityString}CH", "FAD-1.0CH")
         }
-    }
+    }*/
     /*private fun armorEffectApply(player: Player) {
         if (player.inventory.chestplate?.isItem(CustomItem.TURTLE_SHELL) == true) player.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, 65, 0, false, false))
         if (player.inventory.chestplate?.isItem(CustomItem.BERSERKER_CHESTPLATE) == true) player.addPotionEffect(PotionEffect(PotionEffectType.STRENGTH, 65, 0, false, false))
@@ -2743,7 +2384,7 @@ class ItemListeners: Listener, Runnable {
         if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) player.addPotionEffect(PotionEffect(PotionEffectType.WATER_BREATHING, 65, 0, false, false))
         if (player.inventory.boots?.isItem(CustomItem.AQUEOUS_SANDALS) == true) player.addPotionEffect(PotionEffect(PotionEffectType.CONDUIT_POWER, 65, 0, false, false))
     }*/
-    private fun homingWindChargeUpdate(player: Player) {
+    /*private fun homingWindChargeUpdate(player: Player) {
         for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
             if (entity.type != EntityType.WIND_CHARGE) continue
             if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
@@ -2757,8 +2398,8 @@ class ItemListeners: Listener, Runnable {
             val newDirection = entity.velocity.rotateAroundAxis(cross, angle.coerceAtMost((Math.PI / 24).toFloat()).toDouble())
             entity.velocity = newDirection
         }
-    }
-    private fun surfaceToAirMissile(player: Player) {
+    }*/
+    /*private fun surfaceToAirMissile(player: Player) {
         for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
             if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) continue
             if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
@@ -2769,8 +2410,8 @@ class ItemListeners: Listener, Runnable {
             val newDirection = target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0))
             entity.velocity = newDirection.normalize().multiply((target.location.subtract(entity.location).length() / 8).coerceAtLeast(8.0))
         }
-    }
-    private fun lastPrismDamage(player: Player) {
+    }*/
+    /*private fun lastPrismDamage(player: Player) {
         if ((player.getTag<Int>("lastprismcounter") ?: 0) > 12) {
             val facing = player.location.direction.normalize().clone().multiply(0.1)
             val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
@@ -2796,8 +2437,8 @@ class ItemListeners: Listener, Runnable {
                 }
             }
         }
-    }
-    private fun polarizedMagnetPull(player: Player) {
+    }*/
+    /*private fun polarizedMagnetPull(player: Player) {
         if ((player.getTag<Int>("polarizedmagnetpulling") ?: 0) > 0) {
             for (entity in player.getNearbyEntities(7.0, 7.0, 7.0)) {
                 if (entity is EnderPearl || entity is Arrow) continue
@@ -2815,8 +2456,8 @@ class ItemListeners: Listener, Runnable {
                 entity.velocity = entity.velocity.add(dist)
             }
         }
-    }
-    private fun windHookPull(player: Player) {
+    }*/
+    /*private fun windHookPull(player: Player) {
         if ((player.getTag<Int>("windhookpulltime") ?: 0) > 0) {
             val timeLeft = player.getTag<Int>("windhookpulltime")!!
             player.setTag("windhookpulltime", timeLeft - 1)
@@ -2842,15 +2483,15 @@ class ItemListeners: Listener, Runnable {
                 )
             }
         }
-    }
-    private fun lastPrismZapDebuffTick(player: Player) {
+    }*/
+    /*private fun lastPrismZapDebuffTick(player: Player) {
         if (player.getTag<Int>("lastprismzapdebuff") != 0 && player.getTag<Int>("lastprismzapdebuff") != null) {
             player.damage(2.0, DamageSource.builder(DamageType.LIGHTNING_BOLT).build())
             player.noDamageTicks = 0
             player.setTag("lastprismzapdebuff", player.getTag<Int>("lastprismzapdebuff")!! - 1)
         }
-    }
-    private fun graveInvulnerabilityTick(player: Player) {
+    }*/
+    /*private fun graveInvulnerabilityTick(player: Player) {
         if ((player.getTag<Int>("graveinvulnerability") ?: 0) > 0) {
             player.setTag("graveinvulnerability", player.getTag<Int>("graveinvulnerability")!! - 1)
             if (player.getTag<Int>("graveinvulnerability")!! == 0) {
@@ -2864,8 +2505,8 @@ class ItemListeners: Listener, Runnable {
                 player.isInvulnerable = false
             }
         }
-    }
-    private fun pewmaticHornShoot(player: Player) {
+    }*/
+    /*private fun pewmaticHornShoot(player: Player) {
         if ((player.getTag<Int>("pewmatichorncounter") ?: 0) > 12) {
             val facing = player.location.direction.normalize().clone().multiply(0.1)
             val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
@@ -2946,8 +2587,8 @@ class ItemListeners: Listener, Runnable {
             player.setTag("pewmatichorncounter", 0)
         }
         player.setTag("pewmatichornused", false)
-    }
-    private fun lastPrismTick(player: Player) {
+    }*/
+    /*private fun lastPrismTick(player: Player) {
         if (player.getTag<Boolean>("lastprismused") == true) {
             player.setTag("lastprismcounter", (player.getTag<Int>("lastprismcounter") ?: 0) + 1)
             val lastPrismCount = player.getTag<Int>("lastprismcounter")!!
@@ -2968,8 +2609,8 @@ class ItemListeners: Listener, Runnable {
             player.setTag("lastprismcounter", 0)
         }
         player.setTag("lastprismused", false)
-    }
-    private fun evokerStaffTick(player: Player) {
+    }*/
+    /*private fun evokerStaffTick(player: Player) {
         if (player.getTag<Int>("evokerstaffcounter") == 13) {
             player.setCooldown(CustomItem.FANGED_STAFF, 55.0, "Vexing")
             castFangStaffVexing(player)
@@ -2995,7 +2636,7 @@ class ItemListeners: Listener, Runnable {
             castFangStaffVexing(player)
             player.setTag("evokerstafftime", player.getTag<Int>("evokerstafftime")!! - 1)
         }
-    }
+    }*/
     /*private fun decrementOneSecond(player: Player) {
         if (player.getTag<Int>("enderbladecrittime") != 0 && player.getTag<Int>("enderbladecrittime") != null) {
             player.setTag("enderbladecrittime", player.getTag<Int>("enderbladecrittime")!! - 1)
@@ -3013,7 +2654,7 @@ class ItemListeners: Listener, Runnable {
             }
         }
     }*/
-    private fun castFangStaffVexing(p: Player) {
+    /*private fun castFangStaffVexing(p: Player) {
         val centerLoc = p.location.clone().add(Vector(0.0, 1.6, 0.0))
         CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), centerLoc, 5.5, 60)
         for (entity in p.getNearbyEntities(7.0, 10.0, 7.0)) {
@@ -3023,5 +2664,5 @@ class ItemListeners: Listener, Runnable {
                 entity.noDamageTicks = 0
             }
         }
-    }
+    }*/
 }

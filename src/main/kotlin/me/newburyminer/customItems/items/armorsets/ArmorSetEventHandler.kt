@@ -11,7 +11,9 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
 
@@ -26,8 +28,6 @@ class ArmorSetEventHandler: Listener {
         private fun dispatch(
             player: Player,
             event: Event,
-            source: Entity? = null,
-            target: Entity? = null
         ) {
             val setMap = mutableMapOf<ArmorSet, Int>()
             val armor = player.inventory.armorContents
@@ -54,5 +54,15 @@ class ArmorSetEventHandler: Listener {
 
     @EventHandler fun onPlayerSneak(e: PlayerToggleSneakEvent) {
         dispatch(e.player, e)
+    }
+
+    @EventHandler fun onDamage(e: EntityDamageEvent) {
+        val player = e.entity as? Player ?: return
+        dispatch(player, e)
+    }
+
+    @EventHandler fun onProjectileHit(e: ProjectileHitEvent) {
+        val player = e.hitEntity as? Player ?: return
+        dispatch(player, e)
     }
 }
