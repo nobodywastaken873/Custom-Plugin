@@ -16,7 +16,6 @@ import me.newburyminer.customItems.entities.EntityListeners
 import me.newburyminer.customItems.entities.bosses.BossListeners
 import me.newburyminer.customItems.entities.bosses.CustomBoss
 import me.newburyminer.customItems.gui.GuiListeners
-import me.newburyminer.customItems.helpers.AttributeManager
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
@@ -47,7 +46,6 @@ class CustomItems : JavaPlugin() {
 
     private lateinit var cooldownTask: BukkitTask
     private lateinit var entityListener: EntityListeners
-    private lateinit var attributeListener: AttributeManager
     private lateinit var systemsListener: SystemsListener
 
     override fun onEnable() {
@@ -66,7 +64,6 @@ class CustomItems : JavaPlugin() {
         Recipes.init()
         entityListener = EntityListeners()
         bossListener = BossListeners()
-        attributeListener = AttributeManager()
         systemsListener = SystemsListener()
         registerListeners()
         systemsListener.run()
@@ -75,7 +72,6 @@ class CustomItems : JavaPlugin() {
         EffectManager.runTaskTimer(this, 0L, 1L)
         entityListener.run()
         bossListener.run()
-        attributeListener.run()
         MaterialConverterBootstrapper.registerAll()
         CustomEffectBootstrapper.registerAll()
     }
@@ -139,7 +135,6 @@ class CustomItems : JavaPlugin() {
         cooldownTask.cancel()
         entityListener.cancel()
         bossListener.cancelAll()
-        attributeListener.cancel()
         systemsListener.cancel()
         PlayerTaskHandler.cancelAll()
         closeMenus()
