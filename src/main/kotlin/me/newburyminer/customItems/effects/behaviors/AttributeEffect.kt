@@ -14,12 +14,12 @@ open class AttributeEffect(private val attributeData: AttributeData): EffectBeha
 
     init {
         val shortId = UUID.randomUUID().toString().substring(0, 8)
-        key = NamespacedKey(CustomItems.plugin, "AttributeEffect:${attributeData.attribute},${attributeData.amount},${shortId}")
+        key = NamespacedKey(CustomItems.plugin, "AttributeEffect.${attributeData.attribute}.${attributeData.amount}.${shortId}")
     }
 
     override fun onApply(player: Player) {
         val modifier = AttributeModifier(key, attributeData.amount, attributeData.operation)
-        player.getAttribute(attributeData.attribute)?.modifiers?.add(modifier)
+        player.getAttribute(attributeData.attribute)?.addModifier(modifier)
     }
 
     override fun onRemove(player: Player) {

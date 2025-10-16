@@ -87,7 +87,7 @@ class WindHook: CustomItemDefinition {
             val direction = pullLoc.subtract(player.location)
 
             if (direction.length() < 6.0) pullTime[uuid] = 0
-            val toAdd = direction.toVector().normalize().multiply(3)
+            val toAdd = direction.toVector().normalize().multiply(1.5)
             player.velocity = toAdd.clone().add(Vector(0.0, 0.4, 0.0))
             CustomEffects.particleLine(
                 Particle.DOLPHIN.builder(), player.location, pullLoc, 400

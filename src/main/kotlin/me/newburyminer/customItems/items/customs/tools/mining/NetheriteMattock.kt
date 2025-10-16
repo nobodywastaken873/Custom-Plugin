@@ -58,8 +58,6 @@ class NetheriteMattock: CustomItemDefinition {
                 //if (newMeta.damage == 2031) {item.amount = 0; CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)}
                 item.itemMeta = newMeta
                 if (newMeta.damage == 2031) {
-                    val event = PlayerItemBreakEvent(e.player, item)
-                    Bukkit.getPluginManager().callEvent(event)
                     CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)
                 }
             }

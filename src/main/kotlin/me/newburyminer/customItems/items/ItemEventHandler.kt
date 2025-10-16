@@ -191,11 +191,6 @@ class ItemEventHandler: Listener {
         handleArmor(player, e)
     }
 
-    @EventHandler fun playerMoveEvent(e: PlayerMoveEvent) {
-        val boots = e.player.inventory.boots ?: return
-        dispatch(e.player, boots, e, EventItemType.BOOTS)
-    }
-
     @EventHandler fun toggleFlightEvent(e: PlayerToggleFlightEvent) {
         if (e.player.gameMode in arrayOf(GameMode.ADVENTURE, GameMode.SURVIVAL)) e.isCancelled = true
         val boots = e.player.inventory.boots ?: return

@@ -53,12 +53,13 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
                 val shooter = ctx.player ?: return
                 val crossbow = ctx.item ?: return
                 if (!(e.entity.shooter!! as Player).offCooldown(CustomItem.SURFACE_TO_AIR_MISSILE)) {e.isCancelled = true; return}
+                shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
                 var flyer: Player? = null
                 for (player in shooter.location.getNearbyPlayers(120.0)) {
                     if (player == e.entity.shooter) continue
                     if (player.isGliding) flyer = player
                 }
-                if (flyer == null) {e.isCancelled = true; return}
+                if (flyer == null) { e.isCancelled = true; return }
                 e.entity.setTag("target", flyer.uniqueId)
                 shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
                 e.entity.setTag("id", CustomEntity.ELYTRA_BREAKER_ARROW.id)
