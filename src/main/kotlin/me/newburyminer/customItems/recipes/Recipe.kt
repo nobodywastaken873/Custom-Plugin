@@ -7,15 +7,11 @@ import org.bukkit.inventory.ItemStack
 
 //NEED NBT IN NON-CUSTOM ITEMS AND MAYBE CUSTOM TOO
 //advancement check
-data class Recipe(val items: List<List<RecipeItemBase?>>, val resultItem: ItemStack) {
+data class Recipe(val items: List<List<RecipeItemBase?>>, private val resultItem: ItemStack) {
 
     fun matches(otherGrid: List<List<ItemStack?>>): Boolean {
 
-        var logging = false
-        if (resultItem.isItem(CustomItem.JERRY_IDOL)) logging = true
-
         for (row in 0..4) for (col in 0..4) {
-            if (logging) {println("row: $row, col: $col")}
             val gridItem = items[row][col]
             val otherItem = otherGrid[row][col]
 
@@ -27,6 +23,10 @@ data class Recipe(val items: List<List<RecipeItemBase?>>, val resultItem: ItemSt
 
         return true
 
+    }
+
+    fun getResultItem(): ItemStack {
+        return resultItem.clone()
     }
 
 

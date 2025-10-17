@@ -65,7 +65,7 @@ class GuiInventory(val name: String): InventoryHolder {
                     newRecipeInv[recipeSlots[i]] = gray()
                     continue
                 }
-                newRecipeInv[recipeSlots[i]] = recipe.resultItem
+                newRecipeInv[recipeSlots[i]] = recipe.getResultItem()
             }
             return newRecipeInv
         }
@@ -82,7 +82,7 @@ class GuiInventory(val name: String): InventoryHolder {
                     ++index
                 }
             }
-            recipeInv[25] = recipe.resultItem.lock()
+            recipeInv[25] = recipe.getResultItem().lock()
             recipeInv[49] = back(backPage)
             return recipeInv
         }

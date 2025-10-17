@@ -733,8 +733,7 @@ class Utils {
         }
         fun ItemStack.lock(): ItemStack{
             this.setTag("locked", true)
-            val newItem = ItemStack(this)
-            return newItem
+            return this
         }
         fun ItemStack.getCustom(): CustomItem? {
             val id = this.getTag<Int>("id") ?: return null

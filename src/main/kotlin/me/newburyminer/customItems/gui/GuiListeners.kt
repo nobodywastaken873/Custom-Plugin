@@ -65,7 +65,7 @@ class GuiListeners: Listener {
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 result = Recipes.checkForRecipe(e.inventory)
                 if (result == null) e.inventory.setItem(25, GuiInventory.gray())
-                else e.inventory.setItem(25, result!!.resultItem.clone())
+                else e.inventory.setItem(25, result!!.getResultItem())
                 (e.whoClicked as Player).playSound(e.whoClicked, Sound.UI_TOAST_CHALLENGE_COMPLETE, 2.0F, 0.95F)
                 //for (allplayer in Bukkit.getServer().onlinePlayers) allplayer.sendMessage(Utils.text("${(e.whoClicked as Player).name} has crafted ${result!!.resultItem.getCustom()!!.realName}"))
             })
@@ -352,7 +352,7 @@ class GuiListeners: Listener {
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 val result = Recipes.checkForRecipe(e.inventory)
                 if (result == null) e.inventory.setItem(25, GuiInventory.gray())
-                else e.inventory.setItem(25, result.resultItem.clone())
+                else e.inventory.setItem(25, result.getResultItem())
             })
         }
     }
@@ -364,7 +364,7 @@ class GuiListeners: Listener {
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 val result = Recipes.checkForRecipe(e.inventory)
                 if (result == null) e.inventory.setItem(25, GuiInventory.gray())
-                else e.inventory.setItem(25, result.resultItem.clone())
+                else e.inventory.setItem(25, result.getResultItem())
             })
         }
     }
