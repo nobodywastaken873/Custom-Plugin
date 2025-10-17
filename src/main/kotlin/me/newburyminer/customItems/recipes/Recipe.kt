@@ -1,21 +1,17 @@
 package me.newburyminer.customItems.recipes
 
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.ItemRegistry
-import org.bukkit.Material
-import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
 
 //NEED NBT IN NON-CUSTOM ITEMS AND MAYBE CUSTOM TOO
 //advancement check
-data class Recipe(val grid: List<List<RecipeItemBase?>>, val result: ItemStack) {
+data class Recipe(val items: List<List<RecipeItemBase?>>, val resultItem: ItemStack) {
 
     fun matches(otherGrid: List<List<ItemStack?>>): Boolean {
 
         for (row in 0..4) for (col in 0..4) {
 
-            val gridItem = grid[row][col]
+            val gridItem = items[row][col]
             val otherItem = otherGrid[row][col]
 
             if (gridItem == null && otherItem == null) continue

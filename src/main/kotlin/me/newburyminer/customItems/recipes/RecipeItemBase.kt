@@ -4,4 +4,5 @@ import org.bukkit.inventory.ItemStack
 
 interface RecipeItemBase {
     fun matches(other: ItemStack?): Boolean
+    fun getItem(): ItemStack
 }

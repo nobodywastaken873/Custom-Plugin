@@ -89,6 +89,10 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
         return true
     }
 
+    override fun getItem(): ItemStack {
+        return item.clone()
+    }
+
     fun ench(vararg enchantments: String): RecipeItem {
         enchantments.forEach { item.ench(it) }
         flags["enchantments"] = true

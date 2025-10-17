@@ -75,7 +75,8 @@ class GuiInventory(val name: String): InventoryHolder {
             val recipeSlots = arrayOf(1, 2, 3, 4, 5, 10,11,12,13,14,19,20,21,22,23,28,29,30,31,32,37,38,39,40,41)
             var index = 0
             for (row in recipe.items) {
-                for (item in row) {
+                for (recipeItem in row) {
+                    val item = recipeItem?.getItem()
                     if (item == null) recipeInv[recipeSlots[index]] = gray()
                     else recipeInv[recipeSlots[index]] = item.lock()
                     ++index
