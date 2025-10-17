@@ -19,6 +19,7 @@ import me.newburyminer.customItems.gui.GuiListeners
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
+import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.recipes.Recipes
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.EnchantmentListener
@@ -62,7 +63,7 @@ class CustomItems : JavaPlugin() {
         CustomBoss.init()
         ItemBootstrapper.registerAll(this)
         ArmorSetBootstrapper.registerAll(this)
-        Recipes.init()
+        RecipeRegistry.registerAll()
         entityListener = EntityListeners()
         bossListener = BossListeners()
         systemsListener = SystemsListener()

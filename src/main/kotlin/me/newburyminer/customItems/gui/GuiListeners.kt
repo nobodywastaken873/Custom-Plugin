@@ -58,7 +58,7 @@ class GuiListeners: Listener {
             for (row in result!!.items) {
                 for (item in row) {
                     if (e.inventory.getItem(slots[index]) == null) {++index; continue}
-                    e.inventory.getItem(slots[index])!!.amount -= item?.amount ?: 0
+                    e.inventory.getItem(slots[index])!!.amount -= item?.getItem()?.amount ?: 0
                     ++index
                 }
             }

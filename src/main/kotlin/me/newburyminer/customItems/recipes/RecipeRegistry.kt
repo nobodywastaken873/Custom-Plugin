@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionType
 
 object RecipeRegistry {
 
-    val recipes: MutableList<Recipe> = mutableListOf<Recipe>()
+    val recipes: MutableList<Recipe> = mutableListOf()
 
     private fun recipe(applyRecipe: RecipeBuilder.() -> Unit) {
         val builder = RecipeBuilder()

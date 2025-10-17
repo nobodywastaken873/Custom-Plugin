@@ -28,7 +28,7 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
     override fun matches(other: ItemStack?): Boolean {
         if (other == null) return false
         if (other.type != item.type) return false
-        if (other.amount != item.amount) return false
+        if (other.amount < item.amount) return false
         val activeFlags = flags.filterValues { it }.keys.toList()
         val allFlagsMatch = checkFlags(other, activeFlags)
         return allFlagsMatch
