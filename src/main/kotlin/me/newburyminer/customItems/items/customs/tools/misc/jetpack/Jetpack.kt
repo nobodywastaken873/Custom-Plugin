@@ -9,7 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.noNoiseEquippable
-import me.newburyminer.customItems.Utils.Companion.removeAttr
+import me.newburyminer.customItems.Utils.Companion.removeAllAttributes
 import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
@@ -54,7 +54,7 @@ class Jetpack: CustomItemDefinition {
         }
         if (!jetpackEquipped && !jetpackActive) return
         if (!jetpackActive) {
-            player.inventory.chestplate!!.removeAttr()
+            player.inventory.chestplate!!.removeAllAttributes()
             player.inventory.chestplate!!.attr("ARM+8.0CH","ART+3.0CH","KNR+0.1CH")
         } else if (jetpackEquipped) {
             var controller: ItemStack? = null
@@ -97,7 +97,7 @@ class Jetpack: CustomItemDefinition {
                 //Bukkit.getLogger().info("hovering")
             }
             val gravityString = if (grav >= 0.0) "+$grav" else grav.toString()
-            player.inventory.chestplate!!.removeAttr()
+            player.inventory.chestplate!!.removeAllAttributes()
             player.inventory.chestplate!!.attr("ARM+8.0CH","ART+3.0CH","KNR+0.1CH", "GRA${gravityString}CH", "FAD-1.0CH")
         }
     }

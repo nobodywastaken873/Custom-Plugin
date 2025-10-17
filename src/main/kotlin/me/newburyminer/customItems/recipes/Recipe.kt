@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.recipes
 
+import me.newburyminer.customItems.Utils.Companion.isItem
+import me.newburyminer.customItems.items.CustomItem
 import org.bukkit.inventory.ItemStack
 
 
@@ -9,8 +11,11 @@ data class Recipe(val items: List<List<RecipeItemBase?>>, val resultItem: ItemSt
 
     fun matches(otherGrid: List<List<ItemStack?>>): Boolean {
 
-        for (row in 0..4) for (col in 0..4) {
+        var logging = false
+        if (resultItem.isItem(CustomItem.JERRY_IDOL)) logging = true
 
+        for (row in 0..4) for (col in 0..4) {
+            if (logging) {println("row: $row, col: $col")}
             val gridItem = items[row][col]
             val otherItem = otherGrid[row][col]
 

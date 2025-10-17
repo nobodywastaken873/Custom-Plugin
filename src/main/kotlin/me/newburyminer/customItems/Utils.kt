@@ -37,7 +37,6 @@ import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.FurnaceRecipe
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.*
 import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.potion.PotionEffect
@@ -653,16 +652,6 @@ class Utils {
             }
             return totalAttr
         }
-        private fun Double.trimToString(): String {
-            val initial = this.toString()
-            var endIndex = (initial.length - 1).coerceAtMost(6)
-            while (initial[endIndex] == "0".first() || initial[endIndex] == ".".first()) {
-                if (endIndex == 0) break
-                endIndex--
-                if (initial[endIndex] == ".".first()) break
-            }
-            return initial.substring(0, endIndex + 1)
-        }
         fun ItemStack.setArmorSet(armorSet: ArmorSet): ItemStack {
             this.setTag("armorset", armorSet.name)
             return this
@@ -743,10 +732,8 @@ class Utils {
             return this
         }
         fun ItemStack.lock(): ItemStack{
-            val newMeta = this.itemMeta
-            newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, "locked"), PersistentDataType.BOOLEAN, true)
+            this.setTag("locked", true)
             val newItem = ItemStack(this)
-            newItem.itemMeta = newMeta
             return newItem
         }
         fun ItemStack.getCustom(): CustomItem? {
@@ -765,12 +752,6 @@ class Utils {
         }
         fun ItemStack.name(string: String): ItemStack {
             this.setData(DataComponentTypes.CUSTOM_NAME, text(string))
-            return this
-        }
-        fun ItemStack.customModel(id: Int): ItemStack {
-            val newMeta = this.itemMeta
-            newMeta.setCustomModelData(id)
-            this.itemMeta = newMeta
             return this
         }
         fun ItemStack.maxDura(max: Int): ItemStack {
@@ -794,16 +775,16 @@ class Utils {
         }
         fun ItemStack.food(food: Int, sat: Float, canAlwaysEat: Boolean = false): ItemStack {
             val foodMeta = FoodProperties.food().nutrition(food).saturation(sat).canAlwaysEat(canAlwaysEat)
-            this.setData(DataComponentTypes.FOOD, foodMeta)
+            this.setData(DataComponentTypes.FOOD, foodMeta.build())
             return this
         }
         fun ItemStack.consumable(eff: Array<ConsumeEffect> = arrayOf(), eatSeconds: Float = 1.61F): ItemStack {
             val consumable = Consumable.consumable().consumeSeconds(eatSeconds).addEffects(eff.toMutableList())
-            this.setData(DataComponentTypes.CONSUMABLE, consumable)
+            this.setData(DataComponentTypes.CONSUMABLE, consumable.build())
             return this
         }
         fun ItemStack.attr(vararg attrs: String): ItemStack {
-            val newMeta = this.itemMeta
+            val newData = ItemAttributeModifiers.itemAttributes()
             for (attr in attrs) {
                 val attrType: Attribute = when (attr.substring(0, 3)) {
                     "ARM" -> Attribute.ARMOR
@@ -848,54 +829,43 @@ class Utils {
                     else -> EquipmentSlotGroup.HAND
                 }
                 if (attr[attr.lastIndex-2].toString() == "%") {
-
-                    newMeta.addAttributeModifier(attrType,
-                        AttributeModifier(NamespacedKey(CustomItems.plugin, UUID.randomUUID().toString()),
+                    newData.addModifier(
+                        attrType,
+                        AttributeModifier(
+                            NamespacedKey(CustomItems.plugin, UUID.randomUUID().toString()),
                             attr.substring(3, attr.lastIndex-2).toDouble(),
                             AttributeModifier.Operation.ADD_SCALAR,
                             slot
-                        ))
+                        )
+                    )
                 } else if (attr[attr.lastIndex-2].isDigit()) {
-                    newMeta.addAttributeModifier(attrType,
-                        AttributeModifier(NamespacedKey(CustomItems.plugin, UUID.randomUUID().toString()),
+                    newData.addModifier(
+                        attrType,
+                        AttributeModifier(
+                            NamespacedKey(CustomItems.plugin, UUID.randomUUID().toString()),
                             attr.substring(3, attr.lastIndex-1).toDouble(),
                             AttributeModifier.Operation.ADD_NUMBER,
                             slot
-                        ))
+                        )
+                    )
                 }
             }
-            this.itemMeta = newMeta
+            this.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, newData.build())
             return this
         }
-        fun ItemStack.removeAttr(): ItemStack {
-            val newMeta = this.itemMeta
-            newMeta.removeAttributeModifier(EquipmentSlot.CHEST)
-            this.itemMeta = newMeta
+        fun ItemStack.removeAllAttributes(): ItemStack {
+            this.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.itemAttributes().build())
             return this
         }
-        fun ItemStack.tool(baseSpeed: Float, vararg mats: Pair<TagKey<BlockType>, Float>): ItemStack {
+        fun ItemStack.tool(duraBroken: Int, baseSpeed: Float, vararg mats: Pair<TagKey<BlockType>, Float>): ItemStack {
             val toolMeta = Tool.tool().defaultMiningSpeed(baseSpeed)
             for (mat in mats) {
                 toolMeta.addRule(Tool.rule(
                     RegistryAccess.registryAccess().getRegistry(RegistryKey.BLOCK).getTag(mat.first),
                     mat.second, TriState.TRUE))
             }
-            this.setData(DataComponentTypes.TOOL, toolMeta)
-            return this
-        }
-        fun ItemStack.tagTool(tag: Tag<Material>, speed: Float): ItemStack {
-            val newMeta = this.itemMeta
-            val toolMeta = newMeta.tool
-            toolMeta.addRule(tag, speed, true)
-            newMeta.setTool(toolMeta)
-            this.itemMeta = newMeta
-            return this
-        }
-        fun ItemStack.duraBroken(dura: Int): ItemStack {
-            val newMeta = this.itemMeta
-            val toolMeta = newMeta.tool
-            toolMeta.damagePerBlock = dura
-            this.itemMeta = newMeta
+            toolMeta.damagePerBlock(duraBroken)
+            this.setData(DataComponentTypes.TOOL, toolMeta.build())
             return this
         }
         fun ItemStack.resist(type: TagKey<DamageType>): ItemStack {
@@ -950,27 +920,24 @@ class Utils {
             return totalLines
         }
         fun ItemStack.trim(trim: ArmorTrim): ItemStack {
-            val newMeta = this.itemMeta as ArmorMeta
-            newMeta.trim = trim
-            this.itemMeta = newMeta
+            val trimData = ItemArmorTrim.itemArmorTrim(trim)
+            this.setData(DataComponentTypes.TRIM, trimData.build())
             return this
         }
         fun ItemStack.storeEnch(vararg enchs: String): ItemStack {
-            val enchMeta = this.itemMeta as EnchantmentStorageMeta
+            val enchData = ItemEnchantments.itemEnchantments()
             for (ench in enchs) {
                 val enchantment = convertEnch(ench)
-                enchMeta.addStoredEnchant(enchantment.first, enchantment.second, true)
+                enchData.add(enchantment.first, enchantment.second)
             }
-            this.itemMeta = enchMeta
+            this.setData(DataComponentTypes.STORED_ENCHANTMENTS, enchData.build())
             return this
         }
         fun ItemStack.firework(power: Int, vararg effects: FireworkEffect): ItemStack {
-            val fireworkMeta = this.itemMeta as FireworkMeta
-            fireworkMeta.power = power
-            for (effect in effects) {
-                fireworkMeta.addEffect(effect)
-            }
-            this.itemMeta = fireworkMeta
+            val newData = Fireworks.fireworks()
+            newData.flightDuration(power)
+            newData.addEffects(effects.toMutableList())
+            this.setData(DataComponentTypes.FIREWORKS, newData.build())
             return this
         }
         fun ItemStack.fireworkBooster(flightDuration: Int): ItemStack {
@@ -978,40 +945,24 @@ class Utils {
             return this
         }
         fun ItemStack.omimous(level: Int): ItemStack {
-            val ominousBottleMeta = this.itemMeta as OminousBottleMeta
-            ominousBottleMeta.amplifier = level
-            this.itemMeta = ominousBottleMeta
+            this.setData(DataComponentTypes.OMINOUS_BOTTLE_AMPLIFIER, OminousBottleAmplifier.amplifier(level))
             return this
         }
         fun ItemStack.basePotion(potionType: PotionType): ItemStack {
-            val potionMeta = this.itemMeta as PotionMeta
-            potionMeta.basePotionType = potionType
-            this.itemMeta = potionMeta
+            val contents = PotionContents.potionContents().potion(potionType).build()
+            this.setData(DataComponentTypes.POTION_CONTENTS, contents)
             return this
         }
         fun ItemStack.potion(color: Color, vararg effects: String): ItemStack {
-            val potionMeta = this.itemMeta as PotionMeta
-            potionMeta.color = color
-            for (effect in effects) {
-                potionMeta.addCustomEffect(convertPotion(effect), false)
-            }
-            this.itemMeta = potionMeta
-            return this
-        }
-        fun ItemStack.potionColor(color: Color): ItemStack {
-            val potionMeta = this.itemMeta as PotionMeta
-            potionMeta.color = color
-            this.itemMeta = potionMeta
+            val potionData = PotionContents.potionContents()
+            potionData.customColor(color)
+            val convertedEffects = effects.map { convertPotion(it) }
+            potionData.addCustomEffects(convertedEffects)
+            this.setData(DataComponentTypes.POTION_CONTENTS, potionData.build())
             return this
         }
         fun ItemStack.horn(horn: MusicInstrument): ItemStack {
-            val goatMeta = this.itemMeta as MusicInstrumentMeta
-            goatMeta.instrument = horn
-            this.itemMeta = goatMeta
-            return this
-        }
-        fun ItemStack.returnAmount(amt: Int): ItemStack {
-            this.amount = amt
+            this.setData(DataComponentTypes.INSTRUMENT, horn)
             return this
         }
         fun ItemStack.noNoiseEquippable(slot: EquipmentSlot): ItemStack {
@@ -1041,50 +992,19 @@ class Utils {
             return this
         }*/
 
-        fun ItemStack.useOriginal(): ItemStack {
-            this.setTag("checkoriginal", true)
-            return this
-        }
-        fun ItemStack.useStoredEnch(): ItemStack {
-            this.setTag("checkstoredenchant", true)
-            return this
-        }
-        fun ItemStack.useEnch(): ItemStack {
-            this.setTag("checkenchant", true)
-            return this
-        }
-        fun ItemStack.useTrim(): ItemStack {
-            this.setTag("checktrim", true)
-            return this
-        }
-        fun ItemStack.useOminous(): ItemStack {
-            this.setTag("checkominous", true)
-            return this
-        }
-        fun ItemStack.usePotion(): ItemStack {
-            this.setTag("checkpotion", true)
-            return this
-        }
-        fun ItemStack.useHorn(): ItemStack {
-            this.setTag("checkhorn", true)
-            return this
-        }
         fun ItemStack.crossbowProj(arrow: ItemStack, count: Int = 1): ItemStack {
-            val crossbowMeta = this.itemMeta as CrossbowMeta
-            for (i in 1..count) crossbowMeta.addChargedProjectile(arrow)
-            this.itemMeta = crossbowMeta
+            val crossbowData = ChargedProjectiles.chargedProjectiles()
+            for (i in 1..count) crossbowData.add(arrow)
+            this.setData(DataComponentTypes.CHARGED_PROJECTILES, crossbowData.build())
             return this
         }
         fun ItemStack.clearCrossbowProj(): ItemStack {
-            val crossbowMeta = this.itemMeta as CrossbowMeta
-            crossbowMeta.setChargedProjectiles(null)
-            this.itemMeta = crossbowMeta
+            this.setData(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectiles.chargedProjectiles())
             return this
         }
         fun ItemStack.reduceDura(amount: Int): ItemStack {
-            val newMeta = this.itemMeta as Damageable
-            newMeta.damage += amount
-            this.itemMeta = newMeta
+            val damage = this.getData(DataComponentTypes.DAMAGE) ?: 0
+            this.setData(DataComponentTypes.DAMAGE, damage + 1)
             return this
         }
     }

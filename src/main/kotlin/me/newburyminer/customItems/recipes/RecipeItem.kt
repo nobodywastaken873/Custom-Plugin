@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.recipes
 
+import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.Utils.Companion.basePotion
 import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.horn
@@ -43,41 +44,43 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
             }
 
             "ominous_bottle" -> {
-                val otherMeta = other.itemMeta as? OminousBottleMeta ?: return false
-                val thisMeta = item.itemMeta as OminousBottleMeta
-                if (!thisMeta.hasAmplifier() || !otherMeta.hasAmplifier()) return false
-                if (thisMeta.amplifier != otherMeta.amplifier) return false
+                val otherAmplifier = other.getData(DataComponentTypes.OMINOUS_BOTTLE_AMPLIFIER) ?: return false
+                val thisAmplifier = item.getData(DataComponentTypes.OMINOUS_BOTTLE_AMPLIFIER) ?: return false
+                if (otherAmplifier.amplifier() != thisAmplifier.amplifier()) return false
             }
 
             "stored_enchant" -> {
-                val otherMeta = other.itemMeta as? EnchantmentStorageMeta ?: return false
-                val thisMeta = item.itemMeta as EnchantmentStorageMeta
-                if (!thisMeta.hasStoredEnchants() || !otherMeta.hasStoredEnchants()) return false
-                for (enchant in thisMeta.storedEnchants.keys)
-                    if (otherMeta.storedEnchants[enchant] != thisMeta.storedEnchants[enchant])
+
+                val otherEnchantsData = other.getData(DataComponentTypes.STORED_ENCHANTMENTS) ?: return false
+                val thisEnchantsData = item.getData(DataComponentTypes.STORED_ENCHANTMENTS) ?: return false
+
+                val otherEnchants = otherEnchantsData.enchantments()
+                val thisEnchants = thisEnchantsData.enchantments()
+
+                for (enchant in thisEnchants.keys)
+                    if (otherEnchants[enchant] != thisEnchants[enchant])
                         return false
             }
 
             "armor_trim" -> {
-                val otherMeta = other.itemMeta as? ArmorMeta ?: return false
-                val thisMeta = item.itemMeta as ArmorMeta
-                if (!thisMeta.hasTrim() || !otherMeta.hasTrim()) return false
-                val otherTrim = otherMeta.trim ?: return false
-                val thisTrim = thisMeta.trim ?: return false
-                if (thisTrim.material != otherTrim.material || thisTrim.pattern != otherTrim.pattern) return false
+                val otherTrimData = other.getData(DataComponentTypes.TRIM) ?: return false
+                val thisTrimData = item.getData(DataComponentTypes.TRIM) ?: return false
+
+                if (otherTrimData.armorTrim() != thisTrimData.armorTrim()) return false
             }
 
             "potion" -> {
-                val otherMeta = other.itemMeta as? PotionMeta ?: return false
-                val thisMeta = item.itemMeta as PotionMeta
-                if (!thisMeta.hasBasePotionType() || !otherMeta.hasBasePotionType()) return false
-                if (thisMeta.basePotionType != otherMeta.basePotionType) return false
+                val otherPotionData = other.getData(DataComponentTypes.POTION_CONTENTS) ?: return false
+                val thisPotionData = item.getData(DataComponentTypes.POTION_CONTENTS) ?: return false
+
+                if (otherPotionData.potion() != thisPotionData.potion()) return false
             }
 
             "goat_horn" -> {
-                val otherMeta = other.itemMeta as? MusicInstrumentMeta ?: return false
-                val thisMeta = item.itemMeta as MusicInstrumentMeta
-                if (thisMeta.instrument != otherMeta.instrument) return false
+                val otherHornData = other.getData(DataComponentTypes.INSTRUMENT) ?: return false
+                val thisHornData = item.getData(DataComponentTypes.INSTRUMENT) ?: return false
+
+                if (otherHornData != thisHornData) return false
             }
 
             "original" -> {
