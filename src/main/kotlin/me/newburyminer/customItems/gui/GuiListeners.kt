@@ -9,7 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.graveTeleportCooldown
 import me.newburyminer.customItems.Utils.Companion.graveTeleportOnCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.Recipes
+import me.newburyminer.customItems.recipes.Recipes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound

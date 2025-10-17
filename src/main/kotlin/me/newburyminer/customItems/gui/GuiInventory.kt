@@ -6,8 +6,8 @@ import me.newburyminer.customItems.Utils.Companion.lock
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.items.Recipe
-import me.newburyminer.customItems.items.Recipes
+import me.newburyminer.customItems.recipes.Recipe
+import me.newburyminer.customItems.recipes.Recipes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey

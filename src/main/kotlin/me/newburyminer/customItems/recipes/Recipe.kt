@@ -1,16 +1,35 @@
-package me.newburyminer.customItems.items
+package me.newburyminer.customItems.recipes
 
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.ItemRegistry
 import org.bukkit.Material
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
 
 //NEED NBT IN NON-CUSTOM ITEMS AND MAYBE CUSTOM TOO
 //advancement check
-class Recipe(grid: Array<Array<Any?>>, result: Any) {
+data class Recipe(val grid: List<List<RecipeItemBase?>>, val result: ItemStack) {
 
-    val items = mutableListOf<MutableList<ItemStack?>>()
-    var resultItem: ItemStack = ItemStack(Material.RED_CONCRETE)
+    fun matches(otherGrid: List<List<ItemStack?>>): Boolean {
 
+        for (row in 0..4) for (col in 0..4) {
+
+            val gridItem = grid[row][col]
+            val otherItem = otherGrid[row][col]
+
+            if (gridItem == null && otherItem == null) continue
+            if ((gridItem == null) xor (otherItem == null)) return false
+
+            if (gridItem?.matches(otherItem) != true) return false
+        }
+
+        return true
+
+    }
+
+
+    /*
     init {
         for (row in 0..4) {
             items.add(mutableListOf())
@@ -59,4 +78,6 @@ class Recipe(grid: Array<Array<Any?>>, result: Any) {
             resultItem = ItemStack(result)
         }
     }
+    */
+
 }
