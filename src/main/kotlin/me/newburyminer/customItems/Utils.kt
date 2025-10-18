@@ -372,7 +372,7 @@ class Utils {
             return 0
         }
 
-        private fun convertEnch(ench: String): Pair<Enchantment, Int> {
+        fun convertEnch(ench: String): Pair<Enchantment, Int> {
             val lvl = ench.substring(2).toInt()
             when (ench.substring(0,2)) {
                 "AA" -> return Pair(Enchantment.AQUA_AFFINITY, lvl)

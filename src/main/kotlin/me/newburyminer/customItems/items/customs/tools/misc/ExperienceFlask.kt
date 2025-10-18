@@ -1,22 +1,15 @@
 package me.newburyminer.customItems.items.customs.tools.misc
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.loreBlock
-import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.Utils.Companion.timeSinceCombatTimeStamp
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.block.Action
@@ -36,12 +29,11 @@ class ExperienceFlask: CustomItemDefinition {
         text("Left click to retrieve all experience, left click while sneaking to deposit all experience. Right click to retrieve 30 levels, or sneak right click to retrieve 30 levels which will mend gear.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
         .setTag("storedexp", 0)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

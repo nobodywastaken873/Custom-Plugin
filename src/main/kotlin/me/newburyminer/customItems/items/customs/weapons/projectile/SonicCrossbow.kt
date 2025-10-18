@@ -3,17 +3,14 @@ package me.newburyminer.customItems.items.customs.weapons.projectile
 import com.destroystokyo.paper.ParticleBuilder
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.applyDamage
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.getCorners
-import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.setCooldown
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
@@ -37,11 +34,10 @@ class SonicCrossbow: CustomItemDefinition {
         text("Shoots a piercing sonic boom that does true damage to players and high damage to mobs, with a 20 second cooldown.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

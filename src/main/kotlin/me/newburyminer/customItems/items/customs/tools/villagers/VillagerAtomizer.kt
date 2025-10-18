@@ -2,18 +2,11 @@ package me.newburyminer.customItems.items.customs.tools.villagers
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.convertVillagerLevel
-import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.lore
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.ItemRegistry
+import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -30,11 +23,10 @@ class VillagerAtomizer: CustomItemDefinition {
         text("Right click a villager to pick it up and turn it into item form.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

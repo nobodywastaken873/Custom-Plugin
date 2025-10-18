@@ -1,22 +1,17 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 class CrestedDagger: CustomItemDefinition {
@@ -28,12 +23,14 @@ class CrestedDagger: CustomItemDefinition {
     private val name = text("Crested Dagger", color)
     private val lore = mutableListOf<Component>()
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .attr("ATS-2.0MA", "ENI-1.4MA")
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setAttributes(
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ENTITY_INTERACTION_RANGE, -1.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+        )
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

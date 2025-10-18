@@ -1,20 +1,14 @@
 package me.newburyminer.customItems.items.customs.armor.sets.immunity
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setArmorSet
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 
@@ -32,13 +26,17 @@ class StabilizingSneakers: CustomItemDefinition {
         text("Upon receiving any negative effect, convert it into the corresponding positive effect with potency increased by 1 level and triple the duration.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("ARM+5.0FE","ART+4.0FE","MAH+4.0FE","ATD+1.0FE")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.ARMOR, 5.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+        )
         .setArmorSet(ArmorSet.IMMUNITY)
+        .build()
 
     override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {

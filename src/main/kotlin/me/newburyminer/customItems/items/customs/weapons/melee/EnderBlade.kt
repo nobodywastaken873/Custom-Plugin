@@ -1,29 +1,24 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.pushOut
 import me.newburyminer.customItems.Utils.Companion.setCooldown
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
@@ -38,12 +33,15 @@ class EnderBlade: CustomItemDefinition {
         text("Right click to teleport forward 12 blocks, with a 7 second cooldown. Right click while sneaking to teleport forward 12 blocks, and make all hits be critical for the next 5 seconds, with a 15 second cooldown.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .attr("ATS-2.2MA", "ENI+0.1MA", "ATD+8.5MA")
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setAttributes(
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ENTITY_INTERACTION_RANGE, 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 8.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+        )
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

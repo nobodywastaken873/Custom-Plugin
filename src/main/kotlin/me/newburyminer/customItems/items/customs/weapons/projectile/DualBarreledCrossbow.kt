@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
@@ -32,11 +33,10 @@ class DualBarreledCrossbow: CustomItemDefinition {
         text("Shoots two arrows that can pierce through 5 mobs each. Does the same damage as a Power 5 bow.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

@@ -1,11 +1,7 @@
 package me.newburyminer.customItems.items.customs.weapons.magic
 
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
@@ -28,11 +24,10 @@ class PewmaticHorn: CustomItemDefinition {
     private val name = text("Pew-matic Horn", color)
     private val lore = mutableListOf<Component>()
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

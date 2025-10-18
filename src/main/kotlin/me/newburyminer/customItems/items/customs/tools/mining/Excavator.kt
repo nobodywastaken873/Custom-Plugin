@@ -1,10 +1,6 @@
 package me.newburyminer.customItems.items.customs.tools.mining
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
@@ -26,11 +22,10 @@ class Excavator: CustomItemDefinition {
         text("Mines a 3x3x3 area around the block that you break.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

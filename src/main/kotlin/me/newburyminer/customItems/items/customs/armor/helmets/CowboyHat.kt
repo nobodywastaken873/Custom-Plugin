@@ -1,12 +1,9 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
@@ -28,11 +25,10 @@ class CowboyHat: CustomItemDefinition {
         text("While wearing this, any horse you are riding will recieve Swiftness 3, Leaping 5, and will become invulnerable to damage.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {

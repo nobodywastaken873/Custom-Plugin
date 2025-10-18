@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.customs.materials
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
 import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.loreList
@@ -23,11 +24,10 @@ class FragmentOfSound: CustomItemDefinition {
         text("Drop from The Warden boss.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {}
 

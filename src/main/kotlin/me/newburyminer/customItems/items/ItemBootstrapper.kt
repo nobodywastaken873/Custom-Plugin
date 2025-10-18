@@ -19,7 +19,7 @@ object ItemBootstrapper {
             instance.extraTasks.forEach { (period, runTask) ->
                 PlayerTaskHandler.registerTask(period, PlayerTask { player ->  runTask(player)})}
 
-            plugin.logger.info("Successfully registered ${customId.realName}")
+            //plugin.logger.info("Successfully registered ${customId.realName}")
         }
         plugin.logger.info("Successfully registered all items")
     }

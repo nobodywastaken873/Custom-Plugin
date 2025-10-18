@@ -1,18 +1,11 @@
 package me.newburyminer.customItems.items.customs.weapons.arrows
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entities.CustomEntity
 import me.newburyminer.customItems.helpers.CustomDamageType
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.damage.DamageSource
 import org.bukkit.entity.Entity
@@ -33,11 +26,10 @@ class LlamaSpitArrow: CustomItemDefinition {
         text("Shoots a llama spit that does 1 true damage.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
 
     override fun handle(ctx: EventContext) {
 

@@ -1,18 +1,13 @@
 package me.newburyminer.customItems.items.customs.armor.sets.assassin
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setArmorSet
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 class AssassinsRobe: CustomItemDefinition {
@@ -29,13 +24,18 @@ class AssassinsRobe: CustomItemDefinition {
         text("Gain permanent invisibility. Gain +4% movement speed, 0.6 attack damage, 0.02 attack speed, and -3% scale every second for up to 10 seconds. Resets upon taking damage.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("ARM+6.0CH","ART+2.0CH","ATD+2.0CH","MOS+0.005CH","ATS+0.05CH")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.ARMOR, 6.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.MOVEMENT_SPEED, 0.005, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ATTACK_SPEED, 0.05, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+        )
         .setArmorSet(ArmorSet.ASSASSIN)
+        .build()
 
     override fun handle(ctx: EventContext) {}
 

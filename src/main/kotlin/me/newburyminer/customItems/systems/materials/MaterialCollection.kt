@@ -82,4 +82,8 @@ data class MaterialCollection(private val materials: MutableMap<MaterialType, Do
     fun singleType(): MaterialType {
         return materials.entries.first().key
     }
+
+    fun toMap(): Map<MaterialType, Double> {
+        return materials.toMap()
+    }
 }

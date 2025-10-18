@@ -17,7 +17,7 @@ object ArmorSetBootstrapper {
             ArmorSetEventHandler.register(armorSet, instance)
             if (cls.declaredMethods.any { it.name == "runTask" })
                 PlayerTaskHandler.registerTask(instance.period, PlayerTask { player -> instance.runTask(player) })
-            plugin.logger.info("Successfully registered ${armorSet.readableName()} set")
+            //plugin.logger.info("Successfully registered ${armorSet.readableName()} set")
         }
         plugin.logger.info("Successfully registered all armor sets")
     }

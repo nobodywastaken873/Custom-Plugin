@@ -1,18 +1,13 @@
 package me.newburyminer.customItems.items.customs.armor.sets.warrior
 
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setArmorSet
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 class WarriorGreaves: CustomItemDefinition {
@@ -24,13 +19,18 @@ class WarriorGreaves: CustomItemDefinition {
     private val name = text("Warrior Greaves", color)
     private val lore = mutableListOf<Component>()
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("ARM+7.0LE","ART+4.0LE","KNR+0.15LE","MAH+1.5LE","ATD+2.0LE")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.ARMOR, 7.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.MAX_HEALTH, 1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+        )
         .setArmorSet(ArmorSet.WARRIOR)
+        .build()
 
     override fun handle(ctx: EventContext) {}
 

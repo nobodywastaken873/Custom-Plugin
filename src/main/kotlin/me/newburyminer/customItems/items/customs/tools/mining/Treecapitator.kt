@@ -1,18 +1,10 @@
 package me.newburyminer.customItems.items.customs.tools.mining
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.CustomEnchantments
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.*
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Tag
@@ -31,12 +23,11 @@ class Treecapitator: CustomItemDefinition {
         text("Mines up to 200 logs or leaves of the same type connected to the block you break.", Utils.GRAY),
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .unb()
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setUnbreakable()
+        .build()
 
     override fun handle(ctx: EventContext) {
 

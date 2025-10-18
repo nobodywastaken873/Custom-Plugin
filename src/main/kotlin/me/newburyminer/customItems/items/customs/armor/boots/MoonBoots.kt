@@ -1,16 +1,12 @@
 package me.newburyminer.customItems.items.customs.armor.boots
 
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 class MoonBoots: CustomItemDefinition {
@@ -22,12 +18,18 @@ class MoonBoots: CustomItemDefinition {
     private val name = text("Moon Boots", color)
     private val lore = mutableListOf<Component>()
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("GRA-0.84%FE", "JUS0.05FE", "SAF20FE","ART+3.0FE","ARM+3.0FE","KNR+0.1FE")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.GRAVITY, -0.84, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.JUMP_STRENGTH, 0.05, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.SAFE_FALL_DISTANCE, 20.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ARMOR, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+        )
+        .build()
 
     override fun handle(ctx: EventContext) {}
 

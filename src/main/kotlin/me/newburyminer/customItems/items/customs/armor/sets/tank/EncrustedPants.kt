@@ -1,20 +1,14 @@
 package me.newburyminer.customItems.items.customs.armor.sets.tank
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setArmorSet
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.event.entity.EntityTargetEvent
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
 class EncrustedPants: CustomItemDefinition {
@@ -31,13 +25,16 @@ class EncrustedPants: CustomItemDefinition {
         text("Sneak to gain 10 absorption hearts, with a 60 second cooldown.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("ARM+10.0LE","ART+5.0LE","KNR+0.3LE")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.ARMOR, 10.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 5.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+        )
         .setArmorSet(ArmorSet.TANK)
+        .build()
 
     override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {

@@ -1,20 +1,15 @@
 package me.newburyminer.customItems.items.customs.armor.sets.tank
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.attr
-import me.newburyminer.customItems.Utils.Companion.cleanAttributeLore
-import me.newburyminer.customItems.Utils.Companion.customName
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.loreList
-import me.newburyminer.customItems.Utils.Companion.setArmorSet
-import me.newburyminer.customItems.Utils.Companion.setCustomData
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
+import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -33,13 +28,18 @@ class TurtleShell: CustomItemDefinition {
         text("Sneak to gain 10 absorption hearts, with a 60 second cooldown.", Utils.GRAY)
     )
 
-    override val item: ItemStack = ItemStack(material)
-        .setCustomData(custom)
-        .customName(name)
-        .loreList(lore)
-        .cleanAttributeLore()
-        .attr("ARM+12.0CH","ART+6.0CH","KNR+0.3CH","MOS-0.05CH","MAH+4.0CH")
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .setAttributes(
+            SimpleModifier(Attribute.ARMOR, 12.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ARMOR_TOUGHNESS, 6.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.MOVEMENT_SPEED, -0.05, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+        )
         .setArmorSet(ArmorSet.TANK)
+        .build()
 
     override fun handle(ctx: EventContext) {}
 
