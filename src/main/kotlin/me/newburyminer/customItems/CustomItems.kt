@@ -15,8 +15,8 @@ import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.EntityListeners
 import me.newburyminer.customItems.entities.bosses.BossListeners
 import me.newburyminer.customItems.entities.bosses.CustomBoss
+import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
-import me.newburyminer.customItems.gui.GuiListeners
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
@@ -35,6 +35,7 @@ import org.bukkit.Bukkit
 import org.bukkit.GameRule
 import org.bukkit.World
 import org.bukkit.WorldCreator
+import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitTask
@@ -86,7 +87,6 @@ class CustomItems : JavaPlugin() {
     }
 
     private fun registerListeners() {
-        server.pluginManager.registerEvents(GuiListeners(), this)
         server.pluginManager.registerEvents(entityListener, this)
         server.pluginManager.registerEvents(LootListener(), this)
         server.pluginManager.registerEvents(bossListener, this)
@@ -146,6 +146,11 @@ class CustomItems : JavaPlugin() {
 
     private fun closeMenus() {
         for (player in Bukkit.getServer().onlinePlayers) {
+            val openInventory = player.openInventory
+            if (openInventory?.topInventory?.holder is CustomGui) {
+                (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory))
+            }
+
             player.closeInventory()
         }
     }

@@ -31,6 +31,18 @@ class Recipes {
             return null
         }
 
+        fun takeRecipeIngredients(grid: Inventory, result: Recipe) {
+            for (row in result.items.indices) {
+                for (col in result.items[row].indices) {
+                    val inventorySlot = craftSlots[row][col]
+                    val recipeItem = result.items[row][col]
+
+                    if (grid.getItem(inventorySlot) == null) continue
+                    (grid.getItem(inventorySlot) ?: return).amount -= recipeItem?.getItem()?.amount ?: 0
+                }
+            }
+        }
+
         //add tags onto items in menu to say check for nbt or not
         //ie item.addTag("checkEnchants", true)
         //by default the tag will not exist and will therefore be null
@@ -640,7 +652,7 @@ class Recipes {
         fun getPage(page: Int): MutableList<Recipe?> {
             //return a list of recipes from page-1*24 to page*24 non-inclusive
             val pageRecipes = mutableListOf<Recipe?>()
-            for (i in (page-1)*35..<page*35) {
+            for (i in page*35..<(page+1)*35) {
                 pageRecipes.add(RecipeRegistry.recipes.getOrNull(i))
             }
             return pageRecipes
@@ -649,5 +661,11 @@ class Recipes {
         fun getRecipe(index: Int): Recipe {
             return RecipeRegistry.recipes[index]
         }
+
+        fun getTotalEntries(): Int {
+            return RecipeRegistry.recipes.size
+        }
+
+
     }
 }

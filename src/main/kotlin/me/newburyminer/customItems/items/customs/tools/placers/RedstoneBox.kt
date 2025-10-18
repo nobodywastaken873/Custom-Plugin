@@ -3,7 +3,7 @@ package me.newburyminer.customItems.items.customs.tools.placers
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.gui.GuiInventory
+import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.MaterialsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -41,7 +41,7 @@ class RedstoneBox: CustomItemDefinition {
 
             is InventoryClickEvent -> {
                 val player = ctx.player ?: return
-                if (e.inventory.holder is GuiInventory) return
+                if (e.inventory.holder is CustomGui) return
                 if (e.action != InventoryAction.PICKUP_HALF) return
                 e.isCancelled = true
                 CustomEffects.playSound(player.location, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())

@@ -4,7 +4,7 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.gui.GuiInventory
+import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -38,7 +38,7 @@ class EnderNode: CustomItemDefinition {
             is InventoryClickEvent -> {
                 val player = ctx.player ?: return
                 if (player.isBeingTracked()) return
-                if (e.inventory.holder is GuiInventory) return
+                if (e.inventory.holder is CustomGui) return
                 if (e.action != InventoryAction.PICKUP_HALF) return
                 e.isCancelled = true
                 if (e.inventory.type == InventoryType.ENDER_CHEST) return

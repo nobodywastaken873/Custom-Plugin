@@ -28,7 +28,7 @@ class MaterialsGui(private val collection: MaterialCollection, private val categ
 
         for (slot in inventory.contents.indices) {
             if (inventory.getItem(slot) == null)
-                inventory.setItem(slot, GuiInventory.gray(true))
+                inventory.setItem(slot, GuiItems.getFiller(Material.LIGHT_GRAY_STAINED_GLASS_PANE))
         }
     }
 

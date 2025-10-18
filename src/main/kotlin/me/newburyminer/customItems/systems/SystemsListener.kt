@@ -22,8 +22,8 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.gui.GuiInventory
-import me.newburyminer.customItems.gui.ShulkerHolder
+import me.newburyminer.customItems.gui.CompassGui
+import me.newburyminer.customItems.gui.ShulkerGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
@@ -184,32 +184,8 @@ class SystemsListener: Listener, Runnable  {
             }
             e.player.sendMessage(Utils.text("$name is currently in the $worldName.", Utils.SUCCESS_COLOR))
         } else {
-            val inventory = GuiInventory("compass").inventory
-            inventory.contents = GuiInventory.compassInv
-            val base = GuiInventory.compassCost()
-            val costs = getCost(e.player).toMutableList()
-            base.setListTag("costs", costs)
-            base.lore(
-                Utils.text("Cost: ", arrayOf(222, 138, 53)),
-                Utils.text("${costs[0]} Raw Iron Blocks", arrayOf(156, 146, 135)),
-                Utils.text("${costs[1]} Raw Gold Blocks", arrayOf(222, 194, 53)),
-                Utils.text("${costs[2]} Diamonds", arrayOf(92, 237, 225)),
-                Utils.text("${costs[3]} Ancient Debris", arrayOf(71, 54, 40)),
-                Utils.text("${costs[4]} Totem(s) of Undying", arrayOf(247, 207, 5)),
-            )
-            // 10 x times - 1
-            inventory.setItem(22, base)
-            e.player.openInventory(inventory)
+            CompassGui(e.player).open(e.player)
         }
-    }
-    private fun getCost(player: Player): Array<Int> {
-        val uses = (player.getTag<Int>("compassuses") ?: 0) + 1
-        val rawIronBlocks = (6 * uses.toDouble().pow(0.3)).toInt()
-        val rawGoldBlocks = (2 * uses.toDouble().pow(0.3)).toInt()
-        val diamonds = (10 * uses.toDouble().pow(0.3)).toInt()
-        val netherite = uses.toDouble().pow(0.6).toInt()
-        val totems = (uses.toDouble().pow(0.5)).toInt()
-        return arrayOf(rawIronBlocks, rawGoldBlocks, diamonds, netherite, totems)
     }
     @EventHandler fun entityDamageByEntity(e: EntityDamageEvent) {
         if (e.entity !is Player) return
@@ -363,22 +339,25 @@ class SystemsListener: Listener, Runnable  {
     @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
         if (e.action != InventoryAction.PICKUP_HALF) return
         if (e.whoClicked.getTag<Boolean>("inventoryshulker") != true) return
-        if (e.clickedInventory?.type !in
-            arrayOf(InventoryType.ENDER_CHEST, InventoryType.PLAYER)
-        ) return
-        if (!Tag.SHULKER_BOXES.isTagged(e.clickedInventory!!.getItem(e.slot)?.type ?: Material.AIR)) return
+
+        val clickedInventory = e.clickedInventory ?: return
+        val clickedItem = clickedInventory.getItem(e.slot) ?: return
+
+        if (clickedInventory.type !in arrayOf(InventoryType.ENDER_CHEST, InventoryType.PLAYER)) return
+        if (!Tag.SHULKER_BOXES.isTagged(clickedItem.type)) return
+
         e.isCancelled = true
-        val shulker = e.clickedInventory!!.getItem(e.slot)!!
-        if (shulker.getTag<Boolean>("shulkeropen") == true) {
+        if (clickedItem.getTag<Boolean>("shulkeropen") == true) {
             CustomEffects.playSound(e.whoClicked.location, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
             return
         }
+
         CustomEffects.playSound(e.whoClicked.location, Sound.BLOCK_SHULKER_BOX_OPEN, 1.0F, 1.0F)
         val player = e.whoClicked as Player
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-            shulker.setTag("shulkeropen", true)
+            clickedItem.setTag("shulkeropen", true)
             player.closeInventory()
-            player.openInventory(ShulkerHolder(shulker).inventory)
+            ShulkerGui(clickedItem).open(player)
         })
     }
     @EventHandler fun onItemCraft(e: CraftItemEvent) {
