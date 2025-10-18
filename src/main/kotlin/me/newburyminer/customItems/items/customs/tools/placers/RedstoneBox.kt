@@ -4,7 +4,7 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.GuiInventory
-import me.newburyminer.customItems.gui.MaterialsHolder
+import me.newburyminer.customItems.gui.MaterialsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -47,7 +47,7 @@ class RedstoneBox: CustomItemDefinition {
                 CustomEffects.playSound(player.location, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())
                 Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                     player.closeInventory()
-                    player.openInventory(MaterialsHolder(MaterialSystem.getMaterials(player), MaterialCategory.REDSTONE).inventory)
+                    MaterialsGui(MaterialSystem.getMaterials(player), MaterialCategory.REDSTONE).open(player)
                 })
             }
 

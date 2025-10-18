@@ -311,7 +311,7 @@ class GuiListeners: Listener {
         (e.inventory.holder as ShulkerHolder).closeShulker()
     }
 
-    @EventHandler fun onMaterialInteract(e: InventoryClickEvent) {
+    /*@EventHandler fun onMaterialInteract(e: InventoryClickEvent) {
         val clickedInventory = e.clickedInventory ?: return
         val materialsHolder = e.inventory.holder as? MaterialsHolder ?: return
         val player = e.whoClicked as? Player ?: return
@@ -341,7 +341,7 @@ class GuiListeners: Listener {
             val toAdd = clickedInventory.getItem(e.slot) ?: return
             if (materialsHolder.attemptInsert(toAdd)) toAdd.amount = 0
         }
-    }
+    }*/
 
     //use persistent data container with bool to check whether to use nbt
     //schedule setting item after 1 tick
