@@ -6,11 +6,12 @@ import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.horn
 import me.newburyminer.customItems.Utils.Companion.omimous
 import me.newburyminer.customItems.Utils.Companion.storeEnch
+import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.items.CustomEnchantments
 import org.bukkit.Material
 import org.bukkit.MusicInstrument
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.*
+import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.potion.PotionType
 
 class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
@@ -123,6 +124,12 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
     fun goatHorn(instrument: MusicInstrument): RecipeItem {
         item.horn(instrument)
         flags["goat_horn"] = true
+        return this
+    }
+
+    fun setTrim(trim: ArmorTrim): RecipeItem {
+        item.trim(trim)
+        flags["armor_trim"] = true
         return this
     }
 

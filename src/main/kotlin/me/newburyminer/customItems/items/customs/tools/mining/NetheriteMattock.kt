@@ -42,25 +42,6 @@ class NetheriteMattock: CustomItemDefinition {
             BlockTypeTagKeys.MINEABLE_AXE to 9F,
             BlockTypeTagKeys.MINEABLE_PICKAXE to 9F)
 
-    override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is BlockBreakEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val item = ctx.item ?: return
-                val newMeta = item.itemMeta as Damageable
-                if (Math.random() < (1.0 - 1.0 / (1 + (item.enchantments[Enchantment.UNBREAKING] ?: 0)))) return
-                newMeta.damage += 1
-                //if (newMeta.damage == 2031) {item.amount = 0; CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)}
-                item.itemMeta = newMeta
-                if (newMeta.damage == 2031) {
-                    CustomEffects.playSound(e.player.location, Sound.ENTITY_ITEM_BREAK, 1F, 1F)
-                }
-            }
-
-        }
-
-    }
+    override fun handle(ctx: EventContext) {}
 
 }

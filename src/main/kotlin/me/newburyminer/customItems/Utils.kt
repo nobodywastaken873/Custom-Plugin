@@ -421,7 +421,7 @@ class Utils {
             }
             return Pair(Enchantment.UNBREAKING, lvl)
         }
-        private fun convertPotion(potion: String): PotionEffect {
+        /*private fun convertPotion(potion: String): PotionEffect {
             val duration = (potion.substring(potion.indexOf(":")+1).toDouble()*20).toInt()
             val amplifier = potion.substring(3,potion.indexOf(":")).toInt() - 1
             when (potion.substring(0,3)) {
@@ -466,7 +466,7 @@ class Utils {
                 "WIT" -> return PotionEffect(PotionEffectType.WITHER, duration, amplifier)
                 else -> return PotionEffect(PotionEffectType.UNLUCK, duration, amplifier)
             }
-        }
+        }*/
         fun convertVillagerLevel(level: Int): String {
             return when (level) {
                 1 -> "Novice"
@@ -475,43 +475,6 @@ class Utils {
                 4 -> "Expert"
                 5 -> "Master"
                 else -> "None"
-            }
-        }
-        fun getMaterials(item: Material): Array<ItemStack> {
-            return when (item) {
-                Material.STONE_BUTTON -> arrayOf(ItemStack(Material.STONE, 1))
-                Material.OAK_BUTTON -> arrayOf(ItemStack(Material.OAK_PLANKS, 1))
-                Material.LEVER -> arrayOf(ItemStack(Material.COBBLESTONE, 1), ItemStack(Material.STICK, 1))
-                Material.OAK_PRESSURE_PLATE -> arrayOf(ItemStack(Material.OAK_PLANKS, 2))
-                Material.HEAVY_WEIGHTED_PRESSURE_PLATE -> arrayOf(ItemStack(Material.IRON_INGOT, 2))
-                Material.LIGHT_WEIGHTED_PRESSURE_PLATE -> arrayOf(ItemStack(Material.GOLD_INGOT, 2))
-                Material.STONE_PRESSURE_PLATE -> arrayOf(ItemStack(Material.STONE, 2))
-                Material.RAIL -> arrayOf(ItemStack(Material.IRON_INGOT, 1), ItemStack(Material.STICK, 1))
-                Material.POWERED_RAIL -> arrayOf(ItemStack(Material.REDSTONE, 1), ItemStack(Material.GOLD_INGOT, 1), ItemStack(Material.STICK, 1))
-                Material.DETECTOR_RAIL -> arrayOf(ItemStack(Material.IRON_INGOT, 1), ItemStack(Material.STONE, 1), ItemStack(Material.REDSTONE, 1))
-                Material.ACTIVATOR_RAIL -> arrayOf(ItemStack(Material.IRON_INGOT, 1), ItemStack(Material.STICK, 1))
-                Material.MINECART -> arrayOf(ItemStack(Material.IRON_INGOT, 5))
-                Material.HOPPER_MINECART -> arrayOf(ItemStack(Material.IRON_INGOT, 10), ItemStack(Material.OAK_PLANKS, 8))
-                Material.CHEST_MINECART -> arrayOf(ItemStack(Material.IRON_INGOT, 5), ItemStack(Material.OAK_PLANKS, 8))
-                Material.FURNACE_MINECART -> arrayOf(ItemStack(Material.IRON_INGOT, 5), ItemStack(Material.COBBLESTONE, 8))
-                Material.TNT_MINECART -> arrayOf(ItemStack(Material.TNT, 1), ItemStack(Material.IRON_INGOT, 5))
-                Material.REDSTONE -> arrayOf(ItemStack(Material.REDSTONE, 1))
-                Material.REDSTONE_BLOCK -> arrayOf(ItemStack(Material.REDSTONE, 9))
-                Material.REPEATER -> arrayOf(ItemStack(Material.STONE, 3), ItemStack(Material.STICK, 2), ItemStack(Material.REDSTONE, 3))
-                Material.COMPARATOR -> arrayOf(ItemStack(Material.STONE, 3), ItemStack(Material.STICK, 3), ItemStack(Material.REDSTONE, 3), ItemStack(Material.QUARTZ, 1))
-                Material.REDSTONE_TORCH -> arrayOf(ItemStack(Material.STICK, 1), ItemStack(Material.REDSTONE, 1))
-                Material.OBSERVER -> arrayOf(ItemStack(Material.COBBLESTONE, 6), ItemStack(Material.REDSTONE, 2), ItemStack(Material.QUARTZ, 1))
-                Material.HOPPER -> arrayOf(ItemStack(Material.IRON_INGOT, 5), ItemStack(Material.OAK_PLANKS, 8))
-                Material.BARREL -> arrayOf(ItemStack(Material.OAK_PLANKS, 7))
-                Material.CHEST -> arrayOf(ItemStack(Material.OAK_PLANKS, 8))
-                Material.CRAFTER -> arrayOf(ItemStack(Material.COBBLESTONE, 7), ItemStack(Material.REDSTONE, 3), ItemStack(Material.IRON_INGOT, 5), ItemStack(Material.OAK_PLANKS, 4))
-                Material.DISPENSER -> arrayOf(ItemStack(Material.COBBLESTONE, 7), ItemStack(Material.REDSTONE, 1), ItemStack(Material.STICK, 3), ItemStack(Material.STRING, 3))
-                Material.DROPPER -> arrayOf(ItemStack(Material.COBBLESTONE, 7), ItemStack(Material.REDSTONE, 1))
-                Material.NOTE_BLOCK -> arrayOf(ItemStack(Material.OAK_PLANKS, 8), ItemStack(Material.REDSTONE, 1))
-                Material.PISTON -> arrayOf(ItemStack(Material.COBBLESTONE, 4), ItemStack(Material.OAK_PLANKS, 3), ItemStack(Material.REDSTONE, 1), ItemStack(Material.IRON_INGOT, 1))
-                Material.STICKY_PISTON -> arrayOf(ItemStack(Material.COBBLESTONE, 4), ItemStack(Material.OAK_PLANKS, 3), ItemStack(Material.REDSTONE, 1), ItemStack(Material.IRON_INGOT, 1), ItemStack(Material.SLIME_BALL, 1))
-                Material.SLIME_BLOCK -> arrayOf(ItemStack(Material.SLIME_BALL, 9))
-                else -> arrayOf()
             }
         }
 
@@ -952,14 +915,14 @@ class Utils {
             this.setData(DataComponentTypes.POTION_CONTENTS, contents)
             return this
         }
-        fun ItemStack.potion(color: Color, vararg effects: String): ItemStack {
+        /*fun ItemStack.potion(color: Color, vararg effects: String): ItemStack {
             val potionData = PotionContents.potionContents()
             potionData.customColor(color)
             val convertedEffects = effects.map { convertPotion(it) }
             potionData.addCustomEffects(convertedEffects)
             this.setData(DataComponentTypes.POTION_CONTENTS, potionData.build())
             return this
-        }
+        }*/
         fun ItemStack.horn(horn: MusicInstrument): ItemStack {
             this.setData(DataComponentTypes.INSTRUMENT, horn)
             return this
@@ -1003,7 +966,7 @@ class Utils {
         }
         fun ItemStack.reduceDura(amount: Int): ItemStack {
             val damage = this.getData(DataComponentTypes.DAMAGE) ?: 0
-            this.setData(DataComponentTypes.DAMAGE, damage + 1)
+            this.setData(DataComponentTypes.DAMAGE, damage + amount)
             return this
         }
     }

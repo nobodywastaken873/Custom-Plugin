@@ -6,19 +6,33 @@ import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.UseCooldown
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.addElytraComponent
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
+import me.newburyminer.customItems.Utils.Companion.basePotion
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
 import me.newburyminer.customItems.Utils.Companion.decodeToDoubleArray
 import me.newburyminer.customItems.Utils.Companion.ench
+import me.newburyminer.customItems.Utils.Companion.firework
 import me.newburyminer.customItems.Utils.Companion.getDifficultyIndex
+import me.newburyminer.customItems.Utils.Companion.horn
+import me.newburyminer.customItems.Utils.Companion.maxDura
+import me.newburyminer.customItems.Utils.Companion.maxStack
+import me.newburyminer.customItems.Utils.Companion.omimous
 import me.newburyminer.customItems.Utils.Companion.removeTag
+import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
+import me.newburyminer.customItems.Utils.Companion.trim
+import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
+import org.bukkit.potion.PotionType
 
 class TestCommand : BasicCommand {
     override fun execute(stack: CommandSourceStack, args: Array<out String>) {
@@ -70,6 +84,17 @@ class TestCommand : BasicCommand {
             val item = sender.inventory.itemInMainHand
             sender.sendMessage(item.getData(DataComponentTypes.TRIM).toString())
             sender.sendMessage(item.getData(DataComponentTypes.PROVIDES_TRIM_MATERIAL).toString())
+        } else if (args[0] == "retest_utils") {
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE).maxDura(10000))
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE).unb())
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE, 5).maxStack(10))
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE).trim(ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.TIDE)))
+            sender.addItemorDrop(ItemStack(Material.ENCHANTED_BOOK).storeEnch("EF5","UN3","SH2"))
+            sender.addItemorDrop(ItemStack(Material.FIREWORK_ROCKET).firework(10, FireworkEffect.builder().withColor(Color.RED).build()))
+            sender.addItemorDrop(ItemStack(Material.OMINOUS_BOTTLE).omimous(2))
+            sender.addItemorDrop(ItemStack(Material.SPLASH_POTION).basePotion(PotionType.HEALING))
+            sender.addItemorDrop(ItemStack(Material.GOAT_HORN).horn(MusicInstrument.DREAM_GOAT_HORN))
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE).addElytraComponent())
         }
     }
 }
