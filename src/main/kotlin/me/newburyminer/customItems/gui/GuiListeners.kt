@@ -161,7 +161,7 @@ class GuiListeners: Listener {
         }
     }
 
-    @EventHandler fun onGraveInteract(e: InventoryClickEvent) {
+    /*@EventHandler fun onGraveInteract(e: InventoryClickEvent) {
         if (e.whoClicked !is Player) return
         if (e.inventory.holder !is GraveHolder) return
         (e.inventory.holder as GraveHolder).updateGrave()
@@ -173,6 +173,7 @@ class GuiListeners: Listener {
             }
         })
     }
+    // moved
     @EventHandler fun onGraveDrag(e: InventoryDragEvent) {
         if (e.whoClicked !is Player) return
         if (e.inventory.holder !is GraveHolder) return
@@ -185,12 +186,13 @@ class GuiListeners: Listener {
             })
         }
     }
+    // moved
     @EventHandler fun onGraveClose(e: InventoryCloseEvent) {
         if (e.inventory.holder !is GraveHolder) return
         if (e.inventory.isEmpty) (e.inventory.holder as GraveHolder).deleteGrave()
         (e.inventory.holder as GraveHolder).closeGrave()
-    }
-    @EventHandler fun onGraveListInteract(e: InventoryClickEvent) {
+    }*/
+    /*@EventHandler fun onGraveListInteract(e: InventoryClickEvent) {
         if (e.inventory.holder !is GraveListHolder) return
         e.isCancelled = true
         if (e.clickedInventory?.holder !is GraveListHolder) return
@@ -275,7 +277,7 @@ class GuiListeners: Listener {
                 e.whoClicked.closeInventory()
             })
         }
-    }
+    }*/
 
     @EventHandler fun onShulkerInteract(e: InventoryClickEvent) {
         if (e.whoClicked !is Player) return

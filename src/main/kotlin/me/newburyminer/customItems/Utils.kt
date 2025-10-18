@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
+import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
@@ -39,8 +40,6 @@ import org.bukkit.inventory.FurnaceRecipe
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
@@ -602,6 +601,16 @@ class Utils {
             this.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
         }
 
+
+
+        fun ItemStack.setItemAction(action: ItemAction?): ItemStack {
+            if (action != null)
+                this.setTag("action", action.name)
+            return this
+        }
+        fun ItemStack.getItemAction(): ItemAction? {
+            return ItemAction.valueOf(this.getTag("action") ?: return null)
+        }
         fun ItemStack.loreList(loreList: MutableList<Component>): ItemStack {
             this.lore(loreList)
             return this
@@ -669,12 +678,6 @@ class Utils {
                 this.lore(description)
             }
 
-            return this
-        }
-        fun ItemStack.setCustomData(custom: CustomItem): ItemStack {
-            this.setTag("id", custom.id)
-            this.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addString(custom.id.toString()))
-            this.setData(DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(0.05F).cooldownGroup(Key.key("customitems", custom.name.lowercase())))
             return this
         }
         fun ItemStack.smeltIf(vararg tags: Tag<Material>): ItemStack {

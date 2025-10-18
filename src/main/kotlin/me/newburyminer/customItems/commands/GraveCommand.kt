@@ -2,7 +2,7 @@ package me.newburyminer.customItems.commands
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.newburyminer.customItems.gui.GraveListHolder
+import me.newburyminer.customItems.gui.GraveListGui
 import org.bukkit.entity.Player
 
 class GraveCommand: BasicCommand {
@@ -12,7 +12,7 @@ class GraveCommand: BasicCommand {
         // should make custom grave list inventory to allow for multiple pages, possible allow deleting locations from the gravelist
         // only allow deleting if easy (would have to change player gravelist, and add confirmation, and delete)
         // could be used to prepare for creating grave teleport eventually (with 10 min cd or smth)
-        sender.openInventory(GraveListHolder(sender, 0).inventory)
+        GraveListGui(sender).open(sender)
     }
 
 }

@@ -71,17 +71,6 @@ object RecipeRegistry {
 
         recipe {
             grid {
-                row(item(Material.ARROW, 64), item(Material.FLINT, 32), item(Material.WIND_CHARGE, 32), item(Material.FLINT, 32), item(Material.ARROW, 64))
-                row(item(Material.FEATHER, 32), item(Material.FLETCHING_TABLE, 8), item(Material.STICK, 32), item(Material.FLETCHING_TABLE, 8), item(Material.FEATHER, 32))
-                row(item(Material.ENDER_PEARL, 16), item(Material.STICK, 32), item(Material.TIPPED_ARROW, 32), item(Material.STICK, 32), item(Material.POINTED_DRIPSTONE, 64))
-                row(item(Material.FEATHER, 32), item(Material.FLETCHING_TABLE, 8), item(Material.STICK, 32), item(Material.FLETCHING_TABLE, 8), item(Material.FEATHER, 32))
-                row(item(Material.ARROW, 64), item(Material.FLINT, 32), item(Material.WITHER_SKELETON_SKULL, 1), item(Material.FLINT, 32), item(Material.ARROW, 64))
-            }
-            result(CustomItem.FLETCHER_UPGRADE)
-        }
-
-        recipe {
-            grid {
                 row(item(Material.BARREL, 4), item(Material.FLETCHING_TABLE, 4), item(Material.GRINDSTONE, 4), item(Material.SMOKER, 4), item(Material.BLAST_FURNACE, 4))
                 row(item(Material.FURNACE, 4), item(Material.DIAMOND_PICKAXE), item(Material.EMERALD, 32), item(Material.DIAMOND_AXE), item(Material.CARTOGRAPHY_TABLE, 4))
                 row(item(Material.ENCHANTING_TABLE, 4), item(Material.EMERALD, 32), item(Material.GLOW_INK_SAC, 16), item(Material.EMERALD, 32), item(Material.LOOM, 4))

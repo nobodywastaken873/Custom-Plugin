@@ -13,7 +13,7 @@ import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entities.CustomEntity
-import me.newburyminer.customItems.gui.GraveHolder
+import me.newburyminer.customItems.gui.GraveItemsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
 import org.bukkit.*
@@ -292,10 +292,7 @@ class GraveListener: Listener {
             armorStand.setListTag("graveitems", items)
             CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_CLOSE, 1.0F, 1.2F)
         } else {
-            val graveHolder = GraveHolder(armorStand)
-            e.player.openInventory(graveHolder.inventory)
-            armorStand.setTag("currentlyopen", true)
-            CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_OPEN, 1.0F, 1.2F)
+            GraveItemsGui(armorStand).open(e.player)
         }
     }
 }

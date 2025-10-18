@@ -15,6 +15,7 @@ import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entities.EntityListeners
 import me.newburyminer.customItems.entities.bosses.BossListeners
 import me.newburyminer.customItems.entities.bosses.CustomBoss
+import me.newburyminer.customItems.gui.GuiEventHandler
 import me.newburyminer.customItems.gui.GuiListeners
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
@@ -96,6 +97,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(EffectEventHandler(), this)
         server.pluginManager.registerEvents(GraveListener(), this)
         server.pluginManager.registerEvents(EnchantmentListener(), this)
+        server.pluginManager.registerEvents(GuiEventHandler(), this)
     }
 
     private fun run() {
