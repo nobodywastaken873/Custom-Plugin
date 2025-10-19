@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BlockStateMeta
+import org.bukkit.scheduler.BukkitRunnable
 
 class ShulkerGui(private val shulker: ItemStack): CustomGui() {
 
@@ -34,15 +35,20 @@ class ShulkerGui(private val shulker: ItemStack): CustomGui() {
     }
 
     private fun updateShulker() {
-        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-            val newMeta = shulker.itemMeta as BlockStateMeta
-            val newBlockState = newMeta.blockState as ShulkerBox
-            val itemInventory = newBlockState.inventory
-            itemInventory.contents = inventory.contents
-            newMeta.blockState = newBlockState
-            shulker.itemMeta = newMeta
-            newBlockState.update()
-        })
+        var index = 0
+        val task = object : BukkitRunnable() {
+            override fun run() {
+                val newMeta = shulker.itemMeta as BlockStateMeta
+                val newBlockState = newMeta.blockState as ShulkerBox
+                val itemInventory = newBlockState.inventory
+                itemInventory.contents = inventory.contents
+                newMeta.blockState = newBlockState
+                shulker.itemMeta = newMeta
+                newBlockState.update()
+                ++index
+                if (index == 5) cancel()
+            }
+        }.runTaskTimer(CustomItems.plugin, 0L, 1L)
     }
 
     private fun closeShulker() {
@@ -77,7 +83,7 @@ class ShulkerGui(private val shulker: ItemStack): CustomGui() {
     }
 
     override fun onClose(e: InventoryCloseEvent) {
-        updateShulker()
+        if (e.reason != InventoryCloseEvent.Reason.UNKNOWN) updateShulker()
         closeShulker()
     }
 

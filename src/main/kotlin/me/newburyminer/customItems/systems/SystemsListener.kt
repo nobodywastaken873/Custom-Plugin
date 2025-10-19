@@ -23,6 +23,7 @@ import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.CompassGui
+import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.ShulkerGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -39,10 +40,7 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.inventory.CraftItemEvent
-import org.bukkit.event.inventory.InventoryAction
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.inventory.*
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -151,42 +149,7 @@ class SystemsListener: Listener, Runnable  {
             )
         }, 1200L).taskId)
     }
-    @EventHandler fun onPlayerInteract(e: PlayerInteractEvent) {
-        //blockEnderChest(e)
-        compassStuff(e)
-    }
-    /*private fun blockEnderChest(e: PlayerInteractEvent) {
-        if (e.clickedBlock?.type != Material.ENDER_CHEST) return
-        if (!e.player.isBeingTracked()) return
-        e.isCancelled = true
-    }*/
-    private fun compassStuff(e: PlayerInteractEvent) {
-        if (!e.player.inventory.itemInMainHand.isItem(CustomItem.TRACKING_COMPASS)) return
-        if (e.player.isTracking() && e.player.compassCooldown() < 30 * 60 * 20) {
-            val player = Bukkit.getPlayer(e.player.getTag<UUID>("trackingplayer")!!)
-            var loc = player?.location
-            var name = player?.name
-            if (player == null) {
-                val offlinePlayer = Bukkit.getOfflinePlayer(e.player.getTag<UUID>("trackingplayer")!!)
-                loc = offlinePlayer.location
-                name = offlinePlayer.name
-            }
-            val newMeta = e.player.inventory.itemInMainHand.itemMeta as CompassMeta
-            newMeta.lodestone = loc!!
-            newMeta.isLodestoneTracked = false
-            e.player.inventory.itemInMainHand.itemMeta = newMeta
-            val worldName = when (loc.world) {
-                Bukkit.getWorlds()[0] -> "overworld"
-                Bukkit.getWorlds()[1] -> "nether"
-                Bukkit.getWorlds()[2] -> "end"
-                CustomItems.aridWorld -> "arid lands"
-                else -> "unknown"
-            }
-            e.player.sendMessage(Utils.text("$name is currently in the $worldName.", Utils.SUCCESS_COLOR))
-        } else {
-            CompassGui(e.player).open(e.player)
-        }
-    }
+
     @EventHandler fun entityDamageByEntity(e: EntityDamageEvent) {
         if (e.entity !is Player) return
         val player = e.entity as Player
@@ -212,6 +175,7 @@ class SystemsListener: Listener, Runnable  {
     @EventHandler fun onPlayerLogout(e: PlayerQuitEvent) {
         killInCombatLogout(e)
         dropCompassItem(e)
+        closeInventories(e)
     }
     private fun killInCombatLogout(e: PlayerQuitEvent) {
         if (e.reason != PlayerQuitEvent.QuitReason.DISCONNECTED) return
@@ -275,6 +239,13 @@ class SystemsListener: Listener, Runnable  {
             it.velocity = Vector(0, 0, 0)
         }
         e.player.inventory.removeItemAnySlot(steal.clone())
+    }
+    private fun closeInventories(e: PlayerQuitEvent) {
+        val openInventory = e.player.openInventory
+        if (openInventory?.topInventory?.holder is CustomGui) {
+            (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory))
+        }
+        e.player.closeInventory()
     }
 
     @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {

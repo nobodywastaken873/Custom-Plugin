@@ -14,6 +14,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
+import java.util.*
 
 class RecipeListGui(page: Int): PagedGui(page) {
 
@@ -59,7 +60,12 @@ class RecipeListGui(page: Int): PagedGui(page) {
             for (recipeItem in row) {
                 val item = recipeItem?.getItem()
                 if (item == null)  inv.addItem(GuiItems.getFiller(Material.LIGHT_GRAY_STAINED_GLASS_PANE))
-                else inv.addItem(recipeItem.getItem().lock())
+                else inv.addItem(
+                    recipeItem
+                        .getItem()
+                        .lock()
+                        .setTag("salt", UUID.randomUUID().toString())
+                )
             }
         }
 

@@ -25,6 +25,7 @@ class CraftingGui: CustomGui() {
 
     init {
         GuiLayout.setCraftingBorder(Material.LIGHT_BLUE_STAINED_GLASS_PANE, inv)
+        inv.setItem(resultSlot, GuiItems.getFiller(Material.LIGHT_GRAY_STAINED_GLASS_PANE))
     }
 
     override fun open(player: Player) {

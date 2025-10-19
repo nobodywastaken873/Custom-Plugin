@@ -148,7 +148,7 @@ class CustomItems : JavaPlugin() {
         for (player in Bukkit.getServer().onlinePlayers) {
             val openInventory = player.openInventory
             if (openInventory?.topInventory?.holder is CustomGui) {
-                (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory))
+                (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory, InventoryCloseEvent.Reason.UNKNOWN))
             }
 
             player.closeInventory()
