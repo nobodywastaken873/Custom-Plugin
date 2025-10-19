@@ -1,6 +1,13 @@
 package me.newburyminer.customItems.effects
 
+import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.readName
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
@@ -34,8 +41,8 @@ object EffectManager: BukkitRunnable() {
     }
 
     override fun run() {
+        val currentTick = Bukkit.getCurrentTick()
         for ((uuid, map) in activeEffects) {
-            val currentTick = Bukkit.getCurrentTick()
             val player = Bukkit.getPlayer(uuid) ?: continue
             map.forEach { (period, list) ->
                 if (currentTick % period == 0) {
@@ -52,6 +59,44 @@ object EffectManager: BukkitRunnable() {
                 }
             }
         }
+
+        if (currentTick % 20 == 0) {
+            for (player in Bukkit.getOnlinePlayers()) {
+                val activeEffects = getActiveEffects(player)
+                var baseComponent = Utils.text("\nActive Effects:").style(
+                    Style.style(TextColor.color(128, 196, 174),
+                        TextDecoration.BOLD,
+                    )
+                )
+
+                for (effect in activeEffects) {
+                    baseComponent = baseComponent.append(toComponent(effect))
+                }
+                if (activeEffects.isEmpty())
+                    baseComponent = baseComponent.append(Utils.text("\nNone", Utils.GRAY))
+
+                player.sendPlayerListFooter(
+                    baseComponent
+                )
+            }
+        }
+    }
+
+    private fun toComponent(effect: ActiveEffect): Component {
+        val text =
+            if (effect.type == CustomEffectType.ATTRIBUTE) {
+                val formattedAmount =
+                    if (effect.data.attributeData!!.operation == AttributeModifier.Operation.ADD_NUMBER)
+                        String.format("%+.6f", effect.data.attributeData.amount).trimEnd('0').trimEnd('.')
+                    else
+                        String.format("%+.6f", effect.data.attributeData.amount * 100).trimEnd('0').trimEnd('.') + "%"
+                val formattedAttribute = effect.data.attributeData.attribute.readName()
+                "\n$formattedAmount ${formattedAttribute} - ${effect.remaining/20}s"
+            }
+            else "\n${effect.type.title} - ${effect.remaining/20}s"
+
+        val component = Utils.text(text, effect.type.color)
+        return component
     }
 
     fun getActiveEffects(player: Player): List<ActiveEffect> {

@@ -615,14 +615,14 @@ class Utils {
             this.lore(loreList)
             return this
         }
-        private fun Attribute.readName(): String {
+        fun Attribute.readName(): String {
             val value = this.key.value()
             val words = value.split("_").toMutableList()
             var totalAttr = ""
             words.forEach {
                 totalAttr += it.capitalize() + " "
             }
-            return totalAttr
+            return totalAttr.substring(0,totalAttr.length-1)
         }
         fun ItemStack.setArmorSet(armorSet: ArmorSet): ItemStack {
             this.setTag("armorset", armorSet.name)

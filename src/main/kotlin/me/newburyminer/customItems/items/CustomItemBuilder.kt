@@ -40,7 +40,7 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
     init {
         // Set the item to actually be detectable as a custom, set texture data, set use cooldown so it can be applied later
         item.setTag("id", custom.id)
-        item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addString(custom.id.toString()))
+        item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addString(custom.name.toString().lowercase()))
         item.setData(DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(0.05F).cooldownGroup(Key.key("customitems", custom.name.lowercase())))
     }
 
