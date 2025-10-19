@@ -15,17 +15,17 @@ import java.util.UUID
 object GuiItems {
     val NEXT_PAGE: ItemStack
         get() = ItemStack(Material.ARROW)
-            .name(Utils.text("Next Page").style(Style.style(TextDecoration.BOLD)))
+            .name(Utils.text("Next Page").style(Style.style(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
             .setItemAction(ItemAction.NEXT_PAGE)
             .clone()
     val PREVIOUS_PAGE: ItemStack
         get() = ItemStack(Material.ARROW)
-            .name(Utils.text("Previous Page").style(Style.style(TextDecoration.BOLD)))
+            .name(Utils.text("Previous Page").style(Style.style(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
             .setItemAction(ItemAction.PREVIOUS_PAGE)
             .clone()
     val BACK_ARROW: ItemStack
         get() = ItemStack(Material.ARROW)
-            .name(Utils.text("Go Back").style(Style.style(TextDecoration.BOLD)))
+            .name(Utils.text("Go Back").style(Style.style(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
             .setItemAction(ItemAction.GO_BACK)
             .clone()
 

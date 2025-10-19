@@ -5,7 +5,7 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.recipes.Recipe
-import me.newburyminer.customItems.recipes.Recipes
+import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
@@ -43,8 +43,8 @@ class CraftingGui: CustomGui() {
         else if (clickedInventory.holder is CraftingGui && e.slot == resultSlot && clickedItem?.type != Material.LIGHT_GRAY_STAINED_GLASS_PANE) {
             if (e.action != InventoryAction.PICKUP_ALL) { e.isCancelled = true; return }
 
-            val result = Recipes.checkForRecipe(inv) ?: return
-            Recipes.takeRecipeIngredients(inv, result)
+            val result = RecipeRegistry.checkForRecipe(inv) ?: return
+            RecipeRegistry.takeRecipeIngredients(inv, result)
 
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 updateResult()
@@ -69,7 +69,7 @@ class CraftingGui: CustomGui() {
     }
 
     private fun updateResult() {
-        val result = Recipes.checkForRecipe(inv)
+        val result = RecipeRegistry.checkForRecipe(inv)
         if (result == null) inv.setItem(25, GuiItems.getFiller(Material.LIGHT_GRAY_STAINED_GLASS_PANE))
         else inv.setItem(25, result.getResultItem())
     }

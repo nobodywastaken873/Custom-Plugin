@@ -6,7 +6,7 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.lock
 import me.newburyminer.customItems.Utils.Companion.setItemAction
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.recipes.Recipes
+import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
@@ -32,7 +32,7 @@ class RecipeListGui(page: Int): PagedGui(page) {
         GuiLayout.clearInventory(inv)
         GuiLayout.setMaxBorder(Material.LIGHT_BLUE_STAINED_GLASS_PANE, inv)
 
-        val recipes = Recipes.getPage(newPage)
+        val recipes = RecipeRegistry.getPage(newPage)
         for (i in recipes.indices) {
             val recipe = recipes[i] ?: break
             inv.addItem(recipe.getResultItem()
@@ -43,14 +43,14 @@ class RecipeListGui(page: Int): PagedGui(page) {
         }
 
         // we want 0-35 items to be 1 page, 36-70 to be 2, etc
-        val pages = (Recipes.getTotalEntries() - 1) / itemsPerPage + 1
+        val pages = (RecipeRegistry.getTotalEntries() - 1) / itemsPerPage + 1
         GuiLayout.addArrows(newPage, pages, inv)
 
         GuiLayout.fillEmpty(Material.LIGHT_GRAY_STAINED_GLASS_PANE, inv)
     }
 
     private fun openRecipe(number: Int) {
-        val recipes = Recipes.getPage(currentPage)
+        val recipes = RecipeRegistry.getPage(currentPage)
         val recipe = recipes[number] ?: return
 
         GuiLayout.clearInventory(inv)

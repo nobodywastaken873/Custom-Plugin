@@ -21,7 +21,6 @@ import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.recipes.RecipeRegistry
-import me.newburyminer.customItems.recipes.Recipes
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.EnchantmentListener
 import me.newburyminer.customItems.systems.GraveListener
