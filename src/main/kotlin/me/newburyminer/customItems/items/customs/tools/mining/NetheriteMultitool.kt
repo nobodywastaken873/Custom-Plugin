@@ -30,7 +30,6 @@ class NetheriteMultitool: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("tool", 0)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -49,7 +48,7 @@ class NetheriteMultitool: CustomItemDefinition {
                     e.clickedBlock!!.type = Material.FARMLAND
                 }
                 if (!player.isSneaking) return
-                val toolNum = item.getTag<Int>("tool")!!
+                val toolNum = item.getTag<Int>("tool") ?: 0
                 val newMat = when (toolNum) {
                     0 -> Material.NETHERITE_PICKAXE
                     1 -> Material.NETHERITE_AXE

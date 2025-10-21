@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -33,6 +34,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Item
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
@@ -149,6 +151,18 @@ class Utils {
             }
         }
 
+        fun Mob.getNearestPlayer(radius: Double): Player? {
+            val nearby = this.location.getNearbyPlayers(radius)
+            var nearest: Player? = null
+            var nearestDist: Double = 500.0
+            for (player in nearby) {
+                if (player.location.subtract(this.location).length() < nearestDist) {
+                    nearest = player
+                    nearestDist = player.location.subtract(this.location).length()
+                }
+            }
+            return nearest
+        }
         fun LivingEntity.applyDamage(settings: DamageSettings) {
             val damageType = settings.damageType ?: DamageType.GENERIC
             val builder = DamageSource.builder(damageType)
@@ -599,6 +613,9 @@ class Utils {
         }
         fun Entity.removeTag(tag: String) {
             this.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
+        }
+        fun Entity.getCustom(): CustomEntity? {
+            return CustomEntity.valueOf(this.getTag<String>("id") ?: return null)
         }
 
 

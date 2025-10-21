@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entities
+package me.newburyminer.customItems.entity
 
 enum class CustomSpawnType {
     NATURAL,

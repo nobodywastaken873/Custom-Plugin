@@ -12,9 +12,12 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectBootstrapper
 import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.entities.EntityListeners
-import me.newburyminer.customItems.entities.bosses.BossListeners
-import me.newburyminer.customItems.entities.bosses.CustomBoss
+import me.newburyminer.customItems.entity.EntityListeners
+import me.newburyminer.customItems.bosses.BossListeners
+import me.newburyminer.customItems.bosses.CustomBoss
+import me.newburyminer.customItems.entity.CustomEntityBootstrapper
+import me.newburyminer.customItems.entity.EntityEventHandler
+import me.newburyminer.customItems.entity.EntitySpawnManager
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
 import me.newburyminer.customItems.items.*
@@ -52,37 +55,50 @@ class CustomItems : JavaPlugin() {
     private lateinit var systemsListener: SystemsListener
 
     override fun onEnable() {
-        logger.info("Custom items has successfully loaded!")
         plugin = this
-        aridWorld = this.server.getWorld(Key.key("minecraft:new_dimension"))!!
-        aridWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
-        aridWorld.time = 20000
-        bossWorld = Bukkit.createWorld(WorldCreator("testworld"))!!
-        bossWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
-        bossWorld.time = 20000
-        loadBosses()
-        CustomBoss.init()
+
         ItemBootstrapper.registerAll(this)
         ArmorSetBootstrapper.registerAll(this)
-        RecipeRegistry.registerAll()
+        RecipeRegistry.registerAll() // depends on ItemBootstraper
+        CustomEffectBootstrapper.registerAll()
+        CustomEntityBootstrapper.registerAll(this)
+
+        registerWorlds()
+        loadBosses()
+        CustomBoss.init()
+
         entityListener = EntityListeners()
         bossListener = BossListeners()
         systemsListener = SystemsListener()
+
         registerListeners()
+
         systemsListener.run()
         this.run()
         PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
         EffectManager.runTaskTimer(this, 0L, 1L)
         entityListener.run()
         bossListener.run()
+
+        // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()
-        CustomEffectBootstrapper.registerAll()
+
+        logger.info("Custom items has successfully loaded!")
     }
 
     private fun loadBosses() {
         for (x in -7..6) for (z in -7..6) {
             aridWorld.setChunkForceLoaded(x, z, true)
         }
+    }
+
+    private fun registerWorlds() {
+        aridWorld = this.server.getWorld(Key.key("minecraft:new_dimension"))!!
+        aridWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        aridWorld.time = 20000
+        bossWorld = Bukkit.createWorld(WorldCreator("testworld"))!!
+        bossWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        bossWorld.time = 20000
     }
 
     private fun registerListeners() {
@@ -97,6 +113,8 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(GraveListener(), this)
         server.pluginManager.registerEvents(EnchantmentListener(), this)
         server.pluginManager.registerEvents(GuiEventHandler(), this)
+        server.pluginManager.registerEvents(EntityEventHandler(), this)
+        server.pluginManager.registerEvents(EntitySpawnManager(), this)
     }
 
     private fun run() {

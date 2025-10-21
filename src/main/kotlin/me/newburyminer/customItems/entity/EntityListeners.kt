@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entities
+package me.newburyminer.customItems.entity
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import me.newburyminer.customItems.CustomItems
@@ -533,6 +533,7 @@ class EntityListeners: Listener, Runnable {
     @EventHandler fun onMobSpawn(e: CreatureSpawnEvent) {
         //scale up more for trial spawned mobs
         if (e.entity.world != CustomItems.aridWorld) return
+        if (Math.random() < 0.25) {e.isCancelled = true; return}
         if (e.entity is Mob) {
             (e.entity as Mob).target = e.entity.location.getNearbyPlayers(100.0).firstOrNull()
         }

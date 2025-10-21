@@ -22,7 +22,7 @@ import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.commands.*
-import me.newburyminer.customItems.entities.CustomEntity
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
 import net.kyori.adventure.key.Key

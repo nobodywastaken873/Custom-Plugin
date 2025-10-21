@@ -38,9 +38,6 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("storedinner", arrayOf(0, 0, 0, 0).toIntArray())
-        .setTag("redstonegroup", 0)
-        .setTag("toolindex", 0)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -123,7 +120,7 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
                 val item = ctx.item ?: return
                 val currentGroup = item.getTag<Int>("redstonegroup") ?: 0
                 val newGroup = if (currentGroup == 3) 0 else currentGroup + 1
-                val storedIndexes = item.getTag<IntArray>("storedinner") ?: return
+                val storedIndexes = item.getTag<IntArray>("storedinner") ?: arrayOf(0, 0, 0, 0).toIntArray()
                 val currentIndex = item.getTag<Int>("toolindex") ?: 0
                 val newIndex = storedIndexes[newGroup]
                 storedIndexes[currentGroup] = currentIndex

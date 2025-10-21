@@ -7,7 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entities.CustomEntity
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.items.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -34,7 +34,6 @@ class WindChargeCannon: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("mode", 0)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -46,7 +45,7 @@ class WindChargeCannon: CustomItemDefinition {
                 val shooter = ctx.player ?: return
                 val crossbow = ctx.item ?: return
                 if (!shooter.offCooldown(CustomItem.WIND_CHARGE_CANNON)) {e.isCancelled = true; return}
-                val mode = crossbow.getTag<Int>("mode")
+                val mode = crossbow.getTag<Int>("mode") ?: 0
 
                 val windCharges = mutableListOf<WindCharge>()
                 for (i in 0..1) {
@@ -87,7 +86,7 @@ class WindChargeCannon: CustomItemDefinition {
                 if (ctx.itemType != EventItemType.MAINHAND) return
                 val item = ctx.item ?: return
                 if (e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return
-                val mode = item.getTag<Int>("mode")!!
+                val mode = item.getTag<Int>("mode") ?: 0
                 item.setTag("mode", if (mode == 1) 0 else 1)
                 item.name(text("Wind Charge Cannon - ${if (mode == 1) "Homing" else "Straight"}", arrayOf(201, 240, 238), bold = true))
                 e.player.playSound(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.0F)

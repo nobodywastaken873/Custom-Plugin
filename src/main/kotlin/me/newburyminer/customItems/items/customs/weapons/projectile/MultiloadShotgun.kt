@@ -7,7 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entities.CustomEntity
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -38,8 +38,6 @@ class MultiloadShotgun: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("loadedshot", 0)
-        .setTag("loading", true)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -69,10 +67,21 @@ class MultiloadShotgun: CustomItemDefinition {
                 val crossbow = ctx.item ?: return
                 if (!e.player.isSneaking) return
                 e.isCancelled = true
-                if (crossbow.getTag<Int>("loadedshot")!! > 0) crossbow.setTag("loading", !crossbow.getTag<Boolean>("loading")!!)
-                else {crossbow.setTag("loading", true); CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.2F); return}
-                if (!crossbow.getTag<Boolean>("loading")!!) {
-                    crossbow.crossbowProj(ItemStack(Material.ARROW), crossbow.getTag<Int>("loadedshot")!!)
+
+                var isLoading = crossbow.getTag<Boolean>("loading") ?: true
+                val loadedShot = crossbow.getTag<Int>("loadedshot") ?: 0
+
+                if (loadedShot > 0) {
+                    crossbow.setTag("loading", !isLoading)
+                    isLoading = !isLoading
+                } else {
+                    crossbow.setTag("loading", true)
+                    CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.2F)
+                    return
+                }
+
+                if (!isLoading) {
+                    crossbow.crossbowProj(ItemStack(Material.ARROW), loadedShot)
                 } else {
                     crossbow.clearCrossbowProj()
                 }
@@ -83,8 +92,11 @@ class MultiloadShotgun: CustomItemDefinition {
                 val player = ctx.player ?: return
                 val crossbow = ctx.item ?: return
                 e.isCancelled = true
+
+                var isLoading = crossbow.getTag<Boolean>("loading") ?: true
+                var loadedArrows = crossbow.getTag<Int>("loadedshot") ?: 0
+
                 if (crossbow.getTag<Int>("subshot") == (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
-                    var loadedArrows = crossbow.getTag<Int>("loadedshot")!!
                     if (loadedArrows >= 24) {
                         CustomEffects.playSound(e.entity.location, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
                         loadedArrows = 25

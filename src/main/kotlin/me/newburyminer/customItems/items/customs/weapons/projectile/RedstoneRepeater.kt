@@ -9,7 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entities.CustomEntity
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -43,9 +43,6 @@ class RedstoneRepeater: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("loading", false)
-        .setTag("arrowcount", 1)
-        .setTag("loadedarrows", 0)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -55,12 +52,25 @@ class RedstoneRepeater: CustomItemDefinition {
             is ProjectileLaunchEvent -> {
                 val shooter = ctx.player ?: return
                 val crossbow = ctx.item ?: return
-                if (crossbow.getTag<Boolean>("loading")!!) {e.isCancelled = true; return}
-                if (crossbow.getTag<Int>("loadedarrows")!! < crossbow.getTag<Int>("arrowcount")!!) {e.isCancelled = true; return}
+
+                val isLoading = crossbow.getTag<Boolean>("loading") ?: true
+                var loadedArrows = crossbow.getTag<Int>("loadedarrows") ?: 0
+                val arrowCount = crossbow.getTag<Int>("arrowcount") ?: 0
+
+                if (isLoading) {e.isCancelled = true; return}
+                if (loadedArrows < arrowCount) {e.isCancelled = true; return}
+
                 crossbow.crossbowProj(ItemStack(Material.ARROW))
-                crossbow.setTag("loadedarrows", crossbow.getTag<Int>("loadedarrows")!!-1)
-                if (crossbow.getTag<Int>("loadedarrows")!! < crossbow.getTag<Int>("arrowcount")!!) {crossbow.setTag("loading", true); crossbow.clearCrossbowProj()}
-                crossbow.name(text((if (crossbow.getTag<Int>("arrowcount") == 1) "Single" else "Double") + " Redstone Repeater - "+crossbow.getTag<Int>("loadedarrows").toString(), arrayOf(125, 30, 30), bold = true))
+                crossbow.setTag("loadedarrows", loadedArrows - 1)
+                loadedArrows -= 1
+
+                // updated logic, hopefully prevents negative arrow counts
+                if (loadedArrows == 0) {
+                    crossbow.setTag("loading", true)
+                    crossbow.clearCrossbowProj()
+                }
+
+                crossbow.name(text((if (arrowCount == 1) "Single" else "Double") + " Redstone Repeater - " + loadedArrows.toString(), arrayOf(125, 30, 30), bold = true))
                 e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
                 e.entity.setTag("source", CustomItem.REDSTONE_REPEATER.name)
             }
@@ -78,9 +88,15 @@ class RedstoneRepeater: CustomItemDefinition {
                 val crossbow = ctx.item ?: return
                 if (!e.player.isSneaking) return
                 e.isCancelled = true
-                crossbow.setTag("loading", !crossbow.getTag<Boolean>("loading")!!)
-                if (!crossbow.getTag<Boolean>("loading")!!) {
-                    crossbow.crossbowProj(ItemStack(Material.ARROW), crossbow.getTag<Int>("arrowcount")!!)
+
+                var isLoading = crossbow.getTag<Boolean>("loading") ?: true
+                val arrowCount = crossbow.getTag<Int>("arrowcount") ?: 0
+
+                crossbow.setTag("loading", !isLoading)
+                isLoading = !isLoading
+
+                if (!isLoading) {
+                    crossbow.crossbowProj(ItemStack(Material.ARROW), arrowCount)
                 } else {
                     crossbow.clearCrossbowProj()
                 }
@@ -116,13 +132,18 @@ class RedstoneRepeater: CustomItemDefinition {
                 val item = ctx.item ?: return
                 if (e.action != Action.LEFT_CLICK_BLOCK && e.action != Action.LEFT_CLICK_AIR) return
                 if (!e.player.offCooldown(CustomItem.REDSTONE_REPEATER)) return
-                item.setTag("arrowcount", if (item.getTag<Int>("arrowcount") == 1) 2 else 1)
-                item.name(text((if (item.getTag<Int>("arrowcount") == 1) "Single" else "Double") + " Redstone Repeater - "+item.getTag<Int>("loadedarrows").toString(), arrayOf(125, 30, 30), bold = true))
-                if (!item.getTag<Boolean>("loading")!!) {
-                    val newMeta = item.itemMeta as CrossbowMeta
-                    newMeta.setChargedProjectiles(null)
-                    item.itemMeta = newMeta
-                    item.crossbowProj(ItemStack(Material.ARROW), e.item!!.getTag<Int>("arrowcount")!!)
+
+                val isLoading = item.getTag<Boolean>("loading") ?: true
+                var loadedArrows = item.getTag<Int>("loadedarrows") ?: 0
+                var arrowCount = item.getTag<Int>("arrowcount") ?: 0
+
+                item.setTag("arrowcount", if (arrowCount == 1) 2 else 1)
+                arrowCount = if (arrowCount == 1) 2 else 1
+
+                item.name(text((if (arrowCount == 1) "Single" else "Double") + " Redstone Repeater - " + loadedArrows.toString(), arrayOf(125, 30, 30), bold = true))
+                if (!isLoading) {
+                    item.clearCrossbowProj()
+                    item.crossbowProj(ItemStack(Material.ARROW), arrowCount)
                 }
                 CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_LOADING_START, 1.0F, 1.5F)
                 e.player.setCooldown(CustomItem.REDSTONE_REPEATER, 0.5)

@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entities.bosses
+package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
@@ -15,7 +15,7 @@ import me.newburyminer.customItems.Utils.Companion.rotateToAxis
 import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setAttr
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.entities.CustomEntity
+import me.newburyminer.customItems.entity.CustomEntity
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleSettings

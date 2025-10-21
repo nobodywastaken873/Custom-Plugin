@@ -32,7 +32,6 @@ class ExperienceFlask: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("storedexp", 0)
         .build()
 
     override fun handle(ctx: EventContext) {
@@ -41,6 +40,7 @@ class ExperienceFlask: CustomItemDefinition {
 
             is PlayerInteractEvent -> {
                 val flask = ctx.item ?: return
+                val storedExp = flask.getTag<Int>("storedexp") ?: 0
                 if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
                     if (ctx.itemType != EventItemType.MAINHAND) return
                     if (!e.player.offCooldown(CustomItem.EXPERIENCE_FLASK)) return
@@ -49,16 +49,16 @@ class ExperienceFlask: CustomItemDefinition {
                         return
                     }
                     if (e.player.isSneaking) {
-                        e.player.giveExp(flask.getTag<Int>("storedexp")!!, false)
+                        e.player.giveExp(storedExp, false)
                         flask.setTag("storedexp", 0)
                         CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.1F)
                     } else {
-                        flask.setTag("storedexp", e.item!!.getTag<Int>("storedexp")!! + e.player.calculateTotalExperiencePoints())
+                        flask.setTag("storedexp", storedExp + e.player.calculateTotalExperiencePoints())
                         e.player.level = 0
                         e.player.exp = 0F
                         CustomEffects.playSound(e.player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 0.9F)
                     }
-                    flask.loreBlock(text("Stored experience: ${flask.getTag<Int>("storedexp")!!}", arrayOf(73, 209, 10)),
+                    flask.loreBlock(text("Stored experience: ${flask.getTag<Int>("storedexp") ?: 0}", arrayOf(73, 209, 10)),
                         text(""),
                         text("Left click to retrieve all experience, left click while sneaking to deposit all experience. Right click to retrieve 30 levels, or sneak right click to retrieve 30 levels which will mend gear.", Utils.GRAY))
                     e.player.setCooldown(CustomItem.EXPERIENCE_FLASK, 0.5)
@@ -70,13 +70,13 @@ class ExperienceFlask: CustomItemDefinition {
                         return
                     }
                     if (e.player.isSneaking) {
-                        e.player.giveExp(flask.getTag<Int>("storedexp")!!.coerceAtMost(1395), false)
-                        flask.setTag("storedexp", flask.getTag<Int>("storedexp")!! - flask.getTag<Int>("storedexp")!!.coerceAtMost(1395))
+                        e.player.giveExp(storedExp.coerceAtMost(1395), false)
+                        flask.setTag("storedexp", storedExp - storedExp.coerceAtMost(1395))
                     } else {
-                        e.player.giveExp(flask.getTag<Int>("storedexp")!!.coerceAtMost(1395), true)
-                        flask.setTag("storedexp", flask.getTag<Int>("storedexp")!! - flask.getTag<Int>("storedexp")!!.coerceAtMost(1395))
+                        e.player.giveExp(storedExp.coerceAtMost(1395), true)
+                        flask.setTag("storedexp", storedExp - storedExp.coerceAtMost(1395))
                     }
-                    e.item!!.loreBlock(text("Stored experience: ${e.item!!.getTag<Int>("storedexp")!!}", arrayOf(73, 209, 10)),
+                    flask.loreBlock(text("Stored experience: ${flask.getTag<Int>("storedexp") ?: 0}", arrayOf(73, 209, 10)),
                         text(""),
                         text("Left click to retrieve all experience, left click while sneaking to deposit all experience. Right click to retrieve 30 levels, or sneak right click to retrieve 30 levels which will mend gear.", Utils.GRAY))
                     e.player.setCooldown(CustomItem.EXPERIENCE_FLASK, 0.5)

@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entities.bosses
+package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils.Companion.getTag

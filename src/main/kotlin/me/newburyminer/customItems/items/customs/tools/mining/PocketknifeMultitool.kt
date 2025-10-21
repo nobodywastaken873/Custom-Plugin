@@ -29,7 +29,6 @@ class PocketknifeMultitool: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
-        .setTag("tool", 0)
         .setUnbreakable()
         .build()
 
@@ -44,7 +43,7 @@ class PocketknifeMultitool: CustomItemDefinition {
                 if (!player.offCooldown(CustomItem.POCKETKNIFE_MULTITOOL)) return
                 if (!player.isSneaking) return
                 if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
-                val toolNum = item.getTag<Int>("tool")!!
+                val toolNum = item.getTag<Int>("tool") ?: 0
                 val newMat = when (toolNum) {
                     0 -> Material.SHEARS
                     1 -> Material.FLINT_AND_STEEL

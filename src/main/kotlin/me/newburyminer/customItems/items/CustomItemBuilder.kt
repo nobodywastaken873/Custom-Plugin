@@ -12,6 +12,8 @@ import me.newburyminer.customItems.Utils.Companion.BLUE
 import me.newburyminer.customItems.Utils.Companion.GRAY
 import me.newburyminer.customItems.Utils.Companion.consumable
 import me.newburyminer.customItems.Utils.Companion.food
+import me.newburyminer.customItems.Utils.Companion.getCustom
+import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.noNoiseEquippable
 import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -69,11 +71,6 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
             )
         }
         item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributeData)
-        return this
-    }
-
-    fun setTag(key: String, value: Any): CustomItemBuilder {
-        item.setTag(key, value)
         return this
     }
 

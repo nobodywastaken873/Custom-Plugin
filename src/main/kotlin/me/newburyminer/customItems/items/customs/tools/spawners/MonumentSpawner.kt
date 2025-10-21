@@ -3,7 +3,7 @@ package me.newburyminer.customItems.items.customs.tools.spawners
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entities.bosses.CustomBoss
+import me.newburyminer.customItems.bosses.CustomBoss
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
