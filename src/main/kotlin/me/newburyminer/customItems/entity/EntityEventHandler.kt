@@ -1,15 +1,12 @@
 package me.newburyminer.customItems.entity
 
 import me.newburyminer.customItems.Utils.Companion.getCustom
-import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.CustomItemBehavior
-import me.newburyminer.customItems.items.EventContext
-import me.newburyminer.customItems.items.EventItemType
+import me.newburyminer.customItems.entity2.EntityEventContext
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.inventory.ItemStack
+import org.bukkit.event.entity.EntityExplodeEvent
 
 class EntityEventHandler: Listener {
     companion object {
@@ -32,6 +29,10 @@ class EntityEventHandler: Listener {
                 )
             )
         }
+    }
+
+    @EventHandler fun onCreeperExplode(e: EntityExplodeEvent) {
+
     }
 
 

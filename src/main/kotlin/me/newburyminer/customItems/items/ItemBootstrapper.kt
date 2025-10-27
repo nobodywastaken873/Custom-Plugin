@@ -4,11 +4,13 @@ import me.newburyminer.customItems.systems.playertask.PlayerTask
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
+import java.lang.reflect.Modifier
 
 object ItemBootstrapper {
     fun registerAll(plugin: JavaPlugin) {
         val reflections: Reflections = Reflections("me.newburyminer.customItems.items")
         val classes = reflections.getSubTypesOf(CustomItemDefinition::class.java)
+            .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
 
         for (cls in classes) {
             val instance = cls.getDeclaredConstructor().newInstance()

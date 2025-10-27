@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity2
 
 import org.bukkit.entity.Entity
 import org.bukkit.event.Event
