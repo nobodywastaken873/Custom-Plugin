@@ -1,10 +1,5 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity3
 
-import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.ItemEventHandler
-import me.newburyminer.customItems.items.ItemRegistry
-import me.newburyminer.customItems.systems.playertask.PlayerTask
-import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
@@ -19,7 +14,7 @@ object CustomEntityBootstrapper {
             val instance = cls.getDeclaredConstructor().newInstance()
             val entityId = instance.customEntity
             EntitySpawnManager.register(entityId, instance)
-            EntityEventHandler.register(entityId, instance)
+            //EntityEventHandler.register(entityId, instance)
             instance.tasks.forEach { (period, runTask) ->
                 EntityTaskHandler.registerTask(period, entityId to EntityTask { entity ->  runTask(entity)})}
 

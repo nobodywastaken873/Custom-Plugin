@@ -1,7 +1,7 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity3
 
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.entity2.EntityEventContext
+import me.newburyminer.customItems.entity.EntityEventContext
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 

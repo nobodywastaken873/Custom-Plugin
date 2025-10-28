@@ -9,7 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.entity.CustomEntity
+import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext

@@ -1,8 +1,8 @@
-package me.newburyminer.customItems.entity.behaviors
+package me.newburyminer.customItems.entity3.behaviors
 
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.entity.CustomEntityDefinition
+import me.newburyminer.customItems.entity3.CustomEntityDefinition
 import org.bukkit.entity.Entity
 
 abstract class CooldownEntity(private val cooldowns: Int): CustomEntityDefinition {

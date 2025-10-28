@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity3
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
@@ -8,7 +8,6 @@ import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.CreatureSpawnEvent
-import org.bukkit.event.entity.EntitySpawnEvent
 import kotlin.math.pow
 
 

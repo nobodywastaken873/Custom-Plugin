@@ -12,12 +12,11 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectBootstrapper
 import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.entity.EntityListeners
+import me.newburyminer.customItems.entity3.EntityListeners
 import me.newburyminer.customItems.bosses.BossListeners
 import me.newburyminer.customItems.bosses.CustomBoss
-import me.newburyminer.customItems.entity.CustomEntityBootstrapper
 import me.newburyminer.customItems.entity.EntityEventHandler
-import me.newburyminer.customItems.entity.EntitySpawnManager
+import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
 import me.newburyminer.customItems.items.*
@@ -61,7 +60,7 @@ class CustomItems : JavaPlugin() {
         ArmorSetBootstrapper.registerAll(this)
         RecipeRegistry.registerAll() // depends on ItemBootstraper
         CustomEffectBootstrapper.registerAll()
-        CustomEntityBootstrapper.registerAll(this)
+        //CustomEntityBootstrapper.registerAll(this)
 
         registerWorlds()
         loadBosses()
@@ -114,7 +113,10 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(EnchantmentListener(), this)
         server.pluginManager.registerEvents(GuiEventHandler(), this)
         server.pluginManager.registerEvents(EntityEventHandler(), this)
-        server.pluginManager.registerEvents(EntitySpawnManager(), this)
+        server.pluginManager.registerEvents(EntityWrapperManager(), this)
+
+        //server.pluginManager.registerEvents(EntitySpawnManager(), this)
+        //server.pluginManager.registerEvents(EntityEventHandler(), this)
     }
 
     private fun run() {

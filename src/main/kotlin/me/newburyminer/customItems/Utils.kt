@@ -6,7 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
-import me.newburyminer.customItems.entity.CustomEntity
+import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments

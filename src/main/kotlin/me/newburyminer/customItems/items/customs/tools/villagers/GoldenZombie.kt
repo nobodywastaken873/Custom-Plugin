@@ -3,7 +3,7 @@ package me.newburyminer.customItems.items.customs.tools.villagers
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entity.CustomEntity
+import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition

@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity3
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils.Companion.getNearestPlayer

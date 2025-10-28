@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entity
+package me.newburyminer.customItems.entity3
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import me.newburyminer.customItems.CustomItems

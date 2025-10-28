@@ -7,7 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entity.CustomEntity
+import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.*
 import org.bukkit.Bukkit
 import org.bukkit.Material

@@ -12,7 +12,7 @@ import me.newburyminer.customItems.Utils.Companion.serializeAsBytes
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entity.CustomEntity
+import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.gui.GraveItemsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
