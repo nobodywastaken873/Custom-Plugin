@@ -33,7 +33,14 @@ object EffectManager: BukkitRunnable() {
         val effectMap = activeEffects[player.uniqueId] ?: mutableMapOf()
         val effectList = effectMap[behavior.period] ?: mutableListOf()
         val effect = ActiveEffect(behavior, effectData.duration, effectData, effectType)
-        if (effectData.unique && effectList.any {it.type == effectType && it.data == effectData}) return
+        if (effectData.unique) {
+            effectList.forEach {
+                if (it.type == effectType && it.data == effectData) {
+                    it.remaining = it.remaining.coerceAtLeast(effectData.duration)
+                    return
+                }
+            }
+        }
         effectList.add(effect)
         effect.behavior.onApply(player)
         effectMap[behavior.period] = effectList

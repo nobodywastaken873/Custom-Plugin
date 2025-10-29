@@ -4,6 +4,8 @@ import org.bukkit.entity.Entity
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 
 class EntityEventHandler: Listener {
@@ -20,8 +22,13 @@ class EntityEventHandler: Listener {
         }
     }
 
-    @EventHandler fun onCreeperExplode(e: EntityExplodeEvent) {
+    @EventHandler fun onDamage(e: EntityDamageByEntityEvent) {
+        dispatch(e.entity, e)
+        dispatch(e.damager, e)
+    }
 
+    @EventHandler fun onDeath(e: EntityDeathEvent) {
+        dispatch(e.entity, e)
     }
 
 

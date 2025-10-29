@@ -1,13 +1,13 @@
 package me.newburyminer.customItems.entity
 
-import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Entity
 
-class EntityWrapper(private val entity: LivingEntity, private val components: List<EntityComponent>) {
+class EntityWrapper(val entity: Entity, private val components: List<EntityComponent>) {
 
 
     @Suppress("UNCHECKED_CAST")
     companion object {
-        fun deserialize(map: Map<String, Any>, entity: LivingEntity): EntityWrapper? {
+        fun deserialize(map: Map<String, Any>, entity: Entity): EntityWrapper? {
 
             val components = map.map {
                 val type = EntityComponentType.valueOf(it.key)

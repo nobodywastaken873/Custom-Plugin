@@ -71,7 +71,6 @@ class WindChargeCannon: CustomItemDefinition {
                         }
                         val target = closest?.uniqueId ?: shooter.uniqueId
                         windCharge.setTag("target", target)
-                        windCharge.setTag("id", CustomEntity.WIND_CANNON_CHARGE.id)
                         windCharge.setTag("source", CustomItem.WIND_CHARGE_CANNON.name)
                         activeHomingTime = 600
                     }
@@ -107,7 +106,7 @@ class WindChargeCannon: CustomItemDefinition {
 
         for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
             if (entity.type != EntityType.WIND_CHARGE) continue
-            if (entity.getTag<Int>("id") != CustomEntity.WIND_CANNON_CHARGE.id) continue
+            if (entity.getTag<String>("source") != CustomItem.WIND_CHARGE_CANNON.name) continue
             if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
             entity.setTag("tick", Bukkit.getServer().currentTick)
             val target = Bukkit.getEntity(entity.getTag<UUID>("target")!!) ?: continue

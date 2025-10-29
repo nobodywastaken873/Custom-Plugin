@@ -50,7 +50,7 @@ class EntityListeners: Listener, Runnable {
         if (e.entity.world != CustomItems.aridWorld) return
         broodmotherDeath(e)
         caveBroodmotherDeath(e)
-        lavaCubeDeath(e)
+        //lavaCubeDeath(e)
     }
     private fun broodmotherDeath(e: EntityDeathEvent) {
         if (e.entity.type != EntityType.SPIDER) return
@@ -70,18 +70,18 @@ class EntityListeners: Listener, Runnable {
             spider.getAttribute(Attribute.SCALE)?.baseValue = 0.25
         }
     }
-    private fun lavaCubeDeath(e: EntityDeathEvent) {
+    /*private fun lavaCubeDeath(e: EntityDeathEvent) {
         if (e.entity.type != EntityType.MAGMA_CUBE) return
         if (e.entity.getTag<Int>("id") != CustomEntity.LAVA_CUBE.id) return
         if (e.entity.location.block.type != Material.AIR) return
         e.entity.location.block.type = Material.LAVA
-    }
+    }*/
 
     @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         explosiveSkeletonArrowLand(e)
         homingArrowHit(e)
-        elytraArrowHit(e)
+        //elytraArrowHit(e)
         machineGunArrowHit(e)
         shieldBreakerArrowHit(e)
     }
@@ -99,12 +99,12 @@ class EntityListeners: Listener, Runnable {
         if (e.hitEntity !is Player) return
         e.entity.remove()
     }
-    private fun elytraArrowHit(e: ProjectileHitEvent) {
+    /*private fun elytraArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id) return
         if (e.hitEntity !is Player) return
         e.entity.remove()
-    }
+    }*/
     private fun machineGunArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.MACHINE_GUN_SKELETON_ARROW.id) return
@@ -171,8 +171,8 @@ class EntityListeners: Listener, Runnable {
     @EventHandler fun onArrowShoot(e: ProjectileLaunchEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         homingSkeletonShoot(e)
-        elytraBreakerSkeletonShoot(e)
-        sniperSkeletonShoot(e)
+        //elytraBreakerSkeletonShoot(e)
+        //sniperSkeletonShoot(e)
         explosiveSkeletonShoot(e)
         machineGunSkeletonShoot(e)
         swarmerSkeletonShoot(e)
@@ -194,7 +194,7 @@ class EntityListeners: Listener, Runnable {
         if (closest == null) return
         e.entity.setTag("target", closest.uniqueId)
     }
-    private fun elytraBreakerSkeletonShoot(e: ProjectileLaunchEvent) {
+    /*private fun elytraBreakerSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON.id) return
         e.entity.setTag("id", CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id)
@@ -209,8 +209,8 @@ class EntityListeners: Listener, Runnable {
         }
         if (closest == null) return
         e.entity.setTag("target", closest.uniqueId)
-    }
-    private fun sniperSkeletonShoot(e: ProjectileLaunchEvent) {
+    }*/
+    /*private fun sniperSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.SNIPER_SKELETON.id) return
         val skeleton = e.entity.shooter as Skeleton
@@ -225,7 +225,7 @@ class EntityListeners: Listener, Runnable {
             skeleton.setTag("shots", 0)
             e.entity.velocity = skeleton.target!!.location.add(Vector(0.0, 0.75, 0.0)).add(skeleton.target!!.velocity).subtract(e.entity.location).toVector()
         }
-    }
+    }*/
     private fun explosiveSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.EXPLOSIVE_SKELETON.id) return
@@ -394,7 +394,7 @@ class EntityListeners: Listener, Runnable {
     @EventHandler fun onEntityDamageByEntity(e: EntityDamageByEntityEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         creeperExplode(e)
-        elytraBreakerSkeletonHit(e)
+        //elytraBreakerSkeletonHit(e)
         sniperSkeletonHit(e)
         machineGunSkeletonHit(e)
         swarmerSkeletonHit(e)
@@ -418,7 +418,7 @@ class EntityListeners: Listener, Runnable {
         }
         (e.entity as Creeper).setTag("chain", true)
     }
-    private fun elytraBreakerSkeletonHit(e: EntityDamageByEntityEvent) {
+    /*private fun elytraBreakerSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id) return
@@ -428,7 +428,7 @@ class EntityListeners: Listener, Runnable {
         EffectManager.applyEffect((e.entity as Player), CustomEffectType.ELYTRA_DISABLED, 20 * (10 + difficulty.pow(0.55)).toInt())
         //e.entity.setTag("elytradisabled", (10 + difficulty.pow(0.55)).toInt())
         CustomEffects.playSound(e.entity.location, Sound.ITEM_SHIELD_BREAK, 1F, 1F)
-    }
+    }*/
     private fun sniperSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
@@ -899,7 +899,7 @@ class EntityListeners: Listener, Runnable {
                     if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
                     entity.setTag("tick", Bukkit.getServer().currentTick)
                     homingSkeletonArrowUpdate(entity)
-                    elytraBreakerSkeletonArrowUpdate(entity)
+                    //elytraBreakerSkeletonArrowUpdate(entity)
                     machineGunSkeletonTrigger(entity)
                 }
             }
@@ -1015,7 +1015,7 @@ class EntityListeners: Listener, Runnable {
         if (player.location.subtract(mob.location).length() >= 10.0) return
         player.velocity = player.velocity.add(player.location.subtract(mob.location).toVector().normalize().multiply(0.6))
     }
-    private fun elytraBreakerSkeletonArrowUpdate(entity: Entity) {
+    /*private fun elytraBreakerSkeletonArrowUpdate(entity: Entity) {
         if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) return
         if (entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id) return
         val target = Bukkit.getEntity(entity.getTag<UUID>("target")!!)
@@ -1023,7 +1023,7 @@ class EntityListeners: Listener, Runnable {
         if (target == null) return
         val newDirection = target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0))
         entity.velocity = newDirection.normalize().multiply((target.location.subtract(entity.location).length() / 8).coerceAtLeast(8.0))
-    }
+    }*/
     private fun homingSkeletonArrowUpdate(entity: Entity) {
         if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) return
         if (entity.getTag<Int>("id") != CustomEntity.HOMING_SKELETON_ARROW.id) return
