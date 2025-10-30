@@ -7,6 +7,7 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
 import org.bukkit.Sound
@@ -15,17 +16,17 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import java.util.UUID
 
-class ElytraBreakerFirework(private val damage: Double, private val duration: Int, private val target: Player): EntityComponent {
+class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player): EntityComponent {
     override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_FIREWORK
     override fun serialize(): Map<String, Any> {
         return mapOf(
-            "damage" to damage,
+            "damage" to damage.serialize(),
             "target" to target.uniqueId,
             "duration" to duration,
         )
     }
     override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val newDamage = map["damage"] as Double
+        val newDamage = HitEffects.deserialize(map["damage"])
         val newUUID = (map["target"] ?: return null) as UUID
         val newTarget = Bukkit.getPlayer(newUUID) ?: return null
         val newDuration = map["duration"] as Int
@@ -55,7 +56,9 @@ class ElytraBreakerFirework(private val damage: Double, private val duration: In
                 player.isGliding = false
                 EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(duration, unique = true))
                 CustomEffects.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
-                e.damage = damage
+
+                e.isCancelled = true
+                damage.apply(player, e.damager)
             }
 
         }

@@ -15,8 +15,10 @@ import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity3.EntityListeners
 import me.newburyminer.customItems.bosses.BossListeners
 import me.newburyminer.customItems.bosses.CustomBoss
+import me.newburyminer.customItems.entity.ComponentSerializationRegistry
 import me.newburyminer.customItems.entity.EntityEventHandler
 import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
 import me.newburyminer.customItems.items.*
@@ -60,6 +62,8 @@ class CustomItems : JavaPlugin() {
         ArmorSetBootstrapper.registerAll(this)
         RecipeRegistry.registerAll() // depends on ItemBootstraper
         CustomEffectBootstrapper.registerAll()
+        ComponentSerializationRegistry.bootstrap(this)
+        HitEffectSerializationRegistry.bootstrap(this)
         //CustomEntityBootstrapper.registerAll(this)
 
         registerWorlds()

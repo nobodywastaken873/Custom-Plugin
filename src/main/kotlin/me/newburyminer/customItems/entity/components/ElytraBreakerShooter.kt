@@ -6,6 +6,9 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
+import me.newburyminer.customItems.entity.hiteffects.HitEffect
+import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
@@ -16,18 +19,18 @@ import org.bukkit.entity.Firework
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
-class ElytraBreakerShooter(private val damage: Double, private val baseCooldown: Int, private val duration: Int): EntityComponent, CooldownInterface {
+class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val duration: Int): EntityComponent, CooldownInterface {
     override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
-            "damage" to damage,
+            "damage" to damage.serialize(),
             "cooldown" to baseCooldown,
             "duration" to duration,
         )
     }
     override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newDamage = map["damage"] as Double
+        val newDamage = HitEffects.deserialize(map["damage"])
         val newCooldown = map["cooldown"] as Int
         val newDuration = map["duration"] as Int
         return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
