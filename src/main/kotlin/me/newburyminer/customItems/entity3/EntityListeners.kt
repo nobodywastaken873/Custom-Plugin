@@ -337,7 +337,7 @@ class EntityListeners: Listener, Runnable {
         }
 
         //firebomb creeper
-        else if (e.entity.getTag<Int>("id") == CustomEntity.FIREBOMB_CREEPER.id) {
+        /*else if (e.entity.getTag<Int>("id") == CustomEntity.FIREBOMB_CREEPER.id) {
             if (e.entity.getTag<Boolean>("explosionCompleted") == true) return
             e.isCancelled = true
             e.entity.setTag("explosionCompleted", true)
@@ -359,7 +359,7 @@ class EntityListeners: Listener, Runnable {
                     }
                 }
             },1)
-        }
+        }*/
 
         //firework creeper
         else if (e.entity.getTag<Int>("id") == CustomEntity.FIREWORK_CREEPER.id) {
@@ -898,7 +898,7 @@ class EntityListeners: Listener, Runnable {
                 for (entity in player.getNearbyEntities(100.0, 100.0, 100.0)) {
                     if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
                     entity.setTag("tick", Bukkit.getServer().currentTick)
-                    homingSkeletonArrowUpdate(entity)
+                    //homingSkeletonArrowUpdate(entity)
                     //elytraBreakerSkeletonArrowUpdate(entity)
                     machineGunSkeletonTrigger(entity)
                 }
@@ -1024,7 +1024,7 @@ class EntityListeners: Listener, Runnable {
         val newDirection = target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0))
         entity.velocity = newDirection.normalize().multiply((target.location.subtract(entity.location).length() / 8).coerceAtLeast(8.0))
     }*/
-    private fun homingSkeletonArrowUpdate(entity: Entity) {
+    /*private fun homingSkeletonArrowUpdate(entity: Entity) {
         if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) return
         if (entity.getTag<Int>("id") != CustomEntity.HOMING_SKELETON_ARROW.id) return
         val target = Bukkit.getEntity(entity.getTag<UUID>("target")!!)
@@ -1032,7 +1032,7 @@ class EntityListeners: Listener, Runnable {
         if (target == null) return
         val newDirection = entity.velocity.add(target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0)).normalize().multiply(50))
         entity.velocity = newDirection.normalize().multiply(currentVelocity)
-    }
+    }*/
     private fun miniBreachingCreeperTrigger(mob: Mob) {
         if (mob.getTag<Int>("id") != CustomEntity.MINI_BREACHING_CREEPER.id || mob.target == null || mob.hasLineOfSight(mob.target!!)) return
         /*mob.velocity =

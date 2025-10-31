@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.entity.components
+package me.newburyminer.customItems.entity.components.projectiles
 
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
@@ -16,7 +16,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import java.util.UUID
 
-class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player): EntityComponent {
+class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player):
+    EntityComponent {
     override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_FIREWORK
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -26,7 +27,7 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
         )
     }
     override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val newDamage = HitEffects.deserialize(map["damage"])
+        val newDamage = HitEffects.Companion.deserialize(map["damage"])
         val newUUID = (map["target"] ?: return null) as UUID
         val newTarget = Bukkit.getPlayer(newUUID) ?: return null
         val newDuration = map["duration"] as Int
@@ -35,7 +36,10 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
 
     override fun tick(wrapper: EntityWrapper) {
 
-        if (!target.isValid) (wrapper.entity as Firework).detonate()
+        if (!target.isValid) {
+            (wrapper.entity as Firework).detonate()
+            return
+        }
         if (wrapper.entity.location.distanceSquared(target.location) < 10) {
             val firework = wrapper.entity as Firework
             firework.detonate()
@@ -55,7 +59,7 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
                 val player = e.entity as? Player ?: return
                 player.isGliding = false
                 EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(duration, unique = true))
-                CustomEffects.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
+                CustomEffects.Companion.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
 
                 e.isCancelled = true
                 damage.apply(player, e.damager)

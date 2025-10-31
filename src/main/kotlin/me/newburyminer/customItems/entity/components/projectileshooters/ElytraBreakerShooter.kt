@@ -1,13 +1,12 @@
-package me.newburyminer.customItems.entity.components
+package me.newburyminer.customItems.entity.components.projectileshooters
 
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFirework
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
-import me.newburyminer.customItems.entity.hiteffects.HitEffect
-import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -19,7 +18,8 @@ import org.bukkit.entity.Firework
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
-class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val duration: Int): EntityComponent, CooldownInterface {
+class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val duration: Int): EntityComponent,
+    CooldownInterface {
     override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
 
     override fun serialize(): Map<String, Any> {
@@ -30,7 +30,7 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
         )
     }
     override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newDamage = HitEffects.deserialize(map["damage"])
+        val newDamage = HitEffects.Companion.deserialize(map["damage"])
         val newCooldown = map["cooldown"] as Int
         val newDuration = map["duration"] as Int
         return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
@@ -60,10 +60,12 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
                 newMeta.power = 100
                 it.fireworkMeta = newMeta
             }
-            EntityWrapperManager.register(missile.uniqueId, EntityWrapper(missile, listOf(ElytraBreakerFirework(damage, duration, target))))
+            EntityWrapperManager.Companion.register(missile.uniqueId,
+                EntityWrapper(missile, mutableListOf(ElytraBreakerFirework(damage, duration, target)))
+            )
 
             setCooldown(baseCooldown)
-            CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 5F, 0.4F)
+            CustomEffects.Companion.playSound(wrapper.entity.location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 5F, 0.4F)
         }
 
     }
