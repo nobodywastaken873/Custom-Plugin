@@ -1,6 +1,5 @@
 package me.newburyminer.customItems.entity.components.creepers
 
-import com.google.common.base.Equivalence
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.EntityComponent
@@ -11,14 +10,17 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import org.bukkit.Color
+import org.bukkit.FireworkEffect
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Creeper
+import org.bukkit.entity.Firework
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.util.Vector
 import kotlin.math.pow
 
-class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
+class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
+    override val componentType: EntityComponentType = EntityComponentType.FIREWORK_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -29,7 +31,7 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
     override fun deserialize(map: Map<String, Any>): EntityComponent {
         val newCount = map["count"] as Int
         val newDamage = map["damage"] as Double
-        return ArrowBombCreeper(newCount, newDamage)
+        return FireworkCreeper(newCount, newDamage)
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
@@ -37,36 +39,28 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
 
             is EntityExplodeEvent -> {
                 if (e.entity.getTag<Boolean>("exploding") != true) return
+
                 for (i in 1..count) {
-                    val arrow = e.entity.world.spawnArrow(
-                        e.entity.location,
-                        Vector(
+                    val firework = e.entity.world.spawn(e.entity.location, Firework::class.java) {
+                        it.isShotAtAngle = true
+                        it.velocity = Vector(
                             Utils.randomRange(-1.0, 1.0),
                             Math.random(),
                             Utils.randomRange(-1.0, 1.0)
-                        ).normalize(),
-                        1F,
-                        1F
-                    )
+                        ).normalize().multiply(0.5)
+                        it.ticksToDetonate = 5
 
-                    arrow.shooter = e.entity as Creeper
-                    EntityWrapperManager.register(arrow.uniqueId, EntityWrapper(arrow,
-                        mutableListOf(
-
-                            CustomDamageProjectile(
-                                HitEffects(
-                                    CustomDamageApply(
-                                        damage,
-                                        DamageType.ARROW,
-                                        0
-                                    )
-                                )
-                            )
-
-                        ))
-                    )
-
+                        val newMeta = it.fireworkMeta
+                        val numStars = ((damage - 5) / 2).toInt()
+                        val effect = FireworkEffect.builder()
+                            .with(FireworkEffect.Type.BALL)
+                            .withColor(Color.LIME)
+                            .build()
+                        for (i in 0..numStars) { newMeta.addEffect(effect) }
+                        it.fireworkMeta = newMeta
+                    }
                 }
+
             }
 
         }

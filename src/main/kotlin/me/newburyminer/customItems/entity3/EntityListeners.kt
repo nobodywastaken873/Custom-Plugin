@@ -77,40 +77,40 @@ class EntityListeners: Listener, Runnable {
         e.entity.location.block.type = Material.LAVA
     }*/
 
-    @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
+    /*@EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         explosiveSkeletonArrowLand(e)
         homingArrowHit(e)
         //elytraArrowHit(e)
         machineGunArrowHit(e)
         shieldBreakerArrowHit(e)
-    }
-    private fun explosiveSkeletonArrowLand(e: ProjectileHitEvent) {
+    }*/
+    /*private fun explosiveSkeletonArrowLand(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.EXPLOSIVE_SKELETON_ARROW.id) return
         if (e.hitBlock == null && e.hitEntity !is Player) return
         val difficulty = e.entity.getTag<Double>("difficulty")!!
         e.entity.world.createExplosion(e.entity, e.entity.location, (difficulty.pow(0.45)).toFloat(), false)
         e.entity.remove()
-    }
-    private fun homingArrowHit(e: ProjectileHitEvent) {
+    }*/
+    /*private fun homingArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.HOMING_SKELETON_ARROW.id) return
         if (e.hitEntity !is Player) return
         e.entity.remove()
-    }
+    }*/
     /*private fun elytraArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id) return
         if (e.hitEntity !is Player) return
         e.entity.remove()
     }*/
-    private fun machineGunArrowHit(e: ProjectileHitEvent) {
+    /*private fun machineGunArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.MACHINE_GUN_SKELETON_ARROW.id) return
         e.entity.remove()
-    }
-    private fun shieldBreakerArrowHit(e: ProjectileHitEvent) {
+    }*/
+    /*private fun shieldBreakerArrowHit(e: ProjectileHitEvent) {
         if (e.entity !is Arrow) return
         if (e.entity.getTag<Int>("id") != CustomEntity.SHIELD_BREAKER_ARROW.id) return
         if (e.hitEntity == null) {
@@ -122,7 +122,7 @@ class EntityListeners: Listener, Runnable {
             CustomEffects.playSound(e.hitEntity!!.location, Sound.ITEM_SHIELD_BREAK, 1F, 1F)
         }
         e.entity.remove()
-    }
+    }*/
 
     @EventHandler fun onFuseIgnite(e: GenericGameEvent) {
         if (e.event != GameEvent.PRIME_FUSE) return
@@ -145,43 +145,43 @@ class EntityListeners: Listener, Runnable {
             }, 10)
         }
     }
-    @EventHandler fun onEntityHit(e: EntityKnockbackByEntityEvent) {
+    /*@EventHandler fun onEntityHit(e: EntityKnockbackByEntityEvent) {
         goatHit(e)
         launchingSlimeHit(e)
         launchingCubeHit(e)
-    }
-    private fun goatHit(e: EntityKnockbackByEntityEvent) {
+    }*/
+    /*private fun goatHit(e: EntityKnockbackByEntityEvent) {
         if (e.hitBy.type != EntityType.GOAT) return
         e.knockback = e.knockback.add(Vector(0.0, 5.0, 0.0))
         e.knockback = e.knockback.multiply(10)
-    }
-    private fun launchingSlimeHit(e: EntityKnockbackByEntityEvent) {
+    }*/
+    /*private fun launchingSlimeHit(e: EntityKnockbackByEntityEvent) {
         if (e.hitBy.type != EntityType.SLIME) return
         if (e.hitBy.getTag<Int>("id") != CustomEntity.LAUNCHING_SLIME.id) return
         e.knockback = e.knockback.add(Vector(0.0, 0.4, 0.0))
         e.knockback = e.knockback.multiply(1.5)
-    }
-    private fun launchingCubeHit(e: EntityKnockbackByEntityEvent) {
+    }*/
+    /*private fun launchingCubeHit(e: EntityKnockbackByEntityEvent) {
         if (e.hitBy.type != EntityType.MAGMA_CUBE) return
         if (e.hitBy.getTag<Int>("id") != CustomEntity.LAUNCHING_CUBE.id) return
         e.knockback = e.knockback.add(Vector(0.0, 0.4, 0.0))
         e.knockback = e.knockback.multiply(1.5)
-    }
+    }*/
 
     @EventHandler fun onArrowShoot(e: ProjectileLaunchEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
-        homingSkeletonShoot(e)
+        //homingSkeletonShoot(e)
         //elytraBreakerSkeletonShoot(e)
         //sniperSkeletonShoot(e)
-        explosiveSkeletonShoot(e)
+        //explosiveSkeletonShoot(e)
         machineGunSkeletonShoot(e)
-        swarmerSkeletonShoot(e)
-        shieldBreakerSkeletonShoot(e)
-        witchShoot(e)
+        //swarmerSkeletonShoot(e)
+        //shieldBreakerSkeletonShoot(e)
+        //witchShoot(e)
         sniperWitchShoot(e)
         bioweaponWitch(e)
     }
-    private fun homingSkeletonShoot(e: ProjectileLaunchEvent) {
+    /*private fun homingSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.HOMING_SKELETON.id) return
         e.entity.setTag("id", CustomEntity.HOMING_SKELETON_ARROW.id)
@@ -193,7 +193,7 @@ class EntityListeners: Listener, Runnable {
         }
         if (closest == null) return
         e.entity.setTag("target", closest.uniqueId)
-    }
+    }*/
     /*private fun elytraBreakerSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON.id) return
@@ -210,7 +210,7 @@ class EntityListeners: Listener, Runnable {
         if (closest == null) return
         e.entity.setTag("target", closest.uniqueId)
     }*/
-    /*private fun sniperSkeletonShoot(e: ProjectileLaunchEvent) {
+    private fun sniperSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.SNIPER_SKELETON.id) return
         val skeleton = e.entity.shooter as Skeleton
@@ -225,8 +225,8 @@ class EntityListeners: Listener, Runnable {
             skeleton.setTag("shots", 0)
             e.entity.velocity = skeleton.target!!.location.add(Vector(0.0, 0.75, 0.0)).add(skeleton.target!!.velocity).subtract(e.entity.location).toVector()
         }
-    }*/
-    private fun explosiveSkeletonShoot(e: ProjectileLaunchEvent) {
+    }
+    /*private fun explosiveSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.EXPLOSIVE_SKELETON.id) return
         val skeleton = e.entity.shooter as Skeleton
@@ -241,7 +241,7 @@ class EntityListeners: Listener, Runnable {
         } else {
             skeleton.setTag("shots", 0)
         }
-    }
+    }*/
     private fun machineGunSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.MACHINE_GUN_SKELETON.id) return
@@ -251,17 +251,17 @@ class EntityListeners: Listener, Runnable {
         if (!skeleton.hasLineOfSight(skeleton.target ?: e.entity)) return
         e.isCancelled = true
     }
-    private fun swarmerSkeletonShoot(e: ProjectileLaunchEvent) {
+    /*private fun swarmerSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.SWARMER_SKELETON.id) return
         e.entity.setTag("id", CustomEntity.SWARMER_SKELETON_ARROW.id)
-    }
-    private fun shieldBreakerSkeletonShoot(e: ProjectileLaunchEvent) {
+    }*/
+    /*private fun shieldBreakerSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
         if ((e.entity.shooter as Skeleton).getTag<Int>("id") != CustomEntity.SHIELD_BREAKER_SKELETON.id) return
         e.entity.setTag("id", CustomEntity.SHIELD_BREAKER_ARROW.id)
-    }
-    private fun witchShoot(e: ProjectileLaunchEvent) {
+    }*/
+    /*private fun witchShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Witch) return
         val difficulty = (e.entity.shooter!! as Witch).getTag<Double>("difficulty") ?: 0.0
 
@@ -277,7 +277,7 @@ class EntityListeners: Listener, Runnable {
         newMeta.clearCustomEffects()
         newMeta.addCustomEffect(PotionEffect(possEffects.next(), (400 * (1 + difficulty/120)).toInt(), (difficulty/150).toInt()), true)
         newMeta.color = Color.fromRGB((Math.random() * 255).toInt(), (Math.random() * 255).toInt(), (Math.random() * 255).toInt())
-    }
+    }*/
     private fun sniperWitchShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Witch) return
         if ((e.entity.shooter as Witch).getTag<Int>("id") != CustomEntity.SNIPER_WITCH.id) return
@@ -308,16 +308,16 @@ class EntityListeners: Listener, Runnable {
         potion.velocity = original.velocity
     }
 
-    @EventHandler fun onCreeperExplode(e: EntityExplodeEvent) {
+    /*@EventHandler fun onCreeperExplode(e: EntityExplodeEvent) {
         if (e.entity.location.world != CustomItems.aridWorld) return
         checkSkeletonExplode(e)
         if (e.entity.type != EntityType.CREEPER) return
         val difficulty = e.entity.getTag<Double>("difficulty") ?: 0.0
-        (e.entity as Creeper).activePotionEffects.forEach { x -> (e.entity as Creeper).removePotionEffect(x.type)}
-        if (e.entity.getTag<Boolean>("trialspawned") == true) e.blockList().clear()
+        //(e.entity as Creeper).activePotionEffects.forEach { x -> (e.entity as Creeper).removePotionEffect(x.type)}
+        //if (e.entity.getTag<Boolean>("trialspawned") == true) e.blockList().clear()
 
         //add negative lingering effects to explosion
-        if (Math.random() < sqrt(difficulty)/10) {
+        /*if (Math.random() < sqrt(difficulty)/10) {
             val effects =
                 RandomSelector(Pair(PotionEffectType.HUNGER, 5), Pair(PotionEffectType.NAUSEA, 5), Pair(PotionEffectType.BLINDNESS, 2),
                     Pair(PotionEffectType.DARKNESS, 1), Pair(PotionEffectType.LEVITATION, 2), Pair(PotionEffectType.MINING_FATIGUE, 5),
@@ -325,16 +325,16 @@ class EntityListeners: Listener, Runnable {
 
             val effect = PotionEffect(effects.next(), 200, difficulty.pow(0.25).toInt().coerceIn(1, 4))
             (e.entity as Creeper).addPotionEffect(effect)
-        }
+        }*/
 
         //arrowbomb creeper
-        if (e.entity.getTag<Int>("id") == CustomEntity.ARROWBOMB_CREEPER.id) {
+        /*if (e.entity.getTag<Int>("id") == CustomEntity.ARROWBOMB_CREEPER.id) {
             for (i in 1..(difficulty.pow(0.8).toInt())) {
                 val arrow = e.entity.world.spawnArrow(e.entity.location, Vector(Utils.randomRange(-1.0, 1.0), Math.random(), Utils.randomRange(-1.0, 1.0)).normalize(), 1F, 1F)
                 arrow.shooter = e.entity as Creeper
             }
             //multiply one of x or z or x and z by -1 to get all directions
-        }
+        }*/
 
         //firebomb creeper
         /*else if (e.entity.getTag<Int>("id") == CustomEntity.FIREBOMB_CREEPER.id) {
@@ -362,7 +362,7 @@ class EntityListeners: Listener, Runnable {
         }*/
 
         //firework creeper
-        else if (e.entity.getTag<Int>("id") == CustomEntity.FIREWORK_CREEPER.id) {
+        /*if (e.entity.getTag<Int>("id") == CustomEntity.FIREWORK_CREEPER.id) {
             for (i in 1..(difficulty.pow(0.5).toInt())) {
                 val firework = e.entity.world.spawn(e.entity.location, Firework::class.java)
                 firework.isShotAtAngle
@@ -374,36 +374,36 @@ class EntityListeners: Listener, Runnable {
                 firework.fireworkMeta = newMeta
                 firework.shooter = e.entity as Creeper
             }
-        }
+        }*/
 
         //tnthead creeper
-        else if (e.entity.getTag<Int>("id") == CustomEntity.TNTHEAD_CREEPER.id) {
+        /*else if (e.entity.getTag<Int>("id") == CustomEntity.TNTHEAD_CREEPER.id) {
             for (entity in e.entity.passengers) {
                 if (entity.type == EntityType.TNT) {
                     (entity as TNTPrimed).fuseTicks = 30
                 }
             }
-        }
-    }
-    private fun checkSkeletonExplode(e: EntityExplodeEvent) {
+        }*/
+    }*/
+    /*private fun checkSkeletonExplode(e: EntityExplodeEvent) {
         if (e.entity.type != EntityType.ARROW) return
         if (e.entity.getTag<Boolean>("trialspawned") != true) return
         e.blockList().clear()
-    }
+    }*/
 
     @EventHandler fun onEntityDamageByEntity(e: EntityDamageByEntityEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         creeperExplode(e)
         //elytraBreakerSkeletonHit(e)
-        sniperSkeletonHit(e)
-        machineGunSkeletonHit(e)
-        swarmerSkeletonHit(e)
-        infectiousZombieHit(e)
-        swarmerZombieHit(e)
-        spiderHit(e)
-        weaverSpiderHit(e)
-        swarmerSlimeHit(e)
-        swarmerCubeHit(e)
+        //sniperSkeletonHit(e)
+        //machineGunSkeletonHit(e)
+        //swarmerSkeletonHit(e)
+        //infectiousZombieHit(e)
+        //swarmerZombieHit(e)
+        //spiderHit(e)
+        //weaverSpiderHit(e)
+        //swarmerSlimeHit(e)
+        //swarmerCubeHit(e)
         replicatingSlimeTakeDamage(e)
     }
     private fun creeperExplode(e: EntityDamageByEntityEvent) {
@@ -429,14 +429,14 @@ class EntityListeners: Listener, Runnable {
         //e.entity.setTag("elytradisabled", (10 + difficulty.pow(0.55)).toInt())
         CustomEffects.playSound(e.entity.location, Sound.ITEM_SHIELD_BREAK, 1F, 1F)
     }*/
-    private fun sniperSkeletonHit(e: EntityDamageByEntityEvent) {
+    /*private fun sniperSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SNIPER_SKELETON_ARROW.id) return
         val difficulty = e.damager.getTag<Double>("difficulty")!!
         e.damage = 25.0 + difficulty.pow(0.67)
-    }
-    private fun machineGunSkeletonHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun machineGunSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.MACHINE_GUN_SKELETON_ARROW.id) return
@@ -445,16 +445,16 @@ class EntityListeners: Listener, Runnable {
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
-    private fun swarmerSkeletonHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun swarmerSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SWARMER_SKELETON_ARROW.id) return
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
-    private fun infectiousZombieHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun infectiousZombieHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Zombie) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.INFECTIOUS_ZOMBIE.id) return
@@ -475,16 +475,16 @@ class EntityListeners: Listener, Runnable {
                 1 + difficulty.toInt()/110,
             )
         )
-    }
-    private fun swarmerZombieHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun swarmerZombieHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Zombie) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SWARMER_ZOMBIE.id) return
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
-    private fun spiderHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun spiderHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Spider) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SWARMER_SPIDER.id &&
@@ -493,8 +493,8 @@ class EntityListeners: Listener, Runnable {
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
-    private fun weaverSpiderHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun weaverSpiderHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Spider) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.WEAVER_SPIDER.id) return
@@ -503,23 +503,23 @@ class EntityListeners: Listener, Runnable {
         e.entity.location.block.type = Material.COBWEB
         val difficulty = e.damager.getTag<Double>("difficulty")!!
         e.damager.setTag("maincooldown", 15 - difficulty.toInt()/15)
-    }
-    private fun swarmerSlimeHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun swarmerSlimeHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Slime) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SWARMER_SLIME.id) return
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
-    private fun swarmerCubeHit(e: EntityDamageByEntityEvent) {
+    }*/
+    /*private fun swarmerCubeHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is MagmaCube) return
         if (e.entity !is Player) return
         if (e.damager.getTag<Int>("id") != CustomEntity.SWARMER_CUBE.id) return
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             (e.entity as Player).noDamageTicks = 0
         })
-    }
+    }*/
     private fun replicatingSlimeTakeDamage(e: EntityDamageByEntityEvent) {
         if (e.damager !is Player) return
         if (e.entity !is Slime) return
