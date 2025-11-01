@@ -1,9 +1,13 @@
 package me.newburyminer.customItems.entity
 
+import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.entity.Entity
 
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
+    init {
+        components.add(0, DefaultEntityComponent())
+    }
 
     @Suppress("UNCHECKED_CAST")
     companion object {

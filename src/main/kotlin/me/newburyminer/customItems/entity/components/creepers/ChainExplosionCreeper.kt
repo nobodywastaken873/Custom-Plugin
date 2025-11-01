@@ -1,0 +1,37 @@
+package me.newburyminer.customItems.entity.components.creepers
+
+import me.newburyminer.customItems.entity.EntityComponent
+import me.newburyminer.customItems.entity.EntityComponentType
+import me.newburyminer.customItems.entity.EntityEventContext
+import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import org.bukkit.entity.Creeper
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+
+class ChainExplosionCreeper: EntityComponent {
+    override val componentType: EntityComponentType = EntityComponentType.CHAIN_EXPLOSION_CREEPER
+
+    override fun serialize(): Map<String, Any> {
+        return mapOf()
+    }
+    override fun deserialize(map: Map<String, Any>): EntityComponent {
+        return ChainExplosionCreeper()
+    }
+
+    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+        when (val e = ctx.event) {
+
+            is EntityDamageByEntityEvent -> {
+                if (e.damager != wrapper.entity) return
+                val creeper = e.entity as? Creeper ?: return
+                val wrapper = EntityWrapperManager.getWrapperorNew(creeper)
+                if (!creeper.isIgnited) {
+                    wrapper.addComponent(ChainExplosionCreeper())
+                    creeper.fuseTicks = (20 * Math.random()).toInt()
+                    creeper.ignite()
+                }
+            }
+
+        }
+    }
+}

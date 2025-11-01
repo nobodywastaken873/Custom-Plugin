@@ -10,6 +10,7 @@ import org.bukkit.Color
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.SplashPotion
+import org.bukkit.entity.ThrownPotion
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.potion.PotionEffect
 
@@ -46,7 +47,7 @@ class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityC
             is ProjectileLaunchEvent -> {
                 val effect = effects.random()
                 val newEffect = PotionEffect(effect.type, effect.duration, effect.amplifier)
-                val potion = e.entity as SplashPotion
+                val potion = e.entity as ThrownPotion
                 val newMeta = potion.potionMeta
                 newMeta.basePotionType = null
                 newMeta.clearCustomEffects()

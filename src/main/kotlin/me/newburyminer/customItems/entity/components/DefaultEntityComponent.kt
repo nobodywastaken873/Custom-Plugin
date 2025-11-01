@@ -6,6 +6,7 @@ import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityPotionEffectEvent
 
 class DefaultEntityComponent: EntityComponent {
     override val componentType: EntityComponentType = EntityComponentType.DEFAULT_ENTITY_COMPONENT
@@ -22,9 +23,12 @@ class DefaultEntityComponent: EntityComponent {
 
             is EntityDamageByEntityEvent -> {
                 if (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player) return
-
                 e.isCancelled = true
+            }
 
+            is EntityPotionEffectEvent -> {
+                if (e.cause !in arrayOf(EntityPotionEffectEvent.Cause.POTION_SPLASH, EntityPotionEffectEvent.Cause.AREA_EFFECT_CLOUD)) return
+                e.isCancelled = true
             }
 
         }

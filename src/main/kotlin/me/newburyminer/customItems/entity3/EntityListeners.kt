@@ -39,12 +39,12 @@ class EntityListeners: Listener, Runnable {
     occasional sniper shot from far away, maybe replace all shots/every other shot
     
      */
-    @EventHandler fun onPotionChange(e: EntityPotionEffectEvent) {
+    /*@EventHandler fun onPotionChange(e: EntityPotionEffectEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         if (e.entity is Player) return
         if (e.cause != EntityPotionEffectEvent.Cause.AREA_EFFECT_CLOUD && e.cause != EntityPotionEffectEvent.Cause.POTION_SPLASH) return
         e.isCancelled = true
-    }
+    }*/
 
     @EventHandler fun onEntityDeath(e: EntityDeathEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
@@ -77,7 +77,7 @@ class EntityListeners: Listener, Runnable {
         e.entity.location.block.type = Material.LAVA
     }*/
 
-    /*@EventHandler fun onArrowLand(e: ProjectileHitEvent) {
+    /*/*@EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         explosiveSkeletonArrowLand(e)
         homingArrowHit(e)
@@ -122,7 +122,7 @@ class EntityListeners: Listener, Runnable {
             CustomEffects.playSound(e.hitEntity!!.location, Sound.ITEM_SHIELD_BREAK, 1F, 1F)
         }
         e.entity.remove()
-    }*/
+    }*/*/
 
     @EventHandler fun onFuseIgnite(e: GenericGameEvent) {
         if (e.event != GameEvent.PRIME_FUSE) return
@@ -179,7 +179,7 @@ class EntityListeners: Listener, Runnable {
         //shieldBreakerSkeletonShoot(e)
         //witchShoot(e)
         sniperWitchShoot(e)
-        bioweaponWitch(e)
+        //bioweaponWitch(e)
     }
     /*private fun homingSkeletonShoot(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Skeleton) return
@@ -292,7 +292,7 @@ class EntityListeners: Listener, Runnable {
             e.entity.velocity = witch.target!!.location.add(Vector(0.0, 0.75, 0.0)).add(witch.target!!.velocity).subtract(e.entity.location).toVector()
         }
     }
-    private fun bioweaponWitch(e: ProjectileLaunchEvent) {
+    /*private fun bioweaponWitch(e: ProjectileLaunchEvent) {
         if (e.entity.shooter !is Witch) return
         if ((e.entity.shooter as Witch).getTag<Int>("id") != CustomEntity.BIOWEAPON_WITCH.id) return
         val witch = e.entity.shooter as Witch
@@ -306,7 +306,7 @@ class EntityListeners: Listener, Runnable {
         }
         potion.potionMeta = potionMeta
         potion.velocity = original.velocity
-    }
+    }*/
 
     /*@EventHandler fun onCreeperExplode(e: EntityExplodeEvent) {
         if (e.entity.location.world != CustomItems.aridWorld) return
@@ -391,7 +391,7 @@ class EntityListeners: Listener, Runnable {
         e.blockList().clear()
     }*/
 
-    @EventHandler fun onEntityDamageByEntity(e: EntityDamageByEntityEvent) {
+    /*@EventHandler fun onEntityDamageByEntity(e: EntityDamageByEntityEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         creeperExplode(e)
         //elytraBreakerSkeletonHit(e)
@@ -406,7 +406,7 @@ class EntityListeners: Listener, Runnable {
         //swarmerCubeHit(e)
         replicatingSlimeTakeDamage(e)
     }
-    private fun creeperExplode(e: EntityDamageByEntityEvent) {
+    /*private fun creeperExplode(e: EntityDamageByEntityEvent) {
         if ((e.damager.type != EntityType.CREEPER && e.damager.type != EntityType.ARROW) || (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player)) return
         if (e.entity !is Player) e.isCancelled = true
         if (e.entity.type != EntityType.CREEPER) return
@@ -417,7 +417,7 @@ class EntityListeners: Listener, Runnable {
             (e.entity as Creeper).ignite()
         }
         (e.entity as Creeper).setTag("chain", true)
-    }
+    }*/
     /*private fun elytraBreakerSkeletonHit(e: EntityDamageByEntityEvent) {
         if (e.damager !is Arrow) return
         if (e.entity !is Player) return
@@ -528,7 +528,7 @@ class EntityListeners: Listener, Runnable {
         val newSlime = e.entity.world.spawn(e.entity.location, Slime::class.java, CreatureSpawnEvent.SpawnReason.BUILD_WITHER)
         CustomEntity.convert(newSlime, CustomEntity.REPLICATING_SLIME)
         newSlime.size = 1
-    }
+    }*/
 
     @EventHandler fun onMobSpawn(e: CreatureSpawnEvent) {
         //scale up more for trial spawned mobs
@@ -854,20 +854,20 @@ class EntityListeners: Listener, Runnable {
                             val currentCd = mob.getTag<Int>("maincooldown") ?: 0
                             mob.setTag("maincooldown", if (currentCd == 0) 0 else currentCd - 1)
                         }
-                        leapingCreeperActivate(mob, difficulty)
-                        preigniteCreeperActivate(mob, player, difficulty)
-                        jumpingZombieActivate(mob, difficulty)
+                        //leapingCreeperActivate(mob, difficulty)
+                        //preigniteCreeperActivate(mob, player, difficulty)
+                        //jumpingZombieActivate(mob, difficulty)
                         shadowAssassinZombieActivate(mob, difficulty)
-                        leapingSpiderActivate(mob, difficulty)
-                        leapingSlimeActivate(mob, difficulty)
-                        leapingCubeActivate(mob, difficulty)
+                        //leapingSpiderActivate(mob, difficulty)
+                        //leapingSlimeActivate(mob, difficulty)
+                        //leapingCubeActivate(mob, difficulty)
                         enderWitchActivate(mob, difficulty)
                         colonielWitchActivate(mob, difficulty)
                         clericWitchActivate(mob, difficulty)
                     }
                 }
             }
-            if (counter % 20 == 10) {
+            /*if (counter % 20 == 10) {
                 for (player in Bukkit.getServer().onlinePlayers) {
                     if (player.world != CustomItems.aridWorld) continue
                     val aggroRange = 60.0
@@ -875,8 +875,8 @@ class EntityListeners: Listener, Runnable {
                         if (mob.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
                         mob.setTag("tick", Bukkit.getServer().currentTick)
                         if (mob !is Mob) continue
-                        breachingCreeperTrigger(mob, player)
-                        miniBreachingCreeperTrigger(mob)
+                        //breachingCreeperTrigger(mob, player)
+                        //miniBreachingCreeperTrigger(mob)
                     }
                 }
             }
@@ -888,10 +888,10 @@ class EntityListeners: Listener, Runnable {
                         if (mob.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
                         mob.setTag("tick", Bukkit.getServer().currentTick)
                         if (mob !is Mob) continue
-                        energyShieldSkeletonTrigger(mob, player)
+                        //energyShieldSkeletonTrigger(mob, player)
                     }
                 }
-            }
+            }*/
             //every tick
             for (player in Bukkit.getServer().onlinePlayers) {
                 if (player.world != CustomItems.aridWorld) continue
@@ -941,7 +941,7 @@ class EntityListeners: Listener, Runnable {
         mob.teleport(mob.target!!.location.add(mob.target!!.location.direction.normalize().multiply(-1).toLocation(mob.target!!.world)))
         mob.setTag("maincooldown", 15)
     }
-    private fun leapingSlimeActivate(mob: Mob, difficulty: Double) {
+    /*private fun leapingSlimeActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.LEAPING_SLIME.id) return
         if (mob.getTag<Int>("maincooldown") != 0) return
         if (mob.target == null) return
@@ -951,8 +951,8 @@ class EntityListeners: Listener, Runnable {
             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
-    private fun leapingCubeActivate(mob: Mob, difficulty: Double) {
+    }*/
+    /*private fun leapingCubeActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.LEAPING_CUBE.id) return
         if (mob.getTag<Int>("maincooldown") != 0) return
         if (mob.target == null) return
@@ -962,8 +962,8 @@ class EntityListeners: Listener, Runnable {
             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
-    private fun leapingSpiderActivate(mob: Mob, difficulty: Double) {
+    }*/
+    /*private fun leapingSpiderActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.LEAPING_SPIDER.id) return
         if (mob.getTag<Int>("maincooldown") != 0) return
         if (mob.target == null) return
@@ -973,7 +973,7 @@ class EntityListeners: Listener, Runnable {
             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
+    }*/
     private fun shadowAssassinZombieActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.SHADOW_ASSASSIN_ZOMBIE.id)  return
         if (mob.getTag<Int>("maincooldown") != 0) return
@@ -982,14 +982,14 @@ class EntityListeners: Listener, Runnable {
         mob.teleport(mob.target!!.location.add(mob.target!!.location.direction.normalize().multiply(-1).toLocation(mob.target!!.world)))
         mob.setTag("maincooldown", 15)
     }
-    private fun jumpingZombieActivate(mob: Mob, difficulty: Double) {
+    /*private fun jumpingZombieActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.JUMPING_ZOMBIE.id || mob.getTag<Int>("maincooldown") != 0 || mob.target == null || !mob.hasLineOfSight(mob.target!!)) return
 
         mob.velocity =
             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
+    }*/
     private fun machineGunSkeletonTrigger(entity: Entity) {
         if (entity.type != EntityType.SKELETON) return
         if (entity.getTag<Int>("id") != CustomEntity.MACHINE_GUN_SKELETON.id) return
@@ -1009,12 +1009,12 @@ class EntityListeners: Listener, Runnable {
 
         entity.setTag("count", 0)
     }
-    private fun energyShieldSkeletonTrigger(mob: Mob, player: Player) {
+    /*private fun energyShieldSkeletonTrigger(mob: Mob, player: Player) {
         if (mob.type != EntityType.SKELETON) return
         if (mob.getTag<Int>("id") != CustomEntity.ENERGY_SHIELD_SKELETON.id) return
         if (player.location.subtract(mob.location).length() >= 10.0) return
         player.velocity = player.velocity.add(player.location.subtract(mob.location).toVector().normalize().multiply(0.6))
-    }
+    }*/
     /*private fun elytraBreakerSkeletonArrowUpdate(entity: Entity) {
         if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) return
         if (entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_SKELETON_ARROW.id) return
@@ -1033,7 +1033,7 @@ class EntityListeners: Listener, Runnable {
         val newDirection = entity.velocity.add(target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0)).normalize().multiply(50))
         entity.velocity = newDirection.normalize().multiply(currentVelocity)
     }*/
-    private fun miniBreachingCreeperTrigger(mob: Mob) {
+    /*private fun miniBreachingCreeperTrigger(mob: Mob) {
         if (mob.getTag<Int>("id") != CustomEntity.MINI_BREACHING_CREEPER.id || mob.target == null || mob.hasLineOfSight(mob.target!!)) return
         /*mob.velocity =
                             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
@@ -1062,23 +1062,23 @@ class EntityListeners: Listener, Runnable {
         } else {
             mob.setTag("prevloc", mob.location)
         }
-    }
-    private fun leapingCreeperActivate(mob: Mob, difficulty: Double) {
+    }*/
+    /*private fun leapingCreeperActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.LEAPING_CREEPER.id || mob.getTag<Int>("maincooldown") != 0 || mob.target == null || !mob.hasLineOfSight(mob.target!!)) return
 
         mob.velocity =
             mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15))
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
-    private fun preigniteCreeperActivate(mob: Mob, player: Player, difficulty: Double) {
+    }*/
+    /*private fun preigniteCreeperActivate(mob: Mob, player: Player, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.PREIGNITION_CREEPER.id || mob.getTag<Int>("maincooldown") != 0 ||
             mob.target == null || !mob.hasLineOfSight(mob.target!!) || player.location.clone().subtract(player.location).length() >= 20) return
 
         mob.velocity = mob.velocity.add(mob.target!!.location.subtract(mob.location).toVector().multiply(0.15)).add(Vector(0.0, 0.35, 0.0))
         (mob as Creeper).ignite()
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
-    }
+    }*/
 
     fun cancel() {
         taskFuture!!.cancel()
