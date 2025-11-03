@@ -6,4 +6,8 @@ class DoubleRange(first: Double, second: Double, buffer: Double = 0.0) {
     operator fun contains(x: Double): Boolean {
         return range.contains(x)
     }
+
+    fun random(): Double {
+        return Math.random() * (range.endInclusive - range.start) + range.start
+    }
 }

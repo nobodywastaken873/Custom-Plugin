@@ -7,4 +7,5 @@ enum class HitEffectType {
     VANILLA_EFFECT,
     CUSTOM_EFFECT,
     CUSTOM_DAMAGE,
+    DISABLE_SHIELD,
 }

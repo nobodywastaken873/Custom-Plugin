@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity
 
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes.player
+import org.bukkit.GameEvent
 import org.bukkit.entity.Entity
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.world.GenericGameEvent
 
 class EntityEventHandler: Listener {
     companion object {
@@ -51,6 +53,11 @@ class EntityEventHandler: Listener {
 
     @EventHandler fun onEntityExplode(e: EntityExplodeEvent) {
         dispatch(e.entity, e)
+    }
+
+    @EventHandler fun genericGameEvent(e: GenericGameEvent) {
+        if (e.event !in arrayOf(GameEvent.PRIME_FUSE)) return
+        dispatch(e.entity ?: return, e)
     }
 
 }

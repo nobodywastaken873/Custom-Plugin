@@ -28,5 +28,6 @@ enum class EntityComponentType {
     LEAPING_COMPONENT,
     LINGERING_WITCH_SHOOTER,
     HOPPING_CREEPER,
+    TELEPORT_BEHIND,
 
 }

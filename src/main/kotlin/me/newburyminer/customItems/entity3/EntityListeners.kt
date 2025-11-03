@@ -124,7 +124,7 @@ class EntityListeners: Listener, Runnable {
         e.entity.remove()
     }*/*/
 
-    @EventHandler fun onFuseIgnite(e: GenericGameEvent) {
+    /*@EventHandler fun onFuseIgnite(e: GenericGameEvent) {
         if (e.event != GameEvent.PRIME_FUSE) return
         if (e.entity == null) return
         if (e.entity!!.world != CustomItems.aridWorld) return
@@ -144,7 +144,7 @@ class EntityListeners: Listener, Runnable {
                 }
             }, 10)
         }
-    }
+    }*/
     /*@EventHandler fun onEntityHit(e: EntityKnockbackByEntityEvent) {
         goatHit(e)
         launchingSlimeHit(e)
@@ -857,11 +857,11 @@ class EntityListeners: Listener, Runnable {
                         //leapingCreeperActivate(mob, difficulty)
                         //preigniteCreeperActivate(mob, player, difficulty)
                         //jumpingZombieActivate(mob, difficulty)
-                        shadowAssassinZombieActivate(mob, difficulty)
+                        //shadowAssassinZombieActivate(mob, difficulty)
                         //leapingSpiderActivate(mob, difficulty)
                         //leapingSlimeActivate(mob, difficulty)
                         //leapingCubeActivate(mob, difficulty)
-                        enderWitchActivate(mob, difficulty)
+                        //enderWitchActivate(mob, difficulty)
                         colonielWitchActivate(mob, difficulty)
                         clericWitchActivate(mob, difficulty)
                     }
@@ -933,14 +933,14 @@ class EntityListeners: Listener, Runnable {
         }
         mob.setTag("maincooldown", 10)
     }
-    private fun enderWitchActivate(mob: Mob, difficulty: Double) {
+    /*private fun enderWitchActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.ENDER_WITCH.id)  return
         if (mob.getTag<Int>("maincooldown") != 0) return
         if (mob.target == null) return
 
         mob.teleport(mob.target!!.location.add(mob.target!!.location.direction.normalize().multiply(-1).toLocation(mob.target!!.world)))
         mob.setTag("maincooldown", 15)
-    }
+    }*/
     /*private fun leapingSlimeActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.LEAPING_SLIME.id) return
         if (mob.getTag<Int>("maincooldown") != 0) return
@@ -974,14 +974,14 @@ class EntityListeners: Listener, Runnable {
                 .add(Vector(0.0, 0.35, 0.0))
         mob.setTag("maincooldown", (20 - difficulty/15).toInt())
     }*/
-    private fun shadowAssassinZombieActivate(mob: Mob, difficulty: Double) {
+    /*private fun shadowAssassinZombieActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.SHADOW_ASSASSIN_ZOMBIE.id)  return
         if (mob.getTag<Int>("maincooldown") != 0) return
         if (mob.target == null) return
 
         mob.teleport(mob.target!!.location.add(mob.target!!.location.direction.normalize().multiply(-1).toLocation(mob.target!!.world)))
         mob.setTag("maincooldown", 15)
-    }
+    }*/
     /*private fun jumpingZombieActivate(mob: Mob, difficulty: Double) {
         if (mob.getTag<Int>("id") != CustomEntity.JUMPING_ZOMBIE.id || mob.getTag<Int>("maincooldown") != 0 || mob.target == null || !mob.hasLineOfSight(mob.target!!)) return
 

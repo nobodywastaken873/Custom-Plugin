@@ -84,6 +84,10 @@ class CustomEffects {
             //loc.world.spawnParticle(particle, loc, count, offset, offset, offset, extra)
         }
 
+
+        fun playSound(loc: Location, sound: Sound, volume: Float, pitch: DoubleRange, random: Boolean = true, soundCategory: SoundCategory = SoundCategory.HOSTILE) {
+            playSound(loc, sound, volume, pitch.random().toFloat(), random, soundCategory)
+        }
         fun playSound(loc: Location, sound: Sound, volume: Float, pitch: Float, random: Boolean = true, soundCategory: SoundCategory = SoundCategory.HOSTILE) {
             if (random) loc.world.playSound(loc, sound, volume, pitch)
             else loc.world.playSound(loc, sound, soundCategory, volume, pitch, 1L)

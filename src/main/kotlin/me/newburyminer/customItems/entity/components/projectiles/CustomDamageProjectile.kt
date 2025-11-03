@@ -11,6 +11,7 @@ import me.newburyminer.customItems.entity.components.projectileshooters.Projecti
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Sound
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
@@ -32,10 +33,10 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
 
             is EntityDamageByEntityEvent -> {
                 if (e.damager != wrapper.entity) return
-                val player = e.entity as? Player ?: return
+                val damaged = e.entity as? LivingEntity ?: return
 
                 e.isCancelled = true
-                damage.apply(player, e.damager)
+                damage.apply(damaged, e.damager)
             }
 
         }
