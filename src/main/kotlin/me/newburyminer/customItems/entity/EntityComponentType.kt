@@ -32,4 +32,5 @@ enum class EntityComponentType {
     MACHINE_GUN_COMPONENT,
     SNIPER_COMPONENT,
 
+
 }
