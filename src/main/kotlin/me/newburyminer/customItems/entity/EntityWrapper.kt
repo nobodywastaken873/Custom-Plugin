@@ -45,4 +45,9 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
         }
     }
 
+    private var isCasting = false
+    fun isCasting(): Boolean {return isCasting}
+    fun setCasting(newIsCasting: Boolean) {isCasting = newIsCasting}
+
+
 }
