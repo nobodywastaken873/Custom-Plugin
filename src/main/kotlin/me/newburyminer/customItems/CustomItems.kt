@@ -52,7 +52,7 @@ class CustomItems : JavaPlugin() {
     }
 
     private lateinit var cooldownTask: BukkitTask
-    private lateinit var entityListener: EntityListeners
+    //private lateinit var entityListener: EntityListeners
     private lateinit var systemsListener: SystemsListener
 
     override fun onEnable() {
@@ -70,7 +70,7 @@ class CustomItems : JavaPlugin() {
         loadBosses()
         CustomBoss.init()
 
-        entityListener = EntityListeners()
+        //entityListener = EntityListeners()
         bossListener = BossListeners()
         systemsListener = SystemsListener()
 
@@ -80,7 +80,7 @@ class CustomItems : JavaPlugin() {
         this.run()
         PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
         EffectManager.runTaskTimer(this, 0L, 1L)
-        entityListener.run()
+        //entityListener.run()
         bossListener.run()
 
         // Should maybe be here because it accesses Bukkit values that may not be initialized
@@ -105,7 +105,7 @@ class CustomItems : JavaPlugin() {
     }
 
     private fun registerListeners() {
-        server.pluginManager.registerEvents(entityListener, this)
+        //server.pluginManager.registerEvents(entityListener, this)
         server.pluginManager.registerEvents(LootListener(), this)
         server.pluginManager.registerEvents(bossListener, this)
         server.pluginManager.registerEvents(DurabilityListener(), this)
@@ -160,7 +160,7 @@ class CustomItems : JavaPlugin() {
 
     override fun onDisable() {
         cooldownTask.cancel()
-        entityListener.cancel()
+        //entityListener.cancel()
         bossListener.cancelAll()
         systemsListener.cancel()
         PlayerTaskHandler.cancelAll()

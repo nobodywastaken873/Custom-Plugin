@@ -28,7 +28,7 @@ import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class EntityListeners: Listener, Runnable {
+class EntityListeners {
 
     //fix: possibly figure out how to make breaching better along with preignition, figure out how to only do it when going into player
     //figure out health and armor values
@@ -46,7 +46,7 @@ class EntityListeners: Listener, Runnable {
         e.isCancelled = true
     }*/
 
-    @EventHandler fun onEntityDeath(e: EntityDeathEvent) {
+    /*@EventHandler fun onEntityDeath(e: EntityDeathEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         broodmotherDeath(e)
         caveBroodmotherDeath(e)
@@ -69,7 +69,7 @@ class EntityListeners: Listener, Runnable {
             spider.setTag("id", CustomEntity.BROODMOTHER_SPAWN.id)
             spider.getAttribute(Attribute.SCALE)?.baseValue = 0.25
         }
-    }
+    }*/
     /*private fun lavaCubeDeath(e: EntityDeathEvent) {
         if (e.entity.type != EntityType.MAGMA_CUBE) return
         if (e.entity.getTag<Int>("id") != CustomEntity.LAVA_CUBE.id) return
@@ -168,7 +168,7 @@ class EntityListeners: Listener, Runnable {
         e.knockback = e.knockback.multiply(1.5)
     }*/
 
-    @EventHandler fun onArrowShoot(e: ProjectileLaunchEvent) {
+    /*@EventHandler fun onArrowShoot(e: ProjectileLaunchEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
         //homingSkeletonShoot(e)
         //elytraBreakerSkeletonShoot(e)
@@ -389,7 +389,7 @@ class EntityListeners: Listener, Runnable {
         if (e.entity.type != EntityType.ARROW) return
         if (e.entity.getTag<Boolean>("trialspawned") != true) return
         e.blockList().clear()
-    }*/
+    }*/*/
 
     /*@EventHandler fun onEntityDamageByEntity(e: EntityDamageByEntityEvent) {
         if (e.entity.world != CustomItems.aridWorld) return
@@ -530,7 +530,7 @@ class EntityListeners: Listener, Runnable {
         newSlime.size = 1
     }*/
 
-    @EventHandler fun onMobSpawn(e: CreatureSpawnEvent) {
+    /*@EventHandler fun onMobSpawn(e: CreatureSpawnEvent) {
         //scale up more for trial spawned mobs
         if (e.entity.world != CustomItems.aridWorld) return
         if (Math.random() < 0.25) {e.isCancelled = true; return}
@@ -737,9 +737,9 @@ class EntityListeners: Listener, Runnable {
 
         // onexplosion for negative effects, fire/lava (for lava search for fire in radius and replace some with lava)
         e.entity.setTag("maincooldown", 5)
-    }
+    }*/
 
-    private fun addGear(mob: Mob, difficulty: Double) {
+    /*private fun addGear(mob: Mob, difficulty: Double) {
         val gearIndexes = listOf(
             difficulty * Utils.randomRange(0.8, 1.2), difficulty * Utils.randomRange(0.8, 1.2),
             difficulty * Utils.randomRange(0.8, 1.2), difficulty * Utils.randomRange(0.8, 1.2),
@@ -1082,5 +1082,5 @@ class EntityListeners: Listener, Runnable {
 
     fun cancel() {
         taskFuture!!.cancel()
-    }
+    }*/
 }
