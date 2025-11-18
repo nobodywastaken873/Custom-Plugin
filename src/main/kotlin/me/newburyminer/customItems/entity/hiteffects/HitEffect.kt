@@ -5,10 +5,10 @@ import org.bukkit.entity.LivingEntity
 
 interface HitEffect {
 
-    val hitEffectType: HitEffectType
+    //val hitEffectType: HitEffectType
 
     fun apply(victim: LivingEntity, damager: Entity)
     fun serialize(): Map<String, Any>
-    fun deserialize(map: Map<String, Any>): HitEffect
+    //fun deserialize(map: Map<String, Any>): HitEffect
 
 }

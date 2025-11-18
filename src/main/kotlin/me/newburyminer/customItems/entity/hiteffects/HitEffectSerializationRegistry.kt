@@ -1,14 +1,17 @@
 package me.newburyminer.customItems.entity.hiteffects
 
+import me.newburyminer.customItems.entity.ComponentSerializationRegistry
+import me.newburyminer.customItems.entity.DeserializationInterface
 import org.bukkit.plugin.Plugin
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
+import kotlin.reflect.full.companionObjectInstance
 
 object HitEffectSerializationRegistry {
 
-    private val registry = mutableMapOf<HitEffectType, HitEffect>()
+    private val registry = mutableMapOf<HitEffectType, HitEffectDeserialization>()
 
-    fun register(type: HitEffectType, component: HitEffect) {
+    fun register(type: HitEffectType, component: HitEffectDeserialization) {
         registry[type] = component
     }
 
@@ -25,9 +28,11 @@ object HitEffectSerializationRegistry {
             .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
 
         for (cls in classes) {
-            val instance = cls.getDeclaredConstructor().newInstance()
-            val componentType = instance.hitEffectType
-            register(componentType, instance)
+            val kClass = cls.kotlin
+            val companionObject = kClass.companionObjectInstance as HitEffectDeserialization
+
+            val componentType = companionObject.componentType
+            register(componentType, companionObject)
             //plugin.logger.info("Successfully registered ${customId.realName}")
         }
         plugin.logger.info("Successfully registered all hit effects")

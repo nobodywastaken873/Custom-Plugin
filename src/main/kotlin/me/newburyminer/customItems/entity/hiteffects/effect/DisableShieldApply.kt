@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
+import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.DoubleRange
@@ -17,7 +18,6 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
 class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffect {
-    override val hitEffectType: HitEffectType = HitEffectType.DISABLE_SHIELD
 
     override fun apply(victim: LivingEntity, damager: Entity) {
         if (victim !is Player) return
@@ -45,7 +45,10 @@ class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffec
             "ignoreDirection" to ignoreDirection,
         )
     }
-    override fun deserialize(map: Map<String, Any>): HitEffect {
-        return DisableShieldApply(map["ignoreDirection"] as Boolean)
+    companion object: HitEffectDeserialization {
+        override val componentType: HitEffectType = HitEffectType.DISABLE_SHIELD
+        override fun deserialize(map: Map<String, Any>): HitEffect {
+            return DisableShieldApply(map["ignoreDirection"] as Boolean)
+        }
     }
 }

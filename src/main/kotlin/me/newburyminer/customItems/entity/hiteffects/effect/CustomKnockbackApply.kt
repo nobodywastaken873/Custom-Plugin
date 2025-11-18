@@ -1,13 +1,13 @@
 package me.newburyminer.customItems.entity.hiteffects.effect
 
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
+import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
 class CustomKnockbackApply(val vec: Vector): HitEffect {
-    override val hitEffectType: HitEffectType = HitEffectType.CUSTOM_KNOCKBACK
 
     override fun apply(victim: LivingEntity, damager: Entity) {
         val direction = victim.location.subtract(damager.location).toVector().normalize()
@@ -22,11 +22,16 @@ class CustomKnockbackApply(val vec: Vector): HitEffect {
             "z" to vec.z
         )
     }
-    override fun deserialize(map: Map<String, Any>): HitEffect {
-        return CustomKnockbackApply(Vector(
-            map["x"] as Double,
-            map["y"] as Double,
-            map["z"] as Double,
-        ))
+    companion object: HitEffectDeserialization {
+        override val componentType: HitEffectType = HitEffectType.CUSTOM_KNOCKBACK
+        override fun deserialize(map: Map<String, Any>): HitEffect {
+            return CustomKnockbackApply(
+                Vector(
+                    map["x"] as Double,
+                    map["y"] as Double,
+                    map["z"] as Double,
+                )
+            )
+        }
     }
 }

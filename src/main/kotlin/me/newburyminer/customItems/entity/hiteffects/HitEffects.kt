@@ -2,6 +2,7 @@ package me.newburyminer.customItems.entity.hiteffects
 
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import kotlin.reflect.full.companionObjectInstance
 
 class HitEffects(private vararg val hitEffects: HitEffect) {
 
@@ -11,7 +12,8 @@ class HitEffects(private vararg val hitEffects: HitEffect) {
 
     fun serialize(): Map<String, Any> {
         return hitEffects.associate {
-            it.hitEffectType.name to it.serialize()
+            val companion = it::class.companionObjectInstance as HitEffectDeserialization
+            companion.componentType.name to it.serialize()
         }
     }
     companion object {

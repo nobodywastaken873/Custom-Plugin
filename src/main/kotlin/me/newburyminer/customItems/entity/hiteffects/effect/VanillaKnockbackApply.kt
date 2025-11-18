@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.hiteffects.effect
 
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
+import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
@@ -8,7 +9,6 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
 class VanillaKnockbackApply(val strength: Double = 0.4): HitEffect {
-    override val hitEffectType: HitEffectType = HitEffectType.VANILLA_KNOCKBACK
 
     override fun apply(victim: LivingEntity, damager: Entity) {
         val newStr = strength * (1.0 - (victim.getAttribute(Attribute.KNOCKBACK_RESISTANCE)?.value ?: 0.0))
@@ -32,9 +32,12 @@ class VanillaKnockbackApply(val strength: Double = 0.4): HitEffect {
             "strength" to strength
         )
     }
-    override fun deserialize(map: Map<String, Any>): HitEffect {
-        return VanillaKnockbackApply(
-            map["strength"] as Double
-        )
+    companion object: HitEffectDeserialization {
+        override val componentType: HitEffectType = HitEffectType.VANILLA_KNOCKBACK
+        override fun deserialize(map: Map<String, Any>): HitEffect {
+            return VanillaKnockbackApply(
+                map["strength"] as Double
+            )
+        }
     }
 }
