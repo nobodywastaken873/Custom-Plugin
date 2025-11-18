@@ -6,7 +6,7 @@ interface CooldownInterface {
         if (cooldown != 0)
             cooldown = (cooldown - ticks).coerceAtLeast(0)
     }
-    fun setCooldown(ticks: Int) {
+    fun applyCooldown(ticks: Int) {
         cooldown = ticks
     }
     fun offCooldown(): Boolean {

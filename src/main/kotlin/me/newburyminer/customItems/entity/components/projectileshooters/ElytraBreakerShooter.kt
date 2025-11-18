@@ -1,6 +1,6 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
-import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -8,7 +8,6 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFirework
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
 import org.bukkit.Color
@@ -20,7 +19,6 @@ import org.bukkit.entity.Player
 
 class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val duration: Int): EntityComponent,
     CooldownInterface {
-    override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -29,11 +27,14 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
             "duration" to duration,
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newDamage = HitEffects.Companion.deserialize(map["damage"])
-        val newCooldown = map["cooldown"] as Int
-        val newDuration = map["duration"] as Int
-        return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val newDamage = HitEffects.Companion.deserialize(map["damage"])
+            val newCooldown = map["cooldown"] as Int
+            val newDuration = map["duration"] as Int
+            return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
+        }
     }
 
     override var cooldown: Int = 100
@@ -63,7 +64,7 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
                 EntityWrapper(missile, mutableListOf(ElytraBreakerFirework(damage, duration, target)))
             )
 
-            setCooldown(baseCooldown)
+            applyCooldown(baseCooldown)
             CustomEffects.Companion.playSound(wrapper.entity.location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 5F, 0.4F)
         }
 

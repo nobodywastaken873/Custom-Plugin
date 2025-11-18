@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components.creepers
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -11,13 +12,15 @@ import org.bukkit.event.world.GenericGameEvent
 import org.bukkit.util.Vector
 
 class HoppingCreeper: EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.HOPPING_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf()
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return HoppingCreeper()
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.HOPPING_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return HoppingCreeper()
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

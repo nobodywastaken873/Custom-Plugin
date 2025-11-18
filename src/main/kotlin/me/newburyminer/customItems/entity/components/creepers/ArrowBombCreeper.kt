@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity.components.creepers
 import com.google.common.base.Equivalence
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -18,7 +19,6 @@ import org.bukkit.util.Vector
 import kotlin.math.pow
 
 class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -26,10 +26,13 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
             "damage" to damage
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newCount = map["count"] as Int
-        val newDamage = map["damage"] as Double
-        return ArrowBombCreeper(newCount, newDamage)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val newCount = map["count"] as Int
+            val newDamage = map["damage"] as Double
+            return ArrowBombCreeper(newCount, newDamage)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

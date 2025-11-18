@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity.components.projectiles
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -16,16 +17,18 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
 class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.CUSTOM_DAMAGE_PROJECTILE
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "damage" to damage.serialize(),
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newDamage = HitEffects.deserialize(map["damage"])
-        return ProjectileDamageShooter(newDamage)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.CUSTOM_DAMAGE_PROJECTILE
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val newDamage = HitEffects.deserialize(map["damage"])
+            return ProjectileDamageShooter(newDamage)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

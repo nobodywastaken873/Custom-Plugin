@@ -2,6 +2,7 @@ package me.newburyminer.customItems.entity.components.creepers
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -20,7 +21,6 @@ import org.bukkit.util.Vector
 import kotlin.math.pow
 
 class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.FIREWORK_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -28,10 +28,13 @@ class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
             "damage" to damage
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.FIREWORK_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
         val newCount = map["count"] as Int
         val newDamage = map["damage"] as Double
         return FireworkCreeper(newCount, newDamage)
+    }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

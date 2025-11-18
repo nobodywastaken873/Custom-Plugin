@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -9,13 +10,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 
 class DefaultEntityComponent: EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.DEFAULT_ENTITY_COMPONENT
 
     override fun serialize(): Map<String, Any> {
         return mapOf()
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return DefaultEntityComponent()
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.DEFAULT_ENTITY_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return DefaultEntityComponent()
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

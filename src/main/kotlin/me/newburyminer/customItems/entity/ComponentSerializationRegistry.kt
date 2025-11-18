@@ -3,12 +3,14 @@ package me.newburyminer.customItems.entity
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
 
 object ComponentSerializationRegistry {
 
-    private val registry = mutableMapOf<EntityComponentType, EntityComponent>()
+    private val registry = mutableMapOf<EntityComponentType, DeserializationInterface>()
 
-    fun register(type: EntityComponentType, component: EntityComponent) {
+    fun register(type: EntityComponentType, component: DeserializationInterface) {
         registry[type] = component
     }
 
@@ -25,9 +27,11 @@ object ComponentSerializationRegistry {
             .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
 
         for (cls in classes) {
-            val instance = cls.getDeclaredConstructor().newInstance()
-            val componentType = instance.componentType
-            register(componentType, instance)
+            val kClass = cls.kotlin
+            val companionObject = kClass.companionObjectInstance as DeserializationInterface
+
+            val componentType = companionObject.componentType
+            register(componentType, companionObject)
             //plugin.logger.info("Successfully registered ${customId.realName}")
         }
         plugin.logger.info("Successfully registered all entity components")

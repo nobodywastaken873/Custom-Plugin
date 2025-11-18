@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.entity.Entity
 import kotlin.reflect.KClass
+import kotlin.reflect.full.companionObjectInstance
 
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
@@ -42,7 +43,8 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
 
     fun serialize(): Map<String, Any> {
         return components.associate {
-            it.componentType.name to it.serialize()
+            val companion = it::class.companionObjectInstance as DeserializationInterface
+            companion.componentType.name to it.serialize()
         }
     }
 

@@ -2,6 +2,7 @@ package me.newburyminer.customItems.entity.components.projectileshooters
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -15,7 +16,6 @@ import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.potion.PotionEffect
 
 class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.CUSTOM_WITCH_POTION
 
     override fun serialize(): Map<String, Any> {
         return effects.associate {
@@ -26,19 +26,22 @@ class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityC
         }
     }
     @Suppress("UNCHECKED_CAST")
-    override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val effects = map.entries.map {
-            val key = NamespacedKey.fromString(it.key) ?: return null
-            val type = RegistryAccess
-                .registryAccess()
-                .getRegistry(RegistryKey.MOB_EFFECT)
-                .get(key) ?: return null
-            val innerMap = it.value as Map<String, Any>
-            val duration = innerMap["duration"] as Int
-            val amplifier = innerMap["amplifier"] as Int
-            PotionEffect(type, duration, amplifier)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.CUSTOM_WITCH_POTION
+        override fun deserialize(map: Map<String, Any>): EntityComponent? {
+            val effects = map.entries.map {
+                val key = NamespacedKey.fromString(it.key) ?: return null
+                val type = RegistryAccess
+                    .registryAccess()
+                    .getRegistry(RegistryKey.MOB_EFFECT)
+                    .get(key) ?: return null
+                val innerMap = it.value as Map<String, Any>
+                val duration = innerMap["duration"] as Int
+                val amplifier = innerMap["amplifier"] as Int
+                PotionEffect(type, duration, amplifier)
+            }
+            return CustomWitchPotionShooter(effects)
         }
-        return CustomWitchPotionShooter(effects)
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

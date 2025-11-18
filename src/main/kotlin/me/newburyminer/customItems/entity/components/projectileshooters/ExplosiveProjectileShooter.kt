@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -25,7 +26,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
 
 class ExplosiveProjectileShooter(private val power: Float, private val setFire: Boolean, private val breakBlocks: Boolean = false): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.EXPLOSIVE_PROJECTILE_SHOOTER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -34,11 +34,14 @@ class ExplosiveProjectileShooter(private val power: Float, private val setFire: 
             "breakblocks" to breakBlocks
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newPower = map["power"] as Float
-        val newSetFire = map["setfire"] as Boolean
-        val newBreakBlocks = map["breakblocks"] as Boolean
-        return ExplosiveProjectile(newPower, newSetFire, newBreakBlocks)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.EXPLOSIVE_PROJECTILE_SHOOTER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val newPower = map["power"] as Float
+            val newSetFire = map["setfire"] as Boolean
+            val newBreakBlocks = map["breakblocks"] as Boolean
+            return ExplosiveProjectile(newPower, newSetFire, newBreakBlocks)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

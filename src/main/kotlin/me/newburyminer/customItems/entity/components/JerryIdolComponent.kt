@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes.player
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -27,17 +28,18 @@ import org.bukkit.util.Vector
 
 class JerryIdolComponent(private var emeraldStacks: Int): EntityComponent {
 
-    override val componentType: EntityComponentType = EntityComponentType.JERRY_IDOL_COMPONENT
-
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "emeraldStacks" to emeraldStacks
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return JerryIdolComponent(
-            map["emeraldStacks"] as Int,
-        )
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.JERRY_IDOL_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return JerryIdolComponent(
+                map["emeraldStacks"] as Int,
+            )
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

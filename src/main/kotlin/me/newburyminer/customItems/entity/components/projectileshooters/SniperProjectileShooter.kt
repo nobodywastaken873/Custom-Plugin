@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -10,7 +11,6 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Mob
 
 class SniperProjectileShooter(private val baseCooldown: Int, private val projectileType: ProjectileType): EntityComponent, CooldownInterface, SpellInterface {
-    override val componentType: EntityComponentType = EntityComponentType.SNIPER_COMPONENT
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -18,11 +18,14 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
             "projectileType" to projectileType.name
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return SniperProjectileShooter(
-            map["baseCooldown"] as Int,
-            ProjectileType.valueOf(map["projectileType"] as String),
-        )
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.SNIPER_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return SniperProjectileShooter(
+                map["baseCooldown"] as Int,
+                ProjectileType.valueOf(map["projectileType"] as String),
+            )
+        }
     }
 
     override val spellDuration: Int = 60

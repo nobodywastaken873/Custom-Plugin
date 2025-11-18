@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components.creepers
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -10,17 +11,19 @@ import org.bukkit.entity.Creeper
 import kotlin.math.pow
 
 class PreIgniteCreeper(private val minDistance: Double): EntityComponent, LeapingInterface {
-    override val componentType: EntityComponentType = EntityComponentType.PRE_IGNITE_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "minDistance" to minDistance,
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return PreIgniteCreeper(
-            map["minDistance"] as Double,
-        )
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.PRE_IGNITE_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return PreIgniteCreeper(
+                map["minDistance"] as Double,
+            )
+        }
     }
 
     private var leaping = false

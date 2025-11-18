@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.components.projectiles
 
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -16,13 +17,15 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 
 class LandmineArrow: EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.LANDMINE_ARROW
 
     override fun serialize(): Map<String, Any> {
         return mapOf()
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return LandmineArrow()
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.LANDMINE_ARROW
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return LandmineArrow()
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

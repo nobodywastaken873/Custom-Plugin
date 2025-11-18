@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components.projectiles
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -13,7 +14,6 @@ import org.bukkit.util.Vector
 import java.util.UUID
 
 class HomingProjectile(private val angleChange: Double, private val target: Entity): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -21,11 +21,14 @@ class HomingProjectile(private val angleChange: Double, private val target: Enti
             "target" to target.uniqueId.toString()
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val newChange = map["change"] as Double
-        val uuid = UUID.fromString(map["target"] as String)
-        val target = Bukkit.getEntity(uuid) ?: return null
-        return HomingProjectile(newChange, target)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE
+        override fun deserialize(map: Map<String, Any>): EntityComponent? {
+            val newChange = map["change"] as Double
+            val uuid = UUID.fromString(map["target"] as String)
+            val target = Bukkit.getEntity(uuid) ?: return null
+            return HomingProjectile(newChange, target)
+        }
     }
 
     override fun tick(wrapper: EntityWrapper) {

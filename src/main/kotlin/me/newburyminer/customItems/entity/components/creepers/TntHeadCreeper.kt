@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.components.creepers
 
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -15,7 +16,6 @@ import org.bukkit.event.entity.EntityExplodeEvent
 import java.util.UUID
 
 class TntHeadCreeper(private val tnt: Entity, private val power: Float, private val breakBlocks: Boolean = false): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.TNT_HEAD_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -24,11 +24,14 @@ class TntHeadCreeper(private val tnt: Entity, private val power: Float, private 
             "breakblocks" to breakBlocks
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val newTnt = Bukkit.getEntity(UUID.fromString(map["tnt"] as String)) ?: return null
-        val newPower = map["power"] as Float
-        val newBreakBlocks = map["breakblocks"] as Boolean
-        return TntHeadCreeper(newTnt, newPower, newBreakBlocks)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.TNT_HEAD_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent? {
+            val newTnt = Bukkit.getEntity(UUID.fromString(map["tnt"] as String)) ?: return null
+            val newPower = map["power"] as Float
+            val newBreakBlocks = map["breakblocks"] as Boolean
+            return TntHeadCreeper(newTnt, newPower, newBreakBlocks)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

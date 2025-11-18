@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -9,16 +10,18 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
 class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.MELEE_CUSTOM_HIT
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "hiteffects" to hitEffects.serialize()
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val hiteffects = HitEffects.deserialize(map["hiteffects"])
-        return MeleeCustomHit(hiteffects)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.MELEE_CUSTOM_HIT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val hiteffects = HitEffects.deserialize(map["hiteffects"])
+            return MeleeCustomHit(hiteffects)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

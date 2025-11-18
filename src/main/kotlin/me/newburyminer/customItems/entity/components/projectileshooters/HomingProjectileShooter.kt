@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -24,16 +25,18 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
 
 class HomingProjectileShooter(private val angleChange: Double): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE_SHOOTER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "change" to angleChange,
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        val newChange = map["change"] as Double
-        return HomingProjectileShooter(newChange)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE_SHOOTER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val newChange = map["change"] as Double
+            return HomingProjectileShooter(newChange)
+        }
     }
 
     override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

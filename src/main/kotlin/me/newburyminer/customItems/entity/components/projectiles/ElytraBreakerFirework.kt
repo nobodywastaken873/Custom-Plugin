@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity.components.projectiles
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityEventContext
@@ -19,7 +20,7 @@ import java.util.UUID
 
 class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player):
     EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_FIREWORK
+
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "damage" to damage.serialize(),
@@ -27,12 +28,15 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
             "duration" to duration,
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent? {
-        val newDamage = HitEffects.Companion.deserialize(map["damage"])
-        val newUUID = (map["target"] ?: return null) as UUID
-        val newTarget = Bukkit.getPlayer(newUUID) ?: return null
-        val newDuration = map["duration"] as Int
-        return ElytraBreakerFirework(newDamage, newDuration, newTarget)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_FIREWORK
+        override fun deserialize(map: Map<String, Any>): EntityComponent? {
+            val newDamage = HitEffects.Companion.deserialize(map["damage"])
+            val newUUID = (map["target"] ?: return null) as UUID
+            val newTarget = Bukkit.getPlayer(newUUID) ?: return null
+            val newDuration = map["duration"] as Int
+            return ElytraBreakerFirework(newDamage, newDuration, newTarget)
+        }
     }
 
     override fun tick(wrapper: EntityWrapper) {

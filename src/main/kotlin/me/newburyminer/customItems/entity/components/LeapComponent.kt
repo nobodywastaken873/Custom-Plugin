@@ -1,18 +1,16 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
 import org.bukkit.Bukkit
-import org.bukkit.entity.Creeper
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Mob
 import kotlin.math.pow
 
 class LeapComponent(private val minDistance: Double, private val extraHeight: Double, private val baseCooldown: Int): EntityComponent, CooldownInterface, LeapingInterface {
-    override val componentType: EntityComponentType = EntityComponentType.LEAPING_COMPONENT
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -21,12 +19,15 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
             "baseCooldown" to baseCooldown
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return LeapComponent(
-            map["minDistance"] as Double,
-            map["extraHeight"] as Double,
-            map["baseCooldown"] as Int,
-        )
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.LEAPING_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return LeapComponent(
+                map["minDistance"] as Double,
+                map["extraHeight"] as Double,
+                map["baseCooldown"] as Int,
+            )
+        }
     }
 
     override var cooldown: Int = 100
@@ -43,7 +44,7 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
             if (!mob.hasLineOfSight(target)) return
 
             mob.velocity = calculateLeapVelocity(mob.location, target.location, 2.0)
-            setCooldown(baseCooldown)
+            applyCooldown(baseCooldown)
 
         }
 

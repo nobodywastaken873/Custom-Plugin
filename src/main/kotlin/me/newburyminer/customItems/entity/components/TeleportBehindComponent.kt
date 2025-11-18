@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -9,17 +10,19 @@ import org.bukkit.entity.Mob
 import kotlin.math.pow
 
 class TeleportBehindComponent(private val baseCooldown: Int): EntityComponent, CooldownInterface {
-    override val componentType: EntityComponentType = EntityComponentType.TELEPORT_BEHIND
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "cooldown" to cooldown
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return TeleportBehindComponent(
-            map["cooldown"] as Int,
-        )
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.TELEPORT_BEHIND
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return TeleportBehindComponent(
+                map["cooldown"] as Int,
+            )
+        }
     }
 
     override var cooldown: Int = 100
@@ -44,7 +47,7 @@ class TeleportBehindComponent(private val baseCooldown: Int): EntityComponent, C
                 ) return
 
             mob.teleport(teleportLocation)
-            setCooldown(baseCooldown)
+            applyCooldown(baseCooldown)
 
         }
     }

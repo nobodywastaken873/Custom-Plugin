@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.entity.components.creepers
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
@@ -11,15 +12,17 @@ import org.bukkit.entity.Player
 import kotlin.math.pow
 
 class BreachingCreeper(private val threshold: Double): EntityComponent {
-    override val componentType: EntityComponentType = EntityComponentType.BREACHING_CREEPER
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "threshold" to threshold,
         )
     }
-    override fun deserialize(map: Map<String, Any>): EntityComponent {
-        return BreachingCreeper(map["threshold"] as Double)
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.BREACHING_CREEPER
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return BreachingCreeper(map["threshold"] as Double)
+        }
     }
 
     private var prevLoc = Location(CustomItems.aridWorld, 0.0, 0.0, 0.0)
