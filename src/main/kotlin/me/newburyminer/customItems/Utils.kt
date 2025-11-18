@@ -614,9 +614,6 @@ class Utils {
         fun Entity.removeTag(tag: String) {
             this.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
         }
-        fun Entity.getCustom(): CustomEntity? {
-            return CustomEntity.valueOf(this.getTag<String>("id") ?: return null)
-        }
 
 
 

@@ -5,6 +5,8 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
@@ -41,16 +43,24 @@ class FletcherUpgrade: CustomItemDefinition {
                 val item = ctx.item ?: return
                 if (e.rightClicked !is Villager) return
                 val villager: Villager = e.rightClicked as Villager
-                if (villager.profession != Villager.Profession.FLETCHER || villager.villagerLevel != 5 || villager.getTag<Int>("id") == CustomEntity.MAX_FLETCHER.id) return
+
+                if (EntityWrapperManager.getWrapper(villager.uniqueId)
+                        ?.hasComponent(OvermaxVillagerComponent::class) == true) return
+
+                if (villager.profession != Villager.Profession.FLETCHER || villager.villagerLevel != 5) return
                 e.isCancelled = true
+
                 val arrowTypes = arrayOf(CustomItem.DRIPSTONE_ARROW, CustomItem.ENDER_PEARL_ARROW, CustomItem.WITHER_SKULL_ARROW, CustomItem.LLAMA_SPIT_ARROW, CustomItem.SHULKER_BULLET_ARROW)
                 val newRecipes = Lists.newArrayList(villager.recipes)
                 val newRecipe = MerchantRecipe(ItemRegistry.get(arrowTypes.random()), 0, 10000, true, 0, 0F)
+
                 newRecipe.addIngredient(ItemStack(Material.EMERALD_BLOCK, 4))
                 newRecipe.addIngredient(ItemStack(Material.DIAMOND_BLOCK))
                 newRecipes.add(newRecipe)
+
                 villager.recipes = newRecipes
-                villager.setTag("id", CustomEntity.MAX_FLETCHER.id)
+                EntityWrapperManager.getWrapperorNew(villager).addComponent(OvermaxVillagerComponent())
+
                 item.amount -= 1
                 CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 5F, 1.4F)
                 CustomEffects.particleCloud(Particle.HAPPY_VILLAGER.builder(), villager.location, 100, 1.0, 0.5)

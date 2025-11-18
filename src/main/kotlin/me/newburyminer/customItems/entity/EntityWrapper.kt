@@ -2,6 +2,7 @@ package me.newburyminer.customItems.entity
 
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.entity.Entity
+import kotlin.reflect.KClass
 
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
@@ -43,6 +44,14 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
         return components.associate {
             it.componentType.name to it.serialize()
         }
+    }
+
+    fun <T: EntityComponent> hasComponent(type: KClass<T>): Boolean {
+        components.forEach {
+            if (it::class == type)
+                return true
+        }
+        return false
     }
 
     private var isCasting = false

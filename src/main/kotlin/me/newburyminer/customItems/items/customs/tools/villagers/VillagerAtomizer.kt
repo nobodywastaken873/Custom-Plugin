@@ -6,6 +6,8 @@ import me.newburyminer.customItems.Utils.Companion.convertVillagerLevel
 import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.entity.Villager
@@ -35,6 +37,10 @@ class VillagerAtomizer: CustomItemDefinition {
             is PlayerInteractEntityEvent -> {
                 if (!ctx.itemType.isHand()) return
                 if (e.rightClicked !is Villager) return
+
+                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
+                        ?.hasComponent(NonPickuppableComponent::class) == true) return
+
                 e.isCancelled = true
                 val newItem = ItemRegistry.get(CustomItem.VILLAGER)
                 val villager: Villager = e.rightClicked as Villager

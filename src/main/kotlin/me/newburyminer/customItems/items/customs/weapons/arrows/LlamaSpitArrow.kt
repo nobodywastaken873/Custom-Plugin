@@ -3,6 +3,11 @@ package me.newburyminer.customItems.items.customs.weapons.arrows
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.items.*
@@ -23,7 +28,7 @@ class LlamaSpitArrow: CustomItemDefinition {
     private val color = arrayOf(217, 201, 176)
     private val name = text("Llama Spit Arrow", color)
     private val lore = Utils.loreBlockToList(
-        text("Shoots a llama spit that does 1 true damage.", Utils.GRAY),
+        text("Shoots a llama spit that does 1.5 true damage with no iframes.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -38,23 +43,17 @@ class LlamaSpitArrow: CustomItemDefinition {
             is EntityShootBowEvent -> {
                 if (ctx.itemType != EventItemType.PROJECTILE) return
                 val player = ctx.player ?: return
-                val item = ctx.item ?: return
                 val spit = e.entity.world.spawn(e.projectile.location, LlamaSpit::class.java)
                 spit.velocity = e.projectile.velocity
                 spit.shooter = player
-                spit.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
-                spit.setTag("source", CustomItem.LLAMA_SPIT_ARROW.name)
-                e.projectile.remove()
-            }
 
-            is ProjectileHitEvent -> {
-                if (ctx.itemType != EventItemType.PROJECTILE) return
-                if (e.hitEntity == null || e.hitEntity!! !is LivingEntity) return
-                e.isCancelled = true
-                val hit = e.hitEntity as LivingEntity
-                hit.damage(1.5, DamageSource.builder(CustomDamageType.ALL_BYPASS).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
-                hit.noDamageTicks = 0
-                e.entity.remove()
+                val wrapper = EntityWrapperManager.getWrapperorNew(spit)
+                wrapper.addComponent(CustomDamageProjectile(HitEffects(
+                    CustomDamageApply(1.5, CustomDamageType.ALL_BYPASS, 0, player),
+                    VanillaKnockbackApply(0.1)
+                )))
+
+                e.projectile.remove()
             }
 
         }

@@ -4,6 +4,11 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.items.CustomItem
@@ -13,6 +18,7 @@ import me.newburyminer.customItems.items.EventContext
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.damage.DamageSource
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -43,24 +49,12 @@ class SniperRifle: CustomItemDefinition {
 
                 e.entity.velocity = shooter.location.direction.normalize().multiply(50)
                 shooter.setCooldown(CustomItem.SNIPER_RIFLE, 40.0)
-                e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
-                e.entity.setTag("source", CustomItem.SNIPER_RIFLE.name)
-            }
 
-            is EntityDamageByEntityEvent -> {
-                if (e.damager !is Arrow) return
-                if (e.entity !is LivingEntity) return
-                if (e.damageSource.damageType == CustomDamageType.ALL_BYPASS) return
-                e.isCancelled = true
-                val damage = 13.0
-                (e.entity as LivingEntity).damage(damage,
-                    DamageSource.builder(CustomDamageType.ALL_BYPASS)
-                        .withDirectEntity(e.damageSource.directEntity ?: e.damageSource.causingEntity!!)
-                        .withCausingEntity(e.damageSource.causingEntity ?: e.damageSource.directEntity!!).build()
-                )
-                e.damager.remove()
+                EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
+                    CustomDamageApply(13.0, CustomDamageType.ALL_BYPASS, 0, overrideSource = shooter),
+                    VanillaKnockbackApply()
+                )))
             }
-
 
         }
 

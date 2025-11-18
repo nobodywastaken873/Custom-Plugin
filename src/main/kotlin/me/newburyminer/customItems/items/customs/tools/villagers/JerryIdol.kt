@@ -5,6 +5,9 @@ import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.JerryIdolComponent
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
@@ -51,53 +54,23 @@ class JerryIdol: CustomItemDefinition {
                 val loc = e.clickedBlock!!.location
                 loc.add(Vector(0.5, 1.0, 0.5))
                 val villager: Villager = e.player.world.spawnEntity(loc, EntityType.VILLAGER) as Villager
-                villager.setTag("id", CustomEntity.JERRY_IDOL.id)
-                villager.setTag("source", CustomItem.JERRY_IDOL.name)
+
                 val emeraldStacks = item.getTag<Int>("emeraldstacks") ?: 0
-                villager.setTag("emeraldstacks", emeraldStacks)
+                val wrapper = EntityWrapperManager.getWrapperorNew(villager)
+                wrapper.addComponent(JerryIdolComponent(emeraldStacks))
+                wrapper.addComponent(NonPickuppableComponent())
+
                 villager.getAttribute(Attribute.SCALE)!!.baseValue = emeraldStacks*0.1 + 1
                 villager.isInvulnerable = true
                 villager.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4, true, false))
                 villager.setAI(false)
+
                 item.amount -= 1
                 CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 20F, 0.9F)
             }
 
-            is PlayerInteractEntityEvent -> {
-                if (ctx.itemType != EventItemType.SUMMONED_ENTITY) return
-                if (e.rightClicked !is Villager) return
-                e.isCancelled = true
-                if (e.player.inventory.itemInMainHand.type == Material.AIR) {
-                    val emBlockStacks = e.rightClicked.getTag<Int>("emeraldstacks")
-                    val newJerryIdol = ItemRegistry.get(CustomItem.JERRY_IDOL)
-                    newJerryIdol.setTag("emeraldstacks", emBlockStacks)
-                    e.player.addItemorDrop(newJerryIdol)
-                    CustomEffects.playSound(e.rightClicked.location, Sound.ENTITY_ITEM_PICKUP, 20F, 0.5F)
-                    e.rightClicked.remove()
-                } else if (e.player.inventory.itemInMainHand.type == Material.EMERALD_BLOCK && e.player.inventory.itemInMainHand.amount == 64) {
-                    val emBlockStacks = e.rightClicked.getTag<Int>("emeraldstacks") ?: 0
-                    e.rightClicked.setTag("emeraldstacks", emBlockStacks + 1)
-                    (e.rightClicked as Villager).getAttribute(Attribute.SCALE)!!.baseValue += 0.1
-                    e.player.inventory.itemInMainHand.amount -= 64
-                    for (i in 0..5+emBlockStacks/2) CustomEffects.particleCircle(Particle.HAPPY_VILLAGER.builder(), e.rightClicked.location.clone().add(Vector(0.0, i.toDouble()/2.5, 0.0)), 0.5 * (1 + emBlockStacks*0.1), (20 * (1 + emBlockStacks*0.1)).toInt(), 0.01)
-                    CustomEffects.playSound(e.rightClicked.location, Sound.ENTITY_VILLAGER_YES, 20F, 1.5F)
-                }
-            }
-
         }
 
-    }
-
-    override val extraTasks: Map<Int, (Player) -> Unit>
-        get() = mapOf(60 to {player -> applyHOTV(player)})
-
-    private fun applyHOTV(player: Player) {
-        for (entity in player.getNearbyEntities(50.0, 128.0, 50.0)) {
-            if (entity.getTag<Int>("id") == CustomEntity.JERRY_IDOL.id) {
-                val amp = (entity.getTag<Int>("emeraldstacks") ?: 0)
-                player.addPotionEffect(PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 340, amp))
-            }
-        }
     }
 
 }

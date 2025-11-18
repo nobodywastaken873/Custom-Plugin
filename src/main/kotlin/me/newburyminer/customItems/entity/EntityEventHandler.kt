@@ -9,9 +9,11 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.entity.EntityRemoveEvent
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.world.GenericGameEvent
 
 class EntityEventHandler: Listener {
@@ -58,6 +60,14 @@ class EntityEventHandler: Listener {
     @EventHandler fun genericGameEvent(e: GenericGameEvent) {
         if (e.event !in arrayOf(GameEvent.PRIME_FUSE)) return
         dispatch(e.entity ?: return, e)
+    }
+
+    @EventHandler fun playerInteractEntity(e: PlayerInteractEntityEvent) {
+        dispatch(e.rightClicked, e)
+    }
+
+    @EventHandler fun onRemove(e: EntityRemoveEvent) {
+        dispatch(e.entity, e)
     }
 
 }

@@ -45,7 +45,6 @@ class WindHook: CustomItemDefinition {
                 val shooter = ctx.player ?: return
                 val item = ctx.item ?: return
                 if (!shooter.offCooldown(CustomItem.WIND_HOOK)) {e.isCancelled = true; return}
-                e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
                 e.entity.setTag("source", CustomItem.WIND_HOOK.name)
                 (e.entity as Arrow).color = Color.fromRGB(211, 195, 219)
                 shooter.setCooldown(CustomItem.WIND_HOOK, 15.0)

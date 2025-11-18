@@ -9,15 +9,24 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFirework
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Bukkit
+import org.bukkit.Color
+import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.Firework
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
@@ -56,46 +65,32 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
                     if (player.isGliding) flyer = player
                 }
                 if (flyer == null) { e.isCancelled = true; return }
-                e.entity.setTag("target", flyer.uniqueId)
                 shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
-                e.entity.setTag("id", CustomEntity.ELYTRA_BREAKER_ARROW.id)
-                e.entity.setTag("source", CustomItem.SURFACE_TO_AIR_MISSILE.name)
-                activeHomingTime = 400
-            }
 
-            is ProjectileHitEvent -> {
-                if (e.entity !is Arrow) return
-                val hitPlayer = e.hitEntity as? Player ?: return
-                e.entity.remove()
-                EffectManager.applyEffect(hitPlayer, CustomEffectType.ELYTRA_DISABLED, 25 * 20)
-                hitPlayer.playSound(e.hitEntity!!, Sound.ITEM_SHIELD_BREAK, 1.0F, 1.0F)
-                hitPlayer.setCooldown(Material.ELYTRA, 500)
-                hitPlayer.isGliding = false
+                e.isCancelled = true
+                val missile = shooter.world.spawn(shooter.location.add(0.0, 1.5, 0.0), Firework::class.java) {
+                    it.shooter = shooter as LivingEntity
+                    val newMeta = it.fireworkMeta
+                    newMeta.addEffects(
+                        FireworkEffect.builder()
+                            .with(FireworkEffect.Type.BALL_LARGE)
+                            .withColor(Color.BLACK, Color.GRAY, Color.ORANGE)
+                            .withFade(Color.GRAY)
+                            .trail(true)
+                            .build()
+                    )
+                    newMeta.power = 100
+                    it.fireworkMeta = newMeta
+                }
+                EntityWrapperManager.getWrapperorNew(missile).addComponent(
+                    ElytraBreakerFirework(HitEffects(
+                        CustomDamageApply(25.0, DamageType.ARROW, 0, overrideSource = shooter),
+                    ), 500, flyer)
+                )
             }
-
 
         }
 
-    }
-
-    override val extraTasks: Map<Int, (Player) -> Unit>
-        get() = mapOf(1 to {player -> surfaceToAirMissile(player)})
-
-    private var activeHomingTime = 0
-    private fun surfaceToAirMissile(player: Player) {
-        if (activeHomingTime > 0) --activeHomingTime
-        else return
-
-        for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
-            if (entity.type != EntityType.ARROW || (entity as Arrow).isInBlock) continue
-            if (entity.getTag<Int>("id") != CustomEntity.ELYTRA_BREAKER_ARROW.id) continue
-            if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
-            entity.setTag("tick", Bukkit.getServer().currentTick)
-            // here is null
-            val target = Bukkit.getEntity(entity.getTag<UUID>("target") ?: continue) ?: continue
-            val newDirection = target.location.subtract(entity.location).toVector().add(Vector(0.0, 0.5, 0.0))
-            entity.velocity = newDirection.normalize().multiply((target.location.subtract(entity.location).length() / 8).coerceAtLeast(8.0))
-        }
     }
 
 }

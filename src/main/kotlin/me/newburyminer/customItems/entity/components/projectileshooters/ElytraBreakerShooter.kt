@@ -46,7 +46,6 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
             val target = getTarget(wrapper) ?: return
 
             val missile = target.world.spawn(wrapper.entity.location.add(0.0, 1.5, 0.0), Firework::class.java) {
-                it.setTag("id", CustomEntity.ENTITY_SHOT_PROJECTILE.name)
                 it.shooter = wrapper.entity as LivingEntity
                 val newMeta = it.fireworkMeta
                 newMeta.addEffects(

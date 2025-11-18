@@ -6,11 +6,18 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -41,16 +48,13 @@ class DualBarreledCrossbow: CustomItemDefinition {
             is ProjectileLaunchEvent -> {
                 val shooter = ctx.player ?: return
                 val crossbow = ctx.item ?: return
-                e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
-                e.entity.setTag("source", CustomItem.DUAL_BARRELED_CROSSBOW.name)
+
                 val arrow = e.entity as Arrow
                 arrow.pierceLevel = 6
-            }
-
-            is EntityDamageByEntityEvent -> {
-                if (e.damager !is Arrow) return
-                if (e.entity !is LivingEntity) return
-                e.damage = 17.0
+                EntityWrapperManager.getWrapperorNew(arrow).addComponent(CustomDamageProjectile(HitEffects(
+                    CustomDamageApply(17.0, DamageType.ARROW, overrideSource = shooter),
+                    VanillaKnockbackApply()
+                )))
             }
 
             is EntityLoadCrossbowEvent -> {

@@ -7,6 +7,8 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -41,6 +43,16 @@ class ReinforcedCage: CustomItemDefinition {
         .setLore(lore)
         .build()
 
+    private val invalidPickups = arrayOf(
+        EntityType.WARDEN, EntityType.ENDER_DRAGON, EntityType.ARROW, EntityType.TEXT_DISPLAY, EntityType.BLOCK_DISPLAY, EntityType.ITEM_DISPLAY,
+        EntityType.AREA_EFFECT_CLOUD, EntityType.BREEZE_WIND_CHARGE, EntityType.DRAGON_FIREBALL, EntityType.END_CRYSTAL, EntityType.ENDER_PEARL,
+        EntityType.EVOKER_FANGS, EntityType.EXPERIENCE_ORB, EntityType.EXPERIENCE_BOTTLE, EntityType.EYE_OF_ENDER, EntityType.FALLING_BLOCK,
+        EntityType.FIREBALL, EntityType.FIREWORK_ROCKET, EntityType.FISHING_BOBBER, EntityType.GLOW_ITEM_FRAME, EntityType.ITEM_FRAME,
+        EntityType.INTERACTION, EntityType.ITEM, EntityType.LEASH_KNOT, EntityType.LINGERING_POTION, EntityType.MARKER, EntityType.PAINTING,
+        EntityType.PLAYER, EntityType.SHULKER_BULLET, EntityType.SMALL_FIREBALL, EntityType.SPECTRAL_ARROW, EntityType.SPLASH_POTION,
+        EntityType.TRIDENT, EntityType.WIND_CHARGE, EntityType.WITHER, EntityType.WITHER_SKULL
+    )
+
     override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
@@ -69,23 +81,20 @@ class ReinforcedCage: CustomItemDefinition {
             is PlayerInteractEntityEvent -> {
                 if (!ctx.itemType.isHand()) return
                 val item = ctx.item ?: return
-                if (e.rightClicked.type in arrayOf(
-                        EntityType.WARDEN, EntityType.ENDER_DRAGON, EntityType.ARROW, EntityType.TEXT_DISPLAY, EntityType.BLOCK_DISPLAY, EntityType.ITEM_DISPLAY,
-                        EntityType.AREA_EFFECT_CLOUD, EntityType.BREEZE_WIND_CHARGE, EntityType.DRAGON_FIREBALL, EntityType.END_CRYSTAL, EntityType.ENDER_PEARL,
-                        EntityType.EVOKER_FANGS, EntityType.EXPERIENCE_ORB, EntityType.EXPERIENCE_BOTTLE, EntityType.EYE_OF_ENDER, EntityType.FALLING_BLOCK,
-                        EntityType.FIREBALL, EntityType.FIREWORK_ROCKET, EntityType.FISHING_BOBBER, EntityType.GLOW_ITEM_FRAME, EntityType.ITEM_FRAME,
-                        EntityType.INTERACTION, EntityType.ITEM, EntityType.LEASH_KNOT, EntityType.LINGERING_POTION, EntityType.MARKER, EntityType.PAINTING,
-                        EntityType.PLAYER, EntityType.SHULKER_BULLET, EntityType.SMALL_FIREBALL, EntityType.SPECTRAL_ARROW, EntityType.SPLASH_POTION,
-                        EntityType.TRIDENT, EntityType.WIND_CHARGE, EntityType.WITHER, EntityType.WITHER_SKULL
-                    )) return
-                if (e.rightClicked.getTag<Int>("id") != null) return
-                if (e.rightClicked.getTag<Int>("bossid") != null) return
+
+                if (e.rightClicked.type in invalidPickups) return
+
+                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
+                    ?.hasComponent(NonPickuppableComponent::class) == true) return
+
+                //if (e.rightClicked.getTag<Int>("bossid") != null) return
                 if (!e.player.offCooldown(CustomItem.REINFORCED_CAGE)) return
                 if (item.getTag<String>("storedmob") !in arrayOf(null, "")) return
+
                 e.isCancelled = true
                 val entity = e.rightClicked
 
-                val snapshot = entity.createSnapshot()!!.asString
+                val snapshot = (entity.createSnapshot() ?: return).asString
                 e.player.inventory.itemInMainHand.setTag("storedmob", snapshot)
 
                 e.player.inventory.itemInMainHand.loreBlock(

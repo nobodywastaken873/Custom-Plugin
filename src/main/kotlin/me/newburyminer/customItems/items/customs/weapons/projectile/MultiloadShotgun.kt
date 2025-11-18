@@ -7,6 +7,11 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -50,17 +55,11 @@ class MultiloadShotgun: CustomItemDefinition {
                 crossbow.setTag("loadedshot", 0)
                 crossbow.name(text("Multi-load Shotgun - "+crossbow.getTag<Int>("loadedshot").toString(), arrayOf(214, 125, 0), bold = true))
                 crossbow.setTag("loading", true)
-                e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
-                e.entity.setTag("source", CustomItem.MULTI_LOAD_CROSSBOW.name)
-            }
 
-            is ProjectileHitEvent -> {
-                if (e.hitEntity == null || e.hitEntity!! !is LivingEntity) return
-                e.isCancelled = true
-                val hit = e.hitEntity as LivingEntity
-                hit.damage(10.0, DamageSource.builder(DamageType.ARROW).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
-                hit.noDamageTicks = 0
-                e.entity.remove()
+                EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
+                    CustomDamageApply(10.0, DamageType.ARROW, 0, overrideSource = shooter),
+                    VanillaKnockbackApply()
+                )))
             }
 
             is PlayerSwapHandItemsEvent -> {

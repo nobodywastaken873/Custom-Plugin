@@ -10,6 +10,7 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Firework
 import org.bukkit.entity.Player
@@ -59,6 +60,7 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
                 val player = e.entity as? Player ?: return
                 player.isGliding = false
                 EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(duration, unique = true))
+                player.setCooldown(Material.ELYTRA, 500)
                 CustomEffects.Companion.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
 
                 e.isCancelled = true

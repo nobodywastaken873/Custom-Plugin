@@ -3,6 +3,9 @@ package me.newburyminer.customItems.items.customs.tools.villagers
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
+import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -37,21 +40,25 @@ class TradingScrambler: CustomItemDefinition {
             is PlayerInteractEntityEvent -> {
                 if (!ctx.itemType.isHand()) return
                 if (e.rightClicked !is Villager) return
-                if (e.rightClicked.getTag<Int>("id") != null) return
+                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
+                        ?.hasComponent(NonPickuppableComponent::class) == true) return
+                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
+                        ?.hasComponent(OvermaxVillagerComponent::class) == true) return
+
                 val villager = e.rightClicked as Villager
                 val maxLevel = villager.villagerLevel
-                val profession = villager.profession
                 val experience = villager.villagerExperience
-                //villager.profession = Villager.Profession.NONE
+
                 villager.villagerExperience = 0
                 villager.villagerLevel = 1
                 villager.recipes = mutableListOf()
-                //villager.profession = profession
+
                 for (i in 2..maxLevel) {
                     villager.addTrades(2)
                     villager.villagerLevel = i
                 }
                 villager.addTrades(2)
+
                 villager.villagerExperience = experience
                 CustomEffects.playSound(e.player.location, Sound.BLOCK_BAMBOO_BREAK, 1.0F, 1.0F)
             }

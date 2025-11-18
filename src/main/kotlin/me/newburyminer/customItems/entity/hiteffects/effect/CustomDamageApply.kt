@@ -14,7 +14,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.metadata.MetadataValue
 import org.bukkit.metadata.MetadataValueAdapter
 
-class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFrames: Int = 10): HitEffect {
+class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFrames: Int = 10, val overrideSource: Entity? = null): HitEffect {
     override val hitEffectType: HitEffectType = HitEffectType.CUSTOM_DAMAGE
 
     override fun apply(victim: LivingEntity, damager: Entity) {
@@ -23,13 +23,15 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
             return
         }
 
+        val realDamager = overrideSource ?: damager
+
         victim.setTag("damaged", true)
         victim.damage(
             amount,
             DamageSource.builder(damageType)
-                .withDamageLocation(damager.location)
-                .withDirectEntity(damager)
-                .withCausingEntity(damager)
+                .withDamageLocation(realDamager.location)
+                .withDirectEntity(realDamager)
+                .withCausingEntity(realDamager)
                 .build()
         )
         victim.noDamageTicks = iFrames

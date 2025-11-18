@@ -9,6 +9,11 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -70,17 +75,11 @@ class RedstoneRepeater: CustomItemDefinition {
                 }
 
                 crossbow.name(text((if (arrowCount == 1) "Single" else "Double") + " Redstone Repeater - " + loadedArrows.toString(), arrayOf(125, 30, 30), bold = true))
-                e.entity.setTag("id", CustomEntity.PLAYER_SHOT_PROJECTILE.id)
-                e.entity.setTag("source", CustomItem.REDSTONE_REPEATER.name)
-            }
 
-            is ProjectileHitEvent -> {
-                if (e.hitEntity == null || e.hitEntity!! !is LivingEntity) return
-                e.isCancelled = true
-                val hit = e.hitEntity as LivingEntity
-                hit.damage(10.5, DamageSource.builder(DamageType.ARROW).withDirectEntity(e.entity.shooter as Entity).withCausingEntity(e.entity.shooter as Entity).build())
-                hit.noDamageTicks = 0
-                e.entity.remove()
+                EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
+                    CustomDamageApply(10.5, DamageType.ARROW, 0, overrideSource = shooter),
+                    VanillaKnockbackApply()
+                )))
             }
 
             is PlayerSwapHandItemsEvent -> {

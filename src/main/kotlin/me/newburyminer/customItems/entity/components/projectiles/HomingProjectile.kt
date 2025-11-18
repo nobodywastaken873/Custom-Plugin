@@ -31,16 +31,12 @@ class HomingProjectile(private val angleChange: Double, private val target: Enti
     override fun tick(wrapper: EntityWrapper) {
         if (!target.isValid) { wrapper.entity.remove(); return }
         if (wrapper.entity is Arrow && wrapper.entity.isInBlock) { wrapper.entity.remove(); return }
-        val currentVelocity = wrapper.entity.velocity.length() * 1.05
 
-        val newDirection = wrapper.entity.velocity
-            .add(
-                target.location.subtract(wrapper.entity.location)
-                    .toVector()
-                    .add(Vector(0.0, 0.5, 0.0))
-                    .normalize()
-                    .multiply(50)
-            )
-        wrapper.entity.velocity = newDirection.normalize().multiply(currentVelocity)
+        val projectile = wrapper.entity
+        val cross = projectile.velocity.getCrossProduct(target.location.subtract(projectile.location).toVector())
+        val angle = projectile.velocity.angle(target.location.subtract(projectile.location).toVector())
+        val newDirection = projectile.velocity.rotateAroundAxis(cross, angle.coerceAtMost(angleChange.toFloat()).toDouble())
+        projectile.velocity = newDirection
+
     }
 }

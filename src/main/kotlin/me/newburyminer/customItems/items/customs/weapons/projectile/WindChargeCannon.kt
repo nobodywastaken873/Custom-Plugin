@@ -7,11 +7,18 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.components.projectiles.HomingProjectile
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.*
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.ProjectileLaunchEvent
@@ -69,10 +76,11 @@ class WindChargeCannon: CustomItemDefinition {
                                 closestAngle = angle.toDouble()
                             }
                         }
-                        val target = closest?.uniqueId ?: shooter.uniqueId
-                        windCharge.setTag("target", target)
-                        windCharge.setTag("source", CustomItem.WIND_CHARGE_CANNON.name)
-                        activeHomingTime = 600
+                        val target = closest ?: shooter
+
+                        EntityWrapperManager.getWrapperorNew(windCharge).addComponent(
+                            HomingProjectile(Math.PI / 24, target)
+                        )
                     }
                 } else {
                     shooter.setCooldown(CustomItem.WIND_CHARGE_CANNON, 5.0)
@@ -94,29 +102,6 @@ class WindChargeCannon: CustomItemDefinition {
 
         }
 
-    }
-
-    override val extraTasks: Map<Int, (Player) -> Unit>
-        get() = mapOf(1 to {player -> homingWindChargeUpdate(player)})
-
-    private var activeHomingTime = 0
-    private fun homingWindChargeUpdate(player: Player) {
-        if (activeHomingTime > 0) --activeHomingTime
-        else return
-
-        for (entity in player.getNearbyEntities(60.0, 60.0, 60.0)) {
-            if (entity.type != EntityType.WIND_CHARGE) continue
-            if (entity.getTag<String>("source") != CustomItem.WIND_CHARGE_CANNON.name) continue
-            if (entity.getTag<Int>("tick") == Bukkit.getServer().currentTick) continue
-            entity.setTag("tick", Bukkit.getServer().currentTick)
-            val target = Bukkit.getEntity(entity.getTag<UUID>("target")!!) ?: continue
-            //val newDirection = entity.velocity.add(target.location.subtract(entity.location).toVector().normalize().multiply(1.5))
-            //entity.velocity = newDirection.normalize().multiply(currentVelocity)
-            val cross = entity.velocity.getCrossProduct(target.location.subtract(entity.location).toVector())
-            val angle = entity.velocity.angle(target.location.subtract(entity.location).toVector())
-            val newDirection = entity.velocity.rotateAroundAxis(cross, angle.coerceAtMost((Math.PI / 24).toFloat()).toDouble())
-            entity.velocity = newDirection
-        }
     }
 
 }
