@@ -106,7 +106,7 @@ class RedstoneRepeater: CustomItemDefinition {
                 val crossbow = ctx.item ?: return
                 e.isCancelled = true
                 if (crossbow.getTag<Int>("subshot") == (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
-                    var loadedArrows = crossbow.getTag<Int>("loadedarrows")!!
+                    var loadedArrows = crossbow.getTag<Int>("loadedarrows") ?: 0
                     if (loadedArrows >= 8) {
                         CustomEffects.playSound(e.entity.location, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
                         loadedArrows = 10
@@ -132,7 +132,7 @@ class RedstoneRepeater: CustomItemDefinition {
                 if (!e.player.offCooldown(CustomItem.REDSTONE_REPEATER)) return
 
                 val isLoading = item.getTag<Boolean>("loading") ?: true
-                var loadedArrows = item.getTag<Int>("loadedarrows") ?: 0
+                val loadedArrows = item.getTag<Int>("loadedarrows") ?: 0
                 var arrowCount = item.getTag<Int>("arrowcount") ?: 0
 
                 item.setTag("arrowcount", if (arrowCount == 1) 2 else 1)

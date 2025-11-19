@@ -95,7 +95,7 @@ class MultiloadShotgun: CustomItemDefinition {
                 var isLoading = crossbow.getTag<Boolean>("loading") ?: true
                 var loadedArrows = crossbow.getTag<Int>("loadedshot") ?: 0
 
-                if (crossbow.getTag<Int>("subshot") == (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
+                if ((crossbow.getTag<Int>("subshot") ?: 0) >= (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
                     if (loadedArrows >= 24) {
                         CustomEffects.playSound(e.entity.location, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
                         loadedArrows = 25

@@ -54,6 +54,7 @@ class CustomItems : JavaPlugin() {
     private lateinit var cooldownTask: BukkitTask
     //private lateinit var entityListener: EntityListeners
     private lateinit var systemsListener: SystemsListener
+    private lateinit var wrapperManager: EntityWrapperManager
 
     override fun onEnable() {
         plugin = this
@@ -73,6 +74,7 @@ class CustomItems : JavaPlugin() {
         //entityListener = EntityListeners()
         bossListener = BossListeners()
         systemsListener = SystemsListener()
+        wrapperManager = EntityWrapperManager()
 
         registerListeners()
 
@@ -80,6 +82,7 @@ class CustomItems : JavaPlugin() {
         this.run()
         PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
         EffectManager.runTaskTimer(this, 0L, 1L)
+        wrapperManager.runTaskTimer(this, 0L, 1L)
         //entityListener.run()
         bossListener.run()
 
@@ -117,7 +120,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(EnchantmentListener(), this)
         server.pluginManager.registerEvents(GuiEventHandler(), this)
         server.pluginManager.registerEvents(EntityEventHandler(), this)
-        server.pluginManager.registerEvents(EntityWrapperManager(), this)
+        server.pluginManager.registerEvents(wrapperManager, this)
 
         //server.pluginManager.registerEvents(EntitySpawnManager(), this)
         //server.pluginManager.registerEvents(EntityEventHandler(), this)
