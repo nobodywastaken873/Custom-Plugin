@@ -12,9 +12,8 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectBootstrapper
 import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.entity3.EntityListeners
-import me.newburyminer.customItems.bosses.BossListeners
-import me.newburyminer.customItems.bosses.CustomBoss
+import me.newburyminer.customItems.bosses2.BossListeners
+import me.newburyminer.customItems.bosses2.CustomBoss
 import me.newburyminer.customItems.entity.ComponentSerializationRegistry
 import me.newburyminer.customItems.entity.EntityEventHandler
 import me.newburyminer.customItems.entity.EntityWrapperManager

@@ -29,7 +29,7 @@ class ReinforcedCage: CustomItemDefinition {
 
     override val custom: CustomItem = CustomItem.REINFORCED_CAGE
 
-    private val material = Material.CHAIN
+    private val material = Material.IRON_CHAIN
     private val color = arrayOf(105, 101, 100)
     private val name = text("Reinforced Cage", color)
     private val lore = Utils.loreBlockToList(

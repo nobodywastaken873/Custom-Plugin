@@ -40,10 +40,12 @@ class CowboyHat: CustomItemDefinition {
                     PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2, true, false),
                     PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 4, true, false),
                 ))
+                e.mount.isInvulnerable = true
             }
 
             is EntityDismountEvent -> {
                 if (e.dismounted !is Horse) return
+                e.dismounted.isInvulnerable = false
                 if ((e.dismounted as Horse).hasPotionEffect(PotionEffectType.RESISTANCE))
                     (e.dismounted as Horse).clearActivePotionEffects()
             }

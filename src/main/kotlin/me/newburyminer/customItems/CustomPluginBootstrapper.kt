@@ -12,8 +12,8 @@ import io.papermc.paper.plugin.lifecycle.event.registrar.RegistrarEvent
 import io.papermc.paper.plugin.lifecycle.event.registrar.ReloadableRegistrarEvent
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry
+import io.papermc.paper.registry.event.RegistryComposeEvent
 import io.papermc.paper.registry.event.RegistryEvents
-import io.papermc.paper.registry.event.RegistryFreezeEvent
 import io.papermc.paper.registry.keys.EnchantmentKeys
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
@@ -79,8 +79,8 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("restoregrave", "Use to restore a grave from the stored graves file.", RestoreGraveCommand())
             commands.register("info", "Use to view all info about what this plugin changes.", InfoCommand())
         }
-        manager.registerEventHandler(RegistryEvents.ENCHANTMENT.freeze().newHandler {
-            event: RegistryFreezeEvent<Enchantment, EnchantmentRegistryEntry.Builder> ->
+        manager.registerEventHandler(RegistryEvents.ENCHANTMENT.compose().newHandler {
+            event ->
             event.registry().register( // The key of the registry
                 // Plugins should use their own namespace instead of minecraft or papermc
                 EnchantmentKeys.create(Key.key("customitems:autosmelt")))

@@ -323,11 +323,11 @@ object RecipeRegistry {
         }
         recipe {
             grid {
-                row(item(Material.IRON_BARS, 32), item(Material.CHAIN, 32), item(Material.IRON_BARS, 32), item(Material.CHAIN, 32), item(Material.IRON_BARS, 32))
-                row(item(Material.CHAIN, 32), item(Material.CHAINMAIL_BOOTS).ench("PT4", "UN3","MN1"), item(Material.SHULKER_SHELL, 4), item(Material.CHAINMAIL_LEGGINGS).ench("PT4", "UN3","MN1"), item(Material.CHAIN, 32))
+                row(item(Material.IRON_BARS, 32), item(Material.IRON_CHAIN, 32), item(Material.IRON_BARS, 32), item(Material.IRON_CHAIN, 32), item(Material.IRON_BARS, 32))
+                row(item(Material.IRON_CHAIN, 32), item(Material.CHAINMAIL_BOOTS).ench("PT4", "UN3","MN1"), item(Material.SHULKER_SHELL, 4), item(Material.CHAINMAIL_LEGGINGS).ench("PT4", "UN3","MN1"), item(Material.IRON_CHAIN, 32))
                 row(item(Material.IRON_BARS, 32), item(Material.COBWEB, 32), item(Material.LEAD, 16), item(Material.COBWEB, 32), item(Material.IRON_BARS, 32))
-                row(item(Material.CHAIN, 32), item(Material.CHAINMAIL_CHESTPLATE).ench("PT4", "UN3","MN1"), item(Material.SHULKER_SHELL, 4), item(Material.CHAINMAIL_HELMET).ench("PT4", "UN3","MN1"), item(Material.CHAIN, 32))
-                row(item(Material.IRON_BARS, 32), item(Material.CHAIN, 32), item(Material.IRON_BARS, 32), item(Material.CHAIN, 32), item(Material.IRON_BARS, 32))
+                row(item(Material.IRON_CHAIN, 32), item(Material.CHAINMAIL_CHESTPLATE).ench("PT4", "UN3","MN1"), item(Material.SHULKER_SHELL, 4), item(Material.CHAINMAIL_HELMET).ench("PT4", "UN3","MN1"), item(Material.IRON_CHAIN, 32))
+                row(item(Material.IRON_BARS, 32), item(Material.IRON_CHAIN, 32), item(Material.IRON_BARS, 32), item(Material.IRON_CHAIN, 32), item(Material.IRON_BARS, 32))
             }
 			result(CustomItem.REINFORCED_CAGE)
         }

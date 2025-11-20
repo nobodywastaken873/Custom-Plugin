@@ -15,7 +15,7 @@ class ReinforcingStruts: CustomItemDefinition {
 
     override val custom: CustomItem = CustomItem.REINFORCING_STRUTS
 
-    private val material = Material.CHAIN
+    private val material = Material.IRON_CHAIN
     private val color = arrayOf(154, 161, 158)
     private val name = text("Reinforcing Struts", color)
     private val lore = Utils.loreBlockToList(

@@ -155,7 +155,8 @@ class CustomEffects {
 
         }
         fun particleLine(particle: ParticleBuilder, startLoc: Location, endLoc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
-            particle.receivers(80)
+            val players = startLoc.getNearbyPlayers(80.0)
+            particle.receivers(players)
             Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
                 val distBetween = endLoc.clone().subtract(startLoc).toVector().multiply(1.0 / count)
                 val newStart = startLoc.clone()
