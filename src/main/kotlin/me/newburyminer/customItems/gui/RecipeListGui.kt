@@ -10,8 +10,11 @@ import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
+import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import java.util.*
@@ -76,6 +79,7 @@ class RecipeListGui(page: Int): PagedGui(page) {
     override fun onClick(e: InventoryClickEvent) {
         if (checkForPageChange(e)) return
         if (e.clickedInventory == inv) e.isCancelled = true
+        if (e.action == InventoryAction.CLONE_STACK && e.whoClicked.gameMode == GameMode.CREATIVE) e.isCancelled = false
         val clickedItem = e.clickedInventory?.getItem(e.slot)
         val action = clickedItem?.getItemAction() ?: return
         when (action) {

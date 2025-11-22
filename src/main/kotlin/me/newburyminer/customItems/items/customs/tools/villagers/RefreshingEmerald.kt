@@ -1,0 +1,58 @@
+package me.newburyminer.customItems.items.customs.tools.villagers
+
+import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
+import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.components.VillagerTradeComponent
+import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.EventContext
+import org.bukkit.Material
+import org.bukkit.Sound
+import org.bukkit.entity.Villager
+import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.inventory.ItemStack
+
+class RefreshingEmerald: CustomItemDefinition {
+
+    override val custom: CustomItem = CustomItem.REFRESHING_EMERALD
+
+    private val material = Material.TURTLE_SCUTE
+    private val color = arrayOf(16, 175, 232)
+    private val name = text("Refreshing Emerald", color)
+    private val lore = Utils.loreBlockToList(
+        text("Right click on a villager to refresh its trades. This will also reset any built up price increases.", Utils.GRAY),
+    )
+
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setLore(lore)
+        .build()
+
+    override fun handle(ctx: EventContext) {
+
+        when (val e = ctx.event) {
+
+            is PlayerInteractEntityEvent -> {
+                if (!ctx.itemType.isHand()) return
+                if (e.rightClicked !is Villager) return
+                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
+                        ?.hasComponent(NonPickuppableComponent::class) == true) return
+
+                val villager = e.rightClicked as Villager
+                val wrapper = EntityWrapperManager.getWrapperorNew(villager)
+                val tradingComponent = wrapper.getComponents(VillagerTradeComponent::class)
+                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent(villager.recipes.toMutableList())
+                tradingComponent.refreshTrades(wrapper)
+            }
+
+        }
+
+    }
+
+}

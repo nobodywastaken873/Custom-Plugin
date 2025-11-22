@@ -56,6 +56,13 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
         return false
     }
 
+    fun <T: EntityComponent> getComponents(type: KClass<T>): List<EntityComponent> {
+        return components
+            .filter {
+                it::class == type
+            }
+    }
+
     private var isCasting = false
     fun isCasting(): Boolean {return isCasting}
     fun setCasting(newIsCasting: Boolean) {isCasting = newIsCasting}

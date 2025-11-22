@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.effects.behaviors
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils.Companion.readName
 import me.newburyminer.customItems.effects.AttributeData
 import me.newburyminer.customItems.effects.EffectBehavior
 import org.bukkit.NamespacedKey
@@ -14,7 +15,7 @@ open class AttributeEffect(private val attributeData: AttributeData): EffectBeha
 
     init {
         val shortId = UUID.randomUUID().toString().substring(0, 8)
-        key = NamespacedKey(CustomItems.plugin, "AttributeEffect.${attributeData.attribute}.${attributeData.amount}.${shortId}")
+        key = NamespacedKey(CustomItems.plugin, "AttributeEffect.${attributeData.attribute.readName()}.${attributeData.amount}.${shortId}")
     }
 
     override fun onApply(player: Player) {

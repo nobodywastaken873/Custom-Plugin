@@ -6,6 +6,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.components.VillagerTradeComponent
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -25,7 +26,7 @@ class TradingScrambler: CustomItemDefinition {
     private val color = arrayOf(132, 207, 168)
     private val name = text("Trading Scrambler", color)
     private val lore = Utils.loreBlockToList(
-        text("Right click on a villager to reroll its trades. All trades from all levels will be rerolled.", Utils.GRAY),
+        text("Right click on a villager to reroll its trades. All trades from all levels will be rerolled. This will not reset trades if they are locked out.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -38,6 +39,7 @@ class TradingScrambler: CustomItemDefinition {
         when (val e = ctx.event) {
 
             is PlayerInteractEntityEvent -> {
+
                 if (!ctx.itemType.isHand()) return
                 if (e.rightClicked !is Villager) return
                 if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
@@ -46,21 +48,11 @@ class TradingScrambler: CustomItemDefinition {
                         ?.hasComponent(OvermaxVillagerComponent::class) == true) return
 
                 val villager = e.rightClicked as Villager
-                val maxLevel = villager.villagerLevel
-                val experience = villager.villagerExperience
+                val wrapper = EntityWrapperManager.getWrapperorNew(villager)
+                val tradingComponent = wrapper.getComponents(VillagerTradeComponent::class)
+                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent(villager.recipes.toMutableList())
+                tradingComponent.rerollTrades(wrapper)
 
-                villager.villagerExperience = 0
-                villager.villagerLevel = 1
-                villager.recipes = mutableListOf()
-
-                for (i in 2..maxLevel) {
-                    villager.addTrades(2)
-                    villager.villagerLevel = i
-                }
-                villager.addTrades(2)
-
-                villager.villagerExperience = experience
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_BAMBOO_BREAK, 1.0F, 1.0F)
             }
 
         }

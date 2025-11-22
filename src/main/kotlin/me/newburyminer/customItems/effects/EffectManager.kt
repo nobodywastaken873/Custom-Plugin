@@ -98,7 +98,7 @@ object EffectManager: BukkitRunnable() {
                     else
                         String.format("%+.6f", effect.data.attributeData.amount * 100).trimEnd('0').trimEnd('.') + "%"
                 val formattedAttribute = effect.data.attributeData.attribute.readName()
-                "\n$formattedAmount ${formattedAttribute} - ${effect.remaining/20}s"
+                "\n$formattedAmount $formattedAttribute - ${effect.remaining/20}s"
             }
             else "\n${effect.type.title} - ${effect.remaining/20}s"
 
@@ -122,6 +122,7 @@ object EffectManager: BukkitRunnable() {
     }
 
     private fun removeEffect(player: Player, activeEffect: ActiveEffect) {
+        activeEffect.behavior.onRemove(player)
         val effectMap = activeEffects[player.uniqueId] ?: return
         effectMap.forEach { (_, list) ->
             list.removeIf { it == activeEffect }

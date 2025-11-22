@@ -109,6 +109,7 @@ enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String =
     WARDEN_CARAPACE,
     SHADOW_DISC_CORE,
     REDSTONE_BOX,
+    REFRESHING_EMERALD,
 
 
     /*

@@ -18,6 +18,7 @@ import io.papermc.paper.registry.keys.EnchantmentKeys
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.afkTime
+import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -25,14 +26,17 @@ import me.newburyminer.customItems.commands.*
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
+import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.*
 import org.bukkit.inventory.EquipmentSlotGroup
+import org.bukkit.inventory.ItemStack
 import java.io.IOException
 import java.net.URI
 import java.net.URISyntaxException
@@ -70,6 +74,15 @@ class CustomPluginBootstrapper: PluginBootstrap {
                         Command.SINGLE_SUCCESS
             }).build(),
                 "Command used to start/end afk sessions.",
+                listOf()
+            )
+            commands.register(Commands.literal("customrecipe").then(
+                Commands.argument("itemargument", CustomItemArgument()).executes {
+                        ctx: CommandContext<CommandSourceStack> ->
+                    customRecipeExecutor(ctx.source.sender, ctx.getArgument("itemargument", CustomItem::class.java))
+                    Command.SINGLE_SUCCESS
+                }).build(),
+                "Operator command used to get all of the items in a custom item recipe.",
                 listOf()
             )
             commands.register("craft", "Use to open the custom crafting GUI.", Craft())
@@ -244,6 +257,22 @@ class CustomPluginBootstrapper: PluginBootstrap {
             }
         } else {
             sender.addItemorDrop(ItemRegistry.get(item))
+        }
+    }
+    private fun customRecipeExecutor(sender: CommandSender, item: CustomItem) {
+        if (sender !is Player) return
+        if (!sender.isOp) {
+            sender.sendMessage(Utils.text("You do not have permission to use this command.", arrayOf(255, 0, 0)))
+            return
+        }
+        if (item != CustomItem.ALL) {
+            val recipe = RecipeRegistry.recipes.first {
+                it.getResultItem().getCustom() == item
+            }
+
+            recipe.items.forEach { row -> row.forEach{
+                sender.addItemorDrop(it?.getItem() ?: ItemStack(Material.AIR))
+            } }
         }
     }
     private fun customEntityExecutor(sender: CommandSender, entity: CustomEntity) { // add another difficulty argument
