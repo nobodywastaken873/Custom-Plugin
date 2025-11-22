@@ -51,8 +51,8 @@ class LastPrism: CustomItemDefinition {
                     if (!item.offCooldown(e.player, "Zap")) return
                     val facing = e.player.location.direction.normalize().clone().multiply(0.1)
                     val startingLocation = e.player.location.clone().add(Vector(0.0, 1.6, 0.0))
+                    CustomEffects.raycastParticleLine(Particle.END_ROD.builder(), startingLocation.clone(), facing, 80.0, 400)
                     for (i in 0..800) {
-                        CustomEffects.particle(Particle.END_ROD.builder(), startingLocation, 1)
                         if (i%5 == 0) {
                             for (entity in startingLocation.getNearbyEntities(3.0, 3.0, 3.0)) {
                                 if (entity is LivingEntity && entity != e.player) {
@@ -115,8 +115,8 @@ class LastPrism: CustomItemDefinition {
         if ((counterMap[player.uniqueId] ?: 0) > 12) {
             val facing = player.location.direction.normalize().clone().multiply(0.1)
             val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
+            CustomEffects.raycastParticleLine(Particle.ELECTRIC_SPARK.builder(), startingLocation.clone(), facing, 120.0, 600)
             for (i in 0..1200) {
-                CustomEffects.particle(Particle.ELECTRIC_SPARK.builder(), startingLocation, 1)
                 if (i % 5 == 0) {
                     for (entity in startingLocation.getNearbyEntities(3.0, 3.0, 3.0)) {
                         if (entity is LivingEntity && entity != player) {

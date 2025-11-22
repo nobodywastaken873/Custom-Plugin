@@ -110,6 +110,13 @@ enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String =
     SHADOW_DISC_CORE,
     REDSTONE_BOX,
     REFRESHING_EMERALD,
+    DYE_PALETTE,
+    MEGAMIX_DISC_TRACK,
+    GALE_BLADE(arrayOf("")),
+    PORTABLE_CANNON(arrayOf("")),
+    CONDENSED_DEEPSLATE,
+    CONDENSED_INVISIBILITY,
+    CLOUD_FRAGMENT,
 
 
     /*

@@ -63,6 +63,7 @@ class SonicCrossbow: CustomItemDefinition {
                 }
 
                 for (entity in toDamage) {
+                    if (entity == shooter) continue
                     if (entity is Player) {
                         entity.applyDamage(
                             DamageSettings(

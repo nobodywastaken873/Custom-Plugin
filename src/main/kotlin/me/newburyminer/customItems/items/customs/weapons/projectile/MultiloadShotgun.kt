@@ -58,7 +58,6 @@ class MultiloadShotgun: CustomItemDefinition {
 
                 EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
                     CustomDamageApply(10.0, DamageType.ARROW, 0, overrideSource = shooter),
-                    VanillaKnockbackApply()
                 )))
             }
 

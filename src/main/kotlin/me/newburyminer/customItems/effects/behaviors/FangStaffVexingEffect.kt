@@ -15,7 +15,7 @@ class FangStaffVexingEffect: EffectBehavior {
 
     override fun onTick(player: Player) {
         val centerLoc = player.location.clone().add(Vector(0.0, 1.6, 0.0))
-        CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), centerLoc, 5.5, 60)
+        CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), centerLoc, 5.5, 10.0)
         for (entity in player.getNearbyEntities(7.0, 10.0, 7.0)) {
             if (entity !is LivingEntity) continue
             if (entity.location.subtract(centerLoc).length() <= 5.5) {

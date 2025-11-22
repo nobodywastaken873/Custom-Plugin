@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -29,6 +31,8 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
 
             is EntityDamageByEntityEvent -> {
                 if (e.entity != wrapper.entity) return
+                if (e.entity.getTag<Boolean>("damaged") == true) { e.entity.setTag("damaged", false); return }
+
                 e.isCancelled = true
                 hitEffects.apply(e.entity as LivingEntity, e.damager)
             }

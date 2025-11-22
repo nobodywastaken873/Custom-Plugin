@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.entity.components.projectiles
 
+import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
@@ -37,9 +39,11 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
             is EntityDamageByEntityEvent -> {
                 if (e.damager != wrapper.entity) return
                 val damaged = e.entity as? LivingEntity ?: return
+                if (damaged.getTag<Boolean>("damaged") == true) { damaged.setTag("damaged", false); return }
 
                 e.isCancelled = true
                 damage.apply(damaged, e.damager)
+                wrapper.entity.remove()
             }
 
         }

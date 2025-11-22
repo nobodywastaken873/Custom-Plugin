@@ -23,6 +23,9 @@ import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
 import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
+import me.newburyminer.customItems.entity.hiteffects.HitEffect
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key
 import org.bukkit.*
@@ -33,6 +36,7 @@ import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.inventory.meta.trim.TrimMaterial
 import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionType
+import org.bukkit.util.Vector
 
 class TestCommand : BasicCommand {
     override fun execute(stack: CommandSourceStack, args: Array<out String>) {
@@ -45,7 +49,7 @@ class TestCommand : BasicCommand {
         //if (args[0].isEmpty()) {sender.velocity = sender.velocity.add(Vector(0, 100, 0)); return false}
         //if (args.size != 1) return false
         if (args[0] == "sphere") {
-            CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), sender.location, 3.0, 50)
+            CustomEffects.particleSphere(Particle.ENCHANTED_HIT.builder(), sender.location, 3.0, 50.0)
         } else if (args[0] == "crossbow") {
             sender.inventory.addItem(ItemStack(Material.CROSSBOW).crossbowProj(ItemStack(Material.ARROW), args[1].toInt()))
         } else if (args[0] == "damage") {
@@ -95,6 +99,11 @@ class TestCommand : BasicCommand {
             sender.addItemorDrop(ItemStack(Material.SPLASH_POTION).basePotion(PotionType.HEALING))
             sender.addItemorDrop(ItemStack(Material.GOAT_HORN).horn(MusicInstrument.DREAM_GOAT_HORN))
             sender.addItemorDrop(ItemStack(Material.DIAMOND_CHESTPLATE).addElytraComponent())
+        } else if (args[0] == "launch_up") {
+            sender.velocity = sender.velocity.add(Vector(0.0, 0.4, 0.0))
+        } else if (args[0] == "vanilla_knockback") {
+            val damageSettings = HitEffects(VanillaKnockbackApply())
+            damageSettings.apply(sender, sender)
         }
     }
 }

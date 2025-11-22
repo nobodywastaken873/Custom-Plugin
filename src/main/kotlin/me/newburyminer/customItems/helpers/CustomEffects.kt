@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -112,20 +113,19 @@ class CustomEffects {
             })
         }
 
-        fun particleSphere(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
+        fun particleSphere(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
             val players = loc.getNearbyPlayers(60.0)
             particle.receivers(players)
             Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
-                for (i in -(radius * 5).toInt()..(radius * 5).toInt()) {
-                    val newRadius = sqrt(radius * radius - (i * 0.2) * (i * 0.2))
-                    particleCircle(
-                        particle,
-                        loc.clone().add(Vector(0.0, i * 0.2, 0.0)),
-                        newRadius,
-                        count,
-                        offset,
-                        extra
-                    )
+                val surfaceArea = (4*Math.PI*radius.pow(2) * concentration).toInt()
+                for (i in 0..surfaceArea) {
+
+                    val theta = Math.random() * Math.PI * 2
+                    val phi = Math.random() * Math.PI * 2
+
+                    val normalVector = Vector(cos(phi) * sin(theta), sin(phi) * sin(theta), cos(theta)).multiply(radius)
+                    val newLoc = loc.clone().add(normalVector)
+                    particle.clone().location(newLoc).count(1).offset(offset, offset, offset).extra(extra).spawn()
                 }
             })
         }
@@ -158,11 +158,16 @@ class CustomEffects {
             val players = startLoc.getNearbyPlayers(80.0)
             particle.receivers(players)
             Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
-                val distBetween = endLoc.clone().subtract(startLoc).toVector().multiply(1.0 / count)
+                val totalDistance = endLoc.clone().subtract(startLoc)
+                val newCount = (totalDistance.length() * 5).toInt()
+                val distBetween = totalDistance.clone().toVector().multiply(1.0 / newCount)
+
+
                 val newStart = startLoc.clone()
-                for (i in 1..count) {
+
+                for (i in 1..newCount) {
                     particle.clone()
-                        .location(newStart.add(distBetween))
+                        .location(newStart.clone().add(distBetween.clone().multiply(i)))
                         .count(1)
                         .offset(offset, offset, offset)
                         .extra(extra)

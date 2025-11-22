@@ -2,11 +2,13 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
@@ -18,14 +20,12 @@ import org.bukkit.metadata.MetadataValueAdapter
 class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFrames: Int = 10, val overrideSource: Entity? = null): HitEffect {
 
     override fun apply(victim: LivingEntity, damager: Entity) {
-        if (victim.getTag<Boolean>("damaged") == true) {
-            victim.setTag("damaged", false)
-            return
-        }
 
         val realDamager = overrideSource ?: damager
 
-        victim.setTag("damaged", true)
+        if (overrideSource == null || overrideSource == damager) {
+            victim.setTag("damaged", true)
+        }
         victim.damage(
             amount,
             DamageSource.builder(damageType)
@@ -35,6 +35,7 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
                 .build()
         )
         victim.noDamageTicks = iFrames
+        victim.lastDamage = 0.0
     }
 
     override fun serialize(): Map<String, Any> {

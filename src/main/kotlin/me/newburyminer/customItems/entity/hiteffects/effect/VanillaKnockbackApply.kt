@@ -19,9 +19,9 @@ class VanillaKnockbackApply(val strength: Double = 0.4): HitEffect {
         val oldVel = victim.velocity
 
         val newVel = Vector(
-            oldVel.x / 2 - direction.x,
+            oldVel.x / 2 + direction.x,
             (oldVel.y / 2 + newStr).coerceAtLeast(0.4),
-            oldVel.z / 2 - direction.z
+            oldVel.z / 2 + direction.z
         )
 
         victim.velocity = newVel

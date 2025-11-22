@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
+import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag

@@ -53,7 +53,6 @@ class DualBarreledCrossbow: CustomItemDefinition {
                 arrow.pierceLevel = 6
                 EntityWrapperManager.getWrapperorNew(arrow).addComponent(CustomDamageProjectile(HitEffects(
                     CustomDamageApply(17.0, DamageType.ARROW, overrideSource = shooter),
-                    VanillaKnockbackApply()
                 )))
             }
 

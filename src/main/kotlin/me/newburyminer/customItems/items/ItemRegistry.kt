@@ -3,7 +3,6 @@ package me.newburyminer.customItems.items
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-// todo: refactor back to ItemRegistry
 class ItemRegistry {
     companion object {
 

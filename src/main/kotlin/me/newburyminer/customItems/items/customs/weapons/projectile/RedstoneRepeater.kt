@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
+import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
 import me.newburyminer.customItems.Utils.Companion.clearCrossbowProj
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
@@ -64,7 +65,10 @@ class RedstoneRepeater: CustomItemDefinition {
                 if (isLoading) {e.isCancelled = true; return}
                 if (loadedArrows < arrowCount) {e.isCancelled = true; return}
 
-                crossbow.crossbowProj(ItemStack(Material.ARROW))
+                if (crossbow.getData(DataComponentTypes.CHARGED_PROJECTILES)?.projectiles()?.size == 1)
+                    crossbow.crossbowProj(ItemStack(Material.ARROW), 2)
+                else
+                    crossbow.crossbowProj(ItemStack(Material.ARROW))
                 crossbow.setTag("loadedarrows", loadedArrows - 1)
                 loadedArrows -= 1
 
@@ -78,7 +82,6 @@ class RedstoneRepeater: CustomItemDefinition {
 
                 EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
                     CustomDamageApply(10.5, DamageType.ARROW, 0, overrideSource = shooter),
-                    VanillaKnockbackApply()
                 )))
             }
 

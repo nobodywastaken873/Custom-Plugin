@@ -939,7 +939,7 @@ class BossListeners: Listener, Runnable {
             val newLoc = start.clone()
 
             for (i in 0..(length/0.1).toInt()) {
-                CustomEffects.rotatedParticleCircle(particleSettings.preParticle, newLoc, radius, (3.1 * radius).toInt(), unit)
+                CustomEffects.rotatedParticleCircle(particleSettings.preParticle, newLoc.clone(), radius, (3.1 * radius).toInt(), unit)
                 newLoc.add(unit)
             }
 

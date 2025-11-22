@@ -21,7 +21,7 @@ class MysticalGreenApple: CustomItemDefinition {
     private val material = Material.APPLE
     private val color = arrayOf(35, 212, 0)
     private val name = text("Mystical Green Apple", color)
-    private val lore = Utils.loreBlockToList(text("Increases the amount of your total experience that you keep on death by 25%. You can consume a maximum of 4.", Utils.GRAY))
+    private val lore = Utils.loreBlockToList(text("Increases the amount of your experience gain from all sources by 15% up to 4 times.", Utils.GRAY))
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

@@ -53,16 +53,8 @@ class GraveListener: Listener {
         if (e.player.world != Bukkit.getServer().worlds[0] && e.player.world != Bukkit.getServer().worlds[1]
             && e.player.world != Bukkit.getServer().worlds[2] && e.player.world != CustomItems.aridWorld) return
         if (e.isCancelled) return
-        if ((e.player.getTag<Int>("experiencekept") ?: 0) != 0) {
-            val extraExp = e.player.exp * (Utils.toExpAmount(e.player.level + 1) - Utils.toExpAmount(e.player.level))
-            val totalExp = (Utils.toExpAmount(e.player.level, extraExp.toInt())) * (e.player.getTag<Int>("experiencekept")!! / 4.0)
-            val newAmounts = Utils.toExpLevel(totalExp.toInt())
-            e.newLevel = newAmounts.first
-            e.newExp = newAmounts.second
-            e.newTotalExp = totalExp.toInt()
-            e.setShouldDropExperience(false)
-        }
-        if (e.drops.size == 0) return
+
+        if (e.drops.isEmpty()) return
         // finding location
         val loc = e.player.location
         loc.y = if (e.player.world == Bukkit.getServer().worlds[0] && loc.y < -64.0) -64.0 else loc.y

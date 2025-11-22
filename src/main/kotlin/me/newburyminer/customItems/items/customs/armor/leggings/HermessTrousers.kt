@@ -24,7 +24,7 @@ class HermessTrousers: CustomItemDefinition {
         .setAttributes(
             SimpleModifier(Attribute.ARMOR, 7.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
-            SimpleModifier(Attribute.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.MOVEMENT_SPEED, 0.015, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.WATER_MOVEMENT_EFFICIENCY, 0.3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.STEP_HEIGHT, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
         )

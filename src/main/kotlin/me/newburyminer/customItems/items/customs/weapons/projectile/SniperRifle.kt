@@ -51,8 +51,7 @@ class SniperRifle: CustomItemDefinition {
                 shooter.setCooldown(CustomItem.SNIPER_RIFLE, 40.0)
 
                 EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
-                    CustomDamageApply(13.0, CustomDamageType.ALL_BYPASS, 0, overrideSource = shooter),
-                    VanillaKnockbackApply()
+                    CustomDamageApply(13.0, CustomDamageType.ALL_BYPASS, 0, overrideSource = shooter)
                 )))
             }
 
