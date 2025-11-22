@@ -1,15 +1,15 @@
-package me.newburyminer.customItems.items.customs.tools.villagers
+package me.newburyminer.customItems.items.customs.tools.villagers.upgrades
 
 import com.google.common.collect.Lists
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.ItemRegistry
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -18,15 +18,18 @@ import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
 
-class FletcherUpgrade: CustomItemDefinition {
+class ArmorsmithUpgrade: CustomItemDefinition {
 
-    override val custom: CustomItem = CustomItem.FLETCHER_UPGRADE
+    override val custom: CustomItem = CustomItem.ARMORSMITH_UPGRADE
 
-    private val material = Material.STICK
-    private val color = arrayOf(145, 116, 57)
-    private val name = text("Fletcher Upgrade", color)
+    private val material = Material.IRON_CHAIN
+    private val color = arrayOf(117, 121, 133)
+    private val name = Utils.text("Armorer Upgrade", color)
     private val lore = Utils.loreBlockToList(
-        text("Right click on a master level fletcher to gain a random custom arrow trade. The possible arrows are: dripstone, ender pearl, llama spit, wither skull, and shulker bullet. They will cost diamonds and emeralds to buy.", Utils.GRAY),
+        Utils.text(
+            "Right click on a master level armorer to gain two gain two new trades. The trades are for the Steel Plating and Fire-resistant Resin which are materials for other custom items.",
+            Utils.GRAY
+        ),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -47,16 +50,18 @@ class FletcherUpgrade: CustomItemDefinition {
                 if (EntityWrapperManager.getWrapper(villager.uniqueId)
                         ?.hasComponent(OvermaxVillagerComponent::class) == true) return
 
-                if (villager.profession != Villager.Profession.FLETCHER || villager.villagerLevel != 5) return
+                if (villager.profession != Villager.Profession.ARMORER || villager.villagerLevel != 5) return
                 e.isCancelled = true
 
-                val arrowTypes = arrayOf(CustomItem.DRIPSTONE_ARROW, CustomItem.ENDER_PEARL_ARROW, CustomItem.WITHER_SKULL_ARROW, CustomItem.LLAMA_SPIT_ARROW, CustomItem.SHULKER_BULLET_ARROW)
+                val trades = arrayOf(CustomItem.STEEL_PLATING, CustomItem.FIRE_RESISTANT_RESIN)
                 val newRecipes = Lists.newArrayList(villager.recipes)
-                val newRecipe = MerchantRecipe(ItemRegistry.get(arrowTypes.random()), 0, 10000, true, 0, 0F)
+                trades.forEach {
+                    val newRecipe = MerchantRecipe(ItemRegistry.get(it), 0, 10000, true, 0, 0F)
 
-                newRecipe.addIngredient(ItemStack(Material.EMERALD_BLOCK, 4))
-                newRecipe.addIngredient(ItemStack(Material.DIAMOND_BLOCK))
-                newRecipes.add(newRecipe)
+                    newRecipe.addIngredient(ItemStack(Material.EMERALD, 32))
+                    newRecipe.addIngredient(ItemStack(Material.DIAMOND, 5))
+                    newRecipes.add(newRecipe)
+                }
 
                 villager.recipes = newRecipes
                 EntityWrapperManager.getWrapperorNew(villager).addComponent(OvermaxVillagerComponent())
