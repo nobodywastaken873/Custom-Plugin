@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -31,7 +32,9 @@ class SniperRifle: CustomItemDefinition {
     private val material = Material.CROSSBOW
     private val color = arrayOf(52, 69, 54)
     private val name = text("Sniper Rifle", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Shoots an extremely high velocity arrow that goes almost exactly straight, and does 13 true damage on hit, with a 50 second cooldown.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -48,7 +51,7 @@ class SniperRifle: CustomItemDefinition {
                 if (!shooter.offCooldown(CustomItem.SNIPER_RIFLE)) {e.isCancelled = true; return}
 
                 e.entity.velocity = shooter.location.direction.normalize().multiply(50)
-                shooter.setCooldown(CustomItem.SNIPER_RIFLE, 40.0)
+                shooter.setCooldown(CustomItem.SNIPER_RIFLE, 50.0)
 
                 EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
                     CustomDamageApply(13.0, CustomDamageType.ALL_BYPASS, 0, overrideSource = shooter)

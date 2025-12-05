@@ -66,7 +66,7 @@ class JerryIdol: CustomItemDefinition {
                 villager.setAI(false)
 
                 item.amount -= 1
-                CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 20F, 0.9F)
+                CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 0.9F)
             }
 
         }

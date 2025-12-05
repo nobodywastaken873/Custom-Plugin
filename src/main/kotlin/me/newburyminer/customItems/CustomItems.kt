@@ -9,11 +9,11 @@ import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.remainingCompassTime
 import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.bosses.BossManager
+import me.newburyminer.customItems.bosses.BossSystemHandler
 import me.newburyminer.customItems.effects.CustomEffectBootstrapper
 import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.bosses2.BossListeners
-import me.newburyminer.customItems.bosses2.CustomBoss
 import me.newburyminer.customItems.entity.ComponentSerializationRegistry
 import me.newburyminer.customItems.entity.EntityEventHandler
 import me.newburyminer.customItems.entity.EntityWrapperManager
@@ -47,7 +47,7 @@ class CustomItems : JavaPlugin() {
         lateinit var plugin: Plugin
         lateinit var aridWorld: World
         lateinit var bossWorld: World
-        lateinit var bossListener: BossListeners
+        //lateinit var bossListener: BossListeners
     }
 
     private lateinit var cooldownTask: BukkitTask
@@ -68,10 +68,10 @@ class CustomItems : JavaPlugin() {
 
         registerWorlds()
         loadBosses()
-        CustomBoss.init()
+        //CustomBoss.init()
 
         //entityListener = EntityListeners()
-        bossListener = BossListeners()
+        //bossListener = BossListeners()
         systemsListener = SystemsListener()
         wrapperManager = EntityWrapperManager()
 
@@ -82,8 +82,9 @@ class CustomItems : JavaPlugin() {
         PlayerTaskHandler.runTaskTimer(this, 0L, 1L)
         EffectManager.runTaskTimer(this, 0L, 1L)
         wrapperManager.runTaskTimer(this, 0L, 1L)
+        BossManager.runTaskTimer(this, 0L, 1L)
         //entityListener.run()
-        bossListener.run()
+        //bossListener.run()
 
         // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()
@@ -93,7 +94,7 @@ class CustomItems : JavaPlugin() {
 
     private fun loadBosses() {
         for (x in -7..6) for (z in -7..6) {
-            aridWorld.setChunkForceLoaded(x, z, true)
+            bossWorld.setChunkForceLoaded(x, z, true)
         }
     }
 
@@ -109,7 +110,7 @@ class CustomItems : JavaPlugin() {
     private fun registerListeners() {
         //server.pluginManager.registerEvents(entityListener, this)
         server.pluginManager.registerEvents(LootListener(), this)
-        server.pluginManager.registerEvents(bossListener, this)
+        //server.pluginManager.registerEvents(bossListener, this)
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
         server.pluginManager.registerEvents(ItemEventHandler(), this)
@@ -120,6 +121,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(GuiEventHandler(), this)
         server.pluginManager.registerEvents(EntityEventHandler(), this)
         server.pluginManager.registerEvents(wrapperManager, this)
+        server.pluginManager.registerEvents(BossSystemHandler(), this)
 
         //server.pluginManager.registerEvents(EntitySpawnManager(), this)
         //server.pluginManager.registerEvents(EntityEventHandler(), this)
@@ -161,9 +163,10 @@ class CustomItems : JavaPlugin() {
     }
 
     override fun onDisable() {
+        BossManager.cancelAllBosses()
         cooldownTask.cancel()
         //entityListener.cancel()
-        bossListener.cancelAll()
+        //bossListener.cancelAll()
         systemsListener.cancel()
         PlayerTaskHandler.cancelAll()
         closeMenus()
@@ -172,7 +175,7 @@ class CustomItems : JavaPlugin() {
     private fun closeMenus() {
         for (player in Bukkit.getServer().onlinePlayers) {
             val openInventory = player.openInventory
-            if (openInventory?.topInventory?.holder is CustomGui) {
+            if (openInventory.topInventory.holder is CustomGui) {
                 (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory, InventoryCloseEvent.Reason.UNKNOWN))
             }
 

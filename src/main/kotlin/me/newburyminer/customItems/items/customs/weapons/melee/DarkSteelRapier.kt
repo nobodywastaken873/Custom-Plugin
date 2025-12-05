@@ -9,8 +9,10 @@ import me.newburyminer.customItems.effects.AttributeData
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
@@ -59,6 +61,9 @@ class DarkSteelRapier: CustomItemDefinition {
                 if (!item.offCooldown(e.player)) return
                 if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
                 item.setCooldown(e.player, 40.0)
+
+                CustomEffects.playSound(e.player.location, Sound.BLOCK_CONDUIT_DEACTIVATE, 1.0f, 0.5f)
+
                 for (player in e.player.location.getNearbyPlayers(10.0)) {
                     if (e.player == player) continue
                     player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 160, 0))

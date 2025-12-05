@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.boots
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
@@ -16,7 +17,9 @@ class MoonBoots: CustomItemDefinition {
     private val material = Material.NETHERITE_BOOTS
     private val color = arrayOf(191, 218, 245)
     private val name = text("Moon Boots", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("While wearing these boots, you have 1/6th of your normal gravity.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

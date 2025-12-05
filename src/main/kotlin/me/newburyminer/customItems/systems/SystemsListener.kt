@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.event.player.AsyncChatEvent
 import io.papermc.paper.event.player.PlayerItemGroupCooldownEvent
+import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.afkTime
@@ -59,11 +60,11 @@ class SystemsListener: Listener, Runnable  {
             if (e.player.getTag<Int>("deathcountdown") in arrayOf(0, null)) return
             e.isCancelled = true
             e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
-        } else if (e.cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL && e.player.world != Bukkit.getWorlds()[2]) {
+        } /*else if (e.cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL && e.player.world != Bukkit.getWorlds()[2]) {
             if (e.player.getTag<Int>("deathcountdown") in arrayOf(0, null)) return
             e.isCancelled = true
             e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
-        }
+        }*/
     }
     @EventHandler fun onPlayerElytra(e: EntityToggleGlideEvent) {
         if (e.entity !is Player) return
@@ -161,16 +162,16 @@ class SystemsListener: Listener, Runnable  {
                 return
             }
             val hitter = e.damageSource.causingEntity as Player
-            putInCombat(player)
-            putInCombat(hitter)
+            putInCombat(player, hitter)
+            putInCombat(hitter, player)
 
             if (!player.isInCombat()) player.playSound(player, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.0F)
 
         } else {
             if (e.damageSource.causingEntity !is Player || selfInflicted) return
             val hitter = e.damageSource.causingEntity as Player
-            putInCombat(player)
-            putInCombat(hitter)
+            putInCombat(player, hitter)
+            putInCombat(hitter, player)
         }
     }
     @EventHandler fun onPlayerLogout(e: PlayerQuitEvent) {
@@ -198,18 +199,22 @@ class SystemsListener: Listener, Runnable  {
             if (item.getCustom() != null) {
                 possibleSteals.add(item)
             }
-            var overMax = false
-            var totalMax = 0
-            for (enchantment in item.enchantments.keys) {
-                if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
-                    overMax = true
-                    totalMax++
-                } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
-                    totalMax++
+        }
+        if (possibleSteals.isEmpty()) {
+            for (item in items) {
+                var overMax = false
+                var totalMax = 0
+                for (enchantment in item.enchantments.keys) {
+                    if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
+                        overMax = true
+                        totalMax++
+                    } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
+                        totalMax++
+                    }
                 }
-            }
-            if (totalMax > 2 || overMax) {
-                possibleSteals.add(item)
+                if (totalMax > 2 || overMax) {
+                    possibleSteals.add(item)
+                }
             }
         }
         if (possibleSteals.isEmpty()) {
@@ -255,8 +260,11 @@ class SystemsListener: Listener, Runnable  {
             e.player.setTag("combattime", 0)
         }, 10L)
     }
-    private fun putInCombat(player: Player) {
+    private fun putInCombat(player: Player, damager: Player) {
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+
+            if (TrustSystem.trusts(damager, player)) return@Runnable
+
             if (player.isAfk()) {
                 player.setTag("isafk", false)
                 player.setTag("afktime", 0)
@@ -320,11 +328,11 @@ class SystemsListener: Listener, Runnable  {
 
         e.isCancelled = true
         if (clickedItem.getTag<Boolean>("shulkeropen") == true) {
-            CustomEffects.playSound(e.whoClicked.location, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
+            CustomEffects.playSoundToPlayer(e.whoClicked as Player, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
             return
         }
 
-        CustomEffects.playSound(e.whoClicked.location, Sound.BLOCK_SHULKER_BOX_OPEN, 1.0F, 1.0F)
+        CustomEffects.playSoundToPlayer(e.whoClicked as Player, Sound.BLOCK_SHULKER_BOX_OPEN, 1.0F, 1.0F)
         val player = e.whoClicked as Player
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             clickedItem.setTag("shulkeropen", true)
@@ -345,6 +353,7 @@ class SystemsListener: Listener, Runnable  {
     }
     private fun duplicateArmorTrims(e: CraftItemEvent) {
         val result = e.recipe.result
+
         if (result.type !in arrayOf(
                 Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
                 Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
@@ -373,6 +382,7 @@ class SystemsListener: Listener, Runnable  {
     }
     @EventHandler fun onInteract(e: PlayerInteractEvent) {
         cancelProjectileCharge(e)
+        addUniqueSalt(e)
     }
     private fun cancelProjectileCharge(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
@@ -382,11 +392,16 @@ class SystemsListener: Listener, Runnable  {
             if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
         }
     }
+    private fun addUniqueSalt(e: PlayerInteractEvent) {
+        if (e.item?.getCustom()?.stackable != false) return
+        if (e.item?.getTag<String>("uniquesalt") != null) return
+        e.item?.setTag("uniquesalt", UUID.randomUUID().toString())
+    }
     @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
         if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
                 CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
                 CustomItem.POCKETKNIFE_MULTITOOL, CustomItem.TREECAPITATOR, CustomItem.NETHERITE_MULTITOOL, CustomItem.HOE,
-                CustomItem.REDSTONE_AMALGAMATION
+                CustomItem.REDSTONE_AMALGAMATION, CustomItem.HEAVY_GREATHAMMER, CustomItem.GRAVITY_HAMMER
             )) {
             e.isCancelled = true
         }

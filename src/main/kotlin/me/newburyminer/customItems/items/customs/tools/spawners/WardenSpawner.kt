@@ -4,13 +4,15 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.bosses2.CustomBoss
+import me.newburyminer.customItems.bosses.BossManager
+import me.newburyminer.customItems.bosses.CustomBossType
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -41,20 +43,11 @@ class WardenSpawner: CustomItemDefinition {
                 if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
                 if (e.player.isBeingTracked()) return
 
-                val boss = CustomBoss.WARDEN
-                if (boss.isAlive()) {
-                    e.player.sendMessage(text("This boss is already alive. Please try again later.", Utils.FAILED_COLOR))
-                    return
-                }
+                val boss = CustomBossType.WARDEN
+                val players = e.player.location.getNearbyPlayers(20.0)
 
+                if (!BossManager.spawnBoss(boss, e.player, players.toList())) return
                 item.amount -= 1
-                for (player in e.player.location.getNearbyPlayers(20.0)) {
-                    player.teleport(boss.getCenter())
-                    player.gameMode = GameMode.ADVENTURE
-                    player.sendMessage(text("Hit the boss to begin.", Utils.GRAY))
-                }
-
-                CustomItems.bossListener.wardenSummon()
             }
 
         }

@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.boots
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
@@ -20,7 +21,9 @@ class CloudBoots: CustomItemDefinition {
     private val material = Material.NETHERITE_BOOTS
     private val color = arrayOf(193, 216, 227)
     private val name = text("Cloud Boots", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Gives permanent speed 2 while wearing.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

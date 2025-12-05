@@ -4,7 +4,6 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.bosses2.CustomBoss
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -41,7 +40,7 @@ class WitherSpawner: CustomItemDefinition {
                 if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
                 if (e.player.isBeingTracked()) return
 
-                val boss = CustomBoss.WITHER
+                /*val boss = CustomBoss.WITHER
                 if (boss.isAlive()) {
                     e.player.sendMessage(text("This boss is already alive. Please try again later.", Utils.FAILED_COLOR))
                     return
@@ -52,9 +51,9 @@ class WitherSpawner: CustomItemDefinition {
                     player.teleport(boss.getCenter())
                     player.gameMode = GameMode.ADVENTURE
                     player.sendMessage(text("Hit the boss to begin.", Utils.GRAY))
-                }
+                }*/
 
-                CustomItems.bossListener.witherSummon()
+                //CustomItems.bossListener.witherSummon()
             }
 
         }

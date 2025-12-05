@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -10,6 +11,7 @@ import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.entity.components.projectiles.LandmineArrow
 import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -17,6 +19,7 @@ import me.newburyminer.customItems.items.EventContext
 import net.kyori.adventure.text.Component
 import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.damage.DamageSource
 import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
@@ -37,7 +40,12 @@ class LandmineLauncher: CustomItemDefinition {
     private val material = Material.BOW
     private val color = arrayOf(107, 80, 77)
     private val name = text("Landmine Launcher", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text(
+            "Shoots landmines that do not hit players and will not despawn. Left click with this item to detonate all of your shot landmines.",
+            Utils.GRAY
+        )
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -58,6 +66,7 @@ class LandmineLauncher: CustomItemDefinition {
                 (e.entity as Arrow).color = Color.fromRGB(61, 57, 56)
                 shooter.setCooldown(CustomItem.LANDMINE_LAUNCHER, 10.0)
                 (e.entity as Arrow).pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+                shooter.playSound(shooter.location, Sound.ENTITY_BLAZE_SHOOT, 0.7F, 1.7F)
             }
 
             is PlayerInteractEvent -> {
@@ -73,6 +82,7 @@ class LandmineLauncher: CustomItemDefinition {
                     entity.world.createExplosion(entity.location, 6.0F, false, true, e.player)
                     entity.remove()
                 }
+                player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_BIT, 0.7F, 0.5F)
             }
         }
 

@@ -23,17 +23,17 @@ class EnergyRestoringPants: CustomItemDefinition {
         text("Gain permanent immunity to slowness, weakness, and mining fatigue.", Utils.GRAY),
         text(""),
         text("Full Set Bonus (4 pieces): Immunity Set", Utils.GRAY),
-        text("Upon receiving any negative effect, convert it into the corresponding positive effect with potency increased by 1 level and triple the duration.", Utils.GRAY)
+        text("Upon receiving any negative effect, convert it into the corresponding positive effect with potency increased by 1 level (capped at 3) and triple the duration.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
         .setAttributes(
-            SimpleModifier(Attribute.ARMOR, 8.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.ARMOR, 7.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
-            SimpleModifier(Attribute.MAX_HEALTH, 6.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
         )
         .setArmorSet(ArmorSet.IMMUNITY)
         .build()

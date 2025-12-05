@@ -45,7 +45,7 @@ class VillagerItem: CustomItemDefinition {
                 if (villagerAsString == null) loc.world.spawn(loc, Villager::class.java)
                 else Bukkit.getEntityFactory().createEntitySnapshot(villagerAsString).createEntity(loc)
                 item.amount -= 1
-                CustomEffects.playSound(loc, Sound.ENTITY_VILLAGER_TRADE, 20F, 1.2F)
+                CustomEffects.playSound(loc, Sound.ENTITY_VILLAGER_TRADE, 1F, 1.2F)
             }
 
         }

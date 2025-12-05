@@ -49,8 +49,17 @@ class TradingScrambler: CustomItemDefinition {
 
                 val villager = e.rightClicked as Villager
                 val wrapper = EntityWrapperManager.getWrapperorNew(villager)
-                val tradingComponent = wrapper.getComponents(VillagerTradeComponent::class)
-                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent(villager.recipes.toMutableList())
+
+                val tradingComponent =
+                    if (wrapper.hasComponent(VillagerTradeComponent::class))
+                        wrapper.getComponents(VillagerTradeComponent::class).firstOrNull() as VillagerTradeComponent
+                    else {
+                        val newComponent = VillagerTradeComponent()
+                        wrapper.addComponent(newComponent)
+                        newComponent
+                    }
+
+
                 tradingComponent.rerollTrades(wrapper)
 
             }

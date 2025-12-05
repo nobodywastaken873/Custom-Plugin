@@ -3,6 +3,7 @@ package me.newburyminer.customItems.recipes
 import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.Utils.Companion.basePotion
 import me.newburyminer.customItems.Utils.Companion.ench
+import me.newburyminer.customItems.Utils.Companion.fireworkBooster
 import me.newburyminer.customItems.Utils.Companion.horn
 import me.newburyminer.customItems.Utils.Companion.omimous
 import me.newburyminer.customItems.Utils.Companion.storeEnch
@@ -24,7 +25,8 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
         "armor_trim" to false,
         "potion" to false,
         "goat_horn" to false,
-        "original" to false
+        "original" to false,
+        "firework" to false,
     )
 
     override fun matches(other: ItemStack?): Boolean {
@@ -89,6 +91,11 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
                     return false
             }
 
+            "firework" -> {
+                if (item.getData(DataComponentTypes.FIREWORKS)?.flightDuration() != other.getData(DataComponentTypes.FIREWORKS)?.flightDuration())
+                    return false
+            }
+
         } }
         return true
     }
@@ -135,6 +142,12 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
 
     fun checkOriginal(): RecipeItem {
         flags["original"] = true
+        return this
+    }
+
+    fun firework(amount: Int): RecipeItem {
+        item.fireworkBooster(amount)
+        flags["firework"] = true
         return this
     }
 

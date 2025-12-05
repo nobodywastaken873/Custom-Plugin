@@ -13,7 +13,7 @@ class CondensedDeepslate: CustomItemDefinition {
 
     override val custom: CustomItem = CustomItem.CONDENSED_DEEPSLATE
 
-    private val material = Material.COBBLED_DEEPSLATE
+    private val material = Material.BLACK_CANDLE
     private val color = arrayOf(68, 73, 94)
     private val name = text("Condensed Deepslate", color)
     private val lore = Utils.loreBlockToList(

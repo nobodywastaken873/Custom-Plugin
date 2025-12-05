@@ -19,7 +19,7 @@ class ReinforcingStruts: CustomItemDefinition {
     private val color = arrayOf(154, 161, 158)
     private val name = text("Reinforcing Struts", color)
     private val lore = Utils.loreBlockToList(
-        text("This item adds 200 durability to any item, up to 5 times. " +
+        text("This item adds 100 durability to any item, up to 5 times. " +
                 "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
     )
 
@@ -43,8 +43,8 @@ class ReinforcingStruts: CustomItemDefinition {
                 e.isCancelled = true
                 upgrade.amount -= 1
                 val newMeta = toUpgrade.itemMeta as Damageable
-                if (newMeta.hasMaxDamage()) toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, newMeta.maxDamage + 200)
-                else toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, toUpgrade.type.maxDurability + 200)
+                if (newMeta.hasMaxDamage()) toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, newMeta.maxDamage + 100)
+                else toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, toUpgrade.type.maxDurability + 100)
                 toUpgrade.addUnsafeEnchantment(CustomEnchantments.REINFORCED, (toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) + 1)
                 CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_HIT, 1.0F, 1.1F)
             }

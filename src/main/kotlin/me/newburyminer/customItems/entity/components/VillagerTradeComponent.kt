@@ -13,17 +13,65 @@ import org.bukkit.Tag
 import org.bukkit.entity.Villager
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
+import java.util.ArrayList
 
-class VillagerTradeComponent(private val currentTrades: MutableList<MerchantRecipe>): EntityComponent {
+class VillagerTradeComponent(startingTrades: MutableList<MerchantRecipe> = mutableListOf()): EntityComponent {
+
+    private val currentTrades = startingTrades.toMutableList()
 
     override fun serialize(): Map<String, Any> {
-        return mapOf()
+        return currentTrades.withIndex().associate {
+            it.index.toString() to it.value.serialize()
+        }
     }
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.VILLAGER_TRADE_COMPONENT
+        @Suppress("UNCHECKED_CAST")
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return OvermaxVillagerComponent()
+            val list = mutableListOf<MerchantRecipe>()
+            map.forEach {
+                list.add(it.key.toIntOrNull() ?: 0, deserializeMerchantRecipe(it.value as Map<String, Any>))
+            }
+            return VillagerTradeComponent(list)
         }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun deserializeMerchantRecipe(map: Map<String, Any?>): MerchantRecipe {
+            val materialBytes1 = (map["material1"] as ArrayList<Byte>?)?.toByteArray()
+            val materialBytes2 = (map["material2"] as ArrayList<Byte>?)?.toByteArray()
+            val resultBytes = (map["result"] as ArrayList<Byte>).toByteArray()
+
+            val material1 =
+                if (materialBytes1 != null) ItemStack.deserializeBytes(materialBytes1)
+                else null
+            val material2 =
+                if (materialBytes2 != null) ItemStack.deserializeBytes(materialBytes2)
+                else null
+            val result = ItemStack.deserializeBytes(resultBytes)
+
+            val demand = map["demand"].toInt()
+            val uses = map["uses"].toInt()
+
+            val recipe = MerchantRecipe(result, uses, 0, true, 0, 0f)
+            recipe.demand = demand
+            if (material1 != null) recipe.addIngredient(ItemStack(material1))
+            if (material2 != null) recipe.addIngredient(ItemStack(material2))
+            return recipe
+        }
+    }
+
+    private fun MerchantRecipe.serialize(): Map<String, Any?> {
+        val material1 = this.ingredients.getOrNull(0)?.serializeAsBytes()
+        val material2 = this.ingredients.getOrNull(1)?.serializeAsBytes()
+        val result = this.result.serializeAsBytes()
+
+        return mapOf(
+            "material1" to material1,
+            "material2" to material2,
+            "result" to result,
+            "demand" to this.demand,
+            "uses" to this.uses,
+        )
     }
 
     fun refreshTrades(wrapper: EntityWrapper) {
@@ -36,6 +84,9 @@ class VillagerTradeComponent(private val currentTrades: MutableList<MerchantReci
 
     fun rerollTrades(wrapper: EntityWrapper) {
         val villager = wrapper.entity as Villager
+
+        if (villager.profession == Villager.Profession.CARTOGRAPHER) return
+
         mergeTrades(villager.recipes)
 
         val maxLevel = villager.villagerLevel
@@ -80,7 +131,6 @@ class VillagerTradeComponent(private val currentTrades: MutableList<MerchantReci
             Pair(it.first.type, it.second.type)
         }
 
-
         if (materialPairs.any { !isSameMaterialsOrTag(it.toPair()) }) return false
 
         recipePairs.toList().forEach { pair ->
@@ -101,15 +151,7 @@ class VillagerTradeComponent(private val currentTrades: MutableList<MerchantReci
         when (items.first.type) {
 
             Material.ENCHANTED_BOOK -> {
-                val firstEnchant = items.first.enchantments.entries.first().toPair()
-                val secondEnchant = items.second.enchantments.entries.first().toPair()
-                if (firstEnchant != secondEnchant) return false
-            }
-
-            Material.FILLED_MAP -> {
-                val firstName = items.first.getData(DataComponentTypes.ITEM_NAME)
-                val secondName = items.second.getData(DataComponentTypes.ITEM_NAME)
-                if (firstName != secondName) return false
+                return true
             }
 
             else -> {}
@@ -120,14 +162,14 @@ class VillagerTradeComponent(private val currentTrades: MutableList<MerchantReci
     private fun mergeTrades(trades: MutableList<MerchantRecipe>) {
 
         trades.forEach { newTrade ->
-            val index = currentTrades.indexOfFirst { isSameTrade(it, newTrade) }
+            val index = currentTrades.indexOfFirst { oldTrade -> isSameTrade(oldTrade, newTrade) }
 
             if (index != -1) currentTrades[index] = newTrade
             else currentTrades.add(newTrade)
         }
 
     }
-    private fun setTradeValues(trades: MutableList<MerchantRecipe>) {
+    private fun setTradeValues(trades: MutableList<MerchantRecipe>)  {
         trades.forEach { newTrade ->
             val index = currentTrades.indexOfFirst { isSameTrade(it, newTrade) }
 

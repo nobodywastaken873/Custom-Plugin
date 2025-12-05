@@ -30,7 +30,7 @@ class CustomEffectApply(val type: CustomEffectType, val data: EffectData): HitEf
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.CUSTOM_EFFECT
         override fun deserialize(map: Map<String, Any>): HitEffect {
-            val type = CustomEffectType.valueOf(map["type"] as String)
+            val type = CustomEffectType.valueOf(map["type"].toString())
             val data = EffectData.deserialize(map)
             return CustomEffectApply(type, data)
         }

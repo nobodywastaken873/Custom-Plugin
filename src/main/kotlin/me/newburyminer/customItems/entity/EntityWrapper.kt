@@ -2,13 +2,15 @@ package me.newburyminer.customItems.entity
 
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Warden
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObjectInstance
 
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
     init {
-        components.add(0, DefaultEntityComponent())
+        //components.add(0, DefaultEntityComponent())
     }
 
     @Suppress("UNCHECKED_CAST")

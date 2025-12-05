@@ -21,7 +21,7 @@ class BreachingCreeper(private val threshold: Double): EntityComponent {
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.BREACHING_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return BreachingCreeper(map["threshold"] as Double)
+            return BreachingCreeper(map["threshold"].toDouble())
         }
     }
 

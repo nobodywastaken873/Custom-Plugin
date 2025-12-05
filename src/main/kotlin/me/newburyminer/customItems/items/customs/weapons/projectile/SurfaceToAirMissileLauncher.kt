@@ -65,8 +65,8 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
                     if (player.isGliding) flyer = player
                 }
                 if (flyer == null) { e.isCancelled = true; return }
-                shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
 
+                shooter.playSound(shooter.location, Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 2.0F, 0.2F)
                 e.isCancelled = true
                 val missile = shooter.world.spawn(shooter.location.add(0.0, 1.5, 0.0), Firework::class.java) {
                     it.shooter = shooter as LivingEntity

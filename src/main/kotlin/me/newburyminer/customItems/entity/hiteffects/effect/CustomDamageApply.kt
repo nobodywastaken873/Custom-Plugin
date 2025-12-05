@@ -48,10 +48,10 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.CUSTOM_DAMAGE
         override fun deserialize(map: Map<String, Any>): HitEffect {
-            val newAmount = map["amount"] as Double
-            val key = NamespacedKey.fromString(map["type"] as String)!!
+            val newAmount = map["amount"].toDouble()
+            val key = NamespacedKey.fromString(map["type"].toString())!!
             val newType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(key)!!
-            val newIFrames = map["iframes"] as Int
+            val newIFrames = map["iframes"].toInt()
             return CustomDamageApply(newAmount, newType, newIFrames)
         }
     }

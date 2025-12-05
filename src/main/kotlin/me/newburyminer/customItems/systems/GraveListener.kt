@@ -183,18 +183,22 @@ class GraveListener: Listener {
                     if (item.getCustom() != null) {
                         possibleSteals.add(item)
                     }
-                    var overMax = false
-                    var totalMax = 0
-                    for (enchantment in item.enchantments.keys) {
-                        if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
-                            overMax = true
-                            totalMax++
-                        } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
-                            totalMax++
+                }
+                if (possibleSteals.isEmpty()) {
+                    for (item in items) {
+                        var overMax = false
+                        var totalMax = 0
+                        for (enchantment in item.enchantments.keys) {
+                            if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
+                                overMax = true
+                                totalMax++
+                            } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
+                                totalMax++
+                            }
                         }
-                    }
-                    if (totalMax > 2 || overMax) {
-                        possibleSteals.add(item)
+                        if (totalMax > 2 || overMax) {
+                            possibleSteals.add(item)
+                        }
                     }
                 }
                 if (possibleSteals.isEmpty()) {

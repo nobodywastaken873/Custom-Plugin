@@ -87,7 +87,7 @@ class FangedStaff: CustomItemDefinition {
             CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_PREPARE_ATTACK, 1F, 1.2F)
         } else {
             if ((counterMap[uuid] ?: 0) != 0) {
-                CustomEffects.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1F, 1.2F)
+                CustomEffects.playSoundToPlayer(player, Sound.BLOCK_ANVIL_PLACE, 1F, 1.2F)
             }
             counterMap[uuid] = 0
         }

@@ -58,7 +58,7 @@ class FletcherUpgrade: CustomItemDefinition {
 
                 val tradeTypes = arrowTypes.shuffled().take(2)
                 tradeTypes.forEach {
-                    val newRecipe = MerchantRecipe(ItemRegistry.get(it), 0, 10000, true, 0, 0F)
+                    val newRecipe = MerchantRecipe(ItemRegistry.get(it), 0, 10000, true, 0, 0F, true)
 
                     newRecipe.addIngredient(ItemStack(Material.EMERALD, 32))
                     newRecipe.addIngredient(ItemStack(Material.DIAMOND, 5))
@@ -70,7 +70,7 @@ class FletcherUpgrade: CustomItemDefinition {
                 EntityWrapperManager.getWrapperorNew(villager).addComponent(OvermaxVillagerComponent())
 
                 item.amount -= 1
-                CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 5F, 1.4F)
+                CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 1.4F)
                 CustomEffects.particleCloud(Particle.HAPPY_VILLAGER.builder(), villager.location, 100, 1.0, 0.5)
             }
 

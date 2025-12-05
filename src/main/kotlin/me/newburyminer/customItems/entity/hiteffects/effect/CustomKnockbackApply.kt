@@ -27,9 +27,9 @@ class CustomKnockbackApply(val vec: Vector): HitEffect {
         override fun deserialize(map: Map<String, Any>): HitEffect {
             return CustomKnockbackApply(
                 Vector(
-                    map["x"] as Double,
-                    map["y"] as Double,
-                    map["z"] as Double,
+                    map["x"].toDouble(),
+                    map["y"].toDouble(),
+                    map["z"].toDouble(),
                 )
             )
         }

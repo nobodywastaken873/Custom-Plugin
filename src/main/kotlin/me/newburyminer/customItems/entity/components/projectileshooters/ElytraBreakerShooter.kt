@@ -31,8 +31,8 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
         override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             val newDamage = HitEffects.Companion.deserialize(map["damage"])
-            val newCooldown = map["cooldown"] as Int
-            val newDuration = map["duration"] as Int
+            val newCooldown = map["cooldown"].toInt()
+            val newDuration = map["duration"].toInt()
             return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
         }
     }

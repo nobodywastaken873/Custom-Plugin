@@ -8,8 +8,10 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.inventory.ItemStack
@@ -45,15 +47,17 @@ class VillagerAtomizer: CustomItemDefinition {
                 val newItem = ItemRegistry.get(CustomItem.VILLAGER)
                 val villager: Villager = e.rightClicked as Villager
 
+                EntityWrapperManager.removeWrapper(villager)
                 val snapshot = villager.createSnapshot()!!.asString
                 newItem.setTag("storedvillager", snapshot)
 
                 newItem.lore(
-                    text("Profession: ${villager.profession}", arrayOf(255, 255, 255)),
+                    text("Profession: ${villager.profession.key.key.capitalize()}", arrayOf(255, 255, 255)),
                     text("Level: ${convertVillagerLevel(villager.villagerLevel)}", arrayOf(255, 255, 255)),
                 )
-                villager.remove()
                 e.player.addItemorDrop(newItem)
+                CustomEffects.playSound(villager.location, Sound.ENTITY_ITEM_PICKUP, 1F, 0.75F)
+                villager.remove()
             }
 
         }

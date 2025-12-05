@@ -23,7 +23,7 @@ class FirebombCreeper(val rate: Double): EntityComponent {
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.FIREBOMB_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return FirebombCreeper(map["rate"] as Double)
+            return FirebombCreeper(map["rate"].toDouble())
         }
     }
 

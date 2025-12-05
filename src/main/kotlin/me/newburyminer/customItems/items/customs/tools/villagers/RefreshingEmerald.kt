@@ -47,7 +47,7 @@ class RefreshingEmerald: CustomItemDefinition {
                 val villager = e.rightClicked as Villager
                 val wrapper = EntityWrapperManager.getWrapperorNew(villager)
                 val tradingComponent = wrapper.getComponents(VillagerTradeComponent::class)
-                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent(villager.recipes.toMutableList())
+                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent()
                 tradingComponent.refreshTrades(wrapper)
             }
 

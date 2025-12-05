@@ -23,17 +23,17 @@ class AntiVenomShirt: CustomItemDefinition {
         text("Gain permanent immunity to hunger, poison, and wither.", Utils.GRAY),
         text(""),
         text("Full Set Bonus (4 pieces): Immunity Set", Utils.GRAY),
-        text("Upon receiving any negative effect, convert it into the corresponding positive effect with potency increased by 1 level and triple the duration.", Utils.GRAY)
+        text("Upon receiving any negative effect, convert it into the corresponding positive effect with potency increased by 1 level (capped at 3) and triple the duration.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
         .setAttributes(
-            SimpleModifier(Attribute.ARMOR, 10.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ARMOR, 9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
-            SimpleModifier(Attribute.MAX_HEALTH, 6.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST),
         )
         .setArmorSet(ArmorSet.IMMUNITY)
         .build()

@@ -3,14 +3,17 @@ package me.newburyminer.customItems.entity
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes.player
 import org.bukkit.GameEvent
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Warden
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.EntityRemoveEvent
 import org.bukkit.event.entity.EntityTargetEvent
+import org.bukkit.event.entity.FireworkExplodeEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -23,7 +26,6 @@ class EntityEventHandler: Listener {
             entity: Entity,
             event: Event,
         ) {
-
             val wrapper = EntityWrapperManager.getWrapper(entity.uniqueId) ?: return
             wrapper.handle(EntityEventContext(entity, event))
 
@@ -70,4 +72,7 @@ class EntityEventHandler: Listener {
         dispatch(e.entity, e)
     }
 
+    @EventHandler fun onFireworkExplode(e: FireworkExplodeEvent) {
+        dispatch(e.entity, e)
+    }
 }

@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
@@ -20,7 +21,9 @@ class InvisibilityCloak: CustomItemDefinition {
     private val material = Material.NETHERITE_HELMET
     private val color = arrayOf(227, 231, 232)
     private val name = text("Invisibility Cloak", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Gives permanent invisibility while wearing.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -28,8 +31,7 @@ class InvisibilityCloak: CustomItemDefinition {
         .setAttributes(
             SimpleModifier(Attribute.ARMOR, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
-            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
-            SimpleModifier(Attribute.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
+            SimpleModifier(Attribute.MAX_HEALTH, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
             SimpleModifier(Attribute.ATTACK_SPEED, 0.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
         )

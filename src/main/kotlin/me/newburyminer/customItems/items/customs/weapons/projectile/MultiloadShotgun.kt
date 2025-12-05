@@ -74,7 +74,7 @@ class MultiloadShotgun: CustomItemDefinition {
                     isLoading = !isLoading
                 } else {
                     crossbow.setTag("loading", true)
-                    CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.2F)
+                    CustomEffects.playSoundToPlayer(e.player, Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.2F)
                     return
                 }
 
@@ -83,7 +83,7 @@ class MultiloadShotgun: CustomItemDefinition {
                 } else {
                     crossbow.clearCrossbowProj()
                 }
-                CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
+                CustomEffects.playSoundToPlayer(e.player, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
             }
 
             is EntityLoadCrossbowEvent -> {
@@ -96,7 +96,7 @@ class MultiloadShotgun: CustomItemDefinition {
 
                 if ((crossbow.getTag<Int>("subshot") ?: 0) >= (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
                     if (loadedArrows >= 24) {
-                        CustomEffects.playSound(e.entity.location, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
+                        CustomEffects.playSoundToPlayer(player, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
                         loadedArrows = 25
                     } else loadedArrows += 1
                     crossbow.setTag("loadedshot", loadedArrows)

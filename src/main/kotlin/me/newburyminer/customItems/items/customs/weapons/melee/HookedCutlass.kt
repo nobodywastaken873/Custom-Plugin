@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
@@ -14,7 +15,9 @@ class HookedCutlass: CustomItemDefinition {
     private val material = Material.NETHERITE_SWORD
     private val color = arrayOf(61, 77, 87)
     private val name = text("Hooked Cutlass", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("All horizontal knockback dealt by this weapon is reversed. In effect, it does backward knockback.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

@@ -8,8 +8,10 @@ import me.newburyminer.customItems.effects.AttributeData
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.LivingEntity
@@ -52,6 +54,9 @@ class BarbedBlade: CustomItemDefinition {
                     damaged.addPotionEffect(PotionEffect(PotionEffectType.DARKNESS, 100, 0))
                 }
                 if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
+
+                CustomEffects.playSound(player.location, Sound.ITEM_TRIDENT_THROW, 0.7f, 1.3f)
+
                 EffectManager.applyEffect(damaged as? Player ?: return, CustomEffectType.ATTRIBUTE,
                     EffectData(4 * 20, attributeData = AttributeData(-4.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER)))
                 player.inventory.itemInMainHand.setCooldown(e.damager as Player, 15.0)

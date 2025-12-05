@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.clearCrossbowProj
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
 import me.newburyminer.customItems.Utils.Companion.getTag
@@ -43,7 +44,9 @@ class RedstoneRepeater: CustomItemDefinition {
     private val material = Material.CROSSBOW
     private val color = arrayOf(125, 30, 30)
     private val name = text("Single Redstone Repeater - 0", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Sneak and swap hands to swap between loading and shooting mode. In loading mode, hold right click to load arrows, which will load two at a time, Quick Charge will speed it up. When shooting, left click to cycle between 1 and 2 shots loaded at a time. All projectiles ignore immunity frames.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -101,7 +104,7 @@ class RedstoneRepeater: CustomItemDefinition {
                 } else {
                     crossbow.clearCrossbowProj()
                 }
-                CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
+                CustomEffects.playSoundToPlayer(e.player, Sound.ITEM_CROSSBOW_QUICK_CHARGE_2, 1.0F, 1.2F)
             }
 
             is EntityLoadCrossbowEvent -> {
@@ -111,7 +114,7 @@ class RedstoneRepeater: CustomItemDefinition {
                 if (crossbow.getTag<Int>("subshot") == (20 * (1.25 - 0.25 * (crossbow.enchantments[Enchantment.QUICK_CHARGE] ?: 0))).toInt()) {
                     var loadedArrows = crossbow.getTag<Int>("loadedarrows") ?: 0
                     if (loadedArrows >= 8) {
-                        CustomEffects.playSound(e.entity.location, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
+                        CustomEffects.playSoundToPlayer(shooter, Sound.ITEM_CROSSBOW_LOADING_MIDDLE, 1F, 0.7F)
                         loadedArrows = 10
                     } else loadedArrows += 2
                     crossbow.setTag("loadedarrows", loadedArrows)
@@ -146,7 +149,7 @@ class RedstoneRepeater: CustomItemDefinition {
                     item.clearCrossbowProj()
                     item.crossbowProj(ItemStack(Material.ARROW), arrowCount)
                 }
-                CustomEffects.playSound(e.player.location, Sound.ITEM_CROSSBOW_LOADING_START, 1.0F, 1.5F)
+                CustomEffects.playSoundToPlayer(e.player, Sound.ITEM_CROSSBOW_LOADING_START, 1.0F, 1.5F)
                 e.player.setCooldown(CustomItem.REDSTONE_REPEATER, 0.5)
             }
 

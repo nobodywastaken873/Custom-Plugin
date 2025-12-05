@@ -3,7 +3,6 @@ package me.newburyminer.customItems.items.customs.tools.spawners
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.bosses2.CustomBoss
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -40,7 +39,7 @@ class DesertSpawner: CustomItemDefinition {
                 if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
                 if (e.player.isBeingTracked()) return
 
-                val boss = CustomBoss.HUSK
+                /*val boss = CustomBoss.HUSK
                 if (boss.isAlive()) {
                     e.player.sendMessage(text("This boss is already alive. Please try again later.", Utils.FAILED_COLOR))
                     return
@@ -51,7 +50,7 @@ class DesertSpawner: CustomItemDefinition {
                     player.teleport(boss.getCenter())
                     player.gameMode = GameMode.ADVENTURE
                     player.sendMessage(text("Hit the boss to begin.", Utils.GRAY))
-                }
+                }*/
 
                 //CustomItems.bossListener.desertSummon()
             }

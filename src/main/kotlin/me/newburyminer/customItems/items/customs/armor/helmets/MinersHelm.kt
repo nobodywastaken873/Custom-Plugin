@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
@@ -16,7 +17,9 @@ class MinersHelm: CustomItemDefinition {
     private val material = Material.NETHERITE_HELMET
     private val color = arrayOf(122, 119, 69)
     private val name = text("Miner's Helm", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Gain a slight boost in mining speed.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

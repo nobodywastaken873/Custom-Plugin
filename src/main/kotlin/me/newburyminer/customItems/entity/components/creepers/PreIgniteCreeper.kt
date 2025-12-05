@@ -21,7 +21,7 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
         override val componentType: EntityComponentType = EntityComponentType.PRE_IGNITE_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return PreIgniteCreeper(
-                map["minDistance"] as Double,
+                map["minDistance"].toDouble(),
             )
         }
     }

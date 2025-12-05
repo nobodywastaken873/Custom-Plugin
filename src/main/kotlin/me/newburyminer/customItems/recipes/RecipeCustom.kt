@@ -15,7 +15,9 @@ class RecipeCustom(private val custom: CustomItem, private val amount: Int = 1):
     }
 
     override fun getItem(): ItemStack {
-        return ItemRegistry.get(custom)
+        val newItem = ItemRegistry.get(custom)
+        newItem.amount = amount
+        return newItem
     }
 
 }

@@ -27,7 +27,7 @@ class RedstoneBox: CustomItemDefinition {
     private val color = arrayOf(196, 18, 41)
     private val name = text("Redstone Box", color)
     private val lore = Utils.loreBlockToList(
-        text("Right click in your inventory to open up material storage for redstone materials.", Utils.GRAY),
+        text("Right click in your inventory to open up material storage for redstone materials. You can insert any material or redstone item into this (repeater, redstone, iron block) in order to insert the base materials into storage. ", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -44,7 +44,7 @@ class RedstoneBox: CustomItemDefinition {
                 if (e.inventory.holder is CustomGui) return
                 if (e.action != InventoryAction.PICKUP_HALF) return
                 e.isCancelled = true
-                CustomEffects.playSound(player.location, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())
+                CustomEffects.playSoundToPlayer(player, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())
                 Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                     player.closeInventory()
                     MaterialsGui(MaterialSystem.getMaterials(player), MaterialCategory.REDSTONE).open(player)

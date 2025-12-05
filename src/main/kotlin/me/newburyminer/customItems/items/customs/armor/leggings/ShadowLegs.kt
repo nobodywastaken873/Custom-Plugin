@@ -6,9 +6,11 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
@@ -26,7 +28,7 @@ class ShadowLegs: CustomItemDefinition {
     private val color = arrayOf(44, 4, 108)
     private val name = text("Shadow Legs", color)
     private val lore = Utils.loreBlockToList(
-        text("When your totem is popped, gain Speed 3, Strength 3, Resistance 2, and Regeneration 3 for 25 seconds.", Utils.GRAY),
+        text("When your totem is popped, gain Speed 3, Strength 3, Resistance 2, and Regeneration 3 for 25 seconds, with a 60 second cooldown.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -51,6 +53,9 @@ class ShadowLegs: CustomItemDefinition {
                 if (e.isCancelled) return
                 if (!player.offCooldown(CustomItem.SHADOW_LEGS)) return
                 player.setCooldown(CustomItem.SHADOW_LEGS, 60.0)
+
+                CustomEffects.particleCloud(Particle.SMOKE.builder(), player.location, 500, 5.0, 0.5)
+
                 val duration = if (player.inventory.helmet?.isItem(CustomItem.DRINKING_HAT) == true) 1000 else 500
                 Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                     (e.entity as Player).addPotionEffects(mutableListOf(

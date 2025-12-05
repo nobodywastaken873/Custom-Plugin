@@ -36,7 +36,7 @@ class GraveItemsGui(private val armorStand: Interaction): CustomGui() {
     override fun open(player: Player) {
         player.openInventory(inv)
         armorStand.setTag("currentlyopen", true)
-        CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_OPEN, 1.0F, 1.2F)
+        CustomEffects.playSoundToPlayer(player, Sound.BLOCK_CHEST_OPEN, 1.0F, 1.2F)
     }
 
     override fun onClick(e: InventoryClickEvent) {

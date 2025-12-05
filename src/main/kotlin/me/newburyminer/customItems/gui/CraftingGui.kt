@@ -3,7 +3,9 @@ package me.newburyminer.customItems.gui
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
+import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.recipes.Recipe
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
@@ -18,6 +20,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
+import java.util.UUID
 
 class CraftingGui: CustomGui() {
     override val inv: Inventory = Bukkit.createInventory(this, 54, Utils.text("Custom Crafting Table").style(Style.style(TextDecoration.BOLD)))
@@ -39,9 +42,15 @@ class CraftingGui: CustomGui() {
         // Clicked on any locked slot
         if (clickedItem?.getTag<Boolean>("locked") == true) { e.isCancelled = true; return }
 
+        if (e.action == InventoryAction.COLLECT_TO_CURSOR) { e.isCancelled = true; return }
         // Clicked on the result item, while it is not locked
         else if (clickedInventory.holder is CraftingGui && e.slot == resultSlot && clickedItem?.type != Material.LIGHT_GRAY_STAINED_GLASS_PANE) {
+
             if (e.action != InventoryAction.PICKUP_ALL) { e.isCancelled = true; return }
+
+            if (clickedItem?.getCustom()?.stackable != true) {
+                clickedItem?.setTag("uniquesalt", UUID.randomUUID().toString())
+            }
 
             val result = RecipeRegistry.checkForRecipe(inv) ?: return
             RecipeRegistry.takeRecipeIngredients(inv, result)

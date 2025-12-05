@@ -22,9 +22,9 @@ class CustomExplosionCreeper(private val power: Float, private val setFire: Bool
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.CUSTOM_EXPLOSION_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newPower = map["power"] as Float
-            val newSetFire = map["setfire"] as Boolean
-            val newBreakBlocks = map["breakblocks"] as Boolean
+            val newPower = map["power"].toFloat()
+            val newSetFire = map["setfire"].toBoolean()
+            val newBreakBlocks = map["breakblocks"].toBoolean()
             return ExplosiveProjectile(newPower, newSetFire, newBreakBlocks)
         }
     }

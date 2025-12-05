@@ -13,7 +13,7 @@ class CondensedInvisibility: CustomItemDefinition {
 
     override val custom: CustomItem = CustomItem.CONDENSED_INVISIBILITY
 
-    private val material = Material.DIORITE
+    private val material = Material.WHITE_CANDLE
     private val color = arrayOf(218, 222, 240)
     private val name = text("Condensed Invisibility", color)
     private val lore = Utils.loreBlockToList(

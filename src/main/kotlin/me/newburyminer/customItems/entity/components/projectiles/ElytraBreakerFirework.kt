@@ -31,10 +31,10 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_FIREWORK
         override fun deserialize(map: Map<String, Any>): EntityComponent? {
-            val newDamage = HitEffects.Companion.deserialize(map["damage"])
+            val newDamage = HitEffects.deserialize(map["damage"])
             val newUUID = (map["target"] ?: return null) as UUID
             val newTarget = Bukkit.getPlayer(newUUID) ?: return null
-            val newDuration = map["duration"] as Int
+            val newDuration = map["duration"].toInt()
             return ElytraBreakerFirework(newDamage, newDuration, newTarget)
         }
     }

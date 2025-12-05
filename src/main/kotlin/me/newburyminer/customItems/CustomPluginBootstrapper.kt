@@ -1,9 +1,11 @@
 package me.newburyminer.customItems
 
 import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.datapack.DatapackRegistrar
 import io.papermc.paper.plugin.bootstrap.BootstrapContext
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap
@@ -27,6 +29,7 @@ import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
+import me.newburyminer.customItems.systems.TrustSystem
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
@@ -41,6 +44,7 @@ import java.io.IOException
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.*
+import kotlin.collections.listOf
 
 
 class CustomPluginBootstrapper: PluginBootstrap {
@@ -85,6 +89,30 @@ class CustomPluginBootstrapper: PluginBootstrap {
                 "Operator command used to get all of the items in a custom item recipe.",
                 listOf()
             )
+            val root = Commands.literal("trust")
+            root.then(Commands.literal("add").then(
+                Commands.argument("player", StringArgumentType.string()).suggests { _, builder ->
+                    Bukkit.getOnlinePlayers()
+                        .forEach{ builder.suggest(it.name) }
+                    return@suggests builder.buildFuture()
+                }.executes { ctx ->
+                    TrustSystem.addTrust(ctx.source.sender as Player, Bukkit.getServer().getPlayer(ctx.getArgument("player", String::class.java)))
+                    Command.SINGLE_SUCCESS
+                }
+            ))
+            root.then(Commands.literal("remove").then(
+                Commands.argument("player", StringArgumentType.string()).suggests { _, builder ->
+                    Bukkit.getOnlinePlayers()
+                        .forEach{ builder.suggest(it.name) }
+                    return@suggests builder.buildFuture()
+                }.executes { ctx ->
+                    TrustSystem.removeTrust(ctx.source.sender as Player, Bukkit.getServer().getPlayer(ctx.getArgument("player", String::class.java)))
+                    Command.SINGLE_SUCCESS
+                }
+            ))
+            commands.register(root.build(), "Used to prevent combat with teammates.", listOf())
+
+
             commands.register("craft", "Use to open the custom crafting GUI.", Craft())
             commands.register("recipe", "Use to open the custom recipe GUI.", RecipeCommand())
             commands.register("test", "For testing purposes.", TestCommand())

@@ -9,6 +9,7 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Container
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
@@ -38,6 +39,9 @@ class VeinyPickaxe: CustomItemDefinition {
                 val pickaxe = ctx.item ?: return
                 if (!pickaxe.offCooldown(e.player)) return
                 val material = e.block.type
+
+                if (e.block.state is Container) return
+
                 val drops: MutableList<ItemStack> = mutableListOf()
                 var total = 1
                 val checked = mutableListOf(e.block.location.clone())

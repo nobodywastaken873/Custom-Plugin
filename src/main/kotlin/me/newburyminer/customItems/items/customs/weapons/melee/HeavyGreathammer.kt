@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.reduceDura
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -24,7 +25,9 @@ class HeavyGreathammer: CustomItemDefinition {
     private val material = Material.NETHERITE_AXE
     private val color = arrayOf(87, 75, 62)
     private val name = text("Heavy Greathammer", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Every third critical hit does double damage.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -49,10 +52,15 @@ class HeavyGreathammer: CustomItemDefinition {
                 item.setTag("criticalcount", criticalCount + 1)
                 criticalCount += 1
 
-                if (criticalCount % 3 != 0) return
+                if (criticalCount % 3 != 0) {
+                    damager.playSound(damager.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0F,
+                        if (criticalCount % 3 == 1) 1.0F else 1.2F
+                    )
+                    return
+                }
                 e.damage *= 2
 
-                CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.5F, 0.7F)
+                CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.0F, 0.7F)
                 CustomEffects.particle(Particle.CRIMSON_SPORE.builder(), e.entity.location, 20, 0.5, 0.5)
 
                 if (e.entity !is Player) return

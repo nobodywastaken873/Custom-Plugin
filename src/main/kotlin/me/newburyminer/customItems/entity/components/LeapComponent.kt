@@ -23,9 +23,9 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
         override val componentType: EntityComponentType = EntityComponentType.LEAPING_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return LeapComponent(
-                map["minDistance"] as Double,
-                map["extraHeight"] as Double,
-                map["baseCooldown"] as Int,
+                map["minDistance"].toDouble(),
+                map["extraHeight"].toDouble(),
+                map["baseCooldown"].toInt(),
             )
         }
     }

@@ -94,6 +94,7 @@ class ReinforcedCage: CustomItemDefinition {
                 e.isCancelled = true
                 val entity = e.rightClicked
 
+                EntityWrapperManager.removeWrapper(entity)
                 val snapshot = (entity.createSnapshot() ?: return).asString
                 e.player.inventory.itemInMainHand.setTag("storedmob", snapshot)
 
@@ -103,8 +104,8 @@ class ReinforcedCage: CustomItemDefinition {
                     text("Right click a non-boss, non-custom mob to pick it up and store it in this item. Right click again on the ground to place it down. You can only store one mob in this item at a time.", Utils.GRAY),
                 )
                 if (entity is InventoryHolder) entity.inventory.clear()
-                entity.remove()
                 e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
+                entity.remove()
             }
 
         }

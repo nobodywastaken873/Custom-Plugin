@@ -49,7 +49,7 @@ class WindHook: CustomItemDefinition {
                 (e.entity as Arrow).color = Color.fromRGB(211, 195, 219)
                 shooter.setCooldown(CustomItem.WIND_HOOK, 15.0)
                 shooter.stopSound(Sound.ENTITY_ARROW_SHOOT)
-                CustomEffects.playSound(shooter.location, Sound.ENTITY_BREEZE_JUMP, 1F, 0.8F)
+                CustomEffects.playSoundToPlayer(shooter, Sound.ENTITY_BREEZE_JUMP, 1F, 0.8F)
             }
 
             is ProjectileHitEvent -> {
@@ -79,7 +79,7 @@ class WindHook: CustomItemDefinition {
             pullTime[uuid] = timeLeft - 1
             val pullLoc = (pullCoords[uuid] ?: return).clone()
             if (pullLoc.world != player.world) return
-            val direction = pullLoc.subtract(player.location)
+            val direction = pullLoc.clone().subtract(player.location)
 
             if (direction.length() < 6.0) pullTime[uuid] = 0
             val toAdd = direction.toVector().normalize().multiply(1.5)
@@ -88,8 +88,8 @@ class WindHook: CustomItemDefinition {
                 Particle.DOLPHIN.builder(), player.location, pullLoc, 400
             )
             if (Bukkit.getCurrentTick() % 20 == 0) {
-                CustomEffects.playSound(
-                    player.location,
+                CustomEffects.playSoundToPlayer(
+                    player,
                     arrayOf(Sound.ENTITY_BREEZE_IDLE_AIR, Sound.ENTITY_BREEZE_IDLE_GROUND).random(),
                     1F,
                     1.2F

@@ -55,19 +55,24 @@ class ClericUpgrade: CustomItemDefinition {
 
                 val trades = arrayOf(CustomItem.ENRICHED_FEATHER, CustomItem.ENCHANTED_CATALYST)
                 val newRecipes = Lists.newArrayList(villager.recipes)
-                trades.forEach {
-                    val newRecipe = MerchantRecipe(ItemRegistry.get(it), 0, 10000, true, 0, 0F)
 
-                    newRecipe.addIngredient(ItemStack(Material.EMERALD, 32))
-                    newRecipe.addIngredient(ItemStack(Material.DIAMOND, 5))
-                    newRecipes.add(newRecipe)
-                }
+                var newRecipe = MerchantRecipe(ItemRegistry.get(CustomItem.ENRICHED_FEATHER), 0, 10000, true, 0, 0F, true)
+
+                newRecipe.addIngredient(ItemRegistry.get(CustomItem.LIGHTWEIGHT_AMALGAMATION))
+                newRecipe.addIngredient(ItemStack(Material.DIAMOND, 10))
+                newRecipes.add(newRecipe)
+
+                newRecipe = MerchantRecipe(ItemRegistry.get(CustomItem.ENCHANTED_CATALYST), 0, 10000, true, 0, 0F, true)
+
+                newRecipe.addIngredient(ItemRegistry.get(CustomItem.MAGICAL_FLASK))
+                newRecipe.addIngredient(ItemStack(Material.RAW_GOLD, 16))
+                newRecipes.add(newRecipe)
 
                 villager.recipes = newRecipes
                 EntityWrapperManager.getWrapperorNew(villager).addComponent(OvermaxVillagerComponent())
 
                 item.amount -= 1
-                CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 5F, 1.4F)
+                CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 1.4F)
                 CustomEffects.particleCloud(Particle.HAPPY_VILLAGER.builder(), villager.location, 100, 1.0, 0.5)
             }
 

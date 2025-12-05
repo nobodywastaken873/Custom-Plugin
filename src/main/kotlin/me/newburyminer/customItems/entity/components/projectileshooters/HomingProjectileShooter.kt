@@ -34,7 +34,7 @@ class HomingProjectileShooter(private val angleChange: Double): EntityComponent 
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE_SHOOTER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newChange = map["change"] as Double
+            val newChange = map["change"].toDouble()
             return HomingProjectileShooter(newChange)
         }
     }

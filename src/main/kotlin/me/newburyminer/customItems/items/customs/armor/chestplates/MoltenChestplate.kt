@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.chestplates
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
@@ -20,7 +21,9 @@ class MoltenChestplate: CustomItemDefinition {
     private val material = Material.NETHERITE_CHESTPLATE
     private val color = arrayOf(209, 103, 4)
     private val name = text("Molten Chestplate", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Gain permanent fire resistance.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

@@ -61,7 +61,7 @@ class ShulkerGui(private val shulker: ItemStack): CustomGui() {
 
         if (clickedItem.getTag<Boolean>("shulkeropen") == true) {
             e.isCancelled = true
-            CustomEffects.playSound(e.whoClicked.location, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
+            CustomEffects.playSoundToPlayer(e.whoClicked as Player, Sound.ENTITY_SHULKER_HURT, 1.0F, 1.2F)
             return
         }
 

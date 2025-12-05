@@ -48,7 +48,7 @@ class Containers: CustomItemDefinition, ItemCycler {
                 if (!MaterialSystem.hasMaterials(player, collection)) {
                     e.isCancelled = true
                     player.sendActionBar(text("Not enough materials in your Redstone Box.", Utils.FAILED_COLOR))
-                    CustomEffects.playSound(player.location, Sound.ENTITY_VILLAGER_NO, 1F, 0.8F)
+                    CustomEffects.playSoundToPlayer(player, Sound.ENTITY_VILLAGER_NO, 1F, 0.8F)
                     return
                 }
 
@@ -75,7 +75,7 @@ class Containers: CustomItemDefinition, ItemCycler {
                 val item = ctx.item ?: return
                 if (player.isSneaking) {
                     cycleItem(item, e)
-                    CustomEffects.playSound(player.location, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
+                    CustomEffects.playSoundToPlayer(player, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
                 }
             }
 

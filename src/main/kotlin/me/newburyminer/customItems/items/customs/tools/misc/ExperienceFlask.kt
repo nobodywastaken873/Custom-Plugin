@@ -46,17 +46,22 @@ class ExperienceFlask: CustomItemDefinition {
                     if (!e.player.offCooldown(CustomItem.EXPERIENCE_FLASK)) return
                     if (e.player.timeSinceCombatTimeStamp() < 20 * 60 * 5) {
                         e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
+
+                        val remainingTime = 20 * 60 * 5 - e.player.timeSinceCombatTimeStamp()
+                        e.player.sendMessage(
+                            text("You cannot use this for another ${remainingTime / 20 / 60}m, ${remainingTime / 20 % 60}s.", Utils.FAILED_COLOR)
+                        )
                         return
                     }
                     if (e.player.isSneaking) {
                         e.player.giveExp(storedExp, false)
                         flask.setTag("storedexp", 0)
-                        CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.1F)
+                        CustomEffects.playSoundToPlayer(e.player, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.9F)
                     } else {
                         flask.setTag("storedexp", storedExp + e.player.calculateTotalExperiencePoints())
                         e.player.level = 0
                         e.player.exp = 0F
-                        CustomEffects.playSound(e.player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 0.9F)
+                        CustomEffects.playSoundToPlayer(e.player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 0.7F)
                     }
                     flask.loreBlock(text("Stored experience: ${flask.getTag<Int>("storedexp") ?: 0}", arrayOf(73, 209, 10)),
                         text(""),

@@ -80,7 +80,7 @@ class GaleBlade: CustomItemDefinition {
             is EntityDamageByEntityEvent -> {
                 if (ctx.itemType != EventItemType.MAINHAND) return
                 val damaged = e.entity as? Player ?: return
-                damaged.velocity = damaged.velocity.add(Vector(0.0, 0.14, 0.0))
+                damaged.velocity = damaged.velocity.add(Vector(0.0, 0.2, 0.0))
             }
 
         }

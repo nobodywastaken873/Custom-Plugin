@@ -50,7 +50,7 @@ class PolarizedMagnet: CustomItemDefinition {
                     e.player.setTag("polarizedmagnetitempull", !(e.player.getTag<Boolean>("polarizedmagnetitempull")?:false))
                     if (e.player.getTag<Boolean>("polarizedmagnetitempull")!!) item.name(text("Polarized Magnet", arrayOf(36, 36, 255), bold = true))
                     else item.name(text("Polarized Magnet", arrayOf(255, 36, 36), bold = true))
-                    CustomEffects.playSound(e.player.location, Sound.BLOCK_CANDLE_PLACE, 1F, 0.9F)
+                    CustomEffects.playSoundToPlayer(e.player, Sound.BLOCK_CANDLE_PLACE, 1F, 0.9F)
                     e.player.setCooldown(CustomItem.POLARIZED_MAGNET, 0.5)
                 } else {
                     if (!ctx.itemType.isHand()) return

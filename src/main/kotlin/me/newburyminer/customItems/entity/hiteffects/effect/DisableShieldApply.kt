@@ -48,7 +48,7 @@ class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffec
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.DISABLE_SHIELD
         override fun deserialize(map: Map<String, Any>): HitEffect {
-            return DisableShieldApply(map["ignoreDirection"] as Boolean)
+            return DisableShieldApply(map["ignoreDirection"].toBoolean())
         }
     }
 }

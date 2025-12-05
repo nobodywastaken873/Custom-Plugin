@@ -20,7 +20,7 @@ class TeleportBehindComponent(private val baseCooldown: Int): EntityComponent, C
         override val componentType: EntityComponentType = EntityComponentType.TELEPORT_BEHIND
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return TeleportBehindComponent(
-                map["cooldown"] as Int,
+                map["cooldown"].toInt(),
             )
         }
     }

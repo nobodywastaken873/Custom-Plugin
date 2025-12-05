@@ -20,7 +20,7 @@ class ImmunityBehavior : ArmorSetBehavior {
                 if (e.action != EntityPotionEffectEvent.Action.ADDED && e.action != EntityPotionEffectEvent.Action.CHANGED) return
                 val oldPotion = e.newEffect ?: return
                 val flippedType = flipPotion(oldPotion.type) ?: return
-                val newPotion = PotionEffect(flippedType, oldPotion.duration * 3, oldPotion.amplifier + 1)
+                val newPotion = PotionEffect(flippedType, oldPotion.duration * 3, (oldPotion.amplifier + 1).coerceAtMost(2))
                 player.addPotionEffect(newPotion)
             }
 

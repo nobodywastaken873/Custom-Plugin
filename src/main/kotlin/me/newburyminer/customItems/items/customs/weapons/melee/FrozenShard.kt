@@ -8,8 +8,11 @@ import me.newburyminer.customItems.effects.AttributeData
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.LivingEntity
@@ -52,6 +55,9 @@ class FrozenShard: CustomItemDefinition {
                 }
                 if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
                 val hitPlayer = e.entity as? Player ?: return
+
+                CustomEffects.particleCloud(Particle.SNOWFLAKE.builder(), hitPlayer.location, 50, 1.0, 0.0)
+                CustomEffects.playSound(hitPlayer.location, Sound.ENTITY_PLAYER_HURT_FREEZE, 1F, 0.8F)
 
                 EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
                     EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR)))

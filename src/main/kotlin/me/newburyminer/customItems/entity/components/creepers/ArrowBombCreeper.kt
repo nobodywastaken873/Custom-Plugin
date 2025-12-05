@@ -29,8 +29,8 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newCount = map["count"] as Int
-            val newDamage = map["damage"] as Double
+            val newCount = map["count"].toInt()
+            val newDamage = map["damage"].toDouble()
             return ArrowBombCreeper(newCount, newDamage)
         }
     }

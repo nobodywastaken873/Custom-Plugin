@@ -38,17 +38,21 @@ class EntityWrapperManager: Listener, BukkitRunnable() {
             register(entity.uniqueId, new)
             return new
         }
+
+        fun removeWrapper(entity: Entity) {
+            // Check if uuid in wrapper map, serialize, add tag, remove from map
+            val wrapper = getWrapper(entity.uniqueId) ?: return
+            val map = wrapper.serialize()
+            val jsonText = Gson().toJson(map)
+            entity.setTag("wrapperjson", jsonText)
+            remove(entity.uniqueId)
+        }
     }
 
-    // Always store values if it is in the wrapper thing
     @EventHandler fun entityRemove(e: EntityRemoveFromWorldEvent) {
-        // Check if uuid in wrapper map, serialize, add tag, remove from map
-        val wrapper = getWrapper(e.entity.uniqueId) ?: return
-        val map = wrapper.serialize()
-        val jsonText = Gson().toJson(map)
-        e.entity.setTag("wrapperjson", jsonText)
-        remove(e.entity.uniqueId)
+        removeWrapper(e.entity)
     }
+    // Always store values if it is in the wrapper thing
 
     @Suppress("UNCHECKED_CAST")
     // Only register if it has the tag data to do so, on spawn will register a wrapper

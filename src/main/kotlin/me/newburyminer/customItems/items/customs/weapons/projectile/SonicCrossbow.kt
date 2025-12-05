@@ -31,7 +31,7 @@ class SonicCrossbow: CustomItemDefinition {
     private val color = arrayOf(2, 98, 117)
     private val name = text("Sonic Crossbow", color)
     private val lore = Utils.loreBlockToList(
-        text("Shoots a piercing sonic boom that does true damage to players and high damage to mobs, with a 20 second cooldown.", Utils.GRAY),
+        text("Shoots a piercing sonic boom that does 8 true damage to players and high damage to mobs, with a 20 second cooldown.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)

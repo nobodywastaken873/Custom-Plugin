@@ -22,8 +22,8 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
         override val componentType: EntityComponentType = EntityComponentType.SNIPER_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return SniperProjectileShooter(
-                map["baseCooldown"] as Int,
-                ProjectileType.valueOf(map["projectileType"] as String),
+                map["baseCooldown"].toInt(),
+                ProjectileType.valueOf(map["projectileType"].toString()),
             )
         }
     }

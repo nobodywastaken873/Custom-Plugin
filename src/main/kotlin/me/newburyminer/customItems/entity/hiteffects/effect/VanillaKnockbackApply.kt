@@ -36,7 +36,7 @@ class VanillaKnockbackApply(val strength: Double = 0.4): HitEffect {
         override val componentType: HitEffectType = HitEffectType.VANILLA_KNOCKBACK
         override fun deserialize(map: Map<String, Any>): HitEffect {
             return VanillaKnockbackApply(
-                map["strength"] as Double
+                map["strength"].toDouble()
             )
         }
     }

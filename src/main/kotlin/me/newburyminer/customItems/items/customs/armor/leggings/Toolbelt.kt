@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.leggings
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
@@ -16,7 +17,9 @@ class Toolbelt: CustomItemDefinition {
     private val material = Material.NETHERITE_LEGGINGS
     private val color = arrayOf(125, 63, 5)
     private val name = text("Toolbelt", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Gives three extra blocks of reach for blocks/building.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

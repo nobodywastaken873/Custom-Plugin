@@ -54,7 +54,7 @@ class EnderBlade: CustomItemDefinition {
                 if (e.isCritical) return
                 e.damage *= 1.5
                 CustomEffects.playSound(e.entity.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.8F, 1.0F)
-                CustomEffects.particle(Particle.CRIT.builder(), e.entity.location, 20, 0.5, 0.5)
+                CustomEffects.particle(Particle.CRIT.builder(), e.entity.location.add(0.0, 1.0, 0.0), 20, 0.5, 0.5)
             }
 
             is PlayerInteractEvent -> {
