@@ -45,6 +45,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.*
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
@@ -57,15 +58,18 @@ import kotlin.math.pow
 class SystemsListener: Listener, Runnable  {
     @EventHandler fun onPlayerTeleport(e: PlayerTeleportEvent) {
         if (e.cause == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
-            if (e.player.getTag<Int>("deathcountdown") in arrayOf(0, null)) return
-            e.isCancelled = true
-            e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
+            //if (e.player.getTag<Int>("deathcountdown") in arrayOf(0, null)) return
+            //e.isCancelled = true
+            //e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
         } /*else if (e.cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL && e.player.world != Bukkit.getWorlds()[2]) {
             if (e.player.getTag<Int>("deathcountdown") in arrayOf(0, null)) return
             e.isCancelled = true
             e.player.playSound(e.player, Sound.ENTITY_VILLAGER_NO, 1F, 1F)
         }*/
     }
+    //@EventHandler fun onPlayerMove(e: PlayerMoveEvent) {
+        //if (e.player.world.name == "world_the_end") e.player.health = 0.0
+    //}
     @EventHandler fun onPlayerElytra(e: EntityToggleGlideEvent) {
         if (e.entity !is Player) return
         if (!(e.entity as Player).isBeingTracked()) return

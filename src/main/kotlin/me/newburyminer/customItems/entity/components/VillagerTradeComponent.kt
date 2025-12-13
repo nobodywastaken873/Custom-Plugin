@@ -85,7 +85,7 @@ class VillagerTradeComponent(startingTrades: MutableList<MerchantRecipe> = mutab
     fun rerollTrades(wrapper: EntityWrapper) {
         val villager = wrapper.entity as Villager
 
-        if (villager.profession == Villager.Profession.CARTOGRAPHER) return
+        //if (villager.profession == Villager.Profession.CARTOGRAPHER) return
 
         mergeTrades(villager.recipes)
 

@@ -38,6 +38,8 @@ class ShulkerGui(private val shulker: ItemStack): CustomGui() {
         var index = 0
         val task = object : BukkitRunnable() {
             override fun run() {
+                if (shulker.itemMeta == null) return
+
                 val newMeta = shulker.itemMeta as BlockStateMeta
                 val newBlockState = newMeta.blockState as ShulkerBox
                 val itemInventory = newBlockState.inventory
