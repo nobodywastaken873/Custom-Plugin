@@ -34,6 +34,4 @@ class MoonBoots: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

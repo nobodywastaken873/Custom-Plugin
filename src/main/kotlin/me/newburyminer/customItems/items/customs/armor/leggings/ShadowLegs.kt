@@ -6,6 +6,8 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Bukkit
@@ -15,6 +17,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityResurrectEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -44,7 +47,35 @@ class ShadowLegs: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val onTotemPop = ListenerEntry(
+            EntityResurrectEvent::class,
+            {slotMatches(it, EquipmentSlot.LEGS, custom) &&
+                    !it.isCancelled &&
+                    isOffCooldown(it, custom)},
+            {applyNewEffects(it)},
+        )
+        EventRegistry.register(onTotemPop)
+    }
+
+    private fun applyNewEffects(e: EntityResurrectEvent) {
+        val player = e.entity as? Player ?: return
+        player.setCooldown(CustomItem.SHADOW_LEGS, 60.0)
+
+        CustomEffects.particleCloud(Particle.SMOKE.builder(), player.location, 500, 5.0, 0.5)
+
+        val duration = if (player.inventory.helmet?.isItem(CustomItem.DRINKING_HAT) == true) 1000 else 500
+        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+            (e.entity as Player).addPotionEffects(mutableListOf(
+                PotionEffect(PotionEffectType.RESISTANCE, duration, 1),
+                PotionEffect(PotionEffectType.STRENGTH, duration, 2),
+                PotionEffect(PotionEffectType.SPEED, duration, 2),
+                PotionEffect(PotionEffectType.REGENERATION, duration, 2)
+            ))
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityResurrectEvent -> {
@@ -68,6 +99,6 @@ class ShadowLegs: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

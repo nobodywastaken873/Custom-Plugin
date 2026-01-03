@@ -1,9 +1,12 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
@@ -39,7 +42,32 @@ class XrayGoggles: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val activateXray = ListenerEntry(
+            PlayerToggleSneakEvent::class,
+            {isSneaking(it)},
+            {applyGlowing(it)},
+        )
+        EventRegistry.register(activateXray)
+    }
+
+    private fun isSneaking(e: PlayerToggleSneakEvent): Boolean {
+        return e.isSneaking &&
+                e.player.inventory.helmet.isItem(custom) &&
+                e.player.offCooldown(custom)
+    }
+    private fun applyGlowing(e: PlayerToggleSneakEvent) {
+        for (entity in e.player.location.getNearbyEntities(20.0, 20.0, 20.0)) {
+            if (e.player.location.subtract(entity.location).length() > 20.0) continue
+            if (entity !is LivingEntity) continue
+            if (entity == e.player) continue
+            entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 400, 0, true, false, false))
+        }
+        e.player.setCooldown(CustomItem.XRAY_GOGGLES, 20.0)
+        CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is PlayerToggleSneakEvent -> {
@@ -58,6 +86,6 @@ class XrayGoggles: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

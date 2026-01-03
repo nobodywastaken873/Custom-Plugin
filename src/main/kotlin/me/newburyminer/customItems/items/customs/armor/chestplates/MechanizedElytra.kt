@@ -6,6 +6,8 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
@@ -35,7 +37,27 @@ class MechanizedElytra: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val activateFirework = ListenerEntry(
+            PlayerToggleSneakEvent::class,
+            {wearingCustom(it)},
+            {handleActivateFirework(it)},
+        )
+        EventRegistry.register(activateFirework)
+    }
+
+    private fun wearingCustom(e: PlayerToggleSneakEvent): Boolean {
+        return e.player.isGliding &&
+                e.player.isSneaking &&
+                e.player.inventory.chestplate.isItem(custom) &&
+                e.player.offCooldown(custom, "Boost")
+    }
+    private fun handleActivateFirework(e: PlayerToggleSneakEvent) {
+        e.player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
+        e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is PlayerToggleSneakEvent -> {
@@ -50,6 +72,6 @@ class MechanizedElytra: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

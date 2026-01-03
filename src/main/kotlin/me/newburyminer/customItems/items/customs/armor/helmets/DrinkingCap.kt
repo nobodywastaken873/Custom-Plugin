@@ -1,11 +1,15 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
@@ -33,7 +37,35 @@ class DrinkingCap: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val onEffectApply = ListenerEntry(
+            EntityPotionEffectEvent::class,
+            {isCorrectEffect(it)},
+            {increaseDuration(it)},
+        )
+        EventRegistry.register(onEffectApply)
+    }
+
+    private fun isCorrectEffect(e: EntityPotionEffectEvent): Boolean {
+        return e.entity is Player &&
+                (e.entity as Player).inventory.helmet.isItem(custom) &&
+                e.cause in arrayOf(
+            EntityPotionEffectEvent.Cause.POTION_SPLASH,
+            EntityPotionEffectEvent.Cause.POTION_DRINK,
+            EntityPotionEffectEvent.Cause.FOOD,
+            EntityPotionEffectEvent.Cause.TOTEM,
+        ) &&
+                (e.action == EntityPotionEffectEvent.Action.ADDED ||
+                        e.action == EntityPotionEffectEvent.Action.CHANGED)
+    }
+    private fun increaseDuration(e: EntityPotionEffectEvent) {
+        val newEffect = e.newEffect ?: return
+        e.isCancelled = true
+        (e.entity as Player).addPotionEffect(PotionEffect(newEffect.type, newEffect.duration * 2,
+            newEffect.amplifier, newEffect.isAmbient, newEffect.hasParticles()))
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityPotionEffectEvent -> {
@@ -53,6 +85,6 @@ class DrinkingCap: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

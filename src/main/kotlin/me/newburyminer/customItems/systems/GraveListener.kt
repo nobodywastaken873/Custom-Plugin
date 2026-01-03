@@ -137,11 +137,15 @@ class GraveListener: Listener {
         textDisplay.text(text("${e.player.name}'s grave", arrayOf(199, 4, 30)))
     }
     private fun saveGrave(e: PlayerDeathEvent, drops: MutableList<ItemStack>) {
-        val fileName = System.getProperty("user.dir") + "/plugins/customItems/savedGraves.txt"
+
+        val folderPath = System.getProperty("user.dir") + "/plugins/customItems/"
+        val directory = File(folderPath)
+        if (!directory.exists()) { directory.mkdir() }
+
+        val fileName = folderPath + "savedGraves.txt"
         val file = File("plugins/customItems/savedGraves.txt")
-        if (!file.exists()) {
-            file.createNewFile()
-        }
+        if (!file.exists()) { file.createNewFile() }
+
         val locBytes = Base64.getEncoder().encodeToString(e.player.location.serializeAsBytes())
         val itemBytes = Base64.getEncoder().encodeToString(drops.first().serializeAsBytes())
         var totalStr = ("NEWLINE${e.player.name},${ZonedDateTime.now(ZoneId.systemDefault())}LOCATION${locBytes}")

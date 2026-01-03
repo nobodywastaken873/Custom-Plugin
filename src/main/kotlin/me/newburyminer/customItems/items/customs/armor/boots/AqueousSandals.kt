@@ -5,6 +5,8 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
@@ -13,6 +15,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -41,7 +44,27 @@ class AqueousSandals: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val onPlayerSneak = ListenerEntry(
+            PlayerToggleSneakEvent::class,
+            {it.isSneaking && slotMatches(it, EquipmentSlot.FEET, custom) && isOffCooldown(it, custom)},
+            {handleDolphinsActivate(it)}
+        )
+        EventRegistry.register(onPlayerSneak)
+    }
+
+    private fun isSneaking(e: PlayerToggleSneakEvent): Boolean {
+        return e.isSneaking &&
+                e.player.inventory.boots.isItem(custom) &&
+                e.player.offCooldown(custom)
+    }
+    private fun handleDolphinsActivate(e: PlayerToggleSneakEvent) {
+        e.player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 100, 0, true, true, true))
+        e.player.setCooldown(custom, 20.0)
+        CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is PlayerToggleSneakEvent -> {
@@ -55,7 +78,7 @@ class AqueousSandals: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(60 to {player -> runTask(player)})

@@ -18,6 +18,7 @@ import me.newburyminer.customItems.entity.ComponentSerializationRegistry
 import me.newburyminer.customItems.entity.EntityEventHandler
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
+import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
 import me.newburyminer.customItems.items.*
@@ -76,6 +77,7 @@ class CustomItems : JavaPlugin() {
         systemsListener = SystemsListener()
         wrapperManager = EntityWrapperManager()
 
+
         registerListeners()
 
         systemsListener.run()
@@ -124,6 +126,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(wrapperManager, this)
         server.pluginManager.registerEvents(BossSystemHandler(), this)
         server.pluginManager.registerEvents(EndSystem, this)
+        server.pluginManager.registerEvents(EventBus, this)
 
         //server.pluginManager.registerEvents(EntitySpawnManager(), this)
         //server.pluginManager.registerEvents(EntityEventHandler(), this)

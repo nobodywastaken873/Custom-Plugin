@@ -1,6 +1,9 @@
 package me.newburyminer.customItems.items.customs.armor.chestplates
 
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -31,7 +34,26 @@ class MaceShieldedPlating: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        val reduceMaceDamage = ListenerEntry(
+            EntityDamageByEntityEvent::class,
+            {isMacing(it)},
+            {handleReduceMaceDamage(it)},
+        )
+        EventRegistry.register(reduceMaceDamage)
+    }
+
+    private fun isMacing(e: EntityDamageByEntityEvent): Boolean {
+        return e.entity is Player &&
+                (e.entity as Player).inventory.chestplate.isItem(custom) &&
+                e.damager is Player &&
+                e.damageSource.damageType == DamageType.MACE_SMASH
+    }
+    private fun handleReduceMaceDamage(e: EntityDamageByEntityEvent) {
+        e.damage *= 0.4
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -44,6 +66,6 @@ class MaceShieldedPlating: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

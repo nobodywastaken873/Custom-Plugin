@@ -30,6 +30,4 @@ class HermessTrousers: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

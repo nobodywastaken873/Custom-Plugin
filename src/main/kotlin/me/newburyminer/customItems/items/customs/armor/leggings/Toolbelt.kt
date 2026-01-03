@@ -32,6 +32,4 @@ class Toolbelt: CustomItemDefinition {
         )
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }
