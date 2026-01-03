@@ -26,6 +26,7 @@ import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.EnchantmentListener
+import me.newburyminer.customItems.systems.EndSystem
 import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
@@ -122,6 +123,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(EntityEventHandler(), this)
         server.pluginManager.registerEvents(wrapperManager, this)
         server.pluginManager.registerEvents(BossSystemHandler(), this)
+        server.pluginManager.registerEvents(EndSystem, this)
 
         //server.pluginManager.registerEvents(EntitySpawnManager(), this)
         //server.pluginManager.registerEvents(EntityEventHandler(), this)

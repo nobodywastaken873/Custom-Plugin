@@ -81,6 +81,10 @@ abstract class BossInstance(protected val players: MutableList<Player>, val boss
 
     open fun tick() {
         checkEntities()
+        players.iterator().forEach {
+            if (it.world != CustomItems.bossWorld)
+                removePlayer(it)
+        }
         players.removeIf { it.world != CustomItems.bossWorld }
         if (players.isEmpty()) { endBoss() }
     }
