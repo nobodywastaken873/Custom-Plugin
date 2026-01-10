@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "Ado - Buriki No Dance"
+  },
+  "length_in_seconds": 199.0,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.ado_burikinodance"
+  }
+}

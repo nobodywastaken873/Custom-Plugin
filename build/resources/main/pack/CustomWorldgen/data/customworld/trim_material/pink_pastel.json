@@ -1,0 +1,7 @@
+{
+  "asset_name": "pink_pastel",
+  "description": {
+    "color": "#F58CF1",
+    "translate": "trim_material.customworld.pink_pastel"
+  },
+  "ingredient": "minecraft:pink_dye"}
