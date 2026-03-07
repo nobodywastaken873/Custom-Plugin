@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.tools.placers
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.MaterialsGui
@@ -15,8 +16,10 @@ import me.newburyminer.customItems.systems.materials.MaterialSystem
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class RedstoneBox: CustomItemDefinition {
@@ -35,7 +38,24 @@ class RedstoneBox: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(InventoryClickEvent::class, { e ->
+            e.inventory.holder !is CustomGui &&
+            e.clickedInventory?.getItem(e.slot).isItem(custom) &&
+            e.action == InventoryAction.PICKUP_HALF
+        },
+        {e ->
+            e.isCancelled = true
+            val player = e.whoClicked as Player
+            CustomEffects.playSoundToPlayer(player, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())
+            Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                player.closeInventory()
+                MaterialsGui(MaterialSystem.getMaterials(player), MaterialCategory.REDSTONE).open(player)
+            })
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -53,6 +73,6 @@ class RedstoneBox: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

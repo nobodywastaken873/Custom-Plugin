@@ -127,23 +127,13 @@ class CustomEffects {
                                 count: Int, collideEntity: Boolean = false, caster: Entity? = null,
                                 offset: Double = 0.0, extra: Double = 0.0) {
             val result =
-                if (collideEntity) {
-                    loc.world.rayTrace(
-                        loc, direction, distance,
-                        FluidCollisionMode.NEVER,
-                        true,
-                        0.1,
-                        Predicate { it != caster }
-                    )
+                (if (collideEntity) {
+                    loc.world.rayTrace(loc, direction, distance, FluidCollisionMode.NEVER, true, 0.1, Predicate { it != caster })
                 } else {
-                    loc.world.rayTraceBlocks(
-                        loc, direction, distance,
-                        FluidCollisionMode.NEVER,
-                        true,
-                    )
-                } ?: return
+                    loc.world.rayTraceBlocks(loc, direction, distance, FluidCollisionMode.NEVER, true,)
+                })?.hitPosition ?: loc.clone().add(direction.normalize().multiply(distance)).toVector()
 
-            val endLoc = result.hitPosition.toLocation(loc.world)
+            val endLoc = result.toLocation(loc.world)
             particleLine(particle, loc, endLoc, count, offset, extra)
 
         }

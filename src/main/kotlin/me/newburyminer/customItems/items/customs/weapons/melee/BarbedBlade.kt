@@ -17,6 +17,7 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -42,7 +43,27 @@ class BarbedBlade: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom)
+        },
+        {e ->
+            val player = e.damager as? Player ?: return@register
+            val damaged = e.entity as? LivingEntity ?: return@register
+            if (Math.random() < 1.0 / 5.0 && e.entity is LivingEntity) {
+                damaged.addPotionEffect(PotionEffect(PotionEffectType.DARKNESS, 100, 0))
+            }
+
+            if (!player.offCooldown(custom)) return@register
+            CustomEffects.playSound(player.location, Sound.ITEM_TRIDENT_THROW, 0.7f, 1.3f)
+
+            EffectManager.applyEffect(damaged as? Player ?: return@register, CustomEffectType.ATTRIBUTE,
+                EffectData(4 * 20, attributeData = AttributeData(-4.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER)))
+            player.setCooldown(custom, 15.0)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -64,6 +85,6 @@ class BarbedBlade: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

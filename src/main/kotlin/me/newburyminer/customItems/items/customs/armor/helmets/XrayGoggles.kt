@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -43,28 +44,21 @@ class XrayGoggles: CustomItemDefinition {
         .build()
 
     init {
-        val activateXray = ListenerEntry(
-            PlayerToggleSneakEvent::class,
-            {isSneaking(it)},
-            {applyGlowing(it)},
-        )
-        EventRegistry.register(activateXray)
-    }
-
-    private fun isSneaking(e: PlayerToggleSneakEvent): Boolean {
-        return e.isSneaking &&
-                e.player.inventory.helmet.isItem(custom) &&
-                e.player.offCooldown(custom)
-    }
-    private fun applyGlowing(e: PlayerToggleSneakEvent) {
-        for (entity in e.player.location.getNearbyEntities(20.0, 20.0, 20.0)) {
-            if (e.player.location.subtract(entity.location).length() > 20.0) continue
-            if (entity !is LivingEntity) continue
-            if (entity == e.player) continue
-            entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 400, 0, true, false, false))
-        }
-        e.player.setCooldown(CustomItem.XRAY_GOGGLES, 20.0)
-        CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+        register(PlayerToggleSneakEvent::class, { e ->
+            e.isSneaking &&
+            e.player.offCooldown(custom) &&
+            slotMatches(e, EquipmentSlot.HEAD, custom)
+        },
+        {e ->
+            for (entity in e.player.location.getNearbyEntities(20.0, 20.0, 20.0)) {
+                if (e.player.location.subtract(entity.location).length() > 20.0) continue
+                if (entity !is LivingEntity) continue
+                if (entity == e.player) continue
+                entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 400, 0, true, false, false))
+            }
+            e.player.setCooldown(CustomItem.XRAY_GOGGLES, 20.0)
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

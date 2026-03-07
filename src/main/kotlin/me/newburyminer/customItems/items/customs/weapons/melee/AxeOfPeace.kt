@@ -6,9 +6,11 @@ import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityRegainHealthEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -33,7 +35,18 @@ class AxeOfPeace: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.damage >= 15
+        },
+        {e ->
+            val damager = e.damager as? LivingEntity ?: return@register
+            damager.heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -45,6 +58,6 @@ class AxeOfPeace: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

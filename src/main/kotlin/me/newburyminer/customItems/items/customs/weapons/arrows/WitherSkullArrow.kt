@@ -1,11 +1,14 @@
 package me.newburyminer.customItems.items.customs.weapons.arrows
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
+import org.bukkit.entity.ShulkerBullet
 import org.bukkit.entity.WitherSkull
 import org.bukkit.event.entity.EntityShootBowEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class WitherSkullArrow: CustomItemDefinition {
@@ -24,7 +27,20 @@ class WitherSkullArrow: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityShootBowEvent::class, {e ->
+            e.consumable.isItem(custom)
+        },
+        {e ->
+            e.entity.world.spawn(e.projectile.location, WitherSkull::class.java) {
+                it.velocity = e.projectile.velocity
+                it.shooter = e.entity
+            }
+            e.projectile.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -40,6 +56,6 @@ class WitherSkullArrow: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

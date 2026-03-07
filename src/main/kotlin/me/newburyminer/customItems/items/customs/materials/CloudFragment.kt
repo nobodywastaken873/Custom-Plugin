@@ -25,6 +25,4 @@ class CloudFragment: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

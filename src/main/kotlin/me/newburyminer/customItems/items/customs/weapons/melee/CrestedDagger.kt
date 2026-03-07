@@ -11,6 +11,7 @@ import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -32,7 +33,21 @@ class CrestedDagger: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.damageSource.damageType != DamageType.STARVE
+        },
+        {e ->
+            val damaged = e.entity as? LivingEntity ?: return@register
+            e.isCancelled = true
+            val damage = 20.0 / 13 * (e.damager as Player).attackCooldown
+            damaged.damage(damage, DamageSource.builder(DamageType.STARVE).withDirectEntity(e.damager).withCausingEntity(e.damager).build())
+            damaged.noDamageTicks = 5
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -50,6 +65,6 @@ class CrestedDagger: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

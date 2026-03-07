@@ -9,6 +9,7 @@ import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class NetheriteCoating: CustomItemDefinition {
@@ -29,7 +30,25 @@ class NetheriteCoating: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerSwapHandItemsEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.OFF_HAND, custom) &&
+            e.player.isSneaking &&
+            e.player.inventory.itemInMainHand.type != Material.AIR
+        },
+        {e ->
+            val upgrade = e.player.inventory.itemInOffHand
+            val toUpgrade = e.player.inventory.itemInMainHand
+            if (CustomEnchantments.FIREPROOF in toUpgrade.enchantments.keys) return@register
+            e.isCancelled = true
+            upgrade.amount -= 1
+            toUpgrade.resist(DamageTypeTagKeys.IS_FIRE)
+            toUpgrade.addUnsafeEnchantment(CustomEnchantments.FIREPROOF, 1)
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_SMITHING_TABLE_USE, 1.0F, 1.1F)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -50,6 +69,6 @@ class NetheriteCoating: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

@@ -2,17 +2,20 @@ package me.newburyminer.customItems.items.customs.armor.sets.immunity
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 
-class EnergyRestoringPants: CustomItemDefinition {
+class EnergyRestoringPants: CustomItemDefinition, PotionEffectCancel {
 
     override val custom: CustomItem = CustomItem.ENERGY_RESTORING_PANTS
 
@@ -38,7 +41,17 @@ class EnergyRestoringPants: CustomItemDefinition {
         .setArmorSet(ArmorSet.IMMUNITY)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    override val potionEffects: List<PotionEffectType> = listOf(PotionEffectType.SLOWNESS, PotionEffectType.WEAKNESS, PotionEffectType.MINING_FATIGUE)
+    init {
+        register(EntityPotionEffectEvent::class, { e ->
+            potionEffectMatches(e, EquipmentSlot.LEGS, custom)
+        },
+        {e ->
+            cancelPotionEffect(e)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityPotionEffectEvent -> {
@@ -50,6 +63,6 @@ class EnergyRestoringPants: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

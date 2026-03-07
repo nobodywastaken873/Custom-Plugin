@@ -48,30 +48,26 @@ class ShadowLegs: CustomItemDefinition {
         .build()
 
     init {
-        val onTotemPop = ListenerEntry(
-            EntityResurrectEvent::class,
-            {slotMatches(it, EquipmentSlot.LEGS, custom) &&
-                    !it.isCancelled &&
-                    isOffCooldown(it, custom)},
-            {applyNewEffects(it)},
-        )
-        EventRegistry.register(onTotemPop)
-    }
+        register(EntityResurrectEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.LEGS, custom) &&
+            !e.isCancelled &&
+            isOffCooldown(e, custom)
+        },
+        {e ->
+            val player = e.entity as? Player ?: return@register
+            player.setCooldown(CustomItem.SHADOW_LEGS, 60.0)
 
-    private fun applyNewEffects(e: EntityResurrectEvent) {
-        val player = e.entity as? Player ?: return
-        player.setCooldown(CustomItem.SHADOW_LEGS, 60.0)
+            CustomEffects.particleCloud(Particle.SMOKE.builder(), player.location, 500, 5.0, 0.5)
 
-        CustomEffects.particleCloud(Particle.SMOKE.builder(), player.location, 500, 5.0, 0.5)
-
-        val duration = if (player.inventory.helmet?.isItem(CustomItem.DRINKING_HAT) == true) 1000 else 500
-        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-            (e.entity as Player).addPotionEffects(mutableListOf(
-                PotionEffect(PotionEffectType.RESISTANCE, duration, 1),
-                PotionEffect(PotionEffectType.STRENGTH, duration, 2),
-                PotionEffect(PotionEffectType.SPEED, duration, 2),
-                PotionEffect(PotionEffectType.REGENERATION, duration, 2)
-            ))
+            val duration = if (player.inventory.helmet?.isItem(CustomItem.DRINKING_HAT) == true) 1000 else 500
+            Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                (e.entity as Player).addPotionEffects(mutableListOf(
+                    PotionEffect(PotionEffectType.RESISTANCE, duration, 1),
+                    PotionEffect(PotionEffectType.STRENGTH, duration, 2),
+                    PotionEffect(PotionEffectType.SPEED, duration, 2),
+                    PotionEffect(PotionEffectType.REGENERATION, duration, 2)
+                ))
+            })
         })
     }
 

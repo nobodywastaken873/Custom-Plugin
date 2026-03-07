@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "Heat Abnormal"
+  },
+  "length_in_seconds": 241.394649,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.heatabnormal"
+  }
+}

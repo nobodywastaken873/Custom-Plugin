@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -25,12 +26,15 @@ import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityRemoveEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class LandmineLauncher: CustomItemDefinition {
@@ -52,7 +56,41 @@ class LandmineLauncher: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+            EntityWrapperManager.getWrapperorNew(e.entity).addComponent(LandmineArrow())
+
+            (e.entity as Arrow).color = Color.fromRGB(61, 57, 56)
+            shooter.setCooldown(CustomItem.LANDMINE_LAUNCHER, 10.0)
+            (e.entity as Arrow).pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+            shooter.playSound(shooter.location, Sound.ENTITY_BLAZE_SHOOT, 0.7F, 1.7F)
+        })
+
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            isLeftClick(e)
+        },
+        {e ->
+            val player = e.player
+            for (entity in e.player.world.entities) {
+                if (entity.type != EntityType.ARROW) continue
+                val arrow = entity as Arrow
+                if (EntityWrapperManager.getWrapper(entity.uniqueId)
+                        ?.hasComponent(LandmineArrow::class) != true) return@register
+
+                if (arrow.shooter != player) continue
+                entity.world.createExplosion(entity.location, 6.0F, false, true, e.player)
+                entity.remove()
+            }
+            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_BIT, 0.7F, 0.5F)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -86,6 +124,6 @@ class LandmineLauncher: CustomItemDefinition {
             }
         }
 
-    }
+    }*/
 
 }

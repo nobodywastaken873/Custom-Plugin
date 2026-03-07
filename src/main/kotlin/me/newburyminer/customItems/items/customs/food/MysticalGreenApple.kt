@@ -1,17 +1,21 @@
 package me.newburyminer.customItems.items.customs.food
 
+import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerItemConsumeEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class MysticalGreenApple: CustomItemDefinition {
@@ -29,7 +33,31 @@ class MysticalGreenApple: CustomItemDefinition {
         .food(20, 20F, true)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    private val experienceTag = "experiencekept"
+    init {
+        register(PlayerItemConsumeEvent::class, { e ->
+            e.item.isItem(custom)
+        },
+        {e ->
+            if ((e.player.getTag<Int>(experienceTag) ?: 0) == 4) {
+                e.isCancelled = true
+                e.player.sendActionBar(text("Max amount already consumed", Utils.FAILED_COLOR))
+                return@register
+            }
+            e.player.setTag(experienceTag, (e.player.getTag<Int>(experienceTag) ?: 0) + 1)
+            CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.4F)
+        })
+
+        register(PlayerPickupExperienceEvent::class, {e ->
+            (e.player.getTag<Int>(experienceTag) ?: 0) != 0
+        },
+        {e ->
+            val multiplier = e.player.getTag<Int>(experienceTag) ?: 0
+            e.experienceOrb.experience = (e.experienceOrb.experience * (1 + multiplier * 0.15)).toInt()
+        })
+    }
+    
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is PlayerItemConsumeEvent -> {
@@ -43,7 +71,7 @@ class MysticalGreenApple: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 
 

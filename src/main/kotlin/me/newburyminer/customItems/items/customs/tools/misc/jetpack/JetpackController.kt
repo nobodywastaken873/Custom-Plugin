@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.tools.misc.jetpack
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
@@ -9,6 +10,7 @@ import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class JetpackController: CustomItemDefinition {
@@ -28,7 +30,21 @@ class JetpackController: CustomItemDefinition {
         .consumable(eatSeconds = 10000.0F)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, {e ->
+            e.item.isItem(custom) &&
+            e.hand == EquipmentSlot.HAND &&
+            isLeftClick(e)
+        },
+        {e ->
+            val item = e.item ?: return@register
+            val mode = e.player.getTag<Boolean>("jetpackactive") ?: false
+            e.player.setTag("jetpackactive", !mode)
+            item.name(text("Jetpack Controller - ${if (!mode) "ON" else "OFF"}", arrayOf(148, 134, 111), bold = true))
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -43,6 +59,6 @@ class JetpackController: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

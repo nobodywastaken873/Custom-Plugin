@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "Bury the Empire"
+  },
+  "length_in_seconds": 194.69932,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.burytheempire"
+  }
+}

@@ -16,7 +16,9 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.Merchant
 
 class RefreshingEmerald: CustomItemDefinition {
 
@@ -34,7 +36,30 @@ class RefreshingEmerald: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.rightClicked is Villager &&
+            EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true
+        },
+        {e ->
+            val villager = e.rightClicked as Villager
+            val wrapper = EntityWrapperManager.getWrapperorNew(villager)
+
+            val tradingComponent =
+                if (wrapper.hasComponent(VillagerTradeComponent::class))
+                    wrapper.getComponents(VillagerTradeComponent::class).firstOrNull() as VillagerTradeComponent
+                else {
+                    val newComponent = VillagerTradeComponent()
+                    wrapper.addComponent(newComponent)
+                    newComponent
+                }
+
+            tradingComponent.refreshTrades(wrapper)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -53,6 +78,6 @@ class RefreshingEmerald: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

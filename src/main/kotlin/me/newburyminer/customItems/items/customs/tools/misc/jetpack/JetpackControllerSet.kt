@@ -2,10 +2,12 @@ package me.newburyminer.customItems.items.customs.tools.misc.jetpack
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class JetpackControllerSet: CustomItemDefinition {
@@ -24,7 +26,20 @@ class JetpackControllerSet: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, {e ->
+            e.item.isItem(custom) &&
+            isRightClick(e)
+        },
+        {e ->
+            val item = e.item ?: return@register
+            item.amount -= 1
+            e.player.addItemorDrop(ItemRegistry.get(CustomItem.JETPACK))
+            e.player.addItemorDrop(ItemRegistry.get(CustomItem.JETPACK_CONTROLLER))
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -38,6 +53,6 @@ class JetpackControllerSet: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

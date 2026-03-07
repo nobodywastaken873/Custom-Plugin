@@ -1,17 +1,21 @@
 package me.newburyminer.customItems.items.customs.tools.mining
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.behaviors.CubeHarvester
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.block.Container
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
-class Excavator: CustomItemDefinition {
+class Excavator: CustomItemDefinition, CubeHarvester {
 
     override val custom: CustomItem = CustomItem.EXCAVATOR
 
@@ -27,7 +31,32 @@ class Excavator: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(BlockBreakEvent::class, { e ->
+            e.player.inventory.itemInMainHand.isItem(custom)
+        },
+        {e ->
+            val pickaxe = e.player.inventory.itemInMainHand
+            val drops = mutableListOf<ItemStack>()
+            for (block in getAround(e.block.location)) {
+                if (e.block.world.getBlockAt(block).type.hardness.toInt() == -1) continue
+                if (e.block.world.getBlockAt(block).state is Container) continue
+
+                for (drop in block.block.getDrops(pickaxe, e.player)) drops.add(drop)
+                e.block.world.getBlockAt(block).type = Material.AIR
+            }
+            if (CustomEnchantments.AUTOSMELT in e.player.inventory.itemInMainHand.enchantments) {
+                for (drop in drops) {
+                    drop.smelt()
+                }
+            }
+            for (drop in drops) {
+                e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -53,19 +82,6 @@ class Excavator: CustomItemDefinition {
 
         }
 
-    }
-
-    private fun getAround(loc: Location): MutableList<Location> {
-        val locs = mutableListOf<Location>()
-        for (x in -1..1) {
-            for (y in -1..1) {
-                for (z in -1..1) {
-                    if (x == 0 && y == 0 && z == 0) continue
-                    locs.add(loc.clone().add(Vector(x, y, z)))
-                }
-            }
-        }
-        return locs
-    }
+    }*/
 
 }

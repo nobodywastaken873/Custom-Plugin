@@ -15,6 +15,7 @@ import org.bukkit.entity.Horse
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.entity.EntityMountEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -36,41 +37,28 @@ class CowboyHat: CustomItemDefinition {
         .build()
 
     init {
-        val onMount = ListenerEntry(
-            EntityMountEvent::class,
-            {isHorse(it)},
-            {applyHorseEffects(it)},
-        )
-        val onDismount = ListenerEntry(
-            EntityDismountEvent::class,
-            {hasEffects(it)},
-            {removeHorseEffects(it)},
-        )
-        EventRegistry.register(onMount)
-        EventRegistry.register(onDismount)
-    }
+        register(EntityMountEvent::class, { e ->
+            e.mount is AbstractHorse &&
+            e.entity is Player &&
+            slotMatches(e, EquipmentSlot.HEAD, custom)
+        },
+        {e ->
+            (e.mount as AbstractHorse).addPotionEffects(mutableListOf(
+                PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4, true, false),
+                PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2, true, false),
+                PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 4, true, false),
+            ))
+            e.mount.isInvulnerable = true
+        })
 
-    private fun isHorse(e: EntityMountEvent): Boolean {
-        return e.mount is AbstractHorse &&
-                e.entity is Player &&
-                (e.entity as Player).inventory.helmet.isItem(custom)
-    }
-    private fun applyHorseEffects(e: EntityMountEvent) {
-        (e.mount as AbstractHorse).addPotionEffects(mutableListOf(
-            PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4, true, false),
-            PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2, true, false),
-            PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 4, true, false),
-        ))
-        e.mount.isInvulnerable = true
-    }
-
-    private fun hasEffects(e: EntityDismountEvent): Boolean {
-        return e.dismounted is AbstractHorse
-    }
-    private fun removeHorseEffects(e: EntityDismountEvent) {
-        e.dismounted.isInvulnerable = false
-        if ((e.dismounted as AbstractHorse).hasPotionEffect(PotionEffectType.RESISTANCE))
-            (e.dismounted as AbstractHorse).clearActivePotionEffects()
+        register(EntityDismountEvent::class, { e ->
+            e.dismounted is AbstractHorse
+        },
+        {e ->
+            e.dismounted.isInvulnerable = false
+            if ((e.dismounted as AbstractHorse).hasPotionEffect(PotionEffectType.RESISTANCE))
+                (e.dismounted as AbstractHorse).clearActivePotionEffects()
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

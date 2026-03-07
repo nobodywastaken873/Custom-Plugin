@@ -8,6 +8,7 @@ import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 
@@ -28,7 +29,30 @@ class ReinforcingStruts: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerSwapHandItemsEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.OFF_HAND, custom) &&
+            e.player.isSneaking &&
+            e.player.inventory.itemInMainHand.type != Material.AIR &&
+            e.player.inventory.itemInMainHand.itemMeta is Damageable
+        },
+        {e ->
+            val upgrade = e.player.inventory.itemInOffHand
+            val toUpgrade = e.player.inventory.itemInMainHand
+            if ((toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) >= 5) return@register
+            e.isCancelled = true
+            upgrade.amount -= 1
+
+            val newMeta = toUpgrade.itemMeta as Damageable
+            if (newMeta.hasMaxDamage()) toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, newMeta.maxDamage + 100)
+            else toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, toUpgrade.type.maxDurability + 100)
+            toUpgrade.addUnsafeEnchantment(CustomEnchantments.REINFORCED, (toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) + 1)
+
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_HIT, 1.0F, 1.1F)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -51,6 +75,6 @@ class ReinforcingStruts: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

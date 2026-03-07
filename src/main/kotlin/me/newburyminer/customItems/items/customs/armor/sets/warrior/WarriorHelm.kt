@@ -32,6 +32,4 @@ class WarriorHelm: CustomItemDefinition {
         .setArmorSet(ArmorSet.WARRIOR)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

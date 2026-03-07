@@ -4,6 +4,7 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.applyDamage
 import me.newburyminer.customItems.Utils.Companion.containsLoc
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -33,6 +34,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
@@ -62,7 +64,30 @@ class GaleBlade: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            e.player.offCooldown(custom) &&
+            isRightClick(e)
+        },
+        {e ->
+            item.setCooldown(e.player, 8.0)
+            e.player.velocity = e.player.velocity.add(e.player.location.direction.normalize().multiply(1.2))
+            CustomEffects.playSound(e.player.location, Sound.ENTITY_BREEZE_SHOOT, 0.4F, 0.8F)
+        })
+
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom)
+        },
+        {e ->
+            val damaged = e.entity as? Player ?: return@register
+            Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                damaged.velocity = damaged.velocity.add(Vector(0.0, 0.2, 0.0))
+            })
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -85,6 +110,6 @@ class GaleBlade: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

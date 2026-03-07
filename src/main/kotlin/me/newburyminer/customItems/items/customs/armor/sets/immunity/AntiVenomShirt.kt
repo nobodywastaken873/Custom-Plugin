@@ -2,17 +2,20 @@ package me.newburyminer.customItems.items.customs.armor.sets.immunity
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 
-class AntiVenomShirt: CustomItemDefinition {
+class AntiVenomShirt: CustomItemDefinition, PotionEffectCancel {
 
     override val custom: CustomItem = CustomItem.ANTI_VENOM_SHIRT
 
@@ -38,7 +41,17 @@ class AntiVenomShirt: CustomItemDefinition {
         .setArmorSet(ArmorSet.IMMUNITY)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    override val potionEffects: List<PotionEffectType> = listOf(PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.WITHER)
+    init {
+        register(EntityPotionEffectEvent::class, { e ->
+            potionEffectMatches(e, EquipmentSlot.CHEST, custom)
+        },
+        {e ->
+            cancelPotionEffect(e)
+        })
+    }
+    
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityPotionEffectEvent -> {
@@ -50,6 +63,6 @@ class AntiVenomShirt: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

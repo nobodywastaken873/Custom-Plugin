@@ -14,6 +14,7 @@ import me.newburyminer.customItems.entity.components.projectileshooters.Projecti
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Sound
+import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent

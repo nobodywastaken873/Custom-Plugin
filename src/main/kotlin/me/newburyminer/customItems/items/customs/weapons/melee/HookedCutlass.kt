@@ -6,6 +6,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.*
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class HookedCutlass: CustomItemDefinition {
@@ -24,7 +25,19 @@ class HookedCutlass: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityKnockbackByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom)
+        },
+        {e ->
+            val newKnockback = e.knockback.clone()
+            newKnockback.x *= -0.8
+            newKnockback.z *= -0.8
+            e.knockback = newKnockback
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
             is EntityKnockbackByEntityEvent -> {
                 if (ctx.itemType != EventItemType.MAINHAND) return
@@ -34,6 +47,6 @@ class HookedCutlass: CustomItemDefinition {
                 e.knockback = newKnockback
             }
         }
-    }
+    }*/
 
 }

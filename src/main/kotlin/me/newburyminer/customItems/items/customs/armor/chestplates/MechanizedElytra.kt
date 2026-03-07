@@ -13,6 +13,7 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -38,23 +39,16 @@ class MechanizedElytra: CustomItemDefinition {
         .build()
 
     init {
-        val activateFirework = ListenerEntry(
-            PlayerToggleSneakEvent::class,
-            {wearingCustom(it)},
-            {handleActivateFirework(it)},
-        )
-        EventRegistry.register(activateFirework)
-    }
-
-    private fun wearingCustom(e: PlayerToggleSneakEvent): Boolean {
-        return e.player.isGliding &&
-                e.player.isSneaking &&
-                e.player.inventory.chestplate.isItem(custom) &&
-                e.player.offCooldown(custom, "Boost")
-    }
-    private fun handleActivateFirework(e: PlayerToggleSneakEvent) {
-        e.player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
-        e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
+        register(PlayerToggleSneakEvent::class, { e ->
+            e.player.isGliding &&
+            e.player.isSneaking &&
+            slotMatches(e, EquipmentSlot.CHEST, custom) &&
+            e.player.offCooldown(custom, "Boost")
+        },
+        {e ->
+            e.player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
+            e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

@@ -37,6 +37,4 @@ class AssassinsHood: CustomItemDefinition {
         .setArmorSet(ArmorSet.ASSASSIN)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

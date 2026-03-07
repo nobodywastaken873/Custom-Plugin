@@ -29,6 +29,4 @@ class Hoevel: CustomItemDefinition {
             BlockTypeTagKeys.MINEABLE_SHOVEL to 9F)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

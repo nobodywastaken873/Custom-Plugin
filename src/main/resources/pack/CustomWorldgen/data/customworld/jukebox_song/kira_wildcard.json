@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "KIRA - WILDCARD"
+  },
+  "length_in_seconds": 195.465578,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.kira_wildcard"
+  }
+}

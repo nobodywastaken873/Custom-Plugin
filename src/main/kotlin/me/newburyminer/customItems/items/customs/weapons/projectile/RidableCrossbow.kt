@@ -9,7 +9,9 @@ import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class RidableCrossbow: CustomItemDefinition {
@@ -28,7 +30,19 @@ class RidableCrossbow: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+            e.entity.velocity = e.entity.velocity.multiply(1.2)
+            shooter.setCooldown(CustomItem.RIDABLE_CROSSBOW, 60.0)
+            e.entity.addPassenger(shooter)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -44,6 +58,6 @@ class RidableCrossbow: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

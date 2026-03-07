@@ -14,6 +14,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
@@ -31,7 +32,25 @@ class VillagerItem: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.action == Action.RIGHT_CLICK_BLOCK
+        },
+        {e ->
+            val item = e.player.inventory.itemInMainHand
+            val loc = e.clickedBlock?.location ?: return@register
+            loc.add(Vector(0.5, 1.0, 0.5))
+
+            val villagerAsString = item.getTag<String>("storedvillager")
+            if (villagerAsString == null) loc.world.spawn(loc, Villager::class.java)
+            else Bukkit.getEntityFactory().createEntitySnapshot(villagerAsString).createEntity(loc)
+            item.amount -= 1
+            CustomEffects.playSound(loc, Sound.ENTITY_VILLAGER_TRADE, 1F, 1.2F)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -50,6 +69,6 @@ class VillagerItem: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

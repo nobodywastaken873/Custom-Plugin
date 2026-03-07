@@ -31,6 +31,4 @@ class NetheriteMattock: CustomItemDefinition {
             BlockTypeTagKeys.MINEABLE_PICKAXE to 9F)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

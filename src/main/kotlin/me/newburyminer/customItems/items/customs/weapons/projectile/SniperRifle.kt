@@ -22,8 +22,10 @@ import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class SniperRifle: CustomItemDefinition {
@@ -41,7 +43,22 @@ class SniperRifle: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+            e.entity.velocity = shooter.location.direction.normalize().multiply(50)
+            shooter.setCooldown(CustomItem.SNIPER_RIFLE, 50.0)
+
+            EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
+                CustomDamageApply(14.0, CustomDamageType.ALL_BYPASS, 0, overrideSource = shooter)
+            )))
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -60,6 +77,6 @@ class SniperRifle: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

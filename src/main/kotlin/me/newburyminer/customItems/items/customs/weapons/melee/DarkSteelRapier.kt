@@ -19,6 +19,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -43,7 +44,34 @@ class DarkSteelRapier: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.isCritical
+        },
+        {e ->
+            e.damage *= 0.66
+        })
+
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            e.player.offCooldown(custom) &&
+            isRightClick(e)
+        },
+        {e ->
+            e.player.setCooldown(custom, 40.0)
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_CONDUIT_DEACTIVATE, 1.0f, 0.5f)
+
+            for (player in e.player.location.getNearbyPlayers(10.0)) {
+                if (e.player == player) continue
+                player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 160, 0))
+            }
+            EffectManager.applyEffect(e.player, CustomEffectType.ATTRIBUTE,
+                EffectData(15 * 20, attributeData = AttributeData(0.06, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_NUMBER)))
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -74,6 +102,6 @@ class DarkSteelRapier: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

@@ -37,21 +37,18 @@ class RepellantPants: CustomItemDefinition {
         .build()
 
     init {
-        val onTotemPop = ListenerEntry(
-            EntityResurrectEvent::class,
-            {slotMatches(it, EquipmentSlot.LEGS, custom) && !it.isCancelled},
-            {launchNearbyEntities(it)},
-        )
-        EventRegistry.register(onTotemPop)
-    }
-
-    private fun launchNearbyEntities(e: EntityResurrectEvent) {
-        for (entity in e.entity.location.getNearbyEntities(8.0, 8.0, 8.0)) {
-            if (entity == e.entity) continue
-            entity.velocity = entity.velocity.add(entity.location.subtract(e.entity.location).toVector().normalize().multiply(3).add(
-                Vector(0.0, 1.0, 0.0)
-            ))
-        }
+        register(EntityResurrectEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.LEGS, custom) &&
+            !e.isCancelled
+        },
+        {e ->
+            for (entity in e.entity.location.getNearbyEntities(8.0, 8.0, 8.0)) {
+                if (entity == e.entity) continue
+                entity.velocity = entity.velocity.add(entity.location.subtract(e.entity.location).toVector().normalize().multiply(3).add(
+                    Vector(0.0, 1.0, 0.0)
+                ))
+            }
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

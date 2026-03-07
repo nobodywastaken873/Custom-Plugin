@@ -10,15 +10,17 @@ import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
 import me.newburyminer.customItems.items.ItemRegistry
+import me.newburyminer.customItems.items.behaviors.VillagerUpgrade
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
 
-class ToolsmithUpgrade: CustomItemDefinition {
+class ToolsmithUpgrade: CustomItemDefinition, VillagerUpgrade {
 
     override val custom: CustomItem = CustomItem.TOOLSMITH_UPGRADE
 
@@ -37,7 +39,37 @@ class ToolsmithUpgrade: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.rightClicked is Villager &&
+            EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(OvermaxVillagerComponent::class) != true &&
+            (e.rightClicked as Villager).let { it.profession == Villager.Profession.TOOLSMITH && it.villagerLevel == 5 }
+        },
+            {e ->
+                val item = e.player.inventory.itemInMainHand
+                e.isCancelled = true
+                val villager = e.rightClicked as Villager
+                val newRecipes = listOf(
+                    Pair(
+                        ItemRegistry.get(CustomItem.HANDLE_BINDING),
+                        ItemStack(Material.IRON_CHAIN, 16)
+                    ) to ItemRegistry.get(CustomItem.TOOL_HANDLE),
+                    Pair(
+                        ItemRegistry.get(CustomItem.STRENGTHENING_RODS),
+                        ItemStack(Material.COPPER_CHAIN, 16)
+                    ) to ItemRegistry.get(CustomItem.REINFORCED_HANDLE)
+                )
+
+                upgradeVillager(villager, newRecipes)
+
+                item.amount -= 1
+                CustomEffects.playSound(e.player.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 1.4F)
+                CustomEffects.particleCloud(Particle.HAPPY_VILLAGER.builder(), villager.location, 100, 1.0, 0.5)
+            })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -78,6 +110,6 @@ class ToolsmithUpgrade: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

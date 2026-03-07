@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "KIRA - FOCUS"
+  },
+  "length_in_seconds": 200.899048,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.kira_focus"
+  }
+}

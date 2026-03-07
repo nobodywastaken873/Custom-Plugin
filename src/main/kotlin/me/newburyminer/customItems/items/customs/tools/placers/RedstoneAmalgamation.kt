@@ -4,10 +4,15 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.helpers.cycleUp
 import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.behaviors.MaterialPlacer
+import me.newburyminer.customItems.items.behaviors.ScrollCycler
+import me.newburyminer.customItems.items.behaviors.SwapCycler
 import me.newburyminer.customItems.systems.materials.MaterialConverterRegistry
 import me.newburyminer.customItems.systems.materials.MaterialSystem
 import org.bukkit.Bukkit
@@ -18,9 +23,10 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityPlaceEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
-class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
+class RedstoneAmalgamation: CustomItemDefinition, SwapCycler, MaterialPlacer {
 
     override val custom: CustomItem = CustomItem.REDSTONE_AMALGAMATION
 
@@ -40,7 +46,40 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerItemHeldEvent::class, { e ->
+            e.player.inventory.getItem(e.previousSlot).isItem(custom) &&
+            e.player.isSneaking
+        },
+        {e ->
+            if (scrollCycle(item, e)) CustomEffects.playSoundToPlayer(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
+        })
+
+        register(PlayerSwapHandItemsEvent::class, { e ->
+            e.mainHandItem.isItem(custom) &&
+            e.player.isSneaking
+        },
+        {e ->
+            swapCycle(e.mainHandItem, 0..3)
+            e.isCancelled = true
+        })
+
+        register(BlockPlaceEvent::class, { e ->
+            e.itemInHand.isItem(custom)
+        },
+        {e ->
+            placeBlock(e, "Redstone Box")
+        })
+
+        register(EntityPlaceEvent::class, { e ->
+            e.player?.inventory?.getItem(e.hand).isItem(custom)
+        },
+        {e ->
+            placeEntity(e, "Redstone Box")
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -109,7 +148,7 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
                 val player = ctx.player ?: return
                 val item = ctx.item ?: return
                 if (player.isSneaking) {
-                    cycleItem(item, e)
+                    scrollCycle(item, e)
                     CustomEffects.playSoundToPlayer(player, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
                 }
             }
@@ -119,7 +158,8 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
                 if (!e.player.isSneaking) return
                 val item = ctx.item ?: return
                 val currentGroup = item.getTag<Int>("redstonegroup") ?: 0
-                val newGroup = if (currentGroup == 3) 0 else currentGroup + 1
+                val newGroup = currentGroup.cycleUp(0..3)
+
                 val storedIndexes = item.getTag<IntArray>("storedinner") ?: arrayOf(0, 0, 0, 0).toIntArray()
                 val currentIndex = item.getTag<Int>("toolindex") ?: 0
                 val newIndex = storedIndexes[newGroup]
@@ -134,10 +174,10 @@ class RedstoneAmalgamation: CustomItemDefinition, ItemCycler {
 
         }
 
-    }
+    }*/
 
-    override fun getCycleItems(item: ItemStack): Array<Material> {
-        return when (item.getTag<Int>("redstonegroup") ?: 0) {
+    override fun getCycleItems(item: ItemStack, group: Int): Array<Material> {
+        return when (group) {
             0 -> arrayOf(Material.STONE_BUTTON, Material.OAK_BUTTON, Material.LEVER, Material.OAK_PRESSURE_PLATE,
                 Material.STONE_PRESSURE_PLATE, Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.HEAVY_WEIGHTED_PRESSURE_PLATE)
             1 -> arrayOf(Material.MINECART, Material.DETECTOR_RAIL, Material.RAIL, Material.POWERED_RAIL,

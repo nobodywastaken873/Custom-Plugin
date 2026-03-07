@@ -3,6 +3,7 @@ package me.newburyminer.customItems.items.customs.tools.misc
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.hasCustom
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -18,6 +19,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -37,7 +39,35 @@ class PolarizedMagnet: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    private val itemPullTag = "polarizedmagnetitempull"
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            e.player.offCooldown(custom)
+        },
+        {e ->
+            val item = e.item ?: return@register
+
+            if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
+                if (e.hand != EquipmentSlot.HAND) return@register
+                if (!e.player.isSneaking) return@register
+
+                e.player.setTag(itemPullTag, !(e.player.getTag<Boolean>(itemPullTag) ?: false))
+                if (e.player.getTag<Boolean>(itemPullTag)!!) item.name(text("Polarized Magnet", arrayOf(36, 36, 255), bold = true))
+                else item.name(text("Polarized Magnet", arrayOf(255, 36, 36), bold = true))
+
+                CustomEffects.playSoundToPlayer(e.player, Sound.BLOCK_CANDLE_PLACE, 1F, 0.9F)
+                e.player.setCooldown(CustomItem.POLARIZED_MAGNET, 0.5)
+            }
+
+            else {
+                pullCount[e.player.uniqueId] = 4
+                CustomEffects.playSound(e.player.location, Sound.BLOCK_BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, 1.0F, 1.1F)
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -61,7 +91,7 @@ class PolarizedMagnet: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(1 to {player -> polarizedMagnetPull(player)})
@@ -69,6 +99,7 @@ class PolarizedMagnet: CustomItemDefinition {
     private val pullCount = mutableMapOf<UUID, Int>()
     private fun polarizedMagnetPull(player: Player) {
         val uuid = player.uniqueId
+
         if ((pullCount[uuid] ?: 0) > 0) {
             for (entity in player.getNearbyEntities(7.0, 7.0, 7.0)) {
                 if (entity is EnderPearl || entity is Arrow) continue
@@ -78,6 +109,7 @@ class PolarizedMagnet: CustomItemDefinition {
             }
             pullCount[uuid] = (pullCount[uuid] ?: 0) - 1
         }
+
         if (player.getTag<Boolean>("polarizedmagnetitempull") == true && player.hasCustom(CustomItem.POLARIZED_MAGNET)) {
             for (entity in player.getNearbyEntities(12.0, 12.0, 12.0)) {
                 if (entity.type != EntityType.ITEM && entity.type != EntityType.EXPERIENCE_ORB) continue

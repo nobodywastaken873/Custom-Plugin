@@ -14,6 +14,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerToggleFlightEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -38,25 +39,18 @@ class DoubleJumpBoots: CustomItemDefinition {
         .build()
 
     init {
-        val doubleJump = ListenerEntry(
-            PlayerToggleFlightEvent::class,
-            {wearingBoots(it)},
-            {handleDoubleJump(it)},
-        )
-        EventRegistry.register(doubleJump)
-    }
+        register(PlayerToggleFlightEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.FEET, custom) &&
+            e.player.gameMode !in arrayOf(GameMode.CREATIVE, GameMode.SPECTATOR)
+        },
+        {e ->
+            e.isCancelled = true
+            e.player.allowFlight = false
+            if (!e.player.offCooldown(CustomItem.DOUBLE_JUMP_BOOTS)) return@register
 
-    private fun wearingBoots(e: PlayerToggleFlightEvent): Boolean {
-        return e.player.inventory.boots.isItem(custom) &&
-                e.player.gameMode !in arrayOf(GameMode.CREATIVE, GameMode.SPECTATOR)
-    }
-    private fun handleDoubleJump(e: PlayerToggleFlightEvent) {
-        e.isCancelled = true
-        e.player.allowFlight = false
-        if (!e.player.offCooldown(CustomItem.DOUBLE_JUMP_BOOTS)) return
-
-        e.player.velocity = e.player.location.direction.multiply(1.0).setY(0.7)
-        e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
+            e.player.velocity = e.player.location.direction.multiply(1.0).setY(0.7)
+            e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

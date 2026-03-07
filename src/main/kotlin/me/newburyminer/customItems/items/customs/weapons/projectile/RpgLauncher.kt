@@ -23,12 +23,14 @@ import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
+import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Firework
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class RpgLauncher: CustomItemDefinition {
@@ -46,7 +48,36 @@ class RpgLauncher: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom) &&
+            e.entity is AbstractArrow
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+            val firework = shooter.world.spawn(e.entity.location, Firework::class.java) {
+                it.isShotAtAngle = true
+                it.velocity = (e.entity.shooter as Player).location.direction.normalize().multiply(6)
+                val newMeta = it.fireworkMeta
+                newMeta.addEffects(
+                    FireworkEffect.builder()
+                        .withColor(Color.RED)
+                        .with(FireworkEffect.Type.BALL)
+                        .build()
+                )
+                newMeta.power = 10
+                it.fireworkMeta = newMeta
+                it.shooter = e.entity.shooter
+            }
+
+            shooter.setCooldown(CustomItem.RPG_LAUNCHER, 10.0)
+
+            EntityWrapperManager.getWrapperorNew(firework).addComponent(SniperFireworkProjectile(0.65))
+            e.entity.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -79,6 +110,6 @@ class RpgLauncher: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

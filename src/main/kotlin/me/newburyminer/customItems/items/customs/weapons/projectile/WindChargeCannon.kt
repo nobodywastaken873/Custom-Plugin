@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -23,6 +24,7 @@ import org.bukkit.entity.*
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.math.abs
@@ -43,7 +45,54 @@ class WindChargeCannon: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom) &&
+            e.entity is AbstractArrow
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+            val crossbow = getActiveRanged(e) ?: return@register
+            val mode = crossbow.getTag<Int>("mode") ?: 0
+
+            val windCharges = mutableListOf<WindCharge>()
+            for (i in 0..1)
+                windCharges.add(e.entity.world.spawn(e.entity.location, WindCharge::class.java) {
+                    it.velocity = e.entity.velocity.multiply(0.7)
+                    it.shooter = shooter
+                })
+
+            if (mode == 0) {
+                val closest = shooter.getNearbyEntities(60.0, 60.0, 60.0)
+                    .filterIsInstance<LivingEntity>()
+                    .minByOrNull { it.location.subtract(shooter.location).toVector().angle(shooter.location.direction) }
+                    ?: shooter
+
+                for (windCharge in windCharges)
+                    EntityWrapperManager.getWrapperorNew(windCharge).addComponent(
+                        HomingProjectile(Math.PI / 24, closest)
+                    )
+                shooter.setCooldown(CustomItem.WIND_CHARGE_CANNON, 7.0)
+            } else {
+                shooter.setCooldown(CustomItem.WIND_CHARGE_CANNON, 5.0)
+            }
+            e.entity.remove()
+        })
+
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            isLeftClick(e)
+        },
+        {e ->
+            val item = e.item ?: return@register
+            val mode = item.getTag<Int>("mode") ?: 0
+            item.setTag("mode", if (mode == 1) 0 else 1)
+            item.name(text("Wind Charge Cannon - ${if (mode == 1) "Homing" else "Straight"}", arrayOf(201, 240, 238), bold = true))
+            e.player.playSound(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.0F)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -102,6 +151,6 @@ class WindChargeCannon: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

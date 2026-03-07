@@ -35,7 +35,4 @@ class HardHat: CustomItemDefinition {
         .setArmorSet(ArmorSet.TANK)
         .build()
 
-    override fun handle(ctx: EventContext) {
-    }
-
 }

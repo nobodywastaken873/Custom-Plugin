@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "MINIMUM RAGE"
+  },
+  "length_in_seconds": 203.337143,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.minimumrage"
+  }
+}

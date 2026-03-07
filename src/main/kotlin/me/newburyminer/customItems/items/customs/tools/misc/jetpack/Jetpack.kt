@@ -35,8 +35,6 @@ class Jetpack: CustomItemDefinition {
         .noNoiseEquippable(EquipmentSlot.CHEST)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(1 to {player -> updateJetpack(player)})
 

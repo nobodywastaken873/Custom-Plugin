@@ -25,13 +25,11 @@ class WarriorBoots: CustomItemDefinition {
         .setAttributes(
             SimpleModifier(Attribute.ARMOR, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
-            SimpleModifier(Attribute.LUCK, -+0.15, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.MAX_HEALTH, 1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
         )
         .setArmorSet(ArmorSet.WARRIOR)
         .build()
-
-    override fun handle(ctx: EventContext) {}
 
 }

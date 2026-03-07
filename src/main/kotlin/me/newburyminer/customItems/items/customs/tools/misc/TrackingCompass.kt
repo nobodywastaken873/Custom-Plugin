@@ -15,6 +15,7 @@ import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.CompassMeta
 import java.util.*
@@ -35,7 +36,41 @@ class TrackingCompass: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom)
+        },
+        {e ->
+
+            if (e.player.isTracking() && e.player.compassCooldown() < 30 * 60 * 20) {
+                val player = Bukkit.getPlayer(e.player.getTag<UUID>("trackingplayer")!!)
+                var loc = player?.location
+                var name = player?.name
+                if (player == null) {
+                    val offlinePlayer = Bukkit.getOfflinePlayer(e.player.getTag<UUID>("trackingplayer")!!)
+                    loc = offlinePlayer.location
+                    name = offlinePlayer.name
+                }
+                val newMeta = e.player.inventory.itemInMainHand.itemMeta as CompassMeta
+                newMeta.lodestone = loc!!
+                newMeta.isLodestoneTracked = false
+                e.player.inventory.itemInMainHand.itemMeta = newMeta
+                val worldName = when (loc.world) {
+                    Bukkit.getWorlds()[0] -> "Overworld"
+                    Bukkit.getWorlds()[1] -> "Nether"
+                    Bukkit.getWorlds()[2] -> "End"
+                    CustomItems.aridWorld -> "Arid Lands"
+                    else -> "unknown"
+                }
+                e.player.sendMessage(text("$name is currently in the $worldName.", Utils.SUCCESS_COLOR))
+            } else {
+                CompassGui(e.player).open(e.player)
+            }
+
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is PlayerInteractEvent -> {
@@ -67,6 +102,6 @@ class TrackingCompass: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

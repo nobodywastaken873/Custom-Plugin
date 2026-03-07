@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "DECO27 - Zombies"
+  },
+  "length_in_seconds": 189.056871,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.deco27_zombies"
+  }
+}

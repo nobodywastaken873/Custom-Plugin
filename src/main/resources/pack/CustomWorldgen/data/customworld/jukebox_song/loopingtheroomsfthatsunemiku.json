@@ -1,0 +1,10 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "text": "Looping the Rooms ft. Hatsune Miku"
+  },
+  "length_in_seconds": 134.141678,
+  "sound_event": {
+    "sound_id": "minecraft:music_disc.loopingtheroomsfthatsunemiku"
+  }
+}

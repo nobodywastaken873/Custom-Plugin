@@ -41,8 +41,6 @@ class TurtleShell: CustomItemDefinition {
         .setArmorSet(ArmorSet.TANK)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(60 to {player -> runTask(player)})
 

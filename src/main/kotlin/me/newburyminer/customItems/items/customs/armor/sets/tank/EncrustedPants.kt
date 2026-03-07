@@ -1,13 +1,18 @@
 package me.newburyminer.customItems.items.customs.armor.sets.tank
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityTargetEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -36,7 +41,27 @@ class EncrustedPants: CustomItemDefinition {
         .setArmorSet(ArmorSet.TANK)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityTargetEvent::class, { e ->
+            var foundTarget: Player? = null
+            e.entity.location.getNearbyPlayers(40.0, 40.0, 40.0).forEach { player ->
+                if (player.inventory.leggings.isItem(custom))
+                    foundTarget = player
+            }
+            foundTarget != null
+        },
+        {e ->
+            var foundTarget: Player? = null
+            e.entity.location.getNearbyPlayers(40.0, 40.0, 40.0).forEach { player ->
+                if (player.inventory.leggings.isItem(custom))
+                    foundTarget = player
+            }
+
+            e.target = foundTarget
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
         when (val e = ctx.event) {
 
             is EntityTargetEvent -> {
@@ -47,6 +72,6 @@ class EncrustedPants: CustomItemDefinition {
             }
 
         }
-    }
+    }*/
 
 }

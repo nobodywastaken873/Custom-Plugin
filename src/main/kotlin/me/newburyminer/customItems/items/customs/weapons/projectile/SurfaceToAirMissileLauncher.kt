@@ -23,6 +23,7 @@ import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.damage.DamageType
+import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Firework
@@ -30,6 +31,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 import java.util.*
@@ -50,7 +52,49 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom) &&
+            e.entity is AbstractArrow
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+
+            var flyer: Player? = shooter.location.getNearbyPlayers(120.0)
+                .filter { it.isGliding && it != shooter }
+                .minByOrNull { it.location.subtract(shooter.location).toVector().angle(shooter.location.direction) }
+            if (flyer == null) {
+                e.isCancelled = true
+                shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 10.0)
+                return@register
+            }
+
+            shooter.playSound(shooter.location, Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 2.0F, 0.2F)
+            e.isCancelled = true
+            val missile = shooter.world.spawn(shooter.location.add(0.0, 1.5, 0.0), Firework::class.java) {
+                it.shooter = shooter as LivingEntity
+                val newMeta = it.fireworkMeta
+                newMeta.addEffects(
+                    FireworkEffect.builder()
+                        .with(FireworkEffect.Type.BALL_LARGE)
+                        .withColor(Color.BLACK, Color.GRAY, Color.ORANGE)
+                        .withFade(Color.GRAY)
+                        .trail(true)
+                        .build()
+                )
+                newMeta.power = 100
+                it.fireworkMeta = newMeta
+            }
+            EntityWrapperManager.getWrapperorNew(missile).addComponent(
+                ElytraBreakerFirework(HitEffects(
+                    CustomDamageApply(25.0, DamageType.ARROW, 0, overrideSource = shooter),
+                ), 500, flyer)
+            )
+            shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -91,6 +135,6 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

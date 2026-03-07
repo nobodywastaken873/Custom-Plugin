@@ -9,6 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.damage.DamageSettings
+import me.newburyminer.customItems.helpers.rayTraceEntities
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -21,6 +22,7 @@ import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class SonicCrossbow: CustomItemDefinition {
@@ -39,7 +41,36 @@ class SonicCrossbow: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val shooter = e.entity.shooter as? Player ?: return@register
+
+            val direction = shooter.location.direction.normalize().multiply(0.5)
+            val current = shooter.location
+            val hitEntities = shooter.world.rayTraceEntities(shooter.eyeLocation, direction, 15.0, ignore = shooter)
+
+            for (entity in hitEntities) {
+                if (entity !is LivingEntity) continue
+
+                if (entity is Player)
+                    entity.applyDamage(DamageSettings(8.0, CustomDamageType.ALL_BYPASS, shooter))
+                else
+                    entity.applyDamage(DamageSettings(35.0, DamageType.PLAYER_ATTACK, shooter))
+            }
+
+            CustomEffects.particleLine(ParticleBuilder(Particle.SONIC_BOOM), shooter.location,
+                shooter.location.add(shooter.location.direction.normalize().multiply(15)), 15)
+            CustomEffects.playSound(shooter.location, Sound.ENTITY_WARDEN_SONIC_BOOM, 1.0F, 1.0F)
+
+            shooter.setCooldown(CustomItem.SONIC_CROSSBOW, 20.0)
+            e.entity.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -86,6 +117,6 @@ class SonicCrossbow: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

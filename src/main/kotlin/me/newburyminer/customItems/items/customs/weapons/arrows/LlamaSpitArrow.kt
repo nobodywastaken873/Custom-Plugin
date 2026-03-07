@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.customs.weapons.arrows
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
@@ -18,6 +19,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.LlamaSpit
 import org.bukkit.event.entity.EntityShootBowEvent
 import org.bukkit.event.entity.ProjectileHitEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class LlamaSpitArrow: CustomItemDefinition {
@@ -36,7 +38,24 @@ class LlamaSpitArrow: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityShootBowEvent::class, { e ->
+            e.consumable.isItem(custom)
+        },
+        {e ->
+            val spit = e.entity.world.spawn(e.projectile.location, LlamaSpit::class.java) {
+                it.velocity = e.projectile.velocity
+                it.shooter = e.entity
+            }
+            EntityWrapperManager.getWrapperorNew(spit).addComponent(CustomDamageProjectile(HitEffects(
+                CustomDamageApply(1.5, CustomDamageType.ALL_BYPASS, 0, e.entity),
+                VanillaKnockbackApply(0.1)
+            )))
+            e.projectile.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -58,6 +77,6 @@ class LlamaSpitArrow: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

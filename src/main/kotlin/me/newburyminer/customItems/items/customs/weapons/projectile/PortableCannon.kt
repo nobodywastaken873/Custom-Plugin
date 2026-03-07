@@ -25,6 +25,7 @@ import org.bukkit.entity.Arrow
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class PortableCannon: CustomItemDefinition {
@@ -43,7 +44,29 @@ class PortableCannon: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val shooter = e.entity.shooter as Player
+
+            val direction = shooter.location.direction.normalize().multiply(-1)
+            shooter.velocity = shooter.velocity.add(direction)
+
+            e.entity.velocity = e.entity.velocity.multiply(0.6)
+            EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
+                CustomDamageApply(18.0, DamageType.ARROW, overrideSource = shooter),
+            )))
+
+            CustomEffects.particleCloud(ParticleBuilder(Particle.SMOKE), e.entity.location, 20, 1.0, 0.0)
+            CustomEffects.playSound(shooter.location, Sound.ENTITY_GENERIC_EXPLODE, 0.4F, 1.8F)
+
+            shooter.setCooldown(CustomItem.PORTABLE_CANNON, 1.0)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -68,6 +91,6 @@ class PortableCannon: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.tools.spawners
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -29,34 +30,19 @@ class DesertSpawner: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            isRightClick(e) &&
+            !e.player.isBeingTracked()
+        },
+        {e ->
+            //val boss = CustomBossType.WARDEN
+            //val players = e.player.location.getNearbyPlayers(20.0)
 
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-                if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
-                if (e.player.isBeingTracked()) return
-
-                /*val boss = CustomBoss.HUSK
-                if (boss.isAlive()) {
-                    e.player.sendMessage(text("This boss is already alive. Please try again later.", Utils.FAILED_COLOR))
-                    return
-                }
-
-                item.amount -= 1
-                for (player in e.player.location.getNearbyPlayers(20.0)) {
-                    player.teleport(boss.getCenter())
-                    player.gameMode = GameMode.ADVENTURE
-                    player.sendMessage(text("Hit the boss to begin.", Utils.GRAY))
-                }*/
-
-                //CustomItems.bossListener.desertSummon()
-            }
-
-        }
-
+            //val spawnedBoss = BossManager.spawnBoss(boss, e.player, players.toList())
+            //if (spawnedBoss) item.amount -= 1
+        })
     }
 
 }

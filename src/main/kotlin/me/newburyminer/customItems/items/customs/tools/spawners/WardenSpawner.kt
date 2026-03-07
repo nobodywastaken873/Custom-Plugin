@@ -3,6 +3,7 @@ package me.newburyminer.customItems.items.customs.tools.spawners
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.bosses.BossManager
 import me.newburyminer.customItems.bosses.CustomBossType
@@ -15,6 +16,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class WardenSpawner: CustomItemDefinition {
@@ -33,7 +35,22 @@ class WardenSpawner: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            isRightClick(e) &&
+            !e.player.isBeingTracked()
+        },
+        {e ->
+            val boss = CustomBossType.WARDEN
+            val players = e.player.location.getNearbyPlayers(20.0)
+
+            val spawnedBoss = BossManager.spawnBoss(boss, e.player, players.toList())
+            if (spawnedBoss) item.amount -= 1
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -52,6 +69,6 @@ class WardenSpawner: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

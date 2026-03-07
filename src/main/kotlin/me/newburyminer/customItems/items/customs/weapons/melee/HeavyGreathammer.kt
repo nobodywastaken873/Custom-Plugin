@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -38,7 +39,40 @@ class HeavyGreathammer: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.isCritical
+        },
+        {e ->
+            val damager = e.damager as? Player ?: return@register
+            val sword = damager.inventory.itemInMainHand
+
+            val criticalTag = "criticalcount"
+
+            var criticalCount = sword.getTag<Int>(criticalTag) ?: 0
+            sword.setTag(criticalTag, criticalCount + 1)
+            criticalCount += 1
+
+            if (criticalCount % 3 != 0) {
+                damager.playSound(damager.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0F,
+                    if (criticalCount % 3 == 1) 1.0F else 1.2F
+                )
+                return@register
+            }
+
+            e.damage *= 2
+            CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.0F, 0.7F)
+            CustomEffects.particle(Particle.CRIMSON_SPORE.builder(), e.entity.location, 20, 0.5, 0.5)
+
+            val damaged = e.entity as? Player ?: return@register
+            for (armor in damaged.inventory.armorContents) {
+                if (armor?.itemMeta?.isUnbreakable != true) armor?.reduceDura(10)
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -71,6 +105,6 @@ class HeavyGreathammer: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

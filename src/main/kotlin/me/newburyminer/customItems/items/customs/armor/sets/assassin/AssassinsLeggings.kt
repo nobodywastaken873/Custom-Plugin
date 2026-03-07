@@ -37,6 +37,4 @@ class AssassinsLeggings: CustomItemDefinition {
         .setArmorSet(ArmorSet.ASSASSIN)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

@@ -14,6 +14,7 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class VillagerAtomizer: CustomItemDefinition {
@@ -32,7 +33,32 @@ class VillagerAtomizer: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.rightClicked is Villager &&
+            EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true
+        },
+        {e ->
+            e.isCancelled = true
+            val newItem = ItemRegistry.get(CustomItem.VILLAGER)
+            val villager: Villager = e.rightClicked as Villager
+
+            EntityWrapperManager.removeWrapper(villager)
+            val snapshot = villager.createSnapshot()!!.asString
+            newItem.setTag("storedvillager", snapshot)
+
+            newItem.lore(
+                text("Profession: ${villager.profession.key.key.capitalize()}", arrayOf(255, 255, 255)),
+                text("Level: ${convertVillagerLevel(villager.villagerLevel)}", arrayOf(255, 255, 255)),
+            )
+            e.player.addItemorDrop(newItem)
+            CustomEffects.playSound(villager.location, Sound.ENTITY_ITEM_PICKUP, 1F, 0.75F)
+            villager.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -62,6 +88,6 @@ class VillagerAtomizer: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

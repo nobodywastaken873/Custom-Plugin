@@ -25,6 +25,4 @@ class MagicalFlask: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

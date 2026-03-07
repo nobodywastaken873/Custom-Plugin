@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items.customs.tools.mining
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -10,12 +11,14 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.EventContext
+import me.newburyminer.customItems.items.behaviors.ClickCycler
 import org.bukkit.Material
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
-class PocketknifeMultitool: CustomItemDefinition {
+class PocketknifeMultitool: CustomItemDefinition, ClickCycler {
 
     override val custom: CustomItem = CustomItem.POCKETKNIFE_MULTITOOL
 
@@ -32,7 +35,22 @@ class PocketknifeMultitool: CustomItemDefinition {
         .setUnbreakable()
         .build()
 
-    override fun handle(ctx: EventContext) {
+    private val cycleItems = listOf(Material.SHEARS, Material.FLINT_AND_STEEL, Material.BRUSH)
+    init {
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            e.hand == EquipmentSlot.HAND &&
+            e.player.offCooldown(custom) &&
+            isRightClick(e) &&
+            e.player.isSneaking
+        },
+        {e ->
+            cycleItem(e.item ?: return@register, cycleItems)
+            e.player.setCooldown(custom, 0.1)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -57,6 +75,6 @@ class PocketknifeMultitool: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

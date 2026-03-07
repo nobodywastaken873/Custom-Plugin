@@ -16,6 +16,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -39,7 +40,26 @@ class GravityHammer: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.damager is Player &&
+            (e.damager as Player).offCooldown(custom) &&
+            (e.damager as Player).attackCooldown.toDouble() == 1.0
+        },
+        {e ->
+            val damager = e.damager as Player
+            val damaged = e.entity as? Player ?: return@register
+
+            CustomEffects.playSound(damaged.location, Sound.ITEM_MACE_SMASH_AIR, 1.0F, 1.2F)
+            EffectManager.applyEffect(damaged, CustomEffectType.ATTRIBUTE,
+                EffectData(7 * 20, attributeData = AttributeData(2.0, Attribute.GRAVITY, AttributeModifier.Operation.MULTIPLY_SCALAR_1))
+            )
+            damager.setCooldown(custom, 20.0)
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -58,6 +78,6 @@ class GravityHammer: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

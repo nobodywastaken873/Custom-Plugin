@@ -410,11 +410,6 @@ class SystemsListener: Listener, Runnable  {
             e.isCancelled = true
         }
     }
-    @EventHandler fun onPlayerGainExp(e: PlayerPickupExperienceEvent) {
-        val player = e.player
-        val expMult = 1.0 + (player.getTag<Int>("experiencekept") ?: return) * 0.15
-        e.experienceOrb.experience = (e.experienceOrb.experience * expMult).toInt()
-    }
 
     private var futures = mutableListOf<Int>()
     private var removalItems: MutableMap<UUID, MutableList<ItemStack>> = mutableMapOf()

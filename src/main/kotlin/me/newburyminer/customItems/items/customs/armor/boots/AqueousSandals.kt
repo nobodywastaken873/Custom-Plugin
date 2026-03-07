@@ -45,23 +45,16 @@ class AqueousSandals: CustomItemDefinition {
         .build()
 
     init {
-        val onPlayerSneak = ListenerEntry(
-            PlayerToggleSneakEvent::class,
-            {it.isSneaking && slotMatches(it, EquipmentSlot.FEET, custom) && isOffCooldown(it, custom)},
-            {handleDolphinsActivate(it)}
-        )
-        EventRegistry.register(onPlayerSneak)
-    }
-
-    private fun isSneaking(e: PlayerToggleSneakEvent): Boolean {
-        return e.isSneaking &&
-                e.player.inventory.boots.isItem(custom) &&
-                e.player.offCooldown(custom)
-    }
-    private fun handleDolphinsActivate(e: PlayerToggleSneakEvent) {
-        e.player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 100, 0, true, true, true))
-        e.player.setCooldown(custom, 20.0)
-        CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+        register(PlayerToggleSneakEvent::class, { e ->
+            e.isSneaking &&
+            slotMatches(e, EquipmentSlot.FEET, custom) &&
+            isOffCooldown(e, custom)
+        },
+        {e ->
+            e.player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 100, 0, true, true, true))
+            e.player.setCooldown(custom, 20.0)
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

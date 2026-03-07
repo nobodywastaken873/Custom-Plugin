@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.pushOut
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
@@ -43,7 +45,46 @@ class EnderBlade: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            EffectManager.hasEffect(e.damager as? Player ?: return@register false, CustomEffectType.ENDER_CRIT) &&
+            !e.isCritical
+        },
+        {e ->
+            e.damage *= 1.5
+            CustomEffects.playSound(e.entity.location, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.8F, 1.0F)
+            CustomEffects.particle(Particle.CRIT.builder(), e.entity.location.add(0.0, 1.0, 0.0), 20, 0.5, 0.5)
+        })
+
+        register(PlayerInteractEvent::class, { e ->
+            e.item.isItem(custom) &&
+            e.player.offCooldown(custom) &&
+            isRightClick(e)
+        },
+        {e ->
+            val startLoc = e.player.eyeLocation.clone()
+            val toAdd = e.player.location.direction.clone().normalize().multiply(0.05)
+            for (i in 1..120) {
+                startLoc.add(toAdd)
+                if (!startLoc.add(toAdd).block.isPassable || !startLoc.clone().add(Vector(0, 1, 0)).block.isPassable) {
+                    startLoc.subtract(toAdd.multiply(2))
+                    break
+                }
+            }
+            startLoc.pushOut(e.player.width)
+            e.player.teleport(startLoc)
+            CustomEffects.playSound(e.player.location, Sound.ENTITY_SHULKER_TELEPORT, 1.0F, 0.94F)
+            if (e.player.isSneaking) {
+                e.player.setCooldown(custom, 15.0)
+                EffectManager.applyEffect(e.player, CustomEffectType.ENDER_CRIT, 6 * 20)
+            } else {
+                e.player.setCooldown(custom, 6.5)
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -84,6 +125,6 @@ class EnderBlade: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

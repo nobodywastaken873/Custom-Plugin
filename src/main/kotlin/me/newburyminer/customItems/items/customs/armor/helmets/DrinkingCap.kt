@@ -9,8 +9,10 @@ import me.newburyminer.customItems.items.*
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -38,31 +40,26 @@ class DrinkingCap: CustomItemDefinition {
         .build()
 
     init {
-        val onEffectApply = ListenerEntry(
-            EntityPotionEffectEvent::class,
-            {isCorrectEffect(it)},
-            {increaseDuration(it)},
-        )
-        EventRegistry.register(onEffectApply)
-    }
-
-    private fun isCorrectEffect(e: EntityPotionEffectEvent): Boolean {
-        return e.entity is Player &&
-                (e.entity as Player).inventory.helmet.isItem(custom) &&
-                e.cause in arrayOf(
-            EntityPotionEffectEvent.Cause.POTION_SPLASH,
-            EntityPotionEffectEvent.Cause.POTION_DRINK,
-            EntityPotionEffectEvent.Cause.FOOD,
-            EntityPotionEffectEvent.Cause.TOTEM,
-        ) &&
-                (e.action == EntityPotionEffectEvent.Action.ADDED ||
-                        e.action == EntityPotionEffectEvent.Action.CHANGED)
-    }
-    private fun increaseDuration(e: EntityPotionEffectEvent) {
-        val newEffect = e.newEffect ?: return
-        e.isCancelled = true
-        (e.entity as Player).addPotionEffect(PotionEffect(newEffect.type, newEffect.duration * 2,
-            newEffect.amplifier, newEffect.isAmbient, newEffect.hasParticles()))
+        register(EntityPotionEffectEvent::class, { e ->
+            e.entity is Player &&
+            slotMatches(e, EquipmentSlot.HEAD, custom) &&
+            e.cause in arrayOf(
+                EntityPotionEffectEvent.Cause.POTION_SPLASH,
+                EntityPotionEffectEvent.Cause.POTION_DRINK,
+                EntityPotionEffectEvent.Cause.FOOD,
+                EntityPotionEffectEvent.Cause.TOTEM,
+            ) &&
+            (
+                e.action == EntityPotionEffectEvent.Action.ADDED ||
+                e.action == EntityPotionEffectEvent.Action.CHANGED
+            )
+        },
+        {e ->
+            val newEffect = e.newEffect ?: return@register
+            e.isCancelled = true
+            (e.entity as Player).addPotionEffect(PotionEffect(newEffect.type, newEffect.duration * 2,
+                newEffect.amplifier, newEffect.isAmbient, newEffect.hasParticles()))
+        })
     }
 
     /*override fun handle(ctx: EventContext) {

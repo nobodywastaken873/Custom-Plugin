@@ -25,6 +25,4 @@ class WardenHeart: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {}
-
 }

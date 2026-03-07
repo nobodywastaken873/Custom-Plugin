@@ -32,7 +32,27 @@ class GoldenZombie: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(PlayerInteractEntityEvent::class, { e ->
+            slotMatches(e, org.bukkit.inventory.EquipmentSlot.HAND, custom) &&
+            (e.rightClicked is Villager || e.rightClicked is ZombieVillager) &&
+            EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true
+        },
+        { e ->
+            e.isCancelled = true
+            if (e.rightClicked is Villager) {
+                val villager: Villager = e.rightClicked as Villager
+                villager.zombify()
+            }
+            else if (e.rightClicked is ZombieVillager) {
+                val zombieVillager: ZombieVillager = e.rightClicked as ZombieVillager
+                zombieVillager.conversionTime = 50
+                zombieVillager.conversionPlayer = e.player
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -56,6 +76,6 @@ class GoldenZombie: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

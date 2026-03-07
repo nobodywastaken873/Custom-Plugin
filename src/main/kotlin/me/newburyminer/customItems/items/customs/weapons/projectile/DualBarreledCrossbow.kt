@@ -4,6 +4,7 @@ import io.papermc.paper.event.entity.EntityLoadCrossbowEvent
 import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
+import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
@@ -19,10 +20,13 @@ import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Arrow
+import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class DualBarreledCrossbow: CustomItemDefinition {
@@ -41,7 +45,28 @@ class DualBarreledCrossbow: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    override fun handle(ctx: EventContext) {
+    init {
+        register(EntityLoadCrossbowEvent::class, { e ->
+            e.crossbow.isItem(custom)
+        }, 
+        {e ->
+            e.isCancelled = true
+            e.crossbow.crossbowProj(ItemStack(Material.ARROW), 2)
+        })
+
+        register(ProjectileLaunchEvent::class, { e ->
+            activeRangedMatches(e, custom)
+        },
+        {e ->
+            val arrow = e.entity as Arrow
+            arrow.pierceLevel = 6
+            EntityWrapperManager.getWrapperorNew(arrow).addComponent(CustomDamageProjectile(HitEffects(
+                CustomDamageApply(17.0, DamageType.ARROW, overrideSource = e.entity.shooter as Entity?),
+            )))
+        })
+    }
+    
+    /*override fun handle(ctx: EventContext) {
 
         when (val e = ctx.event) {
 
@@ -65,6 +90,6 @@ class DualBarreledCrossbow: CustomItemDefinition {
 
         }
 
-    }
+    }*/
 
 }

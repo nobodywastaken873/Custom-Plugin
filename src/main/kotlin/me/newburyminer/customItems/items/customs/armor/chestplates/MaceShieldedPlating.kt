@@ -12,6 +12,7 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -35,22 +36,15 @@ class MaceShieldedPlating: CustomItemDefinition {
         .build()
 
     init {
-        val reduceMaceDamage = ListenerEntry(
-            EntityDamageByEntityEvent::class,
-            {isMacing(it)},
-            {handleReduceMaceDamage(it)},
-        )
-        EventRegistry.register(reduceMaceDamage)
-    }
-
-    private fun isMacing(e: EntityDamageByEntityEvent): Boolean {
-        return e.entity is Player &&
-                (e.entity as Player).inventory.chestplate.isItem(custom) &&
-                e.damager is Player &&
-                e.damageSource.damageType == DamageType.MACE_SMASH
-    }
-    private fun handleReduceMaceDamage(e: EntityDamageByEntityEvent) {
-        e.damage *= 0.4
+        register(EntityDamageByEntityEvent::class, { e ->
+            e.entity is Player &&
+            (e.entity as Player).inventory.chestplate.isItem(custom) &&
+            e.damager is Player &&
+            e.damageSource.damageType == DamageType.MACE_SMASH
+        },
+        {e ->
+            e.damage *= 0.4
+        })
     }
 
     /*override fun handle(ctx: EventContext) {
