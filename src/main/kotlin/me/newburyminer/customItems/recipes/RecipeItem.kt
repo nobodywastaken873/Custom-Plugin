@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.Utils.Companion.basePotion
 import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.fireworkBooster
+import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.horn
 import me.newburyminer.customItems.Utils.Companion.omimous
 import me.newburyminer.customItems.Utils.Companion.storeEnch
@@ -33,6 +34,7 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
         if (other == null) return false
         if (other.type != item.type) return false
         if (other.amount < item.amount) return false
+        if (other.getCustom() != item.getCustom()) return false
         val activeFlags = flags.filterValues { it }.keys.toList()
         val allFlagsMatch = checkFlags(other, activeFlags)
         return allFlagsMatch

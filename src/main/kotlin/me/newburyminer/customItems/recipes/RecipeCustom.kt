@@ -10,7 +10,7 @@ class RecipeCustom(private val custom: CustomItem, private val amount: Int = 1):
     override fun matches(other: ItemStack?): Boolean {
         val otherCustom = other?.getCustom() ?: return false
         if (otherCustom != custom) return false
-        if (other.amount != amount) return false
+        if (other.amount < amount) return false
         return true
     }
 
