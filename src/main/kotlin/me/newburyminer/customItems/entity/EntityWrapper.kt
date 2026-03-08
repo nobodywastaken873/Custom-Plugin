@@ -10,7 +10,7 @@ import kotlin.reflect.full.companionObjectInstance
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
     init {
-        //components.add(0, DefaultEntityComponent())
+        components.forEach { component -> component.registerListeners(this) }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -29,6 +29,7 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
 
     fun addComponent(component: EntityComponent) {
         components += component
+        component.registerListeners(this)
     }
 
     fun handle(ctx: EntityEventContext) {

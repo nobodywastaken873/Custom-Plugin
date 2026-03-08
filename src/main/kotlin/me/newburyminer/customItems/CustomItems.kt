@@ -168,6 +168,7 @@ class CustomItems : JavaPlugin() {
     }
 
     override fun onDisable() {
+        EntityWrapperManager.removeAllWrappers()
         BossManager.cancelAllBosses()
         cooldownTask.cancel()
         //entityListener.cancel()

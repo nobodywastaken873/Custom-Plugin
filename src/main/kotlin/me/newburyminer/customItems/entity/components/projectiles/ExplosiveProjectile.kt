@@ -35,11 +35,20 @@ class ExplosiveProjectile(private val power: Float, private val setFire: Boolean
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileHitEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            detonate(e.entity, power, setFire, breakBlocks)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
             is ProjectileHitEvent -> {
                 detonate(e.entity, power, setFire, breakBlocks)
             }
         }
-    }
+    }*/
 }

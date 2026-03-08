@@ -26,7 +26,18 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            if (e.entity.getTag<Boolean>("damaged") == true) { e.entity.setTag("damaged", false); return@register }
+            e.isCancelled = true
+            hitEffects.apply(e.entity as LivingEntity, e.damager)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -38,5 +49,5 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
             }
 
         }
-    }
+    }*/
 }

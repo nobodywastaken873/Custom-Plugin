@@ -28,7 +28,30 @@ class LandmineArrow: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityRemoveEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.cause == EntityRemoveEvent.Cause.DESPAWN
+        },
+        {e ->
+            val arrow = e.entity.world.spawn(e.entity.location, Arrow::class.java, CreatureSpawnEvent.SpawnReason.CUSTOM) {
+                it.color = (e.entity as Arrow).color
+                it.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
+            }
+            arrow.shooter = (e.entity as Arrow).shooter
+            EntityWrapperManager.getWrapperorNew(arrow)
+                .addComponent(LandmineArrow())
+        })
+
+        register(ProjectileHitEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityRemoveEvent -> {
@@ -47,5 +70,5 @@ class LandmineArrow: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

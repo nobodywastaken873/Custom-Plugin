@@ -34,7 +34,21 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.damager == wrapper.entity
+        },
+        {e ->
+            val damaged = e.entity as? LivingEntity ?: return@register
+            if (damaged.getTag<Boolean>("damaged") == true) { damaged.setTag("damaged", false); return@register }
+
+            e.isCancelled = true
+            damage.apply(damaged, e.damager)
+            wrapper.entity.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -48,5 +62,5 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
             }
 
         }
-    }
+    }*/
 }

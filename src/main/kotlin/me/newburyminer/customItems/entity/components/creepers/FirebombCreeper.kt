@@ -27,7 +27,25 @@ class FirebombCreeper(val rate: Double): EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity.getTag<Boolean>("exploding") == true
+        },
+        {e ->
+            Bukkit.getScheduler().runTaskLater(CustomItems.plugin, Runnable {
+                val radius = (e.entity as Creeper).explosionRadius
+                val interval = -radius..radius
+
+                for (x in interval) for (y in interval) for (z in interval) {
+                    if (e.location.clone().add(Vector(x, y, z)).block.type == Material.FIRE)
+                        if (Math.random() < rate) e.location.clone().add(Vector(x, y, z)).block.type = Material.LAVA
+                }
+            }, 1)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -47,5 +65,5 @@ class FirebombCreeper(val rate: Double): EntityComponent {
             }
 
         }
-    }
+    }*/
 }

@@ -44,7 +44,24 @@ class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityC
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileLaunchEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity.shooter == wrapper.entity
+        },
+        {e ->
+            val effect = effects.random()
+            val newEffect = PotionEffect(effect.type, effect.duration, effect.amplifier)
+            val potion = e.entity as ThrownPotion
+            val newMeta = potion.potionMeta
+            newMeta.basePotionType = null
+            newMeta.clearCustomEffects()
+            newMeta.addCustomEffect(newEffect, true)
+            newMeta.color = Color.fromRGB((Math.random() * 255).toInt(), (Math.random() * 255).toInt(), (Math.random() * 255).toInt())
+            potion.potionMeta = newMeta
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is ProjectileLaunchEvent -> {
@@ -60,5 +77,5 @@ class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityC
             }
 
         }
-    }
+    }*/
 }

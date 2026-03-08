@@ -46,7 +46,24 @@ class PotionExplosionCreeper(
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity.getTag<Boolean>("exploding") == true
+        },
+        {e ->
+            val creeper = e.entity as? Creeper ?: return@register
+            creeper.addPotionEffect(PotionEffect(
+                type,
+                duration,
+                potency,
+                ambient,
+                showParticles
+            ))
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -62,6 +79,6 @@ class PotionExplosionCreeper(
             }
 
         }
-    }
+    }*/
 
 }

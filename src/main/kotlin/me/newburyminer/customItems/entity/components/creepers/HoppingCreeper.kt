@@ -23,7 +23,17 @@ class HoppingCreeper: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(GenericGameEvent::class, wrapper.entity.uniqueId, { e ->
+            e.event == GameEvent.PRIME_FUSE &&
+            e.entity == wrapper.entity
+        },
+        {e ->
+            ticksUntilJump = (e.entity as Creeper).maxFuseTicks / 2 + 1
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is GenericGameEvent -> {
@@ -32,7 +42,7 @@ class HoppingCreeper: EntityComponent {
             }
 
         }
-    }
+    }*/
 
     private var ticksUntilJump = 0
     override fun tick(wrapper: EntityWrapper) {

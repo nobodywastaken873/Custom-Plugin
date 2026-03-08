@@ -44,7 +44,17 @@ class ExplosiveProjectileShooter(private val power: Float, private val setFire: 
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileLaunchEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity.shooter == wrapper.entity
+        },
+        {e ->
+            EntityWrapperManager.getWrapperorNew(e.entity)
+                .addComponent(ExplosiveProjectile(power, setFire, breakBlocks))
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is ProjectileLaunchEvent -> {
@@ -53,6 +63,6 @@ class ExplosiveProjectileShooter(private val power: Float, private val setFire: 
             }
 
         }
-    }
+    }*/
 
 }

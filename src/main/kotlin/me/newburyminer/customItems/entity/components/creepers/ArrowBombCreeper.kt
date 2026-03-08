@@ -14,9 +14,12 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Creeper
+import org.bukkit.event.Event
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.util.Vector
+import java.util.UUID
 import kotlin.math.pow
+import kotlin.reflect.KClass
 
 class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
 
@@ -35,7 +38,26 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity.getTag<Boolean>("exploding") == true
+        },
+        {e ->
+            for (i in 1..count) {
+                val arrow = e.entity.world.spawnArrow(
+                    e.entity.location, Vector(Utils.randomRange(-1.0, 1.0), Math.random(), Utils.randomRange(-1.0, 1.0)).normalize(), 1F, 1F)
+
+                arrow.shooter = e.entity as Creeper
+                EntityWrapperManager.getWrapperorNew(arrow).addComponent(
+                    CustomDamageProjectile(HitEffects(CustomDamageApply(damage, DamageType.ARROW, 0)))
+                )
+
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -73,5 +95,5 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
             }
 
         }
-    }
+    }*/
 }

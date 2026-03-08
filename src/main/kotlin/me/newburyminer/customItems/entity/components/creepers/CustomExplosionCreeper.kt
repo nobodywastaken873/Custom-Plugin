@@ -29,7 +29,19 @@ class CustomExplosionCreeper(private val power: Float, private val setFire: Bool
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+            val creeper = e.entity as? Creeper ?: return@register
+            creeper.clearActivePotionEffects()
+            detonate(e.entity, power, setFire, breakBlocks)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -40,5 +52,5 @@ class CustomExplosionCreeper(private val power: Float, private val setFire: Bool
             }
 
         }
-    }
+    }*/
 }

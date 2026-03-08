@@ -21,7 +21,18 @@ class LingeringWitchShooter: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileLaunchEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity.shooter == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+            val witch = e.entity.shooter as? Witch ?: return@register
+            witch.launchProjectile(LingeringPotion::class.java, e.entity.velocity)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is ProjectileLaunchEvent -> {
@@ -31,5 +42,5 @@ class LingeringWitchShooter: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

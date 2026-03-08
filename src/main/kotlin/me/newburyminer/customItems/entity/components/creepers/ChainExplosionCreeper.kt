@@ -21,7 +21,22 @@ class ChainExplosionCreeper: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.damager == wrapper.entity
+        },
+        {e ->
+            val creeper = e.entity as? Creeper ?: return@register
+            val wrapper = EntityWrapperManager.getWrapperorNew(creeper)
+            if (!creeper.isIgnited) {
+                wrapper.addComponent(ChainExplosionCreeper())
+                creeper.fuseTicks = (20 * Math.random()).toInt()
+                creeper.ignite()
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -36,5 +51,5 @@ class ChainExplosionCreeper: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

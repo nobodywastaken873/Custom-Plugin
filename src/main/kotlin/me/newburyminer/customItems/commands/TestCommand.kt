@@ -23,13 +23,21 @@ import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
 import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.LavaOnDeath
+import me.newburyminer.customItems.entity.components.projectiles.CancelProjectiles
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
+import me.newburyminer.customItems.eventbus.EventBus
+import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key
 import org.bukkit.*
 import org.bukkit.entity.Player
+import org.bukkit.entity.Skeleton
+import org.bukkit.entity.Zombie
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.trim.ArmorTrim
@@ -104,6 +112,15 @@ class TestCommand : BasicCommand {
         } else if (args[0] == "vanilla_knockback") {
             val damageSettings = HitEffects(VanillaKnockbackApply())
             damageSettings.apply(sender, sender)
+        } else if (args[0] == "lava_on_death") {
+            val zombie = sender.world.spawn(sender.location, Zombie::class.java)
+            EntityWrapperManager.getWrapperorNew(zombie).addComponent(LavaOnDeath())
+            //damageSettings.apply(sender, sender)
+        } else if (args[0] == "cancel_projectiles") {
+            val zombie = sender.world.spawn(sender.location, Skeleton::class.java)
+            EntityWrapperManager.getWrapperorNew(zombie).addComponent(CancelProjectiles())
+        } else if (args[0] == "check_event_count") {
+            println(EventRegistry.getAllRegisteredListeners()[EntityDeathEvent::class]?.size)
         }
     }
 }

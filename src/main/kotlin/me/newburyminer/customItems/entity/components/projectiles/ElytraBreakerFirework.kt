@@ -56,7 +56,23 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
 
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.damager == wrapper.entity
+        },
+        {e ->
+            val player = e.entity as? Player ?: return@register
+            player.isGliding = false
+            EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(duration, unique = true))
+            player.setCooldown(Material.ELYTRA, 500)
+            CustomEffects.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
+
+            e.isCancelled = true
+            damage.apply(player, e.damager)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -72,6 +88,6 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
             }
 
         }
-    }
+    }*/
 
 }

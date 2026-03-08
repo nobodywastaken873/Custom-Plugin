@@ -20,7 +20,17 @@ class LavaOnDeath: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDeathEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            val locToSpawn = e.entity.location
+            locToSpawn.block.type = Material.LAVA
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDeathEvent -> {
@@ -29,5 +39,5 @@ class LavaOnDeath: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

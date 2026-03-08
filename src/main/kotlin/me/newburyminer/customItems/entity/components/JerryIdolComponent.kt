@@ -42,7 +42,41 @@ class JerryIdolComponent(private var emeraldStacks: Int): EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(PlayerInteractEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.rightClicked == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+            if (e.player.inventory.itemInMainHand.type == Material.AIR) {
+
+                val newJerryIdol = ItemRegistry.get(CustomItem.JERRY_IDOL)
+                newJerryIdol.setTag("emeraldstacks", emeraldStacks)
+                e.player.addItemorDrop(newJerryIdol)
+                CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_ITEM_PICKUP, 20F, 0.5F)
+                wrapper.entity.remove()
+
+            }
+
+            else if (e.player.inventory.itemInMainHand.type == Material.EMERALD_BLOCK && e.player.inventory.itemInMainHand.amount == 64) {
+
+                emeraldStacks++
+                (wrapper.entity as Villager).getAttribute(Attribute.SCALE)!!.baseValue += 0.1
+                e.player.inventory.itemInMainHand.amount -= 64
+
+                for (i in 0..5+emeraldStacks/2) {
+                    CustomEffects.particleCircle(Particle.HAPPY_VILLAGER.builder(),
+                        wrapper.entity.location.clone().add(Vector(0.0, i.toDouble()/2.5, 0.0)),
+                        0.5 * (1 + emeraldStacks*0.1),
+                        (20 * (1 + emeraldStacks*0.1)).toInt(), 0.01)
+                }
+                CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_VILLAGER_YES, 20F, 1.5F)
+
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is PlayerInteractEntityEvent -> {
@@ -78,7 +112,7 @@ class JerryIdolComponent(private var emeraldStacks: Int): EntityComponent {
             }
 
         }
-    }
+    }*/
 
     override fun tick(wrapper: EntityWrapper) {
         if (Bukkit.getCurrentTick() % 60 == 0) {

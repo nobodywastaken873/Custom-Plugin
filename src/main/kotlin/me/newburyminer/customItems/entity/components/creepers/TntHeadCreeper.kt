@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.TNTPrimed
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.entity.EntityRemoveEvent
 import java.util.UUID
 
 class TntHeadCreeper(private val tnt: Entity, private val power: Float, private val breakBlocks: Boolean = false): EntityComponent {
@@ -34,7 +35,29 @@ class TntHeadCreeper(private val tnt: Entity, private val power: Float, private 
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity.getTag<Boolean>("exploding") == true
+        },
+        {e ->
+            EntityWrapperManager.getWrapperorNew(tnt)
+                .addComponent(TntHeadTnt(
+                    e.entity.y,
+                    power,
+                    breakBlocks
+                ))
+        })
+
+        register(EntityRemoveEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            tnt.remove()
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -51,7 +74,7 @@ class TntHeadCreeper(private val tnt: Entity, private val power: Float, private 
             }
 
         }
-    }
+    }*/
 
     override fun tick(wrapper: EntityWrapper) {
         if (Bukkit.getCurrentTick() % 10 == 0) {

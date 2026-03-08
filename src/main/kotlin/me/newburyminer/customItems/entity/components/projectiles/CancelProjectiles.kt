@@ -19,7 +19,16 @@ class CancelProjectiles: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileLaunchEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is ProjectileLaunchEvent -> {
@@ -27,5 +36,5 @@ class CancelProjectiles: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

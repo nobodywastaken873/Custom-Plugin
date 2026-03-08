@@ -37,7 +37,32 @@ class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
     }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity.getTag<Boolean>("exploding") == true
+        },
+        {e ->
+            for (i in 1..count) {
+                val firework = e.entity.world.spawn(e.entity.location, Firework::class.java) {
+                    it.isShotAtAngle = true
+                    it.velocity = Vector(Utils.randomRange(-1.0, 1.0), Math.random(), Utils.randomRange(-1.0, 1.0)).normalize().multiply(0.5)
+                    it.ticksToDetonate = 5
+
+                    val newMeta = it.fireworkMeta
+                    val numStars = ((damage - 5) / 2).toInt()
+                    val effect = FireworkEffect.builder()
+                        .with(FireworkEffect.Type.BALL)
+                        .withColor(Color.LIME)
+                        .build()
+                    for (i in 0..numStars) { newMeta.addEffect(effect) }
+                    it.fireworkMeta = newMeta
+                }
+            }
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -67,5 +92,5 @@ class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
             }
 
         }
-    }
+    }*/
 }

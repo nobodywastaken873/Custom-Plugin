@@ -5,6 +5,8 @@ import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent
 import com.google.gson.Gson
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.eventbus.EventRegistry
+import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
@@ -40,12 +42,21 @@ class EntityWrapperManager: Listener, BukkitRunnable() {
         }
 
         fun removeWrapper(entity: Entity) {
+            // Remove all listeners for an entity
+            EventRegistry.remove(entity.uniqueId)
             // Check if uuid in wrapper map, serialize, add tag, remove from map
             val wrapper = getWrapper(entity.uniqueId) ?: return
             val map = wrapper.serialize()
             val jsonText = Gson().toJson(map)
             entity.setTag("wrapperjson", jsonText)
             remove(entity.uniqueId)
+        }
+
+        fun removeAllWrappers() {
+            for ((uuid, _) in wrappers) {
+                val entity = Bukkit.getEntity(uuid) ?: continue
+                removeWrapper(entity)
+            }
         }
     }
 

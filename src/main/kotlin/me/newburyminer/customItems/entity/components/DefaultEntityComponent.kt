@@ -21,7 +21,25 @@ class DefaultEntityComponent: EntityComponent {
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            (e.damageSource.causingEntity !is Player && e.damageSource.directEntity !is Player)
+        },
+        {e ->
+            e.isCancelled = true
+        })
+
+        register(EntityPotionEffectEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.cause in arrayOf(EntityPotionEffectEvent.Cause.POTION_SPLASH, EntityPotionEffectEvent.Cause.AREA_EFFECT_CLOUD)
+        },
+        {e ->
+            e.isCancelled = true
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityDamageByEntityEvent -> {
@@ -35,5 +53,5 @@ class DefaultEntityComponent: EntityComponent {
             }
 
         }
-    }
+    }*/
 }

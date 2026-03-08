@@ -39,7 +39,20 @@ class HomingProjectileShooter(private val angleChange: Double): EntityComponent 
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(ProjectileLaunchEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity.shooter == wrapper.entity
+        },
+        {e ->
+            val shooter = wrapper.entity as Mob
+            val target = shooter.target ?: return@register
+
+            EntityWrapperManager.getWrapperorNew(e.entity)
+                .addComponent(HomingProjectile(angleChange, target))
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is ProjectileLaunchEvent -> {
@@ -52,6 +65,6 @@ class HomingProjectileShooter(private val angleChange: Double): EntityComponent 
             }
 
         }
-    }
+    }*/
 
 }

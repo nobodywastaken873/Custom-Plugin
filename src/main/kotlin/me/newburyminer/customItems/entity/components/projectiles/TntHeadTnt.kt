@@ -30,7 +30,17 @@ class TntHeadTnt(private val explodeY: Double, private val power: Float, private
         }
     }
 
-    override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+            detonate(wrapper.entity, power, false, breakBlocks)
+        })
+    }
+
+    /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
         when (val e = ctx.event) {
 
             is EntityExplodeEvent -> {
@@ -39,7 +49,7 @@ class TntHeadTnt(private val explodeY: Double, private val power: Float, private
             }
 
         }
-    }
+    }*/
 
     private var counter = 0
     override fun tick(wrapper: EntityWrapper) {
