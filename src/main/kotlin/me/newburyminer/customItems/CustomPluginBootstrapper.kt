@@ -116,6 +116,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("restoregrave", "Use to restore a grave from the stored graves file.", RestoreGraveCommand())
             commands.register("info", "Use to view all info about what this plugin changes.", InfoCommand())
             commands.register("endfight", "Use to begin the end fight.", EndFightCommand())
+            commands.register("createrecipe", "Use to open the recipe creation GUI.", MakeRecipeCommand())
         }
         manager.registerEventHandler(RegistryEvents.ENCHANTMENT.compose().newHandler {
             event ->

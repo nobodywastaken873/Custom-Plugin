@@ -380,54 +380,61 @@ class Utils {
             return 0
         }
 
+        private val enchantMap = mapOf(
+            "AA" to Enchantment.AQUA_AFFINITY,
+            "BA" to Enchantment.BANE_OF_ARTHROPODS,
+            "BP" to Enchantment.BLAST_PROTECTION,
+            "BR" to Enchantment.BREACH,
+            "CH" to Enchantment.CHANNELING,
+            "CB" to Enchantment.BINDING_CURSE,
+            "CV" to Enchantment.VANISHING_CURSE,
+            "DN" to Enchantment.DENSITY,
+            "DS" to Enchantment.DEPTH_STRIDER,
+            "EF" to Enchantment.EFFICIENCY,
+            "FF" to Enchantment.FEATHER_FALLING,
+            "FA" to Enchantment.FIRE_ASPECT,
+            "FP" to Enchantment.FIRE_PROTECTION,
+            "FL" to Enchantment.FLAME,
+            "FT" to Enchantment.FORTUNE,
+            "FW" to Enchantment.FROST_WALKER,
+            "IM" to Enchantment.IMPALING,
+            "IN" to Enchantment.INFINITY,
+            "KB" to Enchantment.KNOCKBACK,
+            "LT" to Enchantment.LOOTING,
+            "LY" to Enchantment.LOYALTY,
+            "LS" to Enchantment.LUCK_OF_THE_SEA,
+            "LR" to Enchantment.LURE,
+            "MN" to Enchantment.MENDING,
+            "MS" to Enchantment.MULTISHOT,
+            "PR" to Enchantment.PIERCING,
+            "PW" to Enchantment.POWER,
+            "PP" to Enchantment.PROJECTILE_PROTECTION,
+            "PT" to Enchantment.PROTECTION,
+            "PU" to Enchantment.PUNCH,
+            "QC" to Enchantment.QUICK_CHARGE,
+            "RS" to Enchantment.RESPIRATION,
+            "RP" to Enchantment.RIPTIDE,
+            "SH" to Enchantment.SHARPNESS,
+            "ST" to Enchantment.SILK_TOUCH,
+            "SM" to Enchantment.SMITE,
+            "SP" to Enchantment.SOUL_SPEED,
+            "SW" to Enchantment.SWEEPING_EDGE,
+            "SN" to Enchantment.SWIFT_SNEAK,
+            "TH" to Enchantment.THORNS,
+            "UN" to Enchantment.UNBREAKING,
+            "WB" to Enchantment.WIND_BURST,
+            "DU" to CustomEnchantments.DUPLICATE,
+        )
         fun convertEnch(ench: String): Pair<Enchantment, Int> {
             val lvl = ench.substring(2).toInt()
-            when (ench.substring(0,2)) {
-                "AA" -> return Pair(Enchantment.AQUA_AFFINITY, lvl)
-                "BA" -> return Pair(Enchantment.BANE_OF_ARTHROPODS, lvl)
-                "BP" -> return Pair(Enchantment.BLAST_PROTECTION, lvl)
-                "BR" -> return Pair(Enchantment.BREACH, lvl)
-                "CH" -> return Pair(Enchantment.CHANNELING, lvl)
-                "CB" -> return Pair(Enchantment.BINDING_CURSE, lvl)
-                "CV" -> return Pair(Enchantment.VANISHING_CURSE, lvl)
-                "DN" -> return Pair(Enchantment.DENSITY, lvl)
-                "DS" -> return Pair(Enchantment.DEPTH_STRIDER, lvl)
-                "EF" -> return Pair(Enchantment.EFFICIENCY, lvl)
-                "FF" -> return Pair(Enchantment.FEATHER_FALLING, lvl)
-                "FA" -> return Pair(Enchantment.FIRE_ASPECT, lvl)
-                "FP" -> return Pair(Enchantment.FIRE_PROTECTION, lvl)
-                "FL" -> return Pair(Enchantment.FLAME, lvl)
-                "FT" -> return Pair(Enchantment.FORTUNE, lvl)
-                "FW" -> return Pair(Enchantment.FROST_WALKER, lvl)
-                "IM" -> return Pair(Enchantment.IMPALING, lvl)
-                "IN" -> return Pair(Enchantment.INFINITY, lvl)
-                "KB" -> return Pair(Enchantment.KNOCKBACK, lvl)
-                "LT" -> return Pair(Enchantment.LOOTING, lvl)
-                "LY" -> return Pair(Enchantment.LOYALTY, lvl)
-                "LS" -> return Pair(Enchantment.LUCK_OF_THE_SEA, lvl)
-                "LR" -> return Pair(Enchantment.LURE, lvl)
-                "MN" -> return Pair(Enchantment.MENDING, lvl)
-                "MS" -> return Pair(Enchantment.MULTISHOT, lvl)
-                "PR" -> return Pair(Enchantment.PIERCING, lvl)
-                "PW" -> return Pair(Enchantment.POWER, lvl)
-                "PP" -> return Pair(Enchantment.PROJECTILE_PROTECTION, lvl)
-                "PT" -> return Pair(Enchantment.PROTECTION, lvl)
-                "PU" -> return Pair(Enchantment.PUNCH, lvl)
-                "QC" -> return Pair(Enchantment.QUICK_CHARGE, lvl)
-                "RS" -> return Pair(Enchantment.RESPIRATION, lvl)
-                "RP" -> return Pair(Enchantment.RIPTIDE, lvl)
-                "SH" -> return Pair(Enchantment.SHARPNESS, lvl)
-                "ST" -> return Pair(Enchantment.SILK_TOUCH, lvl)
-                "SM" -> return Pair(Enchantment.SMITE, lvl)
-                "SP" -> return Pair(Enchantment.SOUL_SPEED, lvl)
-                "SW" -> return Pair(Enchantment.SWEEPING_EDGE, lvl)
-                "SN" -> return Pair(Enchantment.SWIFT_SNEAK, lvl)
-                "TH" -> return Pair(Enchantment.THORNS, lvl)
-                "UN" -> return Pair(Enchantment.UNBREAKING, lvl)
-                "WB" -> return Pair(Enchantment.WIND_BURST, lvl)
-                "DU" -> return Pair(CustomEnchantments.DUPLICATE, lvl)
-            }
-            return Pair(Enchantment.UNBREAKING, lvl)
+            val enchStr = ench.substring(0, 2)
+
+            val enchantment = enchantMap[enchStr] ?: Enchantment.UNBREAKING
+            return Pair(enchantment, lvl)
+        }
+        fun convertEnchToStr(ench: Pair<Enchantment, Int>): String {
+            val enchStr = enchantMap.entries.associate { (k, v) -> v to k }[ench.first] ?: "UN"
+            return enchStr + ench.second.toString()
         }
         /*private fun convertPotion(potion: String): PotionEffect {
             val duration = (potion.substring(potion.indexOf(":")+1).toDouble()*20).toInt()
