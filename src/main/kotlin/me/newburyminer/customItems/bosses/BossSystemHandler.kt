@@ -1,20 +1,11 @@
 package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.bosses.WardenBossComponent
-import me.newburyminer.customItems.entity.components.bosses.WardenMinibossComponent
-import org.bukkit.Bukkit
-import org.bukkit.damage.DamageType
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockSpreadEvent
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileHitEvent

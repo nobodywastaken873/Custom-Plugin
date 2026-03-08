@@ -2,9 +2,10 @@ package me.newburyminer.customItems.items.customs.armor.sets.immunity
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
@@ -50,19 +51,5 @@ class AntiVenomShirt: CustomItemDefinition, PotionEffectCancel {
             cancelPotionEffect(e)
         })
     }
-    
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityPotionEffectEvent -> {
-                if (ctx.itemType != EventItemType.CHESTPLATE) return
-                val player = ctx.player ?: return
-                if (e.action != EntityPotionEffectEvent.Action.ADDED && e.action != EntityPotionEffectEvent.Action.CHANGED) return
-                if (e.newEffect!!.type in arrayOf(PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.WITHER))
-                    e.isCancelled = true
-            }
-
-        }
-    }*/
 
 }

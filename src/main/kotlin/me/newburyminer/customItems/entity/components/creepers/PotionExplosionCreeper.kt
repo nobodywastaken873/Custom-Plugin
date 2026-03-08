@@ -6,10 +6,7 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.hiteffects.HitEffect
-import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Creeper
 import org.bukkit.event.entity.EntityExplodeEvent

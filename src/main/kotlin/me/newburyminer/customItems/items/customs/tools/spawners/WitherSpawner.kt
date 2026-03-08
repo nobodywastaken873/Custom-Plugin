@@ -1,6 +1,5 @@
 package me.newburyminer.customItems.items.customs.tools.spawners
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isItem
@@ -8,10 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 

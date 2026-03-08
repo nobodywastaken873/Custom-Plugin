@@ -1,11 +1,12 @@
 package me.newburyminer.customItems.items.customs.tools.upgrades
 
-import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.resist
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
@@ -45,26 +46,5 @@ class SoulCrystal: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1.0F, 1.1F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerSwapHandItemsEvent -> {
-                if (ctx.itemType != EventItemType.OFFHAND) return
-                if (!e.player.isSneaking) return
-                val upgrade = ctx.item ?: return
-                val toSoulbind = e.player.inventory.itemInMainHand
-                if (e.player.inventory.itemInMainHand.type == Material.AIR) return
-                if (CustomEnchantments.SOULBOUND in toSoulbind.enchantments.keys) return
-                e.isCancelled = true
-                upgrade.amount -= 1
-                toSoulbind.addUnsafeEnchantment(CustomEnchantments.SOULBOUND, 1)
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1.0F, 1.1F)
-            }
-
-        }
-
-    }*/
 
 }

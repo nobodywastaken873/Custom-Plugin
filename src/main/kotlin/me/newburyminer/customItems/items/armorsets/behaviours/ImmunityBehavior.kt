@@ -2,7 +2,7 @@ package me.newburyminer.customItems.items.armorsets.behaviours
 
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import me.newburyminer.customItems.items.armorsets.ArmorSetBehavior
-import me.newburyminer.customItems.items.armorsets.ArmorSetEventContext
+import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -11,20 +11,19 @@ class ImmunityBehavior : ArmorSetBehavior {
 
     override val set: ArmorSet = ArmorSet.IMMUNITY
 
-    override fun handle(ctx: ArmorSetEventContext) {
-        when (val e = ctx.event) {
-
-            is EntityPotionEffectEvent -> {
-                if (ctx.pieceCount != 4) return
-                val player = ctx.player
-                if (e.action != EntityPotionEffectEvent.Action.ADDED && e.action != EntityPotionEffectEvent.Action.CHANGED) return
-                val oldPotion = e.newEffect ?: return
-                val flippedType = flipPotion(oldPotion.type) ?: return
-                val newPotion = PotionEffect(flippedType, oldPotion.duration * 3, (oldPotion.amplifier + 1).coerceAtMost(2))
-                player.addPotionEffect(newPotion)
-            }
-
-        }
+    init {
+        register(EntityPotionEffectEvent::class, { e ->
+            e.entity is Player &&
+            getPieces(e.entity as Player, set) == 4 &&
+            e.action in arrayOf(EntityPotionEffectEvent.Action.ADDED, EntityPotionEffectEvent.Action.CHANGED)
+        },
+        {e ->
+            val player = e.entity as Player
+            val oldPotion = e.newEffect ?: return@register
+            val flippedType = flipPotion(oldPotion.type) ?: return@register
+            val newPotion = PotionEffect(flippedType, oldPotion.duration * 3, (oldPotion.amplifier + 1).coerceAtMost(2))
+            player.addPotionEffect(newPotion)
+        })
     }
 
     private fun flipPotion(type: PotionEffectType): PotionEffectType? {

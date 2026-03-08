@@ -1,9 +1,7 @@
 package me.newburyminer.customItems.gui
 
-import me.newburyminer.customItems.Utils.Companion.name
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemStack
 
 object GuiLayout {
 

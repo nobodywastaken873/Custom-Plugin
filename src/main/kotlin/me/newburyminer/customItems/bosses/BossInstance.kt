@@ -4,11 +4,7 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.structures.CustomLootTable
-import org.bukkit.Bukkit
-import org.bukkit.GameMode
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
+import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
@@ -17,7 +13,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import java.util.UUID
+import java.util.*
 
 abstract class BossInstance(protected val players: MutableList<Player>, val bossType: CustomBossType) {
 

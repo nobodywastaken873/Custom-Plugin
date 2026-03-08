@@ -17,7 +17,7 @@ object ItemBootstrapper {
             val customId = instance.custom
             val item = instance.item
             ItemRegistry.register(customId, item)
-            ItemEventHandler.register(customId, instance)
+            //ItemEventHandler.register(customId, instance)
             instance.extraTasks.forEach { (period, runTask) ->
                 PlayerTaskHandler.registerTask(period, PlayerTask { player ->  runTask(player)})}
 

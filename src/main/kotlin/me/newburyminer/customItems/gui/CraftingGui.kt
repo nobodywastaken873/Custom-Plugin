@@ -6,21 +6,19 @@ import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.recipes.Recipe
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
-import java.util.UUID
+import java.util.*
 
 class CraftingGui: CustomGui() {
     override val inv: Inventory = Bukkit.createInventory(this, 54, Utils.text("Custom Crafting Table").style(Style.style(TextDecoration.BOLD)))

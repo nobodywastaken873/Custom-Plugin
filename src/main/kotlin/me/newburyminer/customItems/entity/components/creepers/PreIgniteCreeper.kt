@@ -5,7 +5,6 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
-import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import org.bukkit.Bukkit
 import org.bukkit.entity.Creeper
 import kotlin.math.pow

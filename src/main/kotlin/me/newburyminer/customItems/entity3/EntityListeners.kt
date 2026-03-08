@@ -1,33 +1,5 @@
 package me.newburyminer.customItems.entity3
 
-import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
-import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.ench
-import me.newburyminer.customItems.Utils.Companion.getDifficultyIndex
-import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.setTag
-import me.newburyminer.customItems.effects.CustomEffectType
-import me.newburyminer.customItems.effects.EffectManager
-import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.RandomSelector
-import org.bukkit.*
-import org.bukkit.attribute.Attribute
-import org.bukkit.entity.*
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.entity.*
-import org.bukkit.event.world.GenericGameEvent
-import org.bukkit.inventory.EquipmentSlot
-import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
-import org.bukkit.scheduler.BukkitTask
-import org.bukkit.util.Vector
-import java.util.*
-import kotlin.math.pow
-import kotlin.math.sqrt
-
 class EntityListeners {
 
     //fix: possibly figure out how to make breaching better along with preignition, figure out how to only do it when going into player

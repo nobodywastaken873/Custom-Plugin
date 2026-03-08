@@ -7,14 +7,14 @@ import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.VeinFinder
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.block.Container
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
@@ -64,42 +64,5 @@ class VeinyPickaxe: CustomItemDefinition, VeinFinder {
             pickaxe.setCooldown(e.player, 3.0)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is BlockBreakEvent -> {
-                //for (item in e.block.drops) e.player.sendMessage(item.type.toString() + item.amount.toString())
-                val pickaxe = ctx.item ?: return
-                if (!pickaxe.offCooldown(e.player)) return
-                val material = e.block.type
-
-                if (e.block.state is Container) return
-                val vein = getConnected(e.block, 32)
-
-                val drops: MutableList<ItemStack> = mutableListOf()
-                var total = 1
-                for (loc in vein) {
-                    for (drop in e.block.world.getBlockAt(loc).getDrops(pickaxe, e.player)) drops.add(drop)
-                    e.block.world.getBlockAt(loc).type = Material.AIR
-                    if (total < 5) CustomEffects.playSound(loc, e.block.blockData.soundGroup.breakSound, 1.0F, e.block.blockData.soundGroup.pitch)
-                    total++
-                }
-
-                if (pickaxe.itemMeta.hasEnchant(CustomEnchantments.AUTOSMELT)) {
-                    for (drop in drops) {
-                        drop.smelt()
-                    }
-                }
-                for (drop in drops) {
-                    e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
-                }
-                pickaxe.setCooldown(e.player, 3.0)
-            }
-
-        }
-
-    }*/
 
 }

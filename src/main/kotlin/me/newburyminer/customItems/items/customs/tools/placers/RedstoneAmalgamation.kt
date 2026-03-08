@@ -1,29 +1,20 @@
 package me.newburyminer.customItems.items.customs.tools.placers
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorDrop
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.cycleUp
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.MaterialPlacer
-import me.newburyminer.customItems.items.behaviors.ScrollCycler
 import me.newburyminer.customItems.items.behaviors.SwapCycler
-import me.newburyminer.customItems.systems.materials.MaterialConverterRegistry
-import me.newburyminer.customItems.systems.materials.MaterialSystem
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.block.Container
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityPlaceEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class RedstoneAmalgamation: CustomItemDefinition, SwapCycler, MaterialPlacer {

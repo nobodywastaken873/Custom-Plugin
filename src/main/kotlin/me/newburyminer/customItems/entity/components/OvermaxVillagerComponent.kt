@@ -3,11 +3,6 @@ package me.newburyminer.customItems.entity.components
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
-import me.newburyminer.customItems.entity.EntityWrapper
-import org.bukkit.entity.Player
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityPotionEffectEvent
 
 class OvermaxVillagerComponent: EntityComponent {
 

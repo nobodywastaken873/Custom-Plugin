@@ -6,7 +6,6 @@ import org.bukkit.World
 import org.bukkit.entity.Entity
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
-import kotlin.math.max
 
 fun World.rayTraceEntities(start: Location, direction: Vector, maxDist: Double, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
     // Find endpoint at a block

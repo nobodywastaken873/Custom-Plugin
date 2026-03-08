@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.entity.hiteffects.effect
 
-import me.newburyminer.customItems.entity.DeserializationInterface
-import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType

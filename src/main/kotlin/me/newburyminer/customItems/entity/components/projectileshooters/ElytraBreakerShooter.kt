@@ -1,10 +1,6 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
-import me.newburyminer.customItems.entity.DeserializationInterface
-import me.newburyminer.customItems.entity.EntityComponent
-import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.*
 import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFirework
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.hiteffects.HitEffects

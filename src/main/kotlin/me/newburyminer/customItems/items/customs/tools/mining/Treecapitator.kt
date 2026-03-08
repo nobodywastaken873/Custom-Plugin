@@ -2,18 +2,17 @@ package me.newburyminer.customItems.items.customs.tools.mining
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.VeinFinder
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Tag
-import org.bukkit.block.Container
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
@@ -65,49 +64,5 @@ class Treecapitator: CustomItemDefinition, VeinFinder {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is BlockBreakEvent -> {
-                //for (item in e.block.drops) e.player.sendMessage(item.type.toString() + item.amount.toString())
-                val axe = ctx.item ?: return
-                val material = e.block.type
-                if (!Tag.LOGS.isTagged(material) && !Tag.LEAVES.isTagged(material)) return
-                val drops: MutableList<ItemStack> = mutableListOf()
-                var total = 1
-                val checked = mutableListOf(e.block.location.clone())
-                val toContinue = mutableListOf(e.block.location.clone())
-                while (toContinue.isNotEmpty() && total <= 200) {
-                    val currentLoc = toContinue[0]
-                    for (loc in getAround(currentLoc)) {
-                        if (loc in checked) continue
-                        if (e.block.world.getBlockAt(loc).type == material) {
-                            for (drop in e.block.world.getBlockAt(loc).getDrops(axe, e.player)) drops.add(drop)
-                            e.block.world.getBlockAt(loc).type = Material.AIR
-                            if (total < 5) CustomEffects.playSound(loc, e.block.blockData.soundGroup.breakSound, 1.0F, e.block.blockData.soundGroup.pitch)
-                            total++
-                            checked.add(loc)
-                            toContinue.add(loc)
-                        } else {
-                            checked.add(loc)
-                        }
-                    }
-                    toContinue.removeFirst()
-                }
-                if (axe.itemMeta.hasEnchant(CustomEnchantments.AUTOSMELT)) {
-                    for (drop in drops) {
-                        drop.smelt()
-                    }
-                }
-                for (drop in drops) {
-                    e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
-                }
-            }
-
-        }
-
-    }*/
 
 }

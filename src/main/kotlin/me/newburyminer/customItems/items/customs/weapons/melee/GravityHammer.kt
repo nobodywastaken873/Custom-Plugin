@@ -9,7 +9,10 @@ import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -58,26 +61,5 @@ class GravityHammer: CustomItemDefinition {
             damager.setCooldown(custom, 20.0)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val damager = e.damager as? Player ?: return
-                val damaged = e.entity as? Player ?: return
-                if (!damager.offCooldown(CustomItem.GRAVITY_HAMMER)) return
-                if (damager.attackCooldown.toDouble() != 1.0) return
-                CustomEffects.playSound(damaged.location, Sound.ITEM_MACE_SMASH_AIR, 1.0F, 1.2F)
-                EffectManager.applyEffect(damaged, CustomEffectType.ATTRIBUTE,
-                    EffectData(7 * 20, attributeData = AttributeData(2.0, Attribute.GRAVITY, AttributeModifier.Operation.MULTIPLY_SCALAR_1))
-                )
-                damager.setCooldown(CustomItem.GRAVITY_HAMMER, 20.0)
-            }
-
-        }
-
-    }*/
 
 }

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import java.util.UUID
+import java.util.*
 
 class EffectEventHandler: Listener {
 

@@ -3,11 +3,12 @@ package me.newburyminer.customItems.items.customs.weapons.arrows
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.entity.ShulkerBullet
 import org.bukkit.event.entity.EntityShootBowEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class ShulkerBulletArrow: CustomItemDefinition {
@@ -38,23 +39,5 @@ class ShulkerBulletArrow: CustomItemDefinition {
             e.projectile.remove()
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityShootBowEvent -> {
-                if (ctx.itemType != EventItemType.PROJECTILE) return
-                val player = ctx.player ?: return
-                val item = ctx.item ?: return
-                val bullet = e.entity.world.spawn(e.projectile.location, ShulkerBullet::class.java)
-                bullet.velocity = e.projectile.velocity
-                bullet.shooter = player
-                e.projectile.remove()
-            }
-
-        }
-
-    }*/
 
 }

@@ -9,7 +9,10 @@ import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -71,35 +74,5 @@ class FrozenShard: CustomItemDefinition {
             damager.setCooldown(custom, 60.0)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val player = e.damager as? Player ?: return
-                if (Math.random() < 1.0 / 5.0 && e.entity is LivingEntity) {
-                    (e.entity as LivingEntity).addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 100, 0))
-                }
-                if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
-                val hitPlayer = e.entity as? Player ?: return
-
-                CustomEffects.particleCloud(Particle.SNOWFLAKE.builder(), hitPlayer.location, 50, 1.0, 0.0)
-                CustomEffects.playSound(hitPlayer.location, Sound.ENTITY_PLAYER_HURT_FREEZE, 1F, 0.8F)
-
-                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
-                    EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR)))
-                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
-                    EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.JUMP_STRENGTH, AttributeModifier.Operation.ADD_SCALAR)))
-                EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
-                    EffectData(6 * 20, attributeData = AttributeData(100.0, Attribute.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_NUMBER)))
-
-                player.inventory.itemInMainHand.setCooldown(e.damager as Player, 60.0)
-            }
-
-        }
-
-    }*/
 
 }

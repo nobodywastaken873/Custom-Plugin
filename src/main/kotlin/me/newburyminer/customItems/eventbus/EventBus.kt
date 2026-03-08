@@ -2,12 +2,10 @@ package me.newburyminer.customItems.eventbus
 
 import me.newburyminer.customItems.CustomItems
 import org.bukkit.event.Event
-import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.plugin.EventExecutor
 import kotlin.reflect.KClass
-import kotlin.reflect.full.superclasses
 
 object EventBus: Listener {
 

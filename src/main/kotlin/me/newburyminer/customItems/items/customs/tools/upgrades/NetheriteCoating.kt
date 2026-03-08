@@ -5,7 +5,10 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.resist
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
@@ -47,28 +50,5 @@ class NetheriteCoating: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_SMITHING_TABLE_USE, 1.0F, 1.1F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerSwapHandItemsEvent -> {
-                if (ctx.itemType != EventItemType.OFFHAND) return
-                if (!e.player.isSneaking) return
-                val upgrade = ctx.item ?: return
-                val toUpgrade = e.player.inventory.itemInMainHand
-                if (e.player.inventory.itemInMainHand.type == Material.AIR) return
-                if (CustomEnchantments.FIREPROOF in toUpgrade.enchantments.keys) return
-                e.isCancelled = true
-                upgrade.amount -= 1
-                toUpgrade.resist(DamageTypeTagKeys.IS_FIRE)
-                toUpgrade.addUnsafeEnchantment(CustomEnchantments.FIREPROOF, 1)
-                //lore
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_SMITHING_TABLE_USE, 1.0F, 1.1F)
-            }
-
-        }
-
-    }*/
 
 }

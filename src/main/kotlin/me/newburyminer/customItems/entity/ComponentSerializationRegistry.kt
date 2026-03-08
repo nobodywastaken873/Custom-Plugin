@@ -3,7 +3,6 @@ package me.newburyminer.customItems.entity
 import org.bukkit.plugin.java.JavaPlugin
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
-import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 
 object ComponentSerializationRegistry {

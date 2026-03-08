@@ -8,13 +8,12 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import me.newburyminer.customItems.items.armorsets.ArmorSetBehavior
-import me.newburyminer.customItems.items.armorsets.ArmorSetEventContext
 import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
-import org.bukkit.entity.Arrow
+import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.ProjectileHitEvent
@@ -25,33 +24,36 @@ class AssassinBehavior: ArmorSetBehavior {
 
     override val set: ArmorSet = ArmorSet.ASSASSIN
 
-    override fun handle(ctx: ArmorSetEventContext) {
-        when (val e = ctx.event) {
-
-            is EntityDamageEvent -> {
-                if (ctx.pieceCount != 4) return
-                val player = ctx.player
-                if (e.damageSource.damageType in arrayOf(DamageType.DROWN, DamageType.IN_WALL)) return
-                player.setTag("assassinsstep", 0)
-                if (player.getAttribute(Attribute.MOVEMENT_SPEED)!!.getModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed")) != null) {
-                    player.getAttribute(Attribute.MOVEMENT_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed"))
-                    player.getAttribute(Attribute.ATTACK_DAMAGE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsdamage"))
-                    player.getAttribute(Attribute.ATTACK_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsattackspeed"))
-                    player.getAttribute(Attribute.SCALE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsscale"))
-                }
+    init {
+        register(EntityDamageEvent::class, { e ->
+            e.entity is Player &&
+            getPieces(e.entity as Player, set) == 4 &&
+            (e.damageSource.damageType !in arrayOf(DamageType.DROWN, DamageType.IN_WALL))
+        },
+        {e ->
+            val player = e.entity as Player
+            player.setTag("assassinsstep", 0)
+            if (player.getAttribute(Attribute.MOVEMENT_SPEED)!!.getModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed")) != null) {
+                player.getAttribute(Attribute.MOVEMENT_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsspeed"))
+                player.getAttribute(Attribute.ATTACK_DAMAGE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsdamage"))
+                player.getAttribute(Attribute.ATTACK_SPEED)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsattackspeed"))
+                player.getAttribute(Attribute.SCALE)!!.removeModifier(NamespacedKey(CustomItems.plugin, "assassinsscale"))
             }
+        })
 
-            is ProjectileHitEvent -> {
-                val pieces = ctx.pieceCount
-                val player = ctx.player
-                if (e.entity !is Arrow) return
-                if (Math.random() >= 0.125 * pieces) return
-                e.isCancelled = true
-                e.entity.remove()
-                CustomEffects.playSound(player.location, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.2F)
-            }
-
-        }
+        register(ProjectileHitEvent::class, { e ->
+            e.hitEntity is Player &&
+            getPieces(e.hitEntity as Player, set) > 0 &&
+            e.entity is AbstractArrow
+        },
+        {e ->
+            val player = e.hitEntity as Player
+            val pieces = getPieces(player, set)
+            if (Math.random() >= 0.125 * pieces) return@register
+            e.isCancelled = true
+            e.entity.remove()
+            CustomEffects.playSound(player.location, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.2F)
+        })
     }
 
     override val period: Int

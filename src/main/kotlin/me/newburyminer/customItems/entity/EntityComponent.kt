@@ -3,9 +3,7 @@ package me.newburyminer.customItems.entity
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.eventbus.ListenerEntry
 import org.bukkit.event.Event
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.inventory.EquipmentSlot
-import java.util.UUID
+import java.util.*
 import kotlin.reflect.KClass
 
 interface EntityComponent {

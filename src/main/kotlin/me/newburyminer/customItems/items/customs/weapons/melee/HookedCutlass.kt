@@ -3,8 +3,9 @@ package me.newburyminer.customItems.items.customs.weapons.melee
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
-import net.kyori.adventure.text.Component
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -36,17 +37,5 @@ class HookedCutlass: CustomItemDefinition {
             e.knockback = newKnockback
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-            is EntityKnockbackByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val newKnockback = e.knockback.clone()
-                newKnockback.x *= -0.8
-                newKnockback.z *= -0.8
-                e.knockback = newKnockback
-            }
-        }
-    }*/
 
 }

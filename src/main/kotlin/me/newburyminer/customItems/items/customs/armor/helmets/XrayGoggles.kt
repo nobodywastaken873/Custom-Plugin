@@ -1,14 +1,14 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -60,26 +60,5 @@ class XrayGoggles: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is PlayerToggleSneakEvent -> {
-                if (ctx.itemType != EventItemType.HELMET) return
-                val player = ctx.player ?: return
-                if (!e.isSneaking) return
-                if (!player.offCooldown(CustomItem.XRAY_GOGGLES)) return
-                for (entity in player.location.getNearbyEntities(20.0, 20.0, 20.0)) {
-                    if (e.player.location.subtract(entity.location).length() > 20.0) continue
-                    if (entity !is LivingEntity) continue
-                    if (entity == player) continue
-                    entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 400, 0, true, false, false))
-                }
-                player.setCooldown(CustomItem.XRAY_GOGGLES, 20.0)
-                CustomEffects.playSound(player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
-            }
-
-        }
-    }*/
 
 }

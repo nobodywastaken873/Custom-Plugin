@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.entity.hiteffects
 
-import me.newburyminer.customItems.entity.ComponentSerializationRegistry
-import me.newburyminer.customItems.entity.DeserializationInterface
 import org.bukkit.plugin.Plugin
 import org.reflections.Reflections
 import java.lang.reflect.Modifier

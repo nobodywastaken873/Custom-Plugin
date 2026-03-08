@@ -2,20 +2,15 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
-import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
-import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.metadata.MetadataValue
-import org.bukkit.metadata.MetadataValueAdapter
 
 class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFrames: Int = 10, val overrideSource: Entity? = null): HitEffect {
 

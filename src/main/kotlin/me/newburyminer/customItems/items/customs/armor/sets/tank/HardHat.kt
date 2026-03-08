@@ -2,7 +2,10 @@ package me.newburyminer.customItems.items.customs.armor.sets.tank
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute

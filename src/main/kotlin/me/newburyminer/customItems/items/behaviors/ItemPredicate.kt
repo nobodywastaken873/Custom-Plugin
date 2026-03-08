@@ -4,7 +4,6 @@ import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.items.CustomItem
-import me.newburyminer.customItems.items.EventItemType
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action

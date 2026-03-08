@@ -1,6 +1,5 @@
 package me.newburyminer.customItems.items.customs.tools.spawners
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isItem
@@ -10,13 +9,8 @@ import me.newburyminer.customItems.bosses.CustomBossType
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
-import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.entity.Player
-import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class WardenSpawner: CustomItemDefinition {
@@ -49,26 +43,5 @@ class WardenSpawner: CustomItemDefinition {
             if (spawnedBoss) item.amount -= 1
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-                if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
-                if (e.player.isBeingTracked()) return
-
-                val boss = CustomBossType.WARDEN
-                val players = e.player.location.getNearbyPlayers(20.0)
-
-                if (!BossManager.spawnBoss(boss, e.player, players.toList())) return
-                item.amount -= 1
-            }
-
-        }
-
-    }*/
 
 }

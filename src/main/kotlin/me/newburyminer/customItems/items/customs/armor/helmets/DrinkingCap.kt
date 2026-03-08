@@ -1,15 +1,14 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.inventory.EquipmentSlot
@@ -61,27 +60,5 @@ class DrinkingCap: CustomItemDefinition {
                 newEffect.amplifier, newEffect.isAmbient, newEffect.hasParticles()))
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityPotionEffectEvent -> {
-                if (ctx.itemType != EventItemType.HELMET) return
-                val player = ctx.player ?: return
-                if (e.cause !in arrayOf(
-                        EntityPotionEffectEvent.Cause.POTION_SPLASH,
-                        EntityPotionEffectEvent.Cause.POTION_DRINK,
-                        EntityPotionEffectEvent.Cause.FOOD,
-                        EntityPotionEffectEvent.Cause.TOTEM,
-                    )) return
-                if (e.action != EntityPotionEffectEvent.Action.ADDED && e.action != EntityPotionEffectEvent.Action.CHANGED) return
-                val newEffect = e.newEffect ?: return
-                e.isCancelled = true
-                player.addPotionEffect(PotionEffect(newEffect.type, newEffect.duration * 2,
-                    newEffect.amplifier, newEffect.isAmbient, newEffect.hasParticles()))
-            }
-
-        }
-    }*/
 
 }

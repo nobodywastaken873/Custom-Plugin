@@ -10,13 +10,14 @@ import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
-import org.bukkit.entity.Player
-import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
@@ -70,38 +71,5 @@ class DarkSteelRapier: CustomItemDefinition {
                 EffectData(15 * 20, attributeData = AttributeData(0.06, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_NUMBER)))
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                if (e.damager !is Player) return
-                if (!(e.damager as Player).inventory.itemInMainHand.isItem(CustomItem.DARK_STEEL_RAPIER)) return
-                if (!e.isCritical) return
-                e.damage *= 0.66
-            }
-
-            is PlayerInteractEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-                if (!item.offCooldown(e.player)) return
-                if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
-                item.setCooldown(e.player, 40.0)
-
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_CONDUIT_DEACTIVATE, 1.0f, 0.5f)
-
-                for (player in e.player.location.getNearbyPlayers(10.0)) {
-                    if (e.player == player) continue
-                    player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 160, 0))
-                }
-                EffectManager.applyEffect(e.player, CustomEffectType.ATTRIBUTE,
-                    EffectData(15 * 20, attributeData = AttributeData(0.06, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_NUMBER)))
-            }
-
-        }
-
-    }*/
 
 }

@@ -1,9 +1,6 @@
 package me.newburyminer.customItems.entity
 
-import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Warden
-import org.bukkit.event.entity.EntityDamageByEntityEvent
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObjectInstance
 

@@ -1,11 +1,12 @@
 package me.newburyminer.customItems.items.customs.tools.upgrades
 
-import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.resist
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.Tag
@@ -51,26 +52,5 @@ class FieryShard: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_BLASTFURNACE_FIRE_CRACKLE, 1.0F, 1.1F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerSwapHandItemsEvent -> {
-                if (ctx.itemType != EventItemType.OFFHAND) return
-                if (!e.player.isSneaking) return
-                val smelt = ctx.item ?: return
-                val smeltable = e.player.inventory.itemInMainHand
-                if (!Tag.ITEMS_PICKAXES.isTagged(smeltable.type) && !Tag.ITEMS_AXES.isTagged(smeltable.type) && !Tag.ITEMS_SHOVELS.isTagged(smeltable.type)) return
-                if (CustomEnchantments.AUTOSMELT in smeltable.enchantments.keys) return
-                e.isCancelled = true
-                smelt.amount -= 1
-                smeltable.addUnsafeEnchantment(CustomEnchantments.AUTOSMELT, 1)
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_BLASTFURNACE_FIRE_CRACKLE, 1.0F, 1.1F)
-            }
-
-        }
-
-    }*/
 
 }

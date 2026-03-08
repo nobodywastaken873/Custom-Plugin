@@ -1,7 +1,6 @@
 package me.newburyminer.customItems.entity.components
 
 import com.destroystokyo.paper.MaterialTags
-import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -13,7 +12,6 @@ import org.bukkit.Tag
 import org.bukkit.entity.Villager
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
-import java.util.ArrayList
 
 class VillagerTradeComponent(startingTrades: MutableList<MerchantRecipe> = mutableListOf()): EntityComponent {
 

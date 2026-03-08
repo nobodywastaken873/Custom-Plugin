@@ -21,9 +21,10 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegis
 import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.DurabilityListener
+import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
-import me.newburyminer.customItems.items.armorsets.ArmorSetEventHandler
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.systems.EnchantmentListener
@@ -116,8 +117,6 @@ class CustomItems : JavaPlugin() {
         //server.pluginManager.registerEvents(bossListener, this)
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
-        server.pluginManager.registerEvents(ItemEventHandler(), this)
-        server.pluginManager.registerEvents(ArmorSetEventHandler(), this)
         server.pluginManager.registerEvents(EffectEventHandler(), this)
         server.pluginManager.registerEvents(GraveListener(), this)
         server.pluginManager.registerEvents(EnchantmentListener(), this)

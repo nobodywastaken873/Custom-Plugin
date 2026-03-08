@@ -2,10 +2,8 @@ package me.newburyminer.customItems.helpers
 
 import com.destroystokyo.paper.ParticleBuilder
 import com.google.common.base.Predicate
-import me.newburyminer.customItems.CustomItems.Companion.plugin
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
-import org.bukkit.Bukkit
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.Sound

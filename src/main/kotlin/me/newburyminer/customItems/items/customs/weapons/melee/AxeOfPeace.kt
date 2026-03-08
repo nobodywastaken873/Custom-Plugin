@@ -2,12 +2,14 @@ package me.newburyminer.customItems.items.customs.weapons.melee
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityRegainHealthEvent
 import org.bukkit.inventory.EquipmentSlot
@@ -45,19 +47,5 @@ class AxeOfPeace: CustomItemDefinition {
             damager.heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val damager = e.damager as? Player ?: return
-                if (e.damage >= 15) damager.heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
-            }
-
-        }
-
-    }*/
 
 }

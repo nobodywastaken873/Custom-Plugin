@@ -4,7 +4,10 @@ import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
@@ -51,30 +54,5 @@ class ReinforcingStruts: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_HIT, 1.0F, 1.1F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerSwapHandItemsEvent -> {
-                if (ctx.itemType != EventItemType.OFFHAND) return
-                if (!e.player.isSneaking) return
-                val upgrade = ctx.item ?: return
-                val toUpgrade = e.player.inventory.itemInMainHand
-                if (e.player.inventory.itemInMainHand.type == Material.AIR) return
-                if (toUpgrade.itemMeta !is Damageable) return
-                if ((toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) >= 5) return
-                e.isCancelled = true
-                upgrade.amount -= 1
-                val newMeta = toUpgrade.itemMeta as Damageable
-                if (newMeta.hasMaxDamage()) toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, newMeta.maxDamage + 100)
-                else toUpgrade.setData(DataComponentTypes.MAX_DAMAGE, toUpgrade.type.maxDurability + 100)
-                toUpgrade.addUnsafeEnchantment(CustomEnchantments.REINFORCED, (toUpgrade.enchantments[CustomEnchantments.REINFORCED] ?: 0) + 1)
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_ANVIL_HIT, 1.0F, 1.1F)
-            }
-
-        }
-
-    }*/
 
 }

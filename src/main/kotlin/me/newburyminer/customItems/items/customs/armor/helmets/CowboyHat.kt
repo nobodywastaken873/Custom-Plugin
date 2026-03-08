@@ -1,17 +1,12 @@
 package me.newburyminer.customItems.items.customs.armor.helmets
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.entity.AbstractHorse
-import org.bukkit.entity.Horse
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDismountEvent
 import org.bukkit.event.entity.EntityMountEvent
@@ -60,28 +55,5 @@ class CowboyHat: CustomItemDefinition {
                 (e.dismounted as AbstractHorse).clearActivePotionEffects()
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityMountEvent -> {
-                if (e.mount !is Horse) return
-                (e.mount as Horse).addPotionEffects(mutableListOf(
-                    PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4, true, false),
-                    PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2, true, false),
-                    PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 4, true, false),
-                ))
-                e.mount.isInvulnerable = true
-            }
-
-            is EntityDismountEvent -> {
-                if (e.dismounted !is Horse) return
-                e.dismounted.isInvulnerable = false
-                if ((e.dismounted as Horse).hasPotionEffect(PotionEffectType.RESISTANCE))
-                    (e.dismounted as Horse).clearActivePotionEffects()
-            }
-
-        }
-    }*/
 
 }

@@ -5,12 +5,11 @@ import me.newburyminer.customItems.Utils.Companion.lock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setItemAction
 import me.newburyminer.customItems.Utils.Companion.setTag
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.UUID
+import java.util.*
 
 object GuiItems {
     val NEXT_PAGE: ItemStack

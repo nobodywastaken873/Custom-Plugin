@@ -6,7 +6,6 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -31,11 +30,7 @@ import org.bukkit.block.data.BlockData
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Entity
-import org.bukkit.entity.Item
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Mob
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.FurnaceRecipe

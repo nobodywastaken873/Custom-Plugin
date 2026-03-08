@@ -6,9 +6,10 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
-import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -43,22 +44,5 @@ class JetpackController: CustomItemDefinition {
             item.name(text("Jetpack Controller - ${if (!mode) "ON" else "OFF"}", arrayOf(148, 134, 111), bold = true))
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val item = ctx.item ?: return
-                if (e.action != Action.LEFT_CLICK_AIR && e.action != Action.LEFT_CLICK_BLOCK) return
-                val mode = e.player.getTag<Boolean>("jetpackactive") ?: false
-                e.player.setTag("jetpackactive", !mode)
-                item.name(text("Jetpack Controller - ${if (!mode) "ON" else "OFF"}", arrayOf(148, 134, 111), bold = true))
-            }
-
-        }
-
-    }*/
 
 }

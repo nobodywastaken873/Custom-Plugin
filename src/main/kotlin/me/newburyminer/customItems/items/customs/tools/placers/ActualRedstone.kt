@@ -1,23 +1,18 @@
 package me.newburyminer.customItems.items.customs.tools.placers
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.MaterialPlacer
 import me.newburyminer.customItems.items.behaviors.ScrollCycler
-import me.newburyminer.customItems.systems.materials.MaterialConverterRegistry
-import me.newburyminer.customItems.systems.materials.MaterialSystem
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
-import org.bukkit.block.Container
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class ActualRedstone: CustomItemDefinition, ScrollCycler, MaterialPlacer {
@@ -55,27 +50,6 @@ class ActualRedstone: CustomItemDefinition, ScrollCycler, MaterialPlacer {
             placeBlock(e, "Redstone Box")
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is BlockPlaceEvent -> {
-                placeBlock(e, "Redstone Box")
-            }
-
-            is PlayerItemHeldEvent -> {
-                val player = ctx.player ?: return
-                val item = ctx.item ?: return
-                if (player.isSneaking) {
-                    val successful = scrollCycle(item, e)
-                    if (successful) CustomEffects.playSoundToPlayer(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
-                }
-            }
-
-        }
-
-    }*/
 
     override fun getCycleItems(item: ItemStack): Array<Material> {
         return arrayOf(Material.REDSTONE, Material.REDSTONE_BLOCK, Material.REPEATER, Material.COMPARATOR,

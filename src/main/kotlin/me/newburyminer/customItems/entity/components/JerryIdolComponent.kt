@@ -1,13 +1,10 @@
 package me.newburyminer.customItems.entity.components
 
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes.player
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
@@ -17,10 +14,7 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
-import org.bukkit.entity.Player
 import org.bukkit.entity.Villager
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityPotionEffectEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType

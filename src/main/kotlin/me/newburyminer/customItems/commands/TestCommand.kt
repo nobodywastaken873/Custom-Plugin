@@ -26,10 +26,8 @@ import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
 import me.newburyminer.customItems.entity.components.projectiles.CancelProjectiles
-import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
-import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key

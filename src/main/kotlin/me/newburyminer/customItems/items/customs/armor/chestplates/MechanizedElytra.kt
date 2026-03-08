@@ -2,13 +2,13 @@ package me.newburyminer.customItems.items.customs.armor.chestplates
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.fireworkBooster
-import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -50,22 +50,5 @@ class MechanizedElytra: CustomItemDefinition {
             e.player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is PlayerToggleSneakEvent -> {
-                if (ctx.itemType != EventItemType.CHESTPLATE) return
-                val player = ctx.player ?: return
-                if (!e.isSneaking) return
-                if (!player.isGliding) return
-                if (player.inventory.chestplate?.isItem(CustomItem.MECHANIZED_ELYTRA) != true) return
-                if (!player.offCooldown(CustomItem.MECHANIZED_ELYTRA, "Boost")) return
-                player.setCooldown(CustomItem.MECHANIZED_ELYTRA, 10.0, "Boost")
-                player.fireworkBoost(ItemStack(Material.FIREWORK_ROCKET).fireworkBooster(1))
-            }
-
-        }
-    }*/
 
 }

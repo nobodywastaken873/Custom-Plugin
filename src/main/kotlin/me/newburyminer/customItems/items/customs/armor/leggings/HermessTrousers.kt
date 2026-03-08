@@ -1,7 +1,10 @@
 package me.newburyminer.customItems.items.customs.armor.leggings
 
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute

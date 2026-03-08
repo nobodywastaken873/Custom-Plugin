@@ -3,18 +3,9 @@ package me.newburyminer.customItems.entity.components.projectiles
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.components.projectileshooters.HomingProjectileShooter
 import me.newburyminer.customItems.entity.components.utils.DetonationInterface
-import org.bukkit.Bukkit
-import org.bukkit.entity.Arrow
-import org.bukkit.entity.Entity
-import org.bukkit.entity.Firework
-import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
-import org.bukkit.util.Vector
-import kotlin.text.get
 
 class ExplosiveProjectile(private val power: Float, private val setFire: Boolean, private val breakBlocks: Boolean = false): EntityComponent, DetonationInterface {
 

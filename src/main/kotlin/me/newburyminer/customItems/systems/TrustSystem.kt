@@ -3,10 +3,7 @@ package me.newburyminer.customItems.systems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getListTag
 import me.newburyminer.customItems.Utils.Companion.setListTag
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.format.TextColor
 import org.bukkit.entity.Player
 
 object TrustSystem {

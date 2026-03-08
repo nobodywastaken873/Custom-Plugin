@@ -9,7 +9,10 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.ItemRegistry
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
@@ -57,37 +60,5 @@ class VillagerAtomizer: CustomItemDefinition {
             villager.remove()
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEntityEvent -> {
-                if (!ctx.itemType.isHand()) return
-                if (e.rightClicked !is Villager) return
-
-                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
-                        ?.hasComponent(NonPickuppableComponent::class) == true) return
-
-                e.isCancelled = true
-                val newItem = ItemRegistry.get(CustomItem.VILLAGER)
-                val villager: Villager = e.rightClicked as Villager
-
-                EntityWrapperManager.removeWrapper(villager)
-                val snapshot = villager.createSnapshot()!!.asString
-                newItem.setTag("storedvillager", snapshot)
-
-                newItem.lore(
-                    text("Profession: ${villager.profession.key.key.capitalize()}", arrayOf(255, 255, 255)),
-                    text("Level: ${convertVillagerLevel(villager.villagerLevel)}", arrayOf(255, 255, 255)),
-                )
-                e.player.addItemorDrop(newItem)
-                CustomEffects.playSound(villager.location, Sound.ENTITY_ITEM_PICKUP, 1F, 0.75F)
-                villager.remove()
-            }
-
-        }
-
-    }*/
 
 }

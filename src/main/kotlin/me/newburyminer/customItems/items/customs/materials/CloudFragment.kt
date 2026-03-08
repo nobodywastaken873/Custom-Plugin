@@ -1,11 +1,10 @@
 package me.newburyminer.customItems.items.customs.materials
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.items.*
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 

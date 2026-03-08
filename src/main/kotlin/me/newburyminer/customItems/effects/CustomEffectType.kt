@@ -1,8 +1,5 @@
 package me.newburyminer.customItems.effects
 
-import me.newburyminer.customItems.Utils
-import net.kyori.adventure.text.Component
-
 enum class CustomEffectType(val title: String, val color: Array<Int>) {
     ELYTRA_DISABLED("Elytra Disabled", arrayOf(171, 79, 224)),
     ATTRIBUTE("Attribute", arrayOf(160, 168, 166)),

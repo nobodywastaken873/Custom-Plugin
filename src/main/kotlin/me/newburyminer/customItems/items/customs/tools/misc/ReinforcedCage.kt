@@ -1,7 +1,6 @@
 package me.newburyminer.customItems.items.customs.tools.misc
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.loreBlock
@@ -110,64 +109,5 @@ class ReinforcedCage: CustomItemDefinition {
             entity.remove()
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-                if (e.action != Action.RIGHT_CLICK_BLOCK) return
-                if (!e.player.offCooldown(CustomItem.REINFORCED_CAGE)) return
-                val loc = e.clickedBlock!!.location
-                loc.add(Vector(0.5, 1.0, 0.5))
-                val entityAsString = item.getTag<String>("storedmob") ?: return
-                if (entityAsString == "") return
-                e.isCancelled = true
-                Bukkit.getEntityFactory().createEntitySnapshot(entityAsString).createEntity(loc)
-                item.setTag<String>("storedmob", "")
-                CustomEffects.playSound(loc, Sound.ITEM_BUNDLE_DROP_CONTENTS, 1F, 1.2F)
-                item.loreBlock(
-                    text("Type: NONE STORED", Utils.GRAY),
-                    text(""),
-                    text("Right click a non-boss, non-custom mob to pick it up and store it in this item. Right click again on the ground to place it down. You can only store one mob in this item at a time.", Utils.GRAY),
-                )
-                e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
-            }
-
-            is PlayerInteractEntityEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-
-                if (e.rightClicked.type in invalidPickups) return
-
-                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
-                    ?.hasComponent(NonPickuppableComponent::class) == true) return
-
-                //if (e.rightClicked.getTag<Int>("bossid") != null) return
-                if (!e.player.offCooldown(CustomItem.REINFORCED_CAGE)) return
-                if (item.getTag<String>("storedmob") !in arrayOf(null, "")) return
-
-                e.isCancelled = true
-                val entity = e.rightClicked
-
-                EntityWrapperManager.removeWrapper(entity)
-                val snapshot = (entity.createSnapshot() ?: return).asString
-                e.player.inventory.itemInMainHand.setTag("storedmob", snapshot)
-
-                e.player.inventory.itemInMainHand.loreBlock(
-                    text("Type: ${entity.type}", Utils.GRAY),
-                    text(""),
-                    text("Right click a non-boss, non-custom mob to pick it up and store it in this item. Right click again on the ground to place it down. You can only store one mob in this item at a time.", Utils.GRAY),
-                )
-                if (entity is InventoryHolder) entity.inventory.clear()
-                e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
-                entity.remove()
-            }
-
-        }
-
-    }*/
 
 }

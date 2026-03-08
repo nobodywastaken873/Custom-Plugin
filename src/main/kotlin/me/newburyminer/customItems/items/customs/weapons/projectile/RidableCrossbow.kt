@@ -1,17 +1,14 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileLaunchEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class RidableCrossbow: CustomItemDefinition {
@@ -41,23 +38,5 @@ class RidableCrossbow: CustomItemDefinition {
             e.entity.addPassenger(shooter)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is ProjectileLaunchEvent -> {
-                val shooter = ctx.player ?: return
-                var crossbow = ctx.item ?: return
-                if (!shooter.offCooldown(CustomItem.RIDABLE_CROSSBOW)) {e.isCancelled = true; return}
-
-                e.entity.velocity = e.entity.velocity.multiply(1.2)
-                shooter.setCooldown(CustomItem.RIDABLE_CROSSBOW, 60.0)
-                e.entity.addPassenger(shooter)
-            }
-
-        }
-
-    }*/
 
 }

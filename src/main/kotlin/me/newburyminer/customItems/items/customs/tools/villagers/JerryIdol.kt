@@ -1,25 +1,21 @@
 package me.newburyminer.customItems.items.customs.tools.villagers
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.JerryIdolComponent
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
-import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
 import org.bukkit.entity.Villager
 import org.bukkit.event.block.Action
-import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -69,35 +65,5 @@ class JerryIdol: CustomItemDefinition {
             CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 0.9F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                if (!ctx.itemType.isHand()) return
-                val item = ctx.item ?: return
-                if (e.action != Action.RIGHT_CLICK_BLOCK) return
-                val loc = e.clickedBlock!!.location
-                loc.add(Vector(0.5, 1.0, 0.5))
-                val villager: Villager = e.player.world.spawnEntity(loc, EntityType.VILLAGER) as Villager
-
-                val emeraldStacks = item.getTag<Int>("emeraldstacks") ?: 0
-                val wrapper = EntityWrapperManager.getWrapperorNew(villager)
-                wrapper.addComponent(JerryIdolComponent(emeraldStacks))
-                wrapper.addComponent(NonPickuppableComponent())
-
-                villager.getAttribute(Attribute.SCALE)!!.baseValue = emeraldStacks*0.1 + 1
-                villager.isInvulnerable = true
-                villager.addPotionEffect(PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4, true, false))
-                villager.setAI(false)
-
-                item.amount -= 1
-                CustomEffects.playSound(villager.location, Sound.ENTITY_VILLAGER_TRADE, 1F, 0.9F)
-            }
-
-        }
-
-    }*/
 
 }

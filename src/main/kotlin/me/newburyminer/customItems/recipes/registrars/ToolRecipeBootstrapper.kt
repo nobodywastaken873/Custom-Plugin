@@ -2,7 +2,6 @@ package me.newburyminer.customItems.recipes.registrars
 
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.recipes.RecipeBootstrapper
-import me.newburyminer.customItems.recipes.RecipeRegistry
 import org.bukkit.Material
 
 

@@ -1,24 +1,18 @@
 package me.newburyminer.customItems.items.customs.tools.villagers
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
-import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
 import me.newburyminer.customItems.entity.components.VillagerTradeComponent
-import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Villager
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.Merchant
 
 class RefreshingEmerald: CustomItemDefinition {
 
@@ -58,26 +52,5 @@ class RefreshingEmerald: CustomItemDefinition {
             tradingComponent.refreshTrades(wrapper)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEntityEvent -> {
-                if (!ctx.itemType.isHand()) return
-                if (e.rightClicked !is Villager) return
-                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
-                        ?.hasComponent(NonPickuppableComponent::class) == true) return
-
-                val villager = e.rightClicked as Villager
-                val wrapper = EntityWrapperManager.getWrapperorNew(villager)
-                val tradingComponent = wrapper.getComponents(VillagerTradeComponent::class)
-                    .firstOrNull() as VillagerTradeComponent? ?: VillagerTradeComponent()
-                tradingComponent.refreshTrades(wrapper)
-            }
-
-        }
-
-    }*/
 
 }

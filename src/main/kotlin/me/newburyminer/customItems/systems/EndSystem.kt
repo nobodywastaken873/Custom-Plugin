@@ -2,22 +2,15 @@ package me.newburyminer.customItems.systems
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.setAttr
 import me.newburyminer.customItems.Utils.Companion.setTag
 import net.kyori.adventure.title.Title
-import net.kyori.adventure.title.TitlePart
-import org.bukkit.Bukkit
-import org.bukkit.GameMode
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Sound
+import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerTeleportEvent
 
 object EndSystem: Listener {
 

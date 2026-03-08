@@ -4,10 +4,12 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.ItemRegistry
 import org.bukkit.Material
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class JetpackControllerSet: CustomItemDefinition {
@@ -38,21 +40,5 @@ class JetpackControllerSet: CustomItemDefinition {
             e.player.addItemorDrop(ItemRegistry.get(CustomItem.JETPACK_CONTROLLER))
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                val item = ctx.item ?: return
-                if (!ctx.itemType.isHand()) return
-                item.amount -= 1
-                e.player.addItemorDrop(ItemRegistry.get(CustomItem.JETPACK))
-                e.player.addItemorDrop(ItemRegistry.get(CustomItem.JETPACK_CONTROLLER))
-            }
-
-        }
-
-    }*/
 
 }

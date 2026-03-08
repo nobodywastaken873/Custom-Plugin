@@ -10,7 +10,6 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -18,7 +17,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class EnderNode: CustomItemDefinition {
@@ -54,25 +52,5 @@ class EnderNode: CustomItemDefinition {
             })
         })
     }
-    
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is InventoryClickEvent -> {
-                val player = ctx.player ?: return
-                if (player.isBeingTracked()) return
-                if (e.inventory.holder is CustomGui) return
-                if (e.action != InventoryAction.PICKUP_HALF) return
-                e.isCancelled = true
-                if (e.inventory.type == InventoryType.ENDER_CHEST) return
-                CustomEffects.playSoundToPlayer(player, Sound.BLOCK_ENDER_CHEST_OPEN, 0.5F, (1.0F - Math.random() * 0.1F).toFloat())
-                Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-                    player.closeInventory()
-                    player.openInventory(player.enderChest)
-                })
-            }
-
-        }
-    }*/
 
 }

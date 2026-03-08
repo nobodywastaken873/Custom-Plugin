@@ -10,7 +10,9 @@ import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Arrow
@@ -66,32 +68,6 @@ class PolarizedMagnet: CustomItemDefinition {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                val item = ctx.item ?: return
-                if (e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) {
-                    if (ctx.itemType != EventItemType.MAINHAND) return
-                    if (!e.player.isSneaking) return
-                    if (!e.player.offCooldown(CustomItem.POLARIZED_MAGNET)) return
-                    e.player.setTag("polarizedmagnetitempull", !(e.player.getTag<Boolean>("polarizedmagnetitempull")?:false))
-                    if (e.player.getTag<Boolean>("polarizedmagnetitempull")!!) item.name(text("Polarized Magnet", arrayOf(36, 36, 255), bold = true))
-                    else item.name(text("Polarized Magnet", arrayOf(255, 36, 36), bold = true))
-                    CustomEffects.playSoundToPlayer(e.player, Sound.BLOCK_CANDLE_PLACE, 1F, 0.9F)
-                    e.player.setCooldown(CustomItem.POLARIZED_MAGNET, 0.5)
-                } else {
-                    if (!ctx.itemType.isHand()) return
-                    pullCount[e.player.uniqueId] = 4
-                    CustomEffects.playSound(e.player.location, Sound.BLOCK_BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, 1.0F, 1.1F)
-                }
-            }
-
-        }
-
-    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(1 to {player -> polarizedMagnetPull(player)})

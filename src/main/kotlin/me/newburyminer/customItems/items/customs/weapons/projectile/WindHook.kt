@@ -1,25 +1,20 @@
 package me.newburyminer.customItems.items.customs.weapons.projectile
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.WindHookArrow
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.*
 import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 import java.util.*
@@ -68,36 +63,6 @@ class WindHook: CustomItemDefinition {
             //shooter.setTag("windhookpulltime", 50)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is ProjectileLaunchEvent -> {
-                val shooter = ctx.player ?: return
-                val item = ctx.item ?: return
-                if (!shooter.offCooldown(CustomItem.WIND_HOOK)) {e.isCancelled = true; return}
-                e.entity.setTag("source", CustomItem.WIND_HOOK.name)
-                (e.entity as Arrow).color = Color.fromRGB(211, 195, 219)
-                shooter.setCooldown(CustomItem.WIND_HOOK, 15.0)
-                shooter.stopSound(Sound.ENTITY_ARROW_SHOOT)
-                CustomEffects.playSoundToPlayer(shooter, Sound.ENTITY_BREEZE_JUMP, 1F, 0.8F)
-            }
-
-            is ProjectileHitEvent -> {
-                val arrow = e.entity as Arrow
-                arrow.pickupStatus = AbstractArrow.PickupStatus.DISALLOWED
-                val shooter = e.entity.shooter as Player
-                val uuid = shooter.uniqueId
-                pullTime[uuid] = 50
-                pullCoords[uuid] = e.entity.location.clone()
-                shooter.setTag("windhookpullcoords", "${e.entity.location.x},${e.entity.location.y},${e.entity.location.z}")
-                shooter.setTag("windhookpulltime", 50)
-            }
-
-        }
-
-    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(1 to {player -> windHookPull(player)})

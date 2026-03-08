@@ -1,14 +1,12 @@
 package me.newburyminer.customItems.systems
 
-import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.event.player.AsyncChatEvent
 import io.papermc.paper.event.player.PlayerItemGroupCooldownEvent
-import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
+import io.papermc.paper.event.player.PlayerTradeEvent
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.afkTime
-import me.newburyminer.customItems.Utils.Companion.compassCooldown
 import me.newburyminer.customItems.Utils.Companion.decrementTag
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getTag
@@ -17,14 +15,10 @@ import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.isTracking
-import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.offCooldown
-import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.gui.CompassGui
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.ShulkerGui
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -45,15 +39,12 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.*
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.CompassMeta
 import org.bukkit.scheduler.BukkitTask
 import org.bukkit.util.Vector
 import java.util.*
-import kotlin.math.pow
 
 class SystemsListener: Listener, Runnable  {
     @EventHandler fun onPlayerTeleport(e: PlayerTeleportEvent) {
@@ -320,6 +311,7 @@ class SystemsListener: Listener, Runnable  {
         if (e.cooldown != 1) return
         e.isCancelled = true
     }
+    // Open shulkers in inventory
     @EventHandler fun onInventoryClick(e: InventoryClickEvent) {
         if (e.action != InventoryAction.PICKUP_HALF) return
         if (e.whoClicked.getTag<Boolean>("inventoryshulker") != true) return
@@ -348,13 +340,14 @@ class SystemsListener: Listener, Runnable  {
         cancelCustomCrafts(e)
         duplicateArmorTrims(e)
     }
+    // Prevent crafting items in a crafting table with a custom
     private fun cancelCustomCrafts(e: CraftItemEvent) {
         for (item in e.inventory) {
             if (item == null) continue
-            if (item.itemMeta == null) continue
-            if (item.getTag<Int>("id") != null) e.isCancelled = true
+            if (item.getCustom() != null) e.isCancelled = true
         }
     }
+    // Unique trim duplicating
     private fun duplicateArmorTrims(e: CraftItemEvent) {
         val result = e.recipe.result
 
@@ -376,11 +369,13 @@ class SystemsListener: Listener, Runnable  {
             return
         }
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+            // If it turns into air after crafting, put one back
             if (e.inventory.getItem(2)?.type != result.type) {
                 val newResult = ItemStack(result.type)
                 e.inventory.setItem(2, newResult)
+            // Otherwise, increase the amount by 1
             } else {
-                e.inventory.getItem(2)!!.amount = 2
+                e.inventory.getItem(2)?.amount += 1
             }
         })
     }
@@ -388,6 +383,7 @@ class SystemsListener: Listener, Runnable  {
         cancelProjectileCharge(e)
         addUniqueSalt(e)
     }
+    // Prevent charging if on cooldown, not really needed anymore since the item cooldown is there
     private fun cancelProjectileCharge(e: PlayerInteractEvent) {
         if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
         if (e.item == null) return
@@ -396,11 +392,14 @@ class SystemsListener: Listener, Runnable  {
             if (e.item!!.isItem(custom) && !e.item!!.offCooldown(e.player)) e.isCancelled = true
         }
     }
+    // Add a unique UUID tag to items, prevent them from being stackable, only applies to non-materials
+    // Should occur when crafting, but added just in case
     private fun addUniqueSalt(e: PlayerInteractEvent) {
         if (e.item?.getCustom()?.stackable != false) return
         if (e.item?.getTag<String>("uniquesalt") != null) return
         e.item?.setTag("uniquesalt", UUID.randomUUID().toString())
     }
+    // Prevent customs from being placed (need to add any placeable customs to this list)
     @EventHandler fun onBlockPlace(e: BlockPlaceEvent) {
         if (e.itemInHand.getTag<Int>("id") != null && e.itemInHand.getCustom() !in arrayOf(
                 CustomItem.ACTUAL_REDSTONE, CustomItem.CONTAINERS, CustomItem.MINECART_MATERIALS, CustomItem.INPUT_DEVICES,
@@ -409,6 +408,14 @@ class SystemsListener: Listener, Runnable  {
             )) {
             e.isCancelled = true
         }
+    }
+    // Prevent customs from being used in trades they aren't supposed to be in
+    @EventHandler fun onVillagerTrade(e: PlayerTradeEvent) {
+        if (
+            e.player.openInventory.getItem(0)?.getCustom() == e.trade.ingredients.getOrNull(0)?.getCustom() &&
+            e.player.openInventory.getItem(1)?.getCustom() == e.trade.ingredients.getOrNull(1)?.getCustom()
+            ) return
+        e.isCancelled = true
     }
 
     private var futures = mutableListOf<Int>()

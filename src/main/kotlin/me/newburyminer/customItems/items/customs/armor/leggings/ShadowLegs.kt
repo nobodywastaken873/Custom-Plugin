@@ -3,13 +3,13 @@ package me.newburyminer.customItems.items.customs.armor.leggings
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -70,31 +70,5 @@ class ShadowLegs: CustomItemDefinition {
             })
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityResurrectEvent -> {
-                if (ctx.itemType != EventItemType.LEGGINGS) return
-                val player = ctx.player ?: return
-                if (e.isCancelled) return
-                if (!player.offCooldown(CustomItem.SHADOW_LEGS)) return
-                player.setCooldown(CustomItem.SHADOW_LEGS, 60.0)
-
-                CustomEffects.particleCloud(Particle.SMOKE.builder(), player.location, 500, 5.0, 0.5)
-
-                val duration = if (player.inventory.helmet?.isItem(CustomItem.DRINKING_HAT) == true) 1000 else 500
-                Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
-                    (e.entity as Player).addPotionEffects(mutableListOf(
-                        PotionEffect(PotionEffectType.RESISTANCE, duration, 1),
-                        PotionEffect(PotionEffectType.STRENGTH, duration, 2),
-                        PotionEffect(PotionEffectType.SPEED, duration, 2),
-                        PotionEffect(PotionEffectType.REGENERATION, duration, 2)
-                    ))
-                })
-            }
-
-        }
-    }*/
 
 }

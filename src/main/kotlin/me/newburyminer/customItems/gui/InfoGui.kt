@@ -3,7 +3,6 @@ package me.newburyminer.customItems.gui
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
-import me.newburyminer.customItems.Utils.Companion.setTag
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit

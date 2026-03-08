@@ -1,12 +1,5 @@
 package me.newburyminer.customItems.entity
 
-import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getDifficultyIndex
-import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.CreatureSpawnEvent
-import kotlin.math.pow
-
 object WrappedEntitySpawnManager {
     /*@EventHandler fun onEntitySpawn(e: CreatureSpawnEvent) {
 

@@ -7,7 +7,6 @@ import org.bukkit.event.Event
 import kotlin.reflect.KClass
 
 interface CustomItemBehavior {
-    fun handle(ctx: EventContext) {}
     val extraTasks: Map<Int, (Player) -> Unit> get() = emptyMap()
 
     fun <T: Event> register(event: KClass<T>, predicate: (T) -> Boolean, handler: (T) -> Unit) {

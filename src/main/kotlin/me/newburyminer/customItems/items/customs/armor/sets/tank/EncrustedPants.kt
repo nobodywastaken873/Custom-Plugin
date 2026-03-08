@@ -3,16 +3,16 @@ package me.newburyminer.customItems.items.customs.armor.sets.tank
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityTargetEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -60,18 +60,5 @@ class EncrustedPants: CustomItemDefinition {
             e.target = foundTarget
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityTargetEvent -> {
-                if (ctx.itemType != EventItemType.LEGGINGS) return
-                val item = ctx.item ?: return
-                val player = ctx.player ?: return
-                e.target = player
-            }
-
-        }
-    }*/
 
 }

@@ -2,13 +2,13 @@ package me.newburyminer.customItems.items.customs.armor.boots
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -56,22 +56,6 @@ class AqueousSandals: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is PlayerToggleSneakEvent -> {
-                if (ctx.itemType != EventItemType.BOOTS) return
-                val player = ctx.player ?: return
-                if (!e.isSneaking) return
-                if (!player.offCooldown(CustomItem.AQUEOUS_SANDALS)) return
-                player.addPotionEffect(PotionEffect(PotionEffectType.DOLPHINS_GRACE, 100, 0, true, true, true))
-                player.setCooldown(CustomItem.AQUEOUS_SANDALS, 20.0)
-                CustomEffects.playSound(e.player.location, Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 0.8F)
-            }
-
-        }
-    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(60 to {player -> runTask(player)})

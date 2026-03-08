@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.recipes
 
-import me.newburyminer.customItems.Utils.Companion.isItem
-import me.newburyminer.customItems.items.CustomItem
 import org.bukkit.inventory.ItemStack
 
 

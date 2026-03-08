@@ -2,9 +2,10 @@ package me.newburyminer.customItems.items.customs.armor.chestplates
 
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
@@ -12,7 +13,6 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
@@ -46,20 +46,5 @@ class MaceShieldedPlating: CustomItemDefinition {
             e.damage *= 0.4
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.CHESTPLATE) return
-                val player = ctx.player ?: return
-                if (e.entity !is Player) return
-                if (e.damager !is Player) return
-                if (e.damageSource.damageType != DamageType.MACE_SMASH) return
-                e.damage *= 0.4
-            }
-
-        }
-    }*/
 
 }

@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.eventbus
 
 import org.bukkit.event.Event
-import java.util.UUID
+import java.util.*
 import kotlin.reflect.KClass
 
 object EventRegistry {

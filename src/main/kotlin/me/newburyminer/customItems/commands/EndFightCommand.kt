@@ -2,7 +2,6 @@ package me.newburyminer.customItems.commands
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.newburyminer.customItems.gui.InfoGui
 import me.newburyminer.customItems.systems.EndSystem
 import org.bukkit.entity.Player
 

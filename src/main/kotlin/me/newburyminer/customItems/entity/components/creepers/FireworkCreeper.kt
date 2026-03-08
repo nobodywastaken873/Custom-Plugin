@@ -5,20 +5,12 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
-import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import org.bukkit.Color
 import org.bukkit.FireworkEffect
-import org.bukkit.damage.DamageType
-import org.bukkit.entity.Creeper
 import org.bukkit.entity.Firework
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.util.Vector
-import kotlin.math.pow
 
 class FireworkCreeper(val count: Int, val damage: Double): EntityComponent {
 

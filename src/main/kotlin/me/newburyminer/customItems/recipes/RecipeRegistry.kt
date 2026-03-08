@@ -8,7 +8,6 @@ import me.newburyminer.customItems.recipes.registrars.WeaponRecipeBootstrapper
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionType
 
 object RecipeRegistry {
 

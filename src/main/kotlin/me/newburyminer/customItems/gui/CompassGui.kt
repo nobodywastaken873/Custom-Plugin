@@ -9,7 +9,6 @@ import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setItemAction
-import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration

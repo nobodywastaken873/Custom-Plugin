@@ -4,14 +4,14 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomEnchantments
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.CubeHarvester
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.block.Container
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
@@ -55,33 +55,5 @@ class Excavator: CustomItemDefinition, CubeHarvester {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is BlockBreakEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val pickaxe = ctx.item ?: return
-                val drops = mutableListOf<ItemStack>()
-                for (block in getAround(e.block.location)) {
-                    if (e.block.world.getBlockAt(block).type.hardness.toInt() == -1) continue
-                    if (e.block.world.getBlockAt(block).state is Container) continue
-                    for (drop in block.block.getDrops(pickaxe, e.player)) drops.add(drop)
-                    e.block.world.getBlockAt(block).type = Material.AIR
-                }
-                if (CustomEnchantments.AUTOSMELT in e.player.inventory.itemInMainHand.enchantments) {
-                    for (drop in drops) {
-                        drop.smelt()
-                    }
-                }
-                for (drop in drops) {
-                    e.block.world.dropItem(e.block.location.clone().add(Vector(0.5, 0.5, 0.5)), drop)
-                }
-            }
-
-        }
-
-    }*/
 
 }

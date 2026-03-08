@@ -5,17 +5,13 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerItemConsumeEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
 class ShulkerFruit: CustomItemDefinition {
@@ -47,21 +43,5 @@ class ShulkerFruit: CustomItemDefinition {
             CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.4F)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is PlayerItemConsumeEvent -> {
-                if (e.player.getTag<Boolean>("inventoryshulker") == true) {
-                    e.isCancelled = true
-                    e.player.sendActionBar(text("Max amount already consumed", Utils.FAILED_COLOR))
-                    return
-                }
-                e.player.setTag("inventoryshulker", true)
-                CustomEffects.playSound(e.player.location, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.4F)
-            }
-
-        }
-    }*/
 
 }

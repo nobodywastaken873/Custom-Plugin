@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.datapack.DatapackRegistrar
 import io.papermc.paper.plugin.bootstrap.BootstrapContext
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap
@@ -14,7 +13,6 @@ import io.papermc.paper.plugin.lifecycle.event.registrar.RegistrarEvent
 import io.papermc.paper.plugin.lifecycle.event.registrar.ReloadableRegistrarEvent
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry
-import io.papermc.paper.registry.event.RegistryComposeEvent
 import io.papermc.paper.registry.event.RegistryEvents
 import io.papermc.paper.registry.keys.EnchantmentKeys
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
@@ -36,7 +34,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.command.CommandSender
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.*
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
@@ -44,7 +41,6 @@ import java.io.IOException
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.*
-import kotlin.collections.listOf
 
 
 class CustomPluginBootstrapper: PluginBootstrap {

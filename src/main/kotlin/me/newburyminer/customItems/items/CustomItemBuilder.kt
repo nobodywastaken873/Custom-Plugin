@@ -7,14 +7,8 @@ import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.tag.TagKey
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.BLUE
 import me.newburyminer.customItems.Utils.Companion.GRAY
-import me.newburyminer.customItems.Utils.Companion.consumable
-import me.newburyminer.customItems.Utils.Companion.food
-import me.newburyminer.customItems.Utils.Companion.getCustom
-import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.noNoiseEquippable
 import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text

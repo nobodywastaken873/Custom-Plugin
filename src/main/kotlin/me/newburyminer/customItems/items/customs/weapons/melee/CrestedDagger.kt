@@ -1,7 +1,10 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
@@ -46,25 +49,5 @@ class CrestedDagger: CustomItemDefinition {
             damaged.noDamageTicks = 5
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val damager = e.damager as? Player ?: return
-                val damaged = e.entity as? LivingEntity ?: return
-                // prevent infinite looping with damage
-                if (e.damageSource.damageType == DamageType.STARVE) return
-                e.isCancelled = true
-                val damage = 20.0 / 13 * (e.damager as Player).attackCooldown
-                damaged.damage(damage, DamageSource.builder(DamageType.STARVE).withDirectEntity(e.damager).withCausingEntity(e.damager).build())
-                damaged.noDamageTicks = 5
-            }
-
-        }
-
-    }*/
 
 }

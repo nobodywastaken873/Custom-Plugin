@@ -1,15 +1,12 @@
 package me.newburyminer.customItems.items.customs.tools.villagers
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
-import me.newburyminer.customItems.items.EventContext
 import org.bukkit.Material
 import org.bukkit.entity.Villager
 import org.bukkit.entity.ZombieVillager
@@ -51,31 +48,5 @@ class GoldenZombie: CustomItemDefinition {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEntityEvent -> {
-                if (!ctx.itemType.isHand()) return
-                if (e.rightClicked !is Villager && e.rightClicked !is ZombieVillager) return
-
-                if (EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)
-                        ?.hasComponent(NonPickuppableComponent::class) == true) return
-
-                e.isCancelled = true
-                if (e.rightClicked is Villager) {
-                    val villager: Villager = e.rightClicked as Villager
-                    villager.zombify()
-                } else if (e.rightClicked is ZombieVillager) {
-                    val zombieVillager: ZombieVillager = e.rightClicked as ZombieVillager
-                    zombieVillager.conversionTime = 50
-                    zombieVillager.conversionPlayer = e.player
-                }
-            }
-
-        }
-
-    }*/
 
 }

@@ -5,18 +5,19 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.HeldActivation
 import net.kyori.adventure.text.Component
-import org.bukkit.*
+import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.*
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionType
 import org.bukkit.util.Vector
-import java.util.*
 
 class PewmaticHorn: CustomItemDefinition {
 
@@ -43,23 +44,6 @@ class PewmaticHorn: CustomItemDefinition {
         })
     }
 
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is PlayerInteractEvent -> {
-                val item = ctx.item ?: return
-                if (!ctx.itemType.isHand()) return
-                if (e.action != Action.RIGHT_CLICK_BLOCK && e.action != Action.RIGHT_CLICK_AIR) return
-                if (!item.offCooldown(e.player)) return
-                usedMap[e.player.uniqueId] = true
-
-            }
-
-        }
-
-    }*/
-
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(
             6 to {player -> pewmaticHornTick(player)},
@@ -79,27 +63,6 @@ class PewmaticHorn: CustomItemDefinition {
                 CustomEffects.playSound(player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, (0.15 * result.ticks.coerceAtMost(13)).toFloat())
             else -> {}
         }
-        /*val uuid = player.uniqueId
-        if (usedMap[uuid] == true) {
-            counterMap[uuid] = (counterMap[uuid] ?: 0) + 1
-            val pewMaticHornCount = counterMap[uuid] ?: return
-            CustomEffects.playSound(
-                player.location,
-                Sound.BLOCK_AZALEA_PLACE,
-                1F,
-                (0.15 * (if (pewMaticHornCount > 12) 13 else pewMaticHornCount)).toFloat()
-            )
-        } else {
-            if ((counterMap[uuid] ?: 0) != 0) {
-                CustomEffects.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 1F, 1.2F)
-                val totalTime = counterMap[uuid] ?: return
-                if (totalTime > 12) {
-                    player.setCooldown(CustomItem.PEW_MATIC_HORN, (0.3 * 4 * totalTime * 10).toInt() / 10.0)
-                }
-            }
-            counterMap[uuid] = 0
-        }
-        usedMap[uuid] = false*/
     }
     private fun pewmaticHornShoot(player: Player) {
         val result = heldActivation.currentResult(player)

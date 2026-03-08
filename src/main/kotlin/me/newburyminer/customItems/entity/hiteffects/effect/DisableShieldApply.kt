@@ -1,20 +1,15 @@
 package me.newburyminer.customItems.entity.hiteffects.effect
 
-import io.papermc.paper.registry.RegistryAccess
-import io.papermc.paper.registry.RegistryKey
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.DoubleRange
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
 class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffect {

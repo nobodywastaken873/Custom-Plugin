@@ -4,9 +4,10 @@ import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import net.kyori.adventure.text.Component
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -52,22 +53,6 @@ class DoubleJumpBoots: CustomItemDefinition {
             e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is PlayerToggleFlightEvent -> {
-                if (ctx.itemType != EventItemType.BOOTS) return
-                if (e.player.gameMode in arrayOf(GameMode.CREATIVE, GameMode.SPECTATOR)) return
-                e.isCancelled = true
-                e.player.allowFlight = false
-                if (!e.player.offCooldown(CustomItem.DOUBLE_JUMP_BOOTS)) return
-                e.player.velocity = e.player.location.direction.multiply(1.0).setY(0.7)
-                e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
-            }
-
-        }
-    }*/
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(5 to {player -> resetDoubleJump(player)})

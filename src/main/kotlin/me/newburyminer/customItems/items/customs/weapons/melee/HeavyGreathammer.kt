@@ -6,8 +6,10 @@ import me.newburyminer.customItems.Utils.Companion.reduceDura
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
-import net.kyori.adventure.text.Component
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -71,40 +73,5 @@ class HeavyGreathammer: CustomItemDefinition {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val damager = e.damager as? Player ?: return
-                val item = ctx.item ?: return
-                if (!e.isCritical) return
-
-                var criticalCount = item.getTag<Int>("criticalcount") ?: 0
-                item.setTag("criticalcount", criticalCount + 1)
-                criticalCount += 1
-
-                if (criticalCount % 3 != 0) {
-                    damager.playSound(damager.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1.0F,
-                        if (criticalCount % 3 == 1) 1.0F else 1.2F
-                    )
-                    return
-                }
-                e.damage *= 2
-
-                CustomEffects.playSound(e.entity.location, Sound.BLOCK_CALCITE_BREAK, 1.0F, 0.7F)
-                CustomEffects.particle(Particle.CRIMSON_SPORE.builder(), e.entity.location, 20, 0.5, 0.5)
-
-                if (e.entity !is Player) return
-                for (armor in (e.entity as Player).inventory.armorContents) {
-                    if (armor?.itemMeta?.isUnbreakable != true) armor?.reduceDura(10)
-                }
-            }
-
-        }
-
-    }*/
 
 }

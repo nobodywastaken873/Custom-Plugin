@@ -1,10 +1,7 @@
 package me.newburyminer.customItems.items.behaviors
 
-import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.block.Block
-import kotlin.math.max
 
 interface VeinFinder: CubeHarvester {
 

@@ -5,7 +5,6 @@ import io.papermc.paper.registry.RegistryKey
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
-import java.rmi.registry.Registry
 
 class AttributeData(
     val amount: Double,

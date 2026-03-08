@@ -1,9 +1,7 @@
 package me.newburyminer.customItems.items.behaviors
 
-import me.newburyminer.customItems.helpers.CustomEffects
-import org.bukkit.Sound
 import org.bukkit.entity.Player
-import java.util.UUID
+import java.util.*
 
 class HeldActivation(
     private val activationTicks: Int,

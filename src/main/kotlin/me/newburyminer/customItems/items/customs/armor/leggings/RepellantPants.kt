@@ -2,9 +2,10 @@ package me.newburyminer.customItems.items.customs.armor.leggings
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.eventbus.EventRegistry
-import me.newburyminer.customItems.eventbus.ListenerEntry
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -50,23 +51,5 @@ class RepellantPants: CustomItemDefinition {
             }
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-        when (val e = ctx.event) {
-
-            is EntityResurrectEvent -> {
-                if (ctx.itemType != EventItemType.LEGGINGS) return
-                val player = ctx.player ?: return
-                if (e.isCancelled) return
-                for (entity in player.location.getNearbyEntities(8.0, 8.0, 8.0)) {
-                    if (entity == player) continue
-                    entity.velocity = entity.velocity.add(entity.location.subtract(player.location).toVector().normalize().multiply(3).add(
-                        Vector(0.0, 1.0, 0.0)
-                    ))
-                }
-            }
-
-        }
-    }*/
 
 }

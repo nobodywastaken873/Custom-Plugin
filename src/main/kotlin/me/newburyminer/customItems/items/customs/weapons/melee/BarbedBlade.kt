@@ -9,7 +9,10 @@ import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.attribute.Attribute
@@ -62,29 +65,5 @@ class BarbedBlade: CustomItemDefinition {
             player.setCooldown(custom, 15.0)
         })
     }
-
-    /*override fun handle(ctx: EventContext) {
-
-        when (val e = ctx.event) {
-
-            is EntityDamageByEntityEvent -> {
-                if (ctx.itemType != EventItemType.MAINHAND) return
-                val player = e.damager as? Player ?: return
-                val damaged = e.entity as? LivingEntity ?: return
-                if (Math.random() < 1.0 / 5.0 && e.entity is LivingEntity) {
-                    damaged.addPotionEffect(PotionEffect(PotionEffectType.DARKNESS, 100, 0))
-                }
-                if (!player.inventory.itemInMainHand.offCooldown(e.damager as Player)) return
-
-                CustomEffects.playSound(player.location, Sound.ITEM_TRIDENT_THROW, 0.7f, 1.3f)
-
-                EffectManager.applyEffect(damaged as? Player ?: return, CustomEffectType.ATTRIBUTE,
-                    EffectData(4 * 20, attributeData = AttributeData(-4.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER)))
-                player.inventory.itemInMainHand.setCooldown(e.damager as Player, 15.0)
-            }
-
-        }
-
-    }*/
 
 }

@@ -1,7 +1,10 @@
 package me.newburyminer.customItems.items.customs.armor.sets.warrior
 
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.items.*
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
 import me.newburyminer.customItems.items.armorsets.ArmorSet
 import net.kyori.adventure.text.Component
 import org.bukkit.Material

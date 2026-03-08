@@ -2,18 +2,10 @@ package me.newburyminer.customItems.entity.components.bosses
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.bosses.behaviors.WardenInstance
-import me.newburyminer.customItems.entity.DeserializationInterface
-import me.newburyminer.customItems.entity.EntityComponent
-import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
-import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.*
 import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.damage.DamageType
-import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Warden
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent

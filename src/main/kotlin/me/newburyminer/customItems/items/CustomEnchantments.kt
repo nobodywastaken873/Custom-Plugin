@@ -4,25 +4,26 @@ import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.TypedKey
 import net.kyori.adventure.key.Key
+import org.bukkit.enchantments.Enchantment
 
 class CustomEnchantments {
     companion object {
-        val AUTOSMELT = RegistryAccess.registryAccess()
+        val AUTOSMELT: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:autosmelt")))
-        val SOULBOUND = RegistryAccess.registryAccess()
+        val SOULBOUND: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:soulbound")))
-        val FIREPROOF = RegistryAccess.registryAccess()
+        val FIREPROOF: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:fireproof")))
-        val BLAST_RESISTANT = RegistryAccess.registryAccess()
+        val BLAST_RESISTANT: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:blast_resistant")))
-        val REINFORCED = RegistryAccess.registryAccess()
+        val REINFORCED: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:reinforced")))
-        val DUPLICATE = RegistryAccess.registryAccess()
+        val DUPLICATE: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:duplicate")))
     }

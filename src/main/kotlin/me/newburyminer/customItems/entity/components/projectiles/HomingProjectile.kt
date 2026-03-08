@@ -4,14 +4,10 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.components.projectileshooters.HomingProjectileShooter
 import org.bukkit.Bukkit
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
-import org.bukkit.entity.Firework
-import org.bukkit.entity.Player
-import org.bukkit.util.Vector
-import java.util.UUID
+import java.util.*
 
 class HomingProjectile(private val angleChange: Double, private val target: Entity): EntityComponent {
 

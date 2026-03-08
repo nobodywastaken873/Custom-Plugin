@@ -6,7 +6,6 @@ import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
-import me.newburyminer.customItems.entity.EntityEventContext
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -16,7 +15,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Firework
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import java.util.UUID
+import java.util.*
 
 class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player):
     EntityComponent {
