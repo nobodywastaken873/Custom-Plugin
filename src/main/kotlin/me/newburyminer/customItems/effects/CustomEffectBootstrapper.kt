@@ -1,7 +1,16 @@
 package me.newburyminer.customItems.effects
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.effects.behaviors.ElytraDisableEffect
 import me.newburyminer.customItems.effects.factories.*
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.ItemRegistry
+import me.newburyminer.customItems.systems.playertask.PlayerTask
+import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
+import org.reflections.Reflections
+import java.lang.reflect.Modifier
+import kotlin.collections.component1
+import kotlin.collections.component2
 
 object CustomEffectBootstrapper {
     fun registerAll() {
@@ -16,7 +25,13 @@ object CustomEffectBootstrapper {
             )
         )
 
-        EffectEventHandler.register(CustomEffectType.ELYTRA_DISABLED, ElytraDisableEffect())
-
+        val reflections: Reflections = Reflections("me.newburyminer.customItems.effects")
+        reflections.getSubTypesOf(EffectBehavior::class.java)
+            .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
+            .forEach { cls ->
+                val instance = cls.getDeclaredConstructor().newInstance()
+                instance.registerListeners()
+            }
+        CustomItems.plugin.logger.info("Successfully registered all effects")
     }
 }

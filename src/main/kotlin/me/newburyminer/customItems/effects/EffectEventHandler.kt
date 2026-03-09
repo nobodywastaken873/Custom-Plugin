@@ -11,31 +11,6 @@ import org.bukkit.event.player.PlayerQuitEvent
 import java.util.*
 
 class EffectEventHandler: Listener {
-
-    companion object {
-        private val behaviors: MutableMap<CustomEffectType, EffectBehavior> = mutableMapOf()
-
-        fun register(type: CustomEffectType, behavior: EffectBehavior) {
-            behaviors[type] = behavior
-        }
-
-        private fun dispatch(
-            player: Player,
-            effect: EffectManager.ActiveEffect,
-            event: Event,
-        ) {
-            val type = effect.type
-            val behavior = behaviors[type] ?: return
-            behavior.handle(
-                PotionEventContext(
-                    player = player,
-                    active = effect,
-                    event = event,
-                )
-            )
-        }
-    }
-
     private val storedEffects = mutableMapOf<UUID, List<EffectManager.ActiveEffect>>()
 
     @EventHandler fun onPlayerLogout(e: PlayerQuitEvent) {
@@ -55,12 +30,6 @@ class EffectEventHandler: Listener {
     @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {
         if (e.isCancelled) return
         EffectManager.removeEffect(e.player)
-    }
-
-    @EventHandler fun onPlayerElytra(e: EntityToggleGlideEvent) {
-        val player = e.entity as? Player ?: return
-        val effects = EffectManager.getActiveEffects(player)
-        effects.forEach { dispatch(player, it, e) }
     }
 
 }
