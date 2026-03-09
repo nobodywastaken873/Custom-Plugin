@@ -65,7 +65,7 @@ abstract class BossInstance(protected val players: MutableList<Player>, val boss
     }
 
     // Entity handling
-    protected val activeEntities = mutableListOf<Entity>()
+    protected val activeEntities: MutableList<Entity> = mutableListOf()
     private fun checkEntities() {
         activeEntities.removeIf {
             !it.isValid
@@ -100,14 +100,14 @@ abstract class BossInstance(protected val players: MutableList<Player>, val boss
         markedForRemoval = true
     }
 
+    protected val mobSpawnRadius: Double = 15.0
     fun getValidMobSpawn(): Location {
-        val radius = 15.0
-        var possOffset = Vector(Utils.randomRange(-radius, radius), 0.0, Utils.randomRange(-radius, radius))
+        var possOffset = Vector(Utils.randomRange(-mobSpawnRadius, mobSpawnRadius), 0.0, Utils.randomRange(-mobSpawnRadius, mobSpawnRadius))
         while (bossCenter.clone().add(possOffset).block.type != Material.AIR ||
             bossCenter.clone().add(possOffset).add(0.0, 1.0, 0.0).block.type != Material.AIR ||
             bossCenter.clone().add(possOffset).getNearbyPlayers(5.0).isNotEmpty()
         ) {
-            possOffset = Vector(Utils.randomRange(-radius, radius), 0.0, Utils.randomRange(-radius, radius))
+            possOffset = Vector(Utils.randomRange(-mobSpawnRadius, mobSpawnRadius), 0.0, Utils.randomRange(-mobSpawnRadius, mobSpawnRadius))
         }
         return bossCenter.clone().add(possOffset).block.location
     }

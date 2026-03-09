@@ -112,9 +112,7 @@ class CustomItems : JavaPlugin() {
     }
 
     private fun registerListeners() {
-        //server.pluginManager.registerEvents(entityListener, this)
         server.pluginManager.registerEvents(LootListener(), this)
-        //server.pluginManager.registerEvents(bossListener, this)
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
         server.pluginManager.registerEvents(EffectEventHandler(), this)

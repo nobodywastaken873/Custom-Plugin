@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
+import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -17,25 +18,31 @@ class BossSystemHandler: Listener {
     @EventHandler fun onEntityDeath(e: EntityDeathEvent) {
         normalDeath(e)
     }
+    // Prevent normal mobs from dropping items
     private fun normalDeath(e: EntityDeathEvent) {
         if (e.entity.location.world != CustomItems.bossWorld) return
         e.drops.clear()
     }
 
+    // Prevent sculk spread in boss arena
     @EventHandler fun onSculkSpread(e: BlockSpreadEvent) {
         if (e.block.location.world == CustomItems.bossWorld) e.isCancelled = true
     }
     @EventHandler fun onArrowLand(e: ProjectileHitEvent) {
         if (e.entity.location.world != CustomItems.bossWorld) return
-        if (e.entity.type != EntityType.ARROW) return
+        if (e.entity !is AbstractArrow) return
+        // Prevent arrows from accumulating on the ground
         if (e.hitBlock != null) {
             e.entity.remove()
-        } else if (e.hitEntity != null) {
+        }
+        // Prevent infighting
+        else if (e.hitEntity != null) {
             if (e.hitEntity !is Player && e.entity.shooter !is Player) {
                 e.isCancelled = true
             }
         }
     }
+    // Prevent pearl glitching up through a ceiling
     @EventHandler fun onPlayerThrowPearl(e: ProjectileLaunchEvent) {
         if (e.entity.type != EntityType.ENDER_PEARL) return
         if (e.entity.world != CustomItems.bossWorld) return
@@ -43,6 +50,7 @@ class BossSystemHandler: Listener {
         if ((e.entity.shooter as Player).location.block.isPassable) return
         e.isCancelled = true
     }
+    // Remove players from the boss world on logout, death
     @EventHandler fun onPlayerLogout(e: PlayerQuitEvent) {
         if (e.player.world != CustomItems.bossWorld) return
         BossManager.removePlayer(e.player)
