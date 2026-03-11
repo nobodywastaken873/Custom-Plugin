@@ -122,7 +122,7 @@ class CustomEffects {
         }
 
         fun raycastParticleLine(particle: ParticleBuilder, loc: Location, direction: Vector, distance: Double,
-                                count: Int, collideEntity: Boolean = false, caster: Entity? = null,
+                                density: Double, collideEntity: Boolean = false, caster: Entity? = null,
                                 offset: Double = 0.0, extra: Double = 0.0) {
             val result =
                 (if (collideEntity) {
@@ -132,13 +132,13 @@ class CustomEffects {
                 })?.hitPosition ?: loc.clone().add(direction.normalize().multiply(distance)).toVector()
 
             val endLoc = result.toLocation(loc.world)
-            particleLine(particle, loc, endLoc, count, offset, extra)
+            particleLine(particle, loc, endLoc, density, offset, extra)
 
         }
-        fun particleLine(particle: ParticleBuilder, startLoc: Location, endLoc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
+        fun particleLine(particle: ParticleBuilder, startLoc: Location, endLoc: Location, density: Double, offset: Double = 0.0, extra: Double = 0.0) {
 
             val totalDistance = endLoc.clone().subtract(startLoc)
-            val newCount = (totalDistance.length() * 5).toInt()
+            val newCount = (totalDistance.length() * density).toInt()
             val distBetween = totalDistance.clone().toVector().multiply(1.0 / newCount)
 
 

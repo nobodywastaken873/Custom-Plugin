@@ -83,7 +83,7 @@ class WindHook: CustomItemDefinition {
             val toAdd = direction.toVector().normalize().multiply(1.5)
             player.velocity = toAdd.clone().add(Vector(0.0, 0.4, 0.0))
 
-            CustomEffects.particleLine(Particle.DOLPHIN.builder(), player.location, pullLoc, 400)
+            CustomEffects.particleLine(Particle.DOLPHIN.builder(), player.location, pullLoc, 5.0)
             if (Bukkit.getCurrentTick() % 20 == 0) {
                 CustomEffects.playSoundToPlayer(player, arrayOf(Sound.ENTITY_BREEZE_IDLE_AIR, Sound.ENTITY_BREEZE_IDLE_GROUND).random(), 1F, 1.2F)
             }

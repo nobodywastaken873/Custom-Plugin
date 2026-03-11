@@ -50,7 +50,7 @@ class LastPrism: CustomItemDefinition {
             val wand = e.item ?: return@register
             if ((e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) && wand.offCooldown(e.player, "Zap")) {
 
-                CustomEffects.raycastParticleLine(Particle.END_ROD.builder(), e.player.eyeLocation, e.player.location.direction, 80.0, 400)
+                CustomEffects.raycastParticleLine(Particle.END_ROD.builder(), e.player.eyeLocation, e.player.location.direction, 80.0, 5.0)
                 val hitEntities = e.player.eyeLocation.world.rayTraceEntities(e.player.eyeLocation, e.player.location.direction, 80.0,
                     ignore = e.player, radius = 0.4)
 
@@ -102,7 +102,7 @@ class LastPrism: CustomItemDefinition {
 
         val facing = player.location.direction.normalize()
         val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
-        CustomEffects.raycastParticleLine(Particle.ELECTRIC_SPARK.builder(), startingLocation.clone(), facing, 120.0, 600)
+        CustomEffects.raycastParticleLine(Particle.ELECTRIC_SPARK.builder(), startingLocation.clone(), facing, 120.0, 5.0)
 
         val hitEntities = player.world.rayTraceEntities(startingLocation, facing, 120.0, ignore = player)
         for (entity in hitEntities) {

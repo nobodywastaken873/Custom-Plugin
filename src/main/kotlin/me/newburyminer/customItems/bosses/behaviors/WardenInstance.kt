@@ -404,7 +404,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                                                 particleSettings.particle,
                                                 safeCenter,
                                                 safeCenter.clone().add(0.0, 19.0, 0.0),
-                                                50
+                                                5.0
                                             )
                                         }
                                         l++
@@ -485,7 +485,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                                     particleSettings.particle,
                                     safeCenter,
                                     safeCenter.clone().add(0.0, 19.0, 0.0),
-                                    50
+                                    5.0
                                 )
                             }
 
@@ -770,7 +770,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
         tasks.add(object : BukkitRunnable() { override fun run() {
             if (k == 0) this.cancel()
 
-            CustomEffects.particleLine(particleSettings.preParticle, start, end, (length * 10).toInt())
+            CustomEffects.particleLine(particleSettings.preParticle, start, end, 5.0)
 
             k--
         }}.runTaskTimer(CustomItems.plugin, 0L, particleSettings.preParticleSeparation.toLong()).taskId)

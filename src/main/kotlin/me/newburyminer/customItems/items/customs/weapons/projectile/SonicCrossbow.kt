@@ -58,7 +58,7 @@ class SonicCrossbow: CustomItemDefinition {
             }
 
             CustomEffects.particleLine(ParticleBuilder(Particle.SONIC_BOOM), shooter.location,
-                shooter.location.add(shooter.location.direction.normalize().multiply(15)), 15)
+                shooter.location.add(shooter.location.direction.normalize().multiply(15)), 5.0)
             CustomEffects.playSound(shooter.location, Sound.ENTITY_WARDEN_SONIC_BOOM, 1.0F, 1.0F)
 
             shooter.setCooldown(CustomItem.SONIC_CROSSBOW, 20.0)
