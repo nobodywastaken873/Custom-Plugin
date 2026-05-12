@@ -29,7 +29,11 @@ object CustomEffectBootstrapper {
         reflections.getSubTypesOf(EffectBehavior::class.java)
             .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
             .forEach { cls ->
-                val instance = cls.getDeclaredConstructor().newInstance()
+                val constructor = cls.declaredConstructors
+                    .firstOrNull { it.parameterCount == 0 }
+                    ?: return@forEach
+
+                val instance = constructor.newInstance() as EffectBehavior
                 instance.registerListeners()
             }
         CustomItems.plugin.logger.info("Successfully registered all effects")

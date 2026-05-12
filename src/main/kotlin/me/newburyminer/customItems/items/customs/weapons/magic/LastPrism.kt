@@ -8,7 +8,7 @@ import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.rayTraceEntities
+import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -51,7 +51,7 @@ class LastPrism: CustomItemDefinition {
             if ((e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) && wand.offCooldown(e.player, "Zap")) {
 
                 CustomEffects.raycastParticleLine(Particle.END_ROD.builder(), e.player.eyeLocation, e.player.location.direction, 80.0, 5.0)
-                val hitEntities = e.player.eyeLocation.world.rayTraceEntities(e.player.eyeLocation, e.player.location.direction, 80.0,
+                val hitEntities = e.player.eyeLocation.world.rayTraceManyEntities(e.player.eyeLocation, e.player.location.direction, 80.0,
                     ignore = e.player, radius = 0.4)
 
                 for (entity in hitEntities) {
@@ -104,7 +104,7 @@ class LastPrism: CustomItemDefinition {
         val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
         CustomEffects.raycastParticleLine(Particle.ELECTRIC_SPARK.builder(), startingLocation.clone(), facing, 120.0, 5.0)
 
-        val hitEntities = player.world.rayTraceEntities(startingLocation, facing, 120.0, ignore = player)
+        val hitEntities = player.world.rayTraceManyEntities(startingLocation, facing, 120.0, ignore = player)
         for (entity in hitEntities) {
             if (entity !is LivingEntity) continue
             entity.damage(21.0, DamageSource.builder(DamageType.LIGHTNING_BOLT).withDirectEntity(player as Entity).withCausingEntity(player as Entity).build())

@@ -8,7 +8,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.damage.DamageSettings
-import me.newburyminer.customItems.helpers.rayTraceEntities
+import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -46,7 +46,7 @@ class SonicCrossbow: CustomItemDefinition {
 
             val direction = shooter.location.direction.normalize().multiply(0.5)
             val current = shooter.location
-            val hitEntities = shooter.world.rayTraceEntities(shooter.eyeLocation, direction, 15.0, ignore = shooter)
+            val hitEntities = shooter.world.rayTraceManyEntities(shooter.eyeLocation, direction, 15.0, ignore = shooter)
 
             for (entity in hitEntities) {
                 if (entity !is LivingEntity) continue

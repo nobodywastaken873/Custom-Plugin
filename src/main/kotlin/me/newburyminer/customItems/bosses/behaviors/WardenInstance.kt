@@ -425,7 +425,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                                     polygon,
                                     201.0,
                                     floorSettings,
-                                    0.15,
+                                    2.0,
                                     damageSettings,
                                     delay = arrayOf(100, 100, 80, 60)[subphase]
                                 )

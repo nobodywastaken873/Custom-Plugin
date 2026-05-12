@@ -40,7 +40,7 @@ class WardenSpawner: CustomItemDefinition {
             val players = e.player.location.getNearbyPlayers(20.0)
 
             val spawnedBoss = BossManager.spawnBoss(boss, e.player, players.toList())
-            if (spawnedBoss) item.amount -= 1
+            if (spawnedBoss) e.item?.amount -= 1
         })
     }
 

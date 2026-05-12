@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
-fun World.rayTraceEntities(start: Location, direction: Vector, maxDist: Double, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
+fun World.rayTraceManyEntities(start: Location, direction: Vector, maxDist: Double, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
     // Find endpoint at a block
     val endpoint = this.rayTraceBlocks(start, direction, maxDist, FluidCollisionMode.NEVER, true)
     val actualDist = endpoint?.hitPosition?.toLocation(start.world)?.subtract(start)?.length() ?: maxDist
@@ -26,4 +26,10 @@ fun World.rayTraceEntities(start: Location, direction: Vector, maxDist: Double, 
     }
 
     return hitEntities
+}
+
+fun World.rayTraceManyEntities(start: Location, end: Location, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
+    val direction = end.toVector().subtract(start.toVector())
+    val maxDist = direction.length()
+    return this.rayTraceManyEntities(start, direction, maxDist, ignore, radius)
 }
