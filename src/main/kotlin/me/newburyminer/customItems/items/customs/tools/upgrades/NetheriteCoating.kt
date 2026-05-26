@@ -1,5 +1,9 @@
 package me.newburyminer.customItems.items.customs.tools.upgrades
 
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
+import io.papermc.paper.registry.data.DamageTypeRegistryEntry
+import io.papermc.paper.registry.keys.DamageTypeKeys
 import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.resist
@@ -10,10 +14,12 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
+import org.bukkit.Registry
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
+import org.bukkit.tag.DamageTypeTags
 
 class NetheriteCoating: CustomItemDefinition {
 
@@ -45,7 +51,7 @@ class NetheriteCoating: CustomItemDefinition {
             if (CustomEnchantments.FIREPROOF in toUpgrade.enchantments.keys) return@register
             e.isCancelled = true
             upgrade.amount -= 1
-            toUpgrade.resist(DamageTypeTagKeys.IS_FIRE)
+            toUpgrade.resist(RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getTag(DamageTypeTagKeys.IS_FIRE))
             toUpgrade.addUnsafeEnchantment(CustomEnchantments.FIREPROOF, 1)
             CustomEffects.playSound(e.player.location, Sound.BLOCK_SMITHING_TABLE_USE, 1.0F, 1.1F)
         })

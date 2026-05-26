@@ -5,6 +5,7 @@ import io.papermc.paper.datacomponent.item.*
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
+import io.papermc.paper.registry.set.RegistryKeySet
 import io.papermc.paper.registry.tag.TagKey
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
@@ -849,7 +850,7 @@ class Utils {
             this.setData(DataComponentTypes.TOOL, toolMeta.build())
             return this
         }
-        fun ItemStack.resist(type: TagKey<DamageType>): ItemStack {
+        fun ItemStack.resist(type: RegistryKeySet<DamageType>): ItemStack {
             this.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(type))
             return this
         }

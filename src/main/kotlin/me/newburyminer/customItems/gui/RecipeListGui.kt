@@ -6,6 +6,7 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.lock
 import me.newburyminer.customItems.Utils.Companion.setItemAction
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.recipes.Recipe
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
@@ -16,6 +17,8 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 import java.util.*
 
 class RecipeListGui(page: Int): PagedGui(page) {
@@ -74,6 +77,12 @@ class RecipeListGui(page: Int): PagedGui(page) {
         inv.setItem(25, recipe.getResultItem().lock())
         inv.setItem(49, GuiItems.BACK_ARROW)
     }
+
+    private fun getFillButton(recipe: Recipe, inventory: PlayerInventory): ItemStack {
+
+    }
+
+    private fun hasMaterials(recipe: Recipe, inventory: Inventory): Boolean {}
 
     override fun onClick(e: InventoryClickEvent) {
         if (checkForPageChange(e)) return

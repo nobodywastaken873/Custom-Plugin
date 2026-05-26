@@ -8,13 +8,11 @@
         "min_inclusive": 4
       },
       "state_provider": {
-        "fallback": {
-          "type": "minecraft:simple_state_provider",
-          "state": {
-            "Name": "minecraft:andesite"
-          }
-        },
-        "rules": []
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:andesite"
+        }
+
       },
       "target": {
         "type": "minecraft:matching_blocks",
