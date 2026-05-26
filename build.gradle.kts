@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.1.0-Beta1"
+    kotlin("jvm") version "2.3.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -8,8 +8,9 @@ version = "1.0"
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/") {
-        name = "papermc-repo"
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
     }
     maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
@@ -17,13 +18,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.1.1.build.+")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.reflections:reflections:0.10.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
-val targetJavaVersion: Int = 21
+val targetJavaVersion: Int = 25
 kotlin {
     jvmToolchain(targetJavaVersion)
 }

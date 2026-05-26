@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.items.customs.tools.upgrades
 
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.resist
@@ -45,7 +47,7 @@ class WitherCoating: CustomItemDefinition {
             if (CustomEnchantments.BLAST_RESISTANT in toUpgrade.enchantments.keys) return@register
             e.isCancelled = true
             upgrade.amount -= 1
-            toUpgrade.resist(DamageTypeTagKeys.IS_EXPLOSION)
+            toUpgrade.resist(RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getTag(DamageTypeTagKeys.IS_FIRE))
             toUpgrade.addUnsafeEnchantment(CustomEnchantments.BLAST_RESISTANT, 1)
             CustomEffects.playSound(e.player.location, Sound.ENTITY_WITHER_AMBIENT, 1.0F, 1.1F)
         })
