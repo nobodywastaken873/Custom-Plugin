@@ -1,30 +1,40 @@
 package me.newburyminer.customItems.entity.hiteffects.effect
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
-class VanillaKnockbackApply(val strength: Double = 0.4): HitEffect {
+class VanillaKnockbackApply(val strength: Double = 0.30): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
+        val source = sourceLoc?.clone() ?: damager.location
+        if (victim.location.subtract(source).length() < 0.001) return
+
         val newStr = strength * (1.0 - (victim.getAttribute(Attribute.KNOCKBACK_RESISTANCE)?.value ?: 0.0))
         if (newStr <= 0) return
-        val direction = victim.location.subtract(damager.location).toVector()
+        val direction = victim.location.toVector().subtract(source.toVector())
+            .setY(0.0)
             .normalize()
             .multiply(newStr)
-        val oldVel = victim.velocity
 
+        val oldVel = victim.velocity
         val newVel = Vector(
             oldVel.x / 2 + direction.x,
-            (oldVel.y / 2 + newStr).coerceAtLeast(0.4),
+            (oldVel.y / 2 + newStr).coerceAtLeast(newStr),
             oldVel.z / 2 + direction.z
         )
-
+        //println("Executing knockback")
+        //println("before kb: ${victim.velocity}")
         victim.velocity = newVel
+        //println("after kb: ${victim.velocity}")
+        //Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {println("Final velocity: ${victim.velocity}")})
     }
 
     override fun serialize(): Map<String, Any> {

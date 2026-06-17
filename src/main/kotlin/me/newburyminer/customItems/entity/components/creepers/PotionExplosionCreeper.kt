@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.AreaEffectCloud
 import org.bukkit.entity.Creeper
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.potion.PotionEffect
@@ -45,18 +46,24 @@ class PotionExplosionCreeper(
 
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
-            e.entity == wrapper.entity &&
-            e.entity.getTag<Boolean>("exploding") == true
+            e.entity == wrapper.entity
         },
         {e ->
             val creeper = e.entity as? Creeper ?: return@register
-            creeper.addPotionEffect(PotionEffect(
-                type,
-                duration,
-                potency,
-                ambient,
-                showParticles
-            ))
+            creeper.location.world.spawn(
+                creeper.location,
+                AreaEffectCloud::class.java
+            ) {
+                it.duration = duration
+                it.durationOnUse = 0
+                it.customEffects.add(PotionEffect(
+                    type,
+                    duration,
+                    potency,
+                    ambient,
+                    showParticles
+                ))
+            }
         })
     }
 

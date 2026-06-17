@@ -1,0 +1,69 @@
+{
+  "type": "minecraft:block_pile",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:rule_based_state_provider",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:any_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ],
+                "blocks": [
+                  "minecraft:coarse_dirt",
+                  "minecraft:dirt"
+                ]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "offset": [
+                  0,
+                  -2,
+                  0
+                ],
+                "blocks": [
+                  "minecraft:coarse_dirt",
+                  "minecraft:dirt"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "weight": 1,
+                "data": {
+                  "Name": "minecraft:coarse_dirt"
+                }
+              },
+              {
+                "weight": 3,
+                "data": {
+                  "Name": "minecraft:dirt"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:true"
+          },
+          "then": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "minecraft:air"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

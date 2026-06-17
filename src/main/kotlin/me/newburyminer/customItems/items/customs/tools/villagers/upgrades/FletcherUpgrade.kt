@@ -2,7 +2,7 @@ package me.newburyminer.customItems.items.customs.tools.villagers.upgrades
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.components.villager.OvermaxVillagerComponent
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -13,7 +13,7 @@ import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
-import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
@@ -37,7 +37,7 @@ class FletcherUpgrade: CustomItemDefinition, VillagerUpgrade {
         .build()
 
     init {
-        register(PlayerInteractEntityEvent::class, { e ->
+        register(PlayerInteractAtEntityEvent::class, { e ->
             slotMatches(e, EquipmentSlot.HAND, custom) &&
             e.rightClicked is Villager &&
             EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(OvermaxVillagerComponent::class) != true &&

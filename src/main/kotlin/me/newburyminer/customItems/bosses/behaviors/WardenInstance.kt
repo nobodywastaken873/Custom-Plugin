@@ -358,7 +358,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                     var i = 0
 
                     val damageSettings = DamageSettings(
-                        arrayOf(45.0, 52.0, 56.0, 60.0)[subphase], CustomDamageType.HOT_FLOOR,
+                        arrayOf(45.0, 52.0, 56.0, 60.0)[subphase], CustomDamageType.BURNING,
                         damager = boss, knockback = ConstantKnockback(Vector(0.0, 1.5, 0.0))
                     )
 

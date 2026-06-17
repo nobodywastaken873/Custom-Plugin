@@ -1,0 +1,67 @@
+{
+  "type": "minecraft:block_pile",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:rule_based_state_provider",
+      "rules": [
+        {
+          "if_true": {
+            "type": "minecraft:matching_blocks",
+            "offset": [
+              0,
+              -1,
+              0
+            ],
+            "blocks": "minecraft:dirt"
+          },
+          "then": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "weight": 1,
+                "data": {
+                  "Name": "minecraft:coarse_dirt"
+                }
+              },
+              {
+                "weight": 1,
+                "data": {
+                  "Name": "minecraft:dirt"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if_true": {
+            "type": "minecraft:true",
+            "blocks": "minecraft:gravel"
+          },
+          "then": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "weight": 2,
+                "data": {
+                  "Name": "minecraft:stone"
+                }
+              },
+              {
+                "weight": 1,
+                "data": {
+                  "Name": "minecraft:cobblestone"
+                }
+              },
+              {
+                "weight": 3,
+                "data": {
+                  "Name": "minecraft:gravel"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

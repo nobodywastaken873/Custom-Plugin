@@ -31,6 +31,7 @@ import me.newburyminer.customItems.systems.EnchantmentListener
 import me.newburyminer.customItems.systems.EndSystem
 import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
+import me.newburyminer.customItems.systems.TestingSystem
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import net.kyori.adventure.key.Key
@@ -38,6 +39,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.GameRule
+import org.bukkit.GameRules
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -90,6 +92,8 @@ class CustomItems : JavaPlugin() {
         //entityListener.run()
         //bossListener.run()
 
+        TestingSystem.registerListeners()
+
         // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()
 
@@ -103,11 +107,10 @@ class CustomItems : JavaPlugin() {
     }
 
     private fun registerWorlds() {
-        aridWorld = this.server.getWorld(Key.key("minecraft:new_dimension"))!!
-        aridWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
-        aridWorld.time = 20000
+        aridWorld = this.server.getWorld(Key.key("customworld:arid_lands"))!!
+        aridWorld.setGameRule(GameRules.ADVANCE_TIME, false)
         bossWorld = Bukkit.createWorld(WorldCreator("testworld"))!!
-        bossWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false)
+        bossWorld.setGameRule(GameRules.ADVANCE_TIME, false)
         bossWorld.time = 20000
     }
 

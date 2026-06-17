@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.DoubleRange
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
@@ -14,11 +15,11 @@ import org.bukkit.util.Vector
 
 class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         if (victim !is Player) return
         if (!victim.isBlocking) return
 
-        val damagerLocation = damager.location
+        val damagerLocation = sourceLoc?.clone() ?: damager.location
         val victimLocation = victim.location
 
         val damagerFacing = victimLocation.subtract(damagerLocation).toVector()

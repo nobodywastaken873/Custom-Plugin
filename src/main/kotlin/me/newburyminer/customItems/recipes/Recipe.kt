@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack
 //advancement check
 data class Recipe(val items: List<List<RecipeItemBase?>>, private val resultItem: ItemStack) {
 
+    val ingredients: Map<RecipeItemBase, Int> = generateIngredients()
+
     fun matches(otherGrid: List<List<ItemStack?>>): Boolean {
 
         for (row in 0..4) for (col in 0..4) {
@@ -25,6 +27,19 @@ data class Recipe(val items: List<List<RecipeItemBase?>>, private val resultItem
 
     fun getResultItem(): ItemStack {
         return resultItem.clone()
+    }
+
+    private fun generateIngredients(): Map<RecipeItemBase, Int> {
+        val ingredients = mutableMapOf<RecipeItemBase, Int>()
+        for (row in 0..4) for (col in 0..4) {
+            val gridItem = items[row][col] ?: continue
+            if (ingredients.containsKey(gridItem))  {
+                ingredients[gridItem] = (ingredients[gridItem] ?: 0) + gridItem.amount
+            } else {
+                ingredients[gridItem] = gridItem.amount
+            }
+        }
+        return ingredients.toMap()
     }
 
 

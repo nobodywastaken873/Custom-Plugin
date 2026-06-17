@@ -20,7 +20,7 @@ import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.CustomGui
-import me.newburyminer.customItems.gui.ShulkerGui
+import me.newburyminer.customItems.gui.inventory.ShulkerGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem

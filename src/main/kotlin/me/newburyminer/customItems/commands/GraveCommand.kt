@@ -2,7 +2,7 @@ package me.newburyminer.customItems.commands
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.newburyminer.customItems.gui.GraveListGui
+import me.newburyminer.customItems.gui.combat.GraveListGui
 import org.bukkit.entity.Player
 
 class GraveCommand: BasicCommand {

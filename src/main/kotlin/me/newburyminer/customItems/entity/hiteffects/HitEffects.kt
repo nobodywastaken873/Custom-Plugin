@@ -1,13 +1,27 @@
 package me.newburyminer.customItems.entity.hiteffects
 
+import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import kotlin.reflect.full.companionObjectInstance
 
 class HitEffects(private vararg val hitEffects: HitEffect) {
 
-    fun apply(damaged: LivingEntity, damager: Entity) {
-        hitEffects.forEach { it.apply(damaged, damager) }
+    fun apply(damaged: LivingEntity, damager: Entity, sourceLoc: Location? = null) {
+        // Apply knockback before damage
+        hitEffects.filter {
+            it is CustomKnockbackApply || it is VanillaKnockbackApply // Custom or vanilla knockback components
+        }.forEach { it.apply(damaged, damager) }
+        Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+            // Apply all other effects after
+            hitEffects.filter {
+                it !is VanillaKnockbackApply && it !is CustomKnockbackApply // Not a knockback component
+            }.forEach { it.apply(damaged, damager) }
+        })
     }
 
     fun serialize(): Map<String, Any> {

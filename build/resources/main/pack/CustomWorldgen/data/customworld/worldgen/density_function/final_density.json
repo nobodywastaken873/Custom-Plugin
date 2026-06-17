@@ -25,8 +25,8 @@
               "argument1": {
                 
                 "type": "y_clamped_gradient",
-                "from_y": -64,
-                "to_y": -40,
+                "from_y": -256,
+                "to_y": -232,
                 "from_value": 0,
                 "to_value": 1
               },
@@ -44,8 +44,8 @@
                     "argument1": {
                       
                       "type": "y_clamped_gradient",
-                      "from_y": 240,
-                      "to_y": 256,
+                      "from_y": 272,
+                      "to_y": 288,
                       "from_value": 1,
                       "to_value": 0
                     },
@@ -65,9 +65,21 @@
                           "argument1": "customworld:sloped_cheese", 
                           "argument2": {
                             
-                            "type": "mul",
-                            "argument1": 5, 
-                            "argument2": "minecraft:overworld/caves/entrances" 
+                            "type": "add",
+                            "argument1": {
+                              
+                              "type": "y_clamped_gradient",
+                              "from_y": 28.1,
+                              "to_y": 60,
+                              "from_value": 0,
+                              "to_value": 1.2
+                            },
+                            "argument2": {
+                              
+                              "type": "mul",
+                              "argument1": "customworld:depth_mask", 
+                              "argument2": "minecraft:overworld/caves/entrances" 
+                            }
                           }
                         },
                         "when_out_of_range": {
@@ -90,78 +102,150 @@
                                     "type": "add",
                                     "argument1": {
                                       
-                                      "type": "mul",
-                                      "argument1": 4, 
+                                      "type": "add",
+                                      "argument1": {
+                                        
+                                        "type": "mul",
+                                        "argument1": 4, 
+                                        "argument2": {
+                                          
+                                          "type": "square",
+                                          "argument": {
+                                            
+                                            "type": "noise",
+                                            "noise": "minecraft:cave_layer",
+                                            "xz_scale": 1,
+                                            "y_scale": 8
+                                          }
+                                        }
+                                      },
                                       "argument2": {
                                         
-                                        "type": "square",
-                                        "argument": {
+                                        "type": "add",
+                                        "argument1": {
                                           
-                                          "type": "noise",
-                                          "noise": "minecraft:cave_layer",
-                                          "xz_scale": 1,
-                                          "y_scale": 8
+                                          "type": "clamp",
+                                          "min": -1,
+                                          "max": 1,
+                                          "input": {
+                                            
+                                            "type": "add",
+                                            "argument1": 0.27, 
+                                            "argument2": {
+                                              
+                                              "type": "noise",
+                                              "noise": "customworld:cave_cheese",
+                                              "xz_scale": 1,
+                                              "y_scale": 0.6666666666666666
+                                            }
+                                          }
+                                        },
+                                        "argument2": {
+                                          
+                                          "type": "clamp",
+                                          "min": 0,
+                                          "max": 0.5,
+                                          "input": {
+                                            
+                                            "type": "add",
+                                            "argument1": 1.5, 
+                                            "argument2": {
+                                              
+                                              "type": "mul",
+                                              "argument1": -0.64, 
+                                              "argument2": "customworld:sloped_cheese" 
+                                            }
+                                          }
                                         }
                                       }
+                                    },
+                                    "argument2": -0.065 
+                                  },
+                                  "argument2": {
+                                    
+                                    "type": "add",
+                                    "argument1": {
+                                      
+                                      "type": "y_clamped_gradient",
+                                      "from_y": -248,
+                                      "to_y": -64,
+                                      "from_value": -0.2,
+                                      "to_value": 0
                                     },
                                     "argument2": {
                                       
                                       "type": "add",
                                       "argument1": {
                                         
-                                        "type": "clamp",
-                                        "min": -1,
-                                        "max": 1,
-                                        "input": {
+                                        "type": "min",
+                                        "argument1": {
                                           
-                                          "type": "add",
-                                          "argument1": 0.27, 
-                                          "argument2": {
-                                            
-                                            "type": "noise",
-                                            "noise": "minecraft:cave_cheese",
-                                            "xz_scale": 1,
-                                            "y_scale": 0.6666666666666666
-                                          }
+                                          "type": "y_clamped_gradient",
+                                          "from_y": -140,
+                                          "to_y": -160,
+                                          "from_value": 0,
+                                          "to_value": 0.8
+                                        },
+                                        "argument2": {
+                                          
+                                          "type": "y_clamped_gradient",
+                                          "from_y": -160,
+                                          "to_y": -180,
+                                          "from_value": 0.8,
+                                          "to_value": 0
                                         }
                                       },
                                       "argument2": {
                                         
-                                        "type": "clamp",
-                                        "min": 0,
-                                        "max": 0.5,
-                                        "input": {
+                                        "type": "min",
+                                        "argument1": {
                                           
-                                          "type": "add",
-                                          "argument1": 1.5, 
-                                          "argument2": {
-                                            
-                                            "type": "mul",
-                                            "argument1": -0.64, 
-                                            "argument2": "customworld:sloped_cheese" 
-                                          }
+                                          "type": "y_clamped_gradient",
+                                          "from_y": -60,
+                                          "to_y": -80,
+                                          "from_value": 0,
+                                          "to_value": 0.8
+                                        },
+                                        "argument2": {
+                                          
+                                          "type": "y_clamped_gradient",
+                                          "from_y": -80,
+                                          "to_y": -100,
+                                          "from_value": 0.7999999999999999,
+                                          "to_value": 0
                                         }
                                       }
                                     }
-                                  },
-                                  "argument2": -0.065 
+                                  }
                                 },
                                 "argument2": {
                                   
                                   "type": "add",
-                                  "argument1": "minecraft:overworld/caves/entrances", 
-                                  "argument2": 0.1 
+                                  "argument1": {
+                                    
+                                    "type": "y_clamped_gradient",
+                                    "from_y": 19.999999999999996,
+                                    "to_y": 60,
+                                    "from_value": 0,
+                                    "to_value": 1.2
+                                  },
+                                  "argument2": "minecraft:overworld/caves/entrances" 
                                 }
                               },
                               "argument2": {
                                 
-                                "type": "add",
-                                "argument1": -0.15, 
+                                "type": "mul",
+                                "argument1": "customworld:depth_mask", 
                                 "argument2": {
                                   
                                   "type": "add",
-                                  "argument1": "minecraft:overworld/caves/spaghetti_2d", 
-                                  "argument2": "minecraft:overworld/caves/spaghetti_roughness_function" 
+                                  "argument1": -0.15, 
+                                  "argument2": {
+                                    
+                                    "type": "add",
+                                    "argument1": "minecraft:overworld/caves/spaghetti_2d", 
+                                    "argument2": "minecraft:overworld/caves/spaghetti_roughness_function" 
+                                  }
                                 }
                               }
                             },
@@ -169,7 +253,7 @@
                               
                               "type": "range_choice",
                               "min_inclusive": -1000000,
-                              "max_exclusive": 0.03,
+                              "max_exclusive": 0.13000000000000006,
                               "input": "minecraft:overworld/caves/pillars", 
                               "when_in_range": -1000000, 
                               "when_out_of_range": "minecraft:overworld/caves/pillars" 
@@ -203,5 +287,15 @@
       }
     }
   },
-  "argument2": "minecraft:overworld/caves/noodle" 
+  "argument2": {
+    
+    "type": "add",
+    "argument1": 0.03, 
+    "argument2": {
+      
+      "type": "mul",
+      "argument1": "customworld:depth_mask", 
+      "argument2": "minecraft:overworld/caves/noodle" 
+    }
+  }
 }

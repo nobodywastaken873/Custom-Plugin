@@ -28,8 +28,7 @@ class FirebombCreeper(val rate: Double): EntityComponent {
 
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
-            e.entity == wrapper.entity &&
-            e.entity.getTag<Boolean>("exploding") == true
+            e.entity == wrapper.entity
         },
         {e ->
             Bukkit.getScheduler().runTaskLater(CustomItems.plugin, Runnable {

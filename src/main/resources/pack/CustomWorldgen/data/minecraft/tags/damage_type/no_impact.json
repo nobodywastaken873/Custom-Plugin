@@ -1,0 +1,21 @@
+{
+  "values": [
+    "customworld:all_bypass",
+    "customworld:all_bypass_nocd",
+    "customworld:burning",
+    "customworld:burning_nocd",
+    "customworld:default",
+    "customworld:default_nocd",
+    "customworld:ench_bypass",
+    "customworld:ench_bypass_nocd",
+    "customworld:explosion",
+    "customworld:explosion_nocd",
+    "customworld:magic",
+    "customworld:magic_nocd",
+    "customworld:melee",
+    "customworld:melee_nocd",
+    "customworld:projectile",
+    "customworld:projectile_nocd"
+  ],
+  "replace": false
+}

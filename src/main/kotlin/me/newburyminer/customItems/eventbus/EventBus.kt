@@ -4,6 +4,8 @@ import me.newburyminer.customItems.CustomItems
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntitySpawnEvent
+import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.plugin.EventExecutor
 import kotlin.reflect.KClass
 
@@ -14,19 +16,20 @@ object EventBus: Listener {
             eventType.java,
             EventBus,
             EventPriority.NORMAL,
-            EventDistributor(),
+            EventDistributor(eventType),
             CustomItems.plugin
         )
     }
 
-    private class EventDistributor: EventExecutor {
+    private class EventDistributor(val filterType: KClass<out Event>): EventExecutor {
         override fun execute(listener: Listener, event: Event) {
-            onEvent(event)
+            if (!filterType.java.isAssignableFrom(event.javaClass)) return
+            onEvent(event, filterType)
         }
     }
 
-    fun <T: Event> onEvent(event: T) {
-        val listeners = EventRegistry.getAllRegisteredListeners()[event::class] ?: return
+    fun <T: Event> onEvent(event: T, filterType: KClass<*>) {
+        val listeners = (EventRegistry.getAllRegisteredListeners()[filterType] ?: return).toList()
         if (listeners.isEmpty()) {return}
 
         // Collection of lists of ListenerEntries

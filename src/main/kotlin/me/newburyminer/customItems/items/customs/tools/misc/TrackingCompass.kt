@@ -7,7 +7,7 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.isTracking
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.gui.CompassGui
+import me.newburyminer.customItems.gui.combat.CompassGui
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition

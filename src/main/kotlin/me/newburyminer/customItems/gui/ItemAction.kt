@@ -5,6 +5,7 @@ enum class ItemAction {
     PREVIOUS_PAGE,
     OPEN_SUBMENU,
     FILL_RECIPE,
+    CHANGE_CATEGORY,
     GO_BACK,
     DELETE_GRAVE,
     TELEPORT_GRAVE,

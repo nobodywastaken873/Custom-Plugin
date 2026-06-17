@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:replace_single_block",
+  "config": {
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "customworld:obsidian_replaceable"
+        },
+        "state": {
+          "Name": "minecraft:crying_obsidian"
+        }
+      }
+    ]
+  }
+}

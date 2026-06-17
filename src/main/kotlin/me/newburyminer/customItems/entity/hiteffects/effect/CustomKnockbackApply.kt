@@ -3,14 +3,18 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.Vector
 
 class CustomKnockbackApply(val vec: Vector): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
-        val direction = victim.location.subtract(damager.location).toVector().normalize()
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
+        val source = sourceLoc?.clone() ?: damager.location
+        if (victim.location.subtract(source).length() < 0.001) return
+
+        val direction = victim.location.subtract(source).toVector().normalize()
         val knockback = Vector(direction.x * vec.x, vec.y, direction.z * vec.z)
         victim.velocity = victim.velocity.add(knockback)
     }

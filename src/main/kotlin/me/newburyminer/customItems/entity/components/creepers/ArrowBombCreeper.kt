@@ -11,27 +11,26 @@ import org.bukkit.entity.Creeper
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.util.Vector
 
-class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
+class ArrowBombCreeper(val count: Int, val damage: HitEffects): EntityComponent {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "count" to count,
-            "damage" to damage
+            "damage" to damage.serialize()
         )
     }
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             val newCount = map["count"].toInt()
-            val newDamage = map["damage"].toDouble()
+            val newDamage = HitEffects.deserialize(map["damage"])
             return ArrowBombCreeper(newCount, newDamage)
         }
     }
 
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
-            e.entity == wrapper.entity &&
-            e.entity.getTag<Boolean>("exploding") == true
+            e.entity == wrapper.entity
         },
         {e ->
             for (i in 1..count) {
@@ -40,7 +39,7 @@ class ArrowBombCreeper(val count: Int, val damage: Double): EntityComponent {
 
                 arrow.shooter = e.entity as Creeper
                 EntityWrapperManager.getWrapperorNew(arrow).addComponent(
-                    CustomDamageProjectile(HitEffects(CustomDamageApply(damage, DamageType.ARROW, 0)))
+                    CustomDamageProjectile(damage)
                 )
 
             }

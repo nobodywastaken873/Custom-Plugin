@@ -10,6 +10,7 @@ import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.entity.Villager
 import org.bukkit.entity.ZombieVillager
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.inventory.ItemStack
 
@@ -30,7 +31,7 @@ class GoldenZombie: CustomItemDefinition {
         .build()
 
     init {
-        register(PlayerInteractEntityEvent::class, { e ->
+        register(PlayerInteractAtEntityEvent::class, { e ->
             slotMatches(e, org.bukkit.inventory.EquipmentSlot.HAND, custom) &&
             (e.rightClicked is Villager || e.rightClicked is ZombieVillager) &&
             EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true

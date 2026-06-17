@@ -13,14 +13,14 @@ import org.bukkit.entity.Firework
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
-class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val duration: Int): EntityComponent,
+class ElytraBreakerShooter(private val damage: HitEffects, private val baseCooldown: Int, private val disableDuration: Int): EntityComponent,
     CooldownInterface {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "damage" to damage.serialize(),
             "cooldown" to baseCooldown,
-            "duration" to duration,
+            "disableduration" to disableDuration,
         )
     }
     companion object: DeserializationInterface {
@@ -28,7 +28,7 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             val newDamage = HitEffects.Companion.deserialize(map["damage"])
             val newCooldown = map["cooldown"].toInt()
-            val newDuration = map["duration"].toInt()
+            val newDuration = map["disableduration"].toInt()
             return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
         }
     }
@@ -56,12 +56,12 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
                 newMeta.power = 100
                 it.fireworkMeta = newMeta
             }
-            EntityWrapperManager.Companion.register(missile.uniqueId,
-                EntityWrapper(missile, mutableListOf(ElytraBreakerFirework(damage, duration, target)))
+            EntityWrapperManager.register(missile.uniqueId,
+                EntityWrapper(missile, mutableListOf(ElytraBreakerFirework(damage, disableDuration, target)))
             )
 
             applyCooldown(baseCooldown)
-            CustomEffects.Companion.playSound(wrapper.entity.location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 5F, 0.4F)
+            CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 5F, 0.4F)
         }
 
     }

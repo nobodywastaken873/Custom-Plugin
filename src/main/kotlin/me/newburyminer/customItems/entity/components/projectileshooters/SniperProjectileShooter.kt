@@ -28,26 +28,25 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
         }
     }
 
-    override val spellDuration: Int = 60
+    override val spellDuration: Int = 30
     override var cooldown: Int = 100
-    private var shooting = false
     private var remainingCastTicks = 0
 
     override fun tick(wrapper: EntityWrapper) {
-        if (shooting) {
+        if (remainingCastTicks > 0) {
             remainingCastTicks--
 
             if (remainingCastTicks <= 0) {
 
                 val mob = wrapper.entity as? Mob ?: return
+                val targetLoc = mob.target?.location ?: return
+
                 val clazz = projectileType.clazz
                 val projectile = mob.launchProjectile(clazz)
-
-                val targetLoc = mob.target?.location ?: return
                 val velocity = targetLoc.subtract(mob.location).toVector()
                 projectile.velocity = velocity
 
-                shooting = false
+                applyCooldown(baseCooldown)
             }
 
         }
@@ -61,8 +60,7 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
             if (!shooter.hasLineOfSight(target)) return
 
             if (startCasting(wrapper)) {
-                shooting = true
-                remainingCastTicks = 30
+                remainingCastTicks = spellDuration
             }
         }
     }

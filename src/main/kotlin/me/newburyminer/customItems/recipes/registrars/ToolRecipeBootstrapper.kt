@@ -2,10 +2,12 @@ package me.newburyminer.customItems.recipes.registrars
 
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.recipes.RecipeBootstrapper
+import me.newburyminer.customItems.recipes.RecipeType
 import org.bukkit.Material
 
 
 object ToolRecipeBootstrapper: RecipeBootstrapper {
+    override val recipeType: RecipeType = RecipeType.TOOL
     override fun bootstrap() {
         recipe {
             grid {

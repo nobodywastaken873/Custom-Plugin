@@ -3,6 +3,7 @@ package me.newburyminer.customItems.recipes
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.recipes.registrars.ArmorRecipeBootstrapper
 import me.newburyminer.customItems.recipes.registrars.MaterialRecipeBootstrapper
+import me.newburyminer.customItems.recipes.registrars.OtherRecipeBootstrapper
 import me.newburyminer.customItems.recipes.registrars.ToolRecipeBootstrapper
 import me.newburyminer.customItems.recipes.registrars.WeaponRecipeBootstrapper
 import org.bukkit.Material
@@ -11,25 +12,18 @@ import org.bukkit.inventory.ItemStack
 
 object RecipeRegistry {
 
-    val recipes: MutableList<Recipe> = mutableListOf()
+    val recipeList: MutableList<Recipe> = mutableListOf()
+    val recipeMap: MutableMap<RecipeType, MutableList<Recipe>> = mutableMapOf(
+        RecipeType.WEAPON to mutableListOf(),
+        RecipeType.TOOL to mutableListOf(),
+        RecipeType.ARMOR to mutableListOf(),
+        RecipeType.MATERIAL to mutableListOf(),
+        RecipeType.OTHER to mutableListOf(),
+    )
 
-    fun addRecipe(recipe: Recipe) {
-        recipes.add(recipe)
-    }
-
-    private fun recipe(applyRecipe: RecipeBuilder.() -> Unit) {
-        val builder = RecipeBuilder()
-        builder.applyRecipe()
-        val recipe = builder.build()
-        recipes += recipe
-    }
-
-    private fun item(material: Material, amount: Int = 1): RecipeItem {
-        return RecipeItem(material, amount)
-    }
-
-    private fun custom(customItem: CustomItem, amount: Int = 1): RecipeCustom {
-        return RecipeCustom(customItem, amount)
+    fun addRecipe(recipe: Recipe, recipeType: RecipeType) {
+        recipeList.add(recipe)
+        recipeMap[recipeType]?.add(recipe)
     }
 
     private val craftSlots = arrayOf(
@@ -50,7 +44,7 @@ object RecipeRegistry {
             }
         }
 
-        for (recipe in recipes) {
+        for (recipe in recipeList) {
             if (recipe.matches(itemGrid)) return recipe
         }
 
@@ -69,17 +63,17 @@ object RecipeRegistry {
         }
     }
 
-    fun getPage(page: Int): MutableList<Recipe?> {
+    fun getPage(page: Int, recipeType: RecipeType): MutableList<Recipe?> {
         //return a list of recipes from page-1*24 to page*24 non-inclusive
         val pageRecipes = mutableListOf<Recipe?>()
         for (i in page*35..<(page+1)*35) {
-            pageRecipes.add(recipes.getOrNull(i))
+            pageRecipes.add(recipeMap[recipeType]?.getOrNull(i))
         }
         return pageRecipes
     }
 
-    fun getTotalEntries(): Int {
-        return recipes.size
+    fun getTotalEntries(recipeType: RecipeType): Int {
+        return recipeMap[recipeType]?.size ?: 0
     }
 
     fun registerAll() {
@@ -88,18 +82,7 @@ object RecipeRegistry {
         ToolRecipeBootstrapper.bootstrap()
         WeaponRecipeBootstrapper.bootstrap()
         ArmorRecipeBootstrapper.bootstrap()
-
-
-        recipe {
-            grid {
-                row(null, null, null, null, null)
-                row(null, null, null, null, null)
-                row(null, null, item(Material.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE).ench("DU1"), null, null)
-                row(null, null, null, null, null)
-                row(null, null, null, null, null)
-            }
-			result(CustomItem.WARDEN_SPAWNER)
-        }
+        OtherRecipeBootstrapper.bootstrap()
 
     }
 

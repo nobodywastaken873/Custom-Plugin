@@ -6,6 +6,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.*
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.world.GenericGameEvent
 
@@ -54,7 +55,7 @@ class EntityEventHandler: Listener {
         dispatch(e.entity ?: return, e)
     }
 
-    @EventHandler fun playerInteractEntity(e: PlayerInteractEntityEvent) {
+    @EventHandler fun playerInteractEntity(e: PlayerInteractAtEntityEvent) {
         dispatch(e.rightClicked, e)
     }
 

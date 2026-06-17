@@ -4,7 +4,7 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.JerryIdolComponent
+import me.newburyminer.customItems.entity.components.villager.JerryIdolComponent
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem

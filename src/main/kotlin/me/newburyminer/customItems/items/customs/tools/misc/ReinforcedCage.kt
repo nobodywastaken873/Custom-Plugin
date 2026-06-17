@@ -19,6 +19,7 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.event.block.Action
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.InventoryHolder
@@ -60,6 +61,7 @@ class ReinforcedCage: CustomItemDefinition {
             e.action == Action.RIGHT_CLICK_BLOCK
         },
         {e ->
+
             val cage = e.item ?: return@register
             val loc = e.clickedBlock!!.location
 
@@ -80,7 +82,7 @@ class ReinforcedCage: CustomItemDefinition {
             e.player.setCooldown(CustomItem.REINFORCED_CAGE, 0.5)
         })
 
-        register(PlayerInteractEntityEvent::class, { e ->
+        register(PlayerInteractAtEntityEvent::class, { e ->
             e.rightClicked.type !in invalidPickups &&
             e.player.inventory.getItem(e.hand).isItem(custom) &&
             e.player.offCooldown(custom)

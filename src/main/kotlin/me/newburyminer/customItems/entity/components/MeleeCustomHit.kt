@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components
 
+import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
@@ -7,6 +8,7 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
@@ -27,10 +29,10 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
 
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
-            e.entity == wrapper.entity
+            e.damager == wrapper.entity &&
+            !e.damageSource.damageType.isCustom()
         },
         {e ->
-            if (e.entity.getTag<Boolean>("damaged") == true) { e.entity.setTag("damaged", false); return@register }
             e.isCancelled = true
             hitEffects.apply(e.entity as LivingEntity, e.damager)
         })

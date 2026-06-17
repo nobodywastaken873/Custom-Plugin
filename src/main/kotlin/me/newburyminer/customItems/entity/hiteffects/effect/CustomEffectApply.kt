@@ -6,13 +6,14 @@ import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
 class CustomEffectApply(val type: CustomEffectType, val data: EffectData): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         if (victim !is Player) return
         EffectManager.applyEffect(
             victim,

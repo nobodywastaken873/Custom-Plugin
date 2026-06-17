@@ -1,0 +1,135 @@
+{
+  "attributes": {
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "minecraft:lava"
+        },
+        "probability": 0.004
+      },
+      {
+        "particle": {
+          "type": "minecraft:falling_dripstone_lava"
+        },
+        "probability": 0.0012
+      }
+    ]
+  },
+  "carvers": [],
+  "downfall": 0,
+  "effects": {
+    "foliage_color": 11839890,
+    "grass_color": 16578273,
+    "water_color": 7823451
+  },
+  "features": [
+    [],
+    [],
+    [
+      "minecraft:amethyst_geode"
+    ],
+    [
+      "minecraft:monster_room",
+      "minecraft:monster_room_deep"
+    ],
+    [],
+    [],
+    [
+      "customworld:caves/ore_smooth_basalt",
+      "customworld:caves/crying_obsidian",
+      "customworld:caves/ore_magma",
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "customworld:caves/ore_coal",
+      "customworld:caves/ore_coal_upper",
+      "customworld:caves/ore_copper",
+      "customworld:caves/ore_iron",
+      "customworld:caves/ore_iron_upper",
+      "customworld:caves/ore_gold",
+      "customworld:caves/ore_gold_lower",
+      "customworld:caves/ore_lapis",
+      "customworld:caves/ore_redstone",
+      "customworld:caves/ore_diamond_large",
+      "customworld:caves/ore_diamond_medium",
+      "customworld:caves/ore_diamond_small",
+      "minecraft:underwater_magma",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
+    ],
+    [],
+    [
+      "customworld:surface/spring_lava"
+    ],
+    [],
+    []
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 95
+      },
+      {
+        "type": "minecraft:zombie_villager",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 2
+}

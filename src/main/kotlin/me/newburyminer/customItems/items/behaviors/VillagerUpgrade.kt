@@ -2,7 +2,7 @@ package me.newburyminer.customItems.items.behaviors
 
 import com.google.common.collect.Lists
 import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.components.villager.OvermaxVillagerComponent
 import org.bukkit.Material
 import org.bukkit.entity.Villager
 import org.bukkit.inventory.ItemStack

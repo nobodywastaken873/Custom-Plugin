@@ -5,7 +5,7 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.CustomGui
-import me.newburyminer.customItems.gui.MaterialsGui
+import me.newburyminer.customItems.gui.inventory.MaterialsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder

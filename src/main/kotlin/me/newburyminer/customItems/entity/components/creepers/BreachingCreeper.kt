@@ -25,11 +25,11 @@ class BreachingCreeper(private val threshold: Double): EntityComponent {
         }
     }
 
-    private var prevLoc = Location(CustomItems.aridWorld, 0.0, 0.0, 0.0)
+    private var prevLoc: Location? = null
     override fun tick(wrapper: EntityWrapper) {
         if (Bukkit.getCurrentTick() % 20 == 0) {
             val currentLoc = wrapper.entity.location
-            val distanceSquared = currentLoc.distanceSquared(prevLoc)
+            val distanceSquared = currentLoc.distanceSquared(prevLoc ?: Location(wrapper.entity.world, 0.0, 0.0, 0.0))
             prevLoc = currentLoc.clone()
             if (distanceSquared < threshold.pow(2)) {
 

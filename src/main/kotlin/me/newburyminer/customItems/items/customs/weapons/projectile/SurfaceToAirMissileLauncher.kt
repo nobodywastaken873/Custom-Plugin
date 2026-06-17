@@ -7,6 +7,7 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFirework
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -73,7 +74,7 @@ class SurfaceToAirMissileLauncher: CustomItemDefinition {
             }
             EntityWrapperManager.getWrapperorNew(missile).addComponent(
                 ElytraBreakerFirework(HitEffects(
-                    CustomDamageApply(25.0, DamageType.ARROW, 0, overrideSource = shooter),
+                    CustomDamageApply(25.0, CustomDamageType.PROJECTILE, 0, overrideSource = shooter),
                 ), 500, flyer)
             )
             shooter.setCooldown(CustomItem.SURFACE_TO_AIR_MISSILE, 20.0)

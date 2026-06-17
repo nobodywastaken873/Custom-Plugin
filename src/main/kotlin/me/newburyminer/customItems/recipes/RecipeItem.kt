@@ -16,9 +16,9 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.potion.PotionType
 
-class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
+class RecipeItem(private val material: Material, override val amount: Int = 1): RecipeItemBase {
 
-    private val item = ItemStack(material, count)
+    private val item = ItemStack(material, amount)
     private val flags = mutableMapOf(
         "enchantments" to false,
         "ominous_bottle" to false,
@@ -30,10 +30,9 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
         "firework" to false,
     )
 
-    override fun matches(other: ItemStack?): Boolean {
+    override fun itemMatches(other: ItemStack?): Boolean {
         if (other == null) return false
         if (other.type != item.type) return false
-        if (other.amount < item.amount) return false
         if (other.getCustom() != item.getCustom()) return false
         val activeFlags = flags.filterValues { it }.keys.toList()
         val allFlagsMatch = checkFlags(other, activeFlags)
@@ -151,6 +150,18 @@ class RecipeItem(material: Material, count: Int = 1): RecipeItemBase {
         item.fireworkBooster(amount)
         flags["firework"] = true
         return this
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is RecipeItem) return false
+        return flags == other.flags && material == other.material
+    }
+
+    override fun hashCode(): Int {
+        var result = amount
+        result = 31 * result + material.hashCode()
+        result = 31 * result + flags.hashCode()
+        return result
     }
 
 }

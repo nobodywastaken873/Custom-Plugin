@@ -16,6 +16,7 @@ import me.newburyminer.customItems.items.ItemRegistry
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Villager
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -37,7 +38,7 @@ class VillagerAtomizer: CustomItemDefinition {
         .build()
 
     init {
-        register(PlayerInteractEntityEvent::class, { e ->
+        register(PlayerInteractAtEntityEvent::class, { e ->
             slotMatches(e, EquipmentSlot.HAND, custom) &&
             e.rightClicked is Villager &&
             EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true

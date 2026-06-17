@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -17,14 +18,14 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import java.util.*
 
-class ElytraBreakerFirework(private val damage: HitEffects, private val duration: Int, private val target: Player):
+class ElytraBreakerFirework(private val damage: HitEffects, private val disableDuration: Int, private val target: Player):
     EntityComponent {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "damage" to damage.serialize(),
             "target" to target.uniqueId,
-            "duration" to duration,
+            "disableduration" to disableDuration,
         )
     }
     companion object: DeserializationInterface {
@@ -33,7 +34,7 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
             val newDamage = HitEffects.deserialize(map["damage"])
             val newUUID = (map["target"] ?: return null) as UUID
             val newTarget = Bukkit.getPlayer(newUUID) ?: return null
-            val newDuration = map["duration"].toInt()
+            val newDuration = map["disableduration"].toInt()
             return ElytraBreakerFirework(newDamage, newDuration, newTarget)
         }
     }
@@ -57,13 +58,14 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val duration
 
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
-            e.damager == wrapper.entity
+            e.damager == wrapper.entity &&
+            !e.damageSource.damageType.isCustom()
         },
         {e ->
             val player = e.entity as? Player ?: return@register
             player.isGliding = false
-            EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(duration, unique = true))
-            player.setCooldown(Material.ELYTRA, 500)
+            EffectManager.applyEffect(player, CustomEffectType.ELYTRA_DISABLED, EffectData(disableDuration, unique = true))
+            player.setCooldown(Material.ELYTRA, disableDuration)
             CustomEffects.playSound(e.damager.location, Sound.ENTITY_SHEEP_SHEAR, 1.0F, 0.8F)
 
             e.isCancelled = true

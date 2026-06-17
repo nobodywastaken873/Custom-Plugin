@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.entity.components.creepers
 
+import me.newburyminer.customItems.Utils.Companion.getTag
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -7,7 +9,9 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.projectiles.ExplosiveProjectile
 import me.newburyminer.customItems.entity.components.utils.DetonationInterface
 import org.bukkit.entity.Creeper
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityExplodeEvent
+import org.bukkit.event.entity.ExplosionPrimeEvent
 
 class CustomExplosionCreeper(private val power: Float, private val setFire: Boolean, private val breakBlocks: Boolean = false): EntityComponent, DetonationInterface {
 
@@ -29,7 +33,7 @@ class CustomExplosionCreeper(private val power: Float, private val setFire: Bool
     }
 
     override fun registerListeners(wrapper: EntityWrapper) {
-        register(EntityExplodeEvent::class, wrapper.entity.uniqueId, { e ->
+        register(ExplosionPrimeEvent::class, wrapper.entity.uniqueId, { e ->
             e.entity == wrapper.entity
         },
         {e ->

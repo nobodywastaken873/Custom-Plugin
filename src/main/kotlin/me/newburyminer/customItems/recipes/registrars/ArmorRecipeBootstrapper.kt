@@ -2,10 +2,13 @@ package me.newburyminer.customItems.recipes.registrars
 
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.recipes.RecipeBootstrapper
+import me.newburyminer.customItems.recipes.RecipeBuilder
+import me.newburyminer.customItems.recipes.RecipeType
 import org.bukkit.Material
 import org.bukkit.potion.PotionType
 
 object ArmorRecipeBootstrapper: RecipeBootstrapper {
+    override val recipeType: RecipeType = RecipeType.ARMOR
     override fun bootstrap() {
         recipe {
             grid {

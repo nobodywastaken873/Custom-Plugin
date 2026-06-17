@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:diamond",
+    "C": "minecraft:mossy_cobblestone",
+    "S": "minecraft:wild_armor_trim_smithing_template"
+  },
+  "pattern": [
+    "#S#",
+    "#C#",
+    "###"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "customitems:duplicate": 1
+      }
+    },
+    "count": 1,
+    "id": "minecraft:wild_armor_trim_smithing_template"
+  }
+}

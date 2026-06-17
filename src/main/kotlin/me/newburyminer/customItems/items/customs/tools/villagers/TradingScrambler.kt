@@ -4,14 +4,14 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.NonPickuppableComponent
-import me.newburyminer.customItems.entity.components.OvermaxVillagerComponent
-import me.newburyminer.customItems.entity.components.VillagerTradeComponent
+import me.newburyminer.customItems.entity.components.villager.OvermaxVillagerComponent
+import me.newburyminer.customItems.entity.components.villager.VillagerTradeComponent
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import org.bukkit.Material
 import org.bukkit.entity.Villager
-import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
@@ -32,7 +32,7 @@ class TradingScrambler: CustomItemDefinition {
         .build()
 
     init {
-        register(PlayerInteractEntityEvent::class, { e ->
+        register(PlayerInteractAtEntityEvent::class, { e ->
             slotMatches(e, EquipmentSlot.HAND, custom) &&
             e.rightClicked is Villager &&
             EntityWrapperManager.getWrapper(e.rightClicked.uniqueId)?.hasComponent(NonPickuppableComponent::class) != true &&

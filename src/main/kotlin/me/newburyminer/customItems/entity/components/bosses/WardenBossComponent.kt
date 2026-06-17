@@ -30,7 +30,7 @@ class WardenBossComponent(private val instance: WardenInstance?): EntityComponen
             is EntityDamageEvent -> {
 
                 if (e.entity != wrapper.entity) { return }
-                if (damageTick == Bukkit.getCurrentTick() && lastDamage == e.damage) { return }
+                //if (damageTick == Bukkit.getCurrentTick() && lastDamage == e.damage) { return }
 
                 if (e.damageSource.damageType == DamageType.MACE_SMASH) e.damage *= 0.1
                 e.damage *= (1.0 / (12.0 * instance.playerCount))

@@ -3,7 +3,7 @@ package me.newburyminer.customItems.commands
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.gui.RecipeCreationGui
+import me.newburyminer.customItems.gui.crafting.RecipeCreationGui
 import org.bukkit.entity.Player
 
 class MakeRecipeCommand: BasicCommand {

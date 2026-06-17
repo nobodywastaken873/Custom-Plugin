@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -48,7 +49,7 @@ class PortableCannon: CustomItemDefinition {
 
             e.entity.velocity = e.entity.velocity.multiply(0.6)
             EntityWrapperManager.getWrapperorNew(e.entity).addComponent(CustomDamageProjectile(HitEffects(
-                CustomDamageApply(18.0, DamageType.ARROW, overrideSource = shooter),
+                CustomDamageApply(18.0, CustomDamageType.PROJECTILE, overrideSource = shooter),
             )))
 
             CustomEffects.particleCloud(ParticleBuilder(Particle.SMOKE), e.entity.location, 20, 1.0, 0.0)

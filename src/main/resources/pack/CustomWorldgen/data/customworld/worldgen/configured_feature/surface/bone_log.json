@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:fallen_tree",
+  "config": {
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:bone_block"
+      }
+    },
+    "log_length": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 3,
+      "max_inclusive": 6
+    },
+    "stump_decorators": [],
+    "log_decorators": [
+      {
+        "type": "minecraft:place_on_ground",
+        "tries": 20,
+        "radius": 2,
+        "height": 2,
+        "block_state_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "minecraft:leaf_litter",
+            "Properties": {}
+          }
+        }
+      }
+    ]
+  }
+}

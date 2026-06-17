@@ -23,17 +23,45 @@ import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
 import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
-import me.newburyminer.customItems.entity.components.projectiles.CancelProjectiles
+import me.newburyminer.customItems.entity.components.MeleeCustomHit
+import me.newburyminer.customItems.entity.components.creepers.ArrowBombCreeper
+import me.newburyminer.customItems.entity.components.creepers.CustomExplosionCreeper
+import me.newburyminer.customItems.entity.components.creepers.PreIgniteCreeper
+import me.newburyminer.customItems.entity.components.creepers.TntHeadCreeper
+import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import me.newburyminer.customItems.entity.components.projectiles.TntHeadTnt
+import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
+import me.newburyminer.customItems.entity.components.projectileshooters.ElytraBreakerShooter
+import me.newburyminer.customItems.entity.components.projectileshooters.ExplosiveProjectileShooter
+import me.newburyminer.customItems.entity.components.projectileshooters.HomingProjectileShooter
+import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
+import me.newburyminer.customItems.entity.components.projectileshooters.SniperProjectileShooter
+import me.newburyminer.customItems.entity.components.spells.LeapComponent
+import me.newburyminer.customItems.entity.components.spells.TeleportBehindComponent
+import me.newburyminer.customItems.entity.components.utils.ProjectileType
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomEffectApply
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import net.kyori.adventure.key.Key
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.block.data.type.TNT
+import org.bukkit.damage.DamageType
+import org.bukkit.entity.Creeper
 import org.bukkit.entity.Player
 import org.bukkit.entity.Skeleton
+import org.bukkit.entity.TNTPrimed
 import org.bukkit.entity.Zombie
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
@@ -119,6 +147,109 @@ class TestCommand : BasicCommand {
             EntityWrapperManager.getWrapperorNew(zombie).addComponent(CancelProjectiles())
         } else if (args[0] == "check_event_count") {
             println(EventRegistry.getAllRegisteredListeners()[EntityDeathEvent::class]?.size)
+        } else if (args[0] == "summon_test") {
+            val component = when (args[1].toInt()) {
+                0 -> {
+                    MeleeCustomHit(HitEffects(VanillaKnockbackApply(), CustomDamageApply(20.0, CustomDamageType.EXPLOSION)))
+                }
+                1 -> {
+                    LeapComponent(8.0, 2.0, 5 * 20)
+                }
+                2 -> {
+                    TeleportBehindComponent(10 * 20)
+                }
+                3 -> {
+                    PreIgniteCreeper(8.0)
+                }
+                /*0 -> { TntHeadCreeper(sender.world.spawn(sender.location, TNTPrimed::class.java) { EntityWrapperManager.getWrapperorNew(it).addComponent(TntHeadTnt(2.0, 5.0F, true))}, 5.0F)  }
+                1 -> { CancelProjectiles() }
+                2 -> { ExplosiveProjectileShooter(5.0F, true) }
+                3 -> { ElytraBreakerShooter(HitEffects(CustomDamageApply(20.0, CustomDamageType.EXPLOSION), CustomKnockbackApply(Vector(0.0, -10.0, 0.0))), 10*20, 20*20) }
+                4 -> { HomingProjectileShooter(0.1) }
+                5 -> { ProjectileDamageShooter(HitEffects(VanillaKnockbackApply(), CustomDamageApply(20.0,
+                    CustomDamageType.EXPLOSION))) }
+                6 -> { SniperProjectileShooter(10*20, ProjectileType.ARROW) }
+                7 -> {
+                    ArrowBombCreeper(
+                        100, HitEffects(
+                            CustomDamageApply(15.0, CustomDamageType.PROJECTILE_NO_CD, 0),
+                            CustomEffectApply(CustomEffectType.ATTRIBUTE, EffectData(40,
+                                AttributeData(-2.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER))
+                            ),
+                            VanillaKnockbackApply()))
+                }*/
+                /*0 -> {
+                    ArrowBombCreeper(
+                        100, HitEffects(
+                            CustomDamageApply(15.0, DamageType.ARROW, 0),
+                            CustomEffectApply(CustomEffectType.ATTRIBUTE, EffectData(40,
+                                AttributeData(-2.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER))
+                            )))
+                }
+                1 -> {
+                    BreachingCreeper(5.0)
+                }
+                2 -> {
+                    ChainExplosionCreeper()
+                }
+                3 -> {
+                    CustomExplosionCreeper(5F, false, true)
+                }
+                4 -> {
+                    FirebombCreeper(0.8)
+                }
+                5 -> {
+                    FireworkCreeper(10, 30.0)
+                }
+                6 -> {
+                    HoppingCreeper()
+                }
+                7 -> {
+                    PotionExplosionCreeper(PotionEffectType.POISON, 40, 2)
+                }
+                8 -> {
+                    PreIgniteCreeper(8.0)
+                }*/
+                else -> {
+                    return
+                }
+            }
+
+            sender.world.spawn(
+                sender.location,
+                Creeper::class.java
+            ) {
+                val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                wrapper.addComponent(component)
+                wrapper.addComponent(CustomExplosionCreeper(3F, false, true))
+            }
+        } else if (args[0] == "eventbus") {
+            println(EventRegistry.getAllRegisteredListeners())
+        } else if (args[0] == "kbtest") {
+            when (args[1].toInt()) {
+                1 -> {
+                    sender.world.spawn(
+                        sender.location,
+                        Zombie::class.java
+                    ) {
+                        val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                        wrapper.addComponent(MeleeCustomHit(HitEffects(CustomDamageApply(1.0, CustomDamageType.EXPLOSION_NO_CD), VanillaKnockbackApply())))
+                    }
+                }
+                2 -> {
+                    sender.world.spawn(
+                        sender.location,
+                        Skeleton::class.java
+                    ) {
+                        val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                        wrapper.addComponent(ProjectileDamageShooter(HitEffects(VanillaKnockbackApply(), CustomDamageApply(1.0, CustomDamageType.EXPLOSION_NO_CD))))
+                    }
+                }
+            }
+        } else if (args[0] == "damageapply") {
+            val effects = HitEffects(CustomDamageApply(1.0, CustomDamageType.EXPLOSION_NO_CD), VanillaKnockbackApply())
+            val hitter = sender.world.spawn(sender.location.add(Vector(0, 0, 5)), Zombie::class.java)
+            effects.apply(sender, hitter)
         }
     }
 }

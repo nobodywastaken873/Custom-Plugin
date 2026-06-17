@@ -357,6 +357,9 @@ class Utils {
                 .decoration(TextDecoration.UNDERLINED, TextDecoration.State.byBoolean(underline))
             )
         }
+        fun String.beautify(): String {
+            return this.replace("_", " ").lowercase().capitalize()
+        }
         fun toExpLevel(total: Int): Pair<Int, Int> {
             if (total in 0..352) {
                 val levels = sqrt((total + 9).toDouble()) - 3
@@ -494,6 +497,10 @@ class Utils {
             }
         }
 
+        private val keyCache = mutableMapOf<String, NamespacedKey>()
+        fun cachedTag(tag: String): NamespacedKey {
+            return keyCache.getOrPut(tag) { NamespacedKey(CustomItems.plugin, tag) }
+        }
         fun ItemStack.decrementTag(tag: String) {
             if (this.getTag<Int>(tag) != 0) {
                 this.setTag(tag, this.getTag<Int>(tag)?.minus(1) ?: 0)
@@ -502,19 +509,27 @@ class Utils {
         fun ItemStack.incrementTag(tag: String) {
             this.setTag(tag, this.getTag<Int>(tag)?.plus(1) ?: 0)
         }
+        inline fun <reified T : Enum<T>> ItemStack.setEnumTag(tag: String, value: T): ItemStack {
+            this.setTag(tag, value.name)
+            return this
+        }
+        inline fun <reified T : Enum<T>> ItemStack.getEnumTag(tag: String): T? {
+            val value = this.getTag<String>(tag) ?: return null
+            return enumValues<T>().firstOrNull { it.name == value }
+        }
         inline fun <reified T> ItemStack.setTag(tag: String, value: T): ItemStack {
             val newMeta = this.itemMeta
             when (T::class) {
-                Int::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER, value as Int)
-                String::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.STRING, value as String)
-                Boolean::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BOOLEAN, value as Boolean)
-                Float::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.FLOAT, value as Float)
-                Double::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.DOUBLE, value as Double)
-                ByteArray::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
-                IntArray::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
-                ItemStack::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
-                Location::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.LOCATION, value as Location)
-                UUID::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.UUID, value as UUID)
+                Int::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER, value as Int)
+                String::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.STRING, value as String)
+                Boolean::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BOOLEAN, value as Boolean)
+                Float::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.FLOAT, value as Float)
+                Double::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.DOUBLE, value as Double)
+                ByteArray::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
+                IntArray::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
+                ItemStack::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
+                Location::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.LOCATION, value as Location)
+                UUID::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.UUID, value as UUID)
             }
             this.itemMeta = newMeta
             return this
@@ -522,9 +537,9 @@ class Utils {
         inline fun <reified T> ItemStack.setListTag(tag: String, value: MutableList<T>): ItemStack {
             val newMeta = this.itemMeta
             when (T::class) {
-                ItemStack::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK), value as MutableList<ItemStack>)
-                Location::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION), value as MutableList<Location>)
-                Int::class -> newMeta.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER), value as MutableList<Int>)
+                ItemStack::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK), value as MutableList<ItemStack>)
+                Location::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION), value as MutableList<Location>)
+                Int::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER), value as MutableList<Int>)
             }
             this.itemMeta = newMeta
             return this
@@ -532,31 +547,33 @@ class Utils {
         inline fun <reified T> ItemStack.getTag(tag: String): T? {
             if (this.itemMeta == null) return null
             when (T::class) {
-                Int::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER) as T?
-                String::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.STRING) as T?
-                Boolean::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BOOLEAN) as T?
-                Float::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.FLOAT) as T?
-                Double::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.DOUBLE) as T?
-                ByteArray::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BYTE_ARRAY) as T?
-                IntArray::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER_ARRAY) as T?
-                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.ITEMSTACK) as T?
-                Location::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.LOCATION) as T?
-                UUID::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.UUID) as T?
+                Int::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER) as T?
+                String::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.STRING) as T?
+                Boolean::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BOOLEAN) as T?
+                Float::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.FLOAT) as T?
+                Double::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.DOUBLE) as T?
+                ByteArray::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BYTE_ARRAY) as T?
+                IntArray::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER_ARRAY) as T?
+                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.ITEMSTACK) as T?
+                Location::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.LOCATION) as T?
+                UUID::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.UUID) as T?
             }
             return null
         }
         inline fun <reified T> ItemStack.getListTag(tag: String): MutableList<T>? {
             if (this.itemMeta == null) return null
             when (T::class) {
-                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
-                Location::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
-                Int::class -> return this.itemMeta.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER)) as MutableList<T>?
+                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
+                Location::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
+                Int::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER)) as MutableList<T>?
             }
             return null
         }
         fun ItemStack.removeTag(tag: String) {
             if (this.itemMeta == null) return
-            this.itemMeta.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
+            val newMeta = this.itemMeta
+            newMeta.persistentDataContainer.remove(cachedTag(tag))
+            this.itemMeta = newMeta
         }
         fun Entity.decrementTag(tag: String) {
             if ((this.getTag<Int>(tag) ?: 1) > 0) {
@@ -566,56 +583,64 @@ class Utils {
         fun Entity.incrementTag(tag: String) {
             this.setTag(tag, this.getTag<Int>(tag)?.plus(1) ?: 0)
         }
+        inline fun <reified T : Enum<T>> Entity.setEnumTag(tag: String, value: T): Entity {
+            this.setTag(tag, value.name)
+            return this
+        }
+        inline fun <reified T : Enum<T>> Entity.getEnumTag(tag: String): T? {
+            val value = this.getTag<String>(tag) ?: return null
+            return enumValues<T>().firstOrNull { it.name == value }
+        }
         inline fun <reified T> Entity.setTag(tag: String, value: T): Entity {
             when (T::class) {
-                Int::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER, value as Int)
-                String::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.STRING, value as String)
-                Boolean::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BOOLEAN, value as Boolean)
-                Float::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.FLOAT, value as Float)
-                Long::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LONG, value as Long)
-                Double::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.DOUBLE, value as Double)
-                ByteArray::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
-                IntArray::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
-                ItemStack::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
-                Location::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.LOCATION, value as Location)
-                UUID::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.UUID, value as UUID)
+                Int::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER, value as Int)
+                String::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.STRING, value as String)
+                Boolean::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BOOLEAN, value as Boolean)
+                Float::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.FLOAT, value as Float)
+                Long::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LONG, value as Long)
+                Double::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.DOUBLE, value as Double)
+                ByteArray::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
+                IntArray::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
+                ItemStack::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
+                Location::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.LOCATION, value as Location)
+                UUID::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.UUID, value as UUID)
             }
             return this
         }
         inline fun <reified T> Entity.setListTag(tag: String, value: MutableList<T>): Entity {
             when (T::class) {
-                Location::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION), value as MutableList<Location>)
-                ItemStack::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK), value as MutableList<ItemStack>)
-                String::class -> this.persistentDataContainer.set(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), value as MutableList<String>)
+                Location::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION), value as MutableList<Location>)
+                ItemStack::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK), value as MutableList<ItemStack>)
+                String::class -> this.persistentDataContainer.set(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), value as MutableList<String>)
             }
             return this
         }
         inline fun <reified T> Entity.getTag(tag: String): T? {
             when (T::class) {
-                Int::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER) as T?
-                String::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.STRING) as T?
-                Boolean::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BOOLEAN) as T?
-                Float::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.FLOAT) as T?
-                Long::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LONG) as T?
-                Double::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.DOUBLE) as T?
-                ByteArray::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.BYTE_ARRAY) as T?
-                IntArray::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.INTEGER_ARRAY) as T?
-                ItemStack::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.ITEMSTACK) as T?
-                Location::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.LOCATION) as T?
-                UUID::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentCustomType.UUID) as T?
+                Int::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER) as T?
+                String::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.STRING) as T?
+                Boolean::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BOOLEAN) as T?
+                Float::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.FLOAT) as T?
+                Long::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LONG) as T?
+                Double::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.DOUBLE) as T?
+                ByteArray::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BYTE_ARRAY) as T?
+                IntArray::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER_ARRAY) as T?
+                ItemStack::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.ITEMSTACK) as T?
+                Location::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.LOCATION) as T?
+                UUID::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.UUID) as T?
             }
-            return 0 as T?
+            return null
         }
         inline fun <reified T> Entity.getListTag(tag: String): MutableList<T>? {
             when (T::class) {
-                ItemStack::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
-                Location::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
-                String::class -> return this.persistentDataContainer.get(NamespacedKey(CustomItems.plugin, tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING)) as MutableList<T>?
+                ItemStack::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
+                Location::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
+                String::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING)) as MutableList<T>?
             }
             return null
         }
         fun Entity.removeTag(tag: String) {
-            this.persistentDataContainer.remove(NamespacedKey(CustomItems.plugin, tag))
+            this.persistentDataContainer.remove(cachedTag(tag))
         }
 
 

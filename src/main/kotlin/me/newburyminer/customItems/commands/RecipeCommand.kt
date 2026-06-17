@@ -2,7 +2,7 @@ package me.newburyminer.customItems.commands
 
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
-import me.newburyminer.customItems.gui.RecipeListGui
+import me.newburyminer.customItems.gui.crafting.RecipeListGui
 import org.bukkit.entity.Player
 
 class RecipeCommand: BasicCommand {
@@ -11,6 +11,7 @@ class RecipeCommand: BasicCommand {
         val player = stack.sender as Player
         //if (!sender.isOp) {sender.sendMessage(Component.text("You do not have permission to use this command.").color(TextColor.color(255, 0, 0))); return false}
         //if (args[0].isEmpty()) {sender.velocity = sender.velocity.add(Vector(0, 100, 0)); return false}
-        RecipeListGui(0).open(player)
+        val recipeGui = RecipeListGui(0)
+        recipeGui.open(player)
     }
 }

@@ -1,24 +1,59 @@
 {
-    "ambient_light": 0.0,
-    "bed_works": false,
-    "coordinate_scale": 1.0,
-    "effects": "minecraft:overworld",
-    "has_ceiling": false,
-    "has_raids": true,
-    "has_skylight": true,
-    "height": 384,
-    "infiniburn": "#minecraft:infiniburn_overworld",
-    "logical_height": 384,
-    "min_y": -64,
-    "monster_spawn_block_light_limit": 0,
-    "monster_spawn_light_level": {
-      "type": "minecraft:uniform",
-      "max_inclusive": 7,
-      "min_inclusive": 0
+  "ambient_light": 0,
+  "coordinate_scale": 1,
+  "has_ceiling": false,
+  "has_skylight": true,
+  "height": 576,
+  "infiniburn": "#minecraft:infiniburn_overworld",
+  "logical_height": 576,
+  "min_y": -256,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": {
+    "type": "minecraft:uniform",
+    "max_inclusive": 7,
+    "min_inclusive": 0
+  },
+  "has_ender_dragon_fight": false,
+  "attributes": {
+    "gameplay/bed_rule": {
+      "explodes": true,
+      "can_set_spawn": "never",
+      "can_sleep": "never"
     },
-    "natural": false,
-    "piglin_safe": false,
-    "respawn_anchor_works": false,
-    "ultrawarm": false,
-    "has_ender_dragon_fight": false
+    "gameplay/respawn_anchor_works": false,
+    "gameplay/water_evaporates": true,
+    "gameplay/fast_lava": true,
+    "gameplay/sky_light_level": 5,
+    "gameplay/monsters_burn": false,
+    "gameplay/piglins_zombify": false,
+    "gameplay/snow_golem_melts": true,
+    "visual/block_light_tint": "#ab4a03",
+    "visual/fog_start_distance": 160,
+    "visual/fog_end_distance": 220,
+    "visual/fog_color": "#8b7e6b",
+    "visual/cloud_color": 15593637,
+    "visual/sky_color": "#918347",
+    "visual/sky_light_color": "#ffc875",
+    "visual/sky_light_factor": 0.5,
+    "visual/sky_fog_end_distance": 200,
+    "visual/cloud_fog_end_distance": 200,
+    "visual/water_fog_color": "#141200",
+    "visual/water_fog_start_distance": 10,
+    "visual/water_fog_end_distance": 30,
+    "minecraft:audio/background_music": {
+      "default": {
+        "sound": "minecraft:music.overworld.badlands",
+        "min_delay": 12000,
+        "max_delay": 18000
+      }
+    },
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "minecraft:ash"
+        },
+        "probability": 0.018
+      }
+    ]
+  }
 }

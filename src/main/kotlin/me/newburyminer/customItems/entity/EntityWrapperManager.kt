@@ -53,7 +53,7 @@ class EntityWrapperManager: Listener, BukkitRunnable() {
         }
 
         fun removeAllWrappers() {
-            for ((uuid, _) in wrappers) {
+            for ((uuid, _) in wrappers.toMap()) {
                 val entity = Bukkit.getEntity(uuid) ?: continue
                 removeWrapper(entity)
             }
@@ -77,7 +77,7 @@ class EntityWrapperManager: Listener, BukkitRunnable() {
     }
 
     override fun run() {
-        wrappers.forEach { it.value.tick() }
+        wrappers.toMap().forEach { it.value.tick() }
     }
 
 }

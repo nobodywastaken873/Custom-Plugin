@@ -292,7 +292,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
             return
         }
         if (item != CustomItem.ALL) {
-            val recipe = RecipeRegistry.recipes.first {
+            val recipe = RecipeRegistry.recipeList.first {
                 it.getResultItem().getCustom() == item
             }
 

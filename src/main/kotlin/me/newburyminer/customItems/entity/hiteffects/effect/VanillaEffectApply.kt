@@ -5,6 +5,7 @@ import io.papermc.paper.registry.RegistryKey
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -13,7 +14,7 @@ import org.bukkit.potion.PotionEffectType
 
 class VanillaEffectApply(val type: PotionEffectType, val duration: Int, val potency: Int, val ambient: Boolean = false, val showParticles: Boolean = true): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         victim.addPotionEffect(PotionEffect(
             type,
             duration,

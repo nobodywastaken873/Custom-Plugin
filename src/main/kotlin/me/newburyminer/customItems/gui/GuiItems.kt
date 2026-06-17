@@ -27,8 +27,6 @@ object GuiItems {
             .name(Utils.text("Go Back").style(Style.style(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
             .setItemAction(ItemAction.GO_BACK)
             .clone()
-    val FILL_GRID: ItemStack
-        get() = ItemStack(Material.GREEN_CONCRETE)
 
     fun getLocked(item: ItemStack, unique: Boolean = true): ItemStack {
         item.lock()

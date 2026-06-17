@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -10,7 +11,7 @@ import org.bukkit.util.Vector
 
 class BlockPlaceApply(val block: Material, val transforms: List<Vector> = listOf(Vector(0, 0, 0))): HitEffect {
 
-    override fun apply(victim: LivingEntity, damager: Entity) {
+    override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         transforms.forEach {
             val center = victim.location.toBlockLocation().add(it)
             if (center.block.isPassable)

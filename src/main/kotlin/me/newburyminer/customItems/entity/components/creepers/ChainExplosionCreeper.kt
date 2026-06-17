@@ -22,6 +22,7 @@ class ChainExplosionCreeper: EntityComponent {
         },
         {e ->
             val creeper = e.entity as? Creeper ?: return@register
+            e.isCancelled = true
             val wrapper = EntityWrapperManager.getWrapperorNew(creeper)
             if (!creeper.isIgnited) {
                 wrapper.addComponent(ChainExplosionCreeper())

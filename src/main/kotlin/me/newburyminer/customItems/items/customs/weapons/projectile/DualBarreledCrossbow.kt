@@ -9,6 +9,7 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -51,7 +52,7 @@ class DualBarreledCrossbow: CustomItemDefinition {
             val arrow = e.entity as Arrow
             arrow.pierceLevel = 6
             EntityWrapperManager.getWrapperorNew(arrow).addComponent(CustomDamageProjectile(HitEffects(
-                CustomDamageApply(17.0, DamageType.ARROW, overrideSource = e.entity.shooter as Entity?),
+                CustomDamageApply(17.0, CustomDamageType.PROJECTILE, overrideSource = e.entity.shooter as Entity?),
             )))
         })
     }
