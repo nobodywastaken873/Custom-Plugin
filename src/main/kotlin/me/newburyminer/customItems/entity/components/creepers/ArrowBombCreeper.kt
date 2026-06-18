@@ -1,12 +1,9 @@
 package me.newburyminer.customItems.entity.components.creepers
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.*
 import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
-import org.bukkit.damage.DamageType
 import org.bukkit.entity.Creeper
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.util.Vector
@@ -22,7 +19,7 @@ class ArrowBombCreeper(val count: Int, val damage: HitEffects): EntityComponent 
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.ARROWBOMB_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newCount = map["count"].toInt()
+            val newCount = map["count"].asInt()
             val newDamage = HitEffects.deserialize(map["damage"])
             return ArrowBombCreeper(newCount, newDamage)
         }

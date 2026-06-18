@@ -1,0 +1,101 @@
+package me.newburyminer.customItems.entity.components.spells
+
+import me.newburyminer.customItems.Utils.Companion.getNearestPlayer
+import me.newburyminer.customItems.entity.DeserializationInterface
+import me.newburyminer.customItems.entity.EntityComponent
+import me.newburyminer.customItems.entity.EntityComponentType
+import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
+import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.HomingSystem
+import me.newburyminer.customItems.helpers.ParticleTheme
+import org.bukkit.entity.Marker
+import org.bukkit.entity.Mob
+import org.bukkit.entity.Player
+
+class MagicMissileShooterComponent(
+    private val range: Double,
+    private val speed: Double,
+    private val size: Double,
+    private val angleChange: Double,
+    private val homingType: HomingSystem.Type,
+    private val effects: HitEffects,
+    castTime: Int,
+    baseCooldown: Int,
+    private val particleTheme: ParticleTheme
+): AbstractSpellComponent(baseCooldown, castTime) {
+
+    override fun serialize(): Map<String, Any> {
+        return mapOf(
+            "range" to range,
+            "speed" to speed,
+            "size" to size,
+            "angleChange" to angleChange,
+            "homingType" to homingType.name,
+            "effects" to effects.serialize(),
+            "castTime" to spellDuration,
+            "baseCooldown" to baseCooldown,
+            "particleTheme" to particleTheme.name
+        )
+    }
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.MAGIC_MISSILE_SHOOTER_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return MagicMissileShooterComponent(
+                map["range"].asDouble(),
+                map["speed"].asDouble(),
+                map["size"].asDouble(),
+                map["angleChange"].asDouble(),
+                HomingSystem.Type.valueOf(map["homingType"].asString()),
+                HitEffects.deserialize(map["effects"]),
+                map["castTime"].asInt(),
+                map["baseCooldown"].asInt(),
+                ParticleTheme.valueOf(map["particleTheme"].asString())
+            )
+        }
+    }
+
+    private var targetPlayer: Player? = null
+
+    override fun tick(wrapper: EntityWrapper) {
+        val caster = wrapper.entity as? Mob ?: return
+        reduceCooldown(1)
+
+        if (castingTicks > 0) {
+            castingTicks -= 1
+
+            if (!checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
+
+            if (castingTicks <= 0) {
+                caster.world.spawn(caster.eyeLocation, Marker::class.java) {
+                    val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                    wrapper.addComponent(MagicMissileComponent(
+                        speed,
+                        size,
+                        angleChange,
+                        homingType,
+                        effects,
+                        particleTheme,
+                        caster,
+                        targetPlayer
+                    ))
+                }
+                applyCooldown(baseCooldown)
+                targetPlayer = null
+            }
+        }
+
+        if (wrapper.entity.ticksLived % 10 == 0 && offCooldown()) {
+
+            if (startCasting(wrapper)) {
+                val target = (caster.target ?: caster.getNearestPlayer(range) ?: return) as? Player ?: return
+                if (!caster.hasLineOfSight(target)) return
+
+                targetPlayer = target
+            }
+
+        }
+    }
+}

@@ -6,7 +6,6 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.DetonationInterface
 import me.newburyminer.customItems.helpers.DoubleRange
-import org.bukkit.Bukkit
 import org.bukkit.entity.TNTPrimed
 import org.bukkit.event.entity.EntityExplodeEvent
 
@@ -22,9 +21,9 @@ class TntHeadTnt(private val explodeY: Double, private val power: Float, private
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.TNT_HEAD_TNT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newExplodeY = map["explodey"].toDouble()
-            val newPower = map["power"].toFloat()
-            val newBreakBlocks = map["breakblocks"].toBoolean()
+            val newExplodeY = map["explodey"].asDouble()
+            val newPower = map["power"].asFloat()
+            val newBreakBlocks = map["breakblocks"].asBoolean()
             return TntHeadTnt(newExplodeY, newPower, newBreakBlocks)
         }
     }
@@ -52,7 +51,7 @@ class TntHeadTnt(private val explodeY: Double, private val power: Float, private
 
     private var counter = 0
     override fun tick(wrapper: EntityWrapper) {
-        if (Bukkit.getCurrentTick() % 5 == 0) {
+        if (wrapper.entity.ticksLived % 5 == 0) {
             val tnt = wrapper.entity as? TNTPrimed ?: return
             tnt.fuseTicks = 20
             counter++

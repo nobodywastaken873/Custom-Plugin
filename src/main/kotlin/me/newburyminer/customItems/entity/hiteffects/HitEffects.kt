@@ -7,6 +7,8 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Zombie
+import org.bukkit.util.Vector
 import kotlin.reflect.full.companionObjectInstance
 
 class HitEffects(private vararg val hitEffects: HitEffect) {
@@ -22,6 +24,12 @@ class HitEffects(private vararg val hitEffects: HitEffect) {
                 it !is VanillaKnockbackApply && it !is CustomKnockbackApply // Not a knockback component
             }.forEach { it.apply(damaged, damager) }
         })
+    }
+
+    fun applyTargetless(damager: Entity, sourceLoc: Location) {
+        val fakeTarget = damager.world.spawn(Location(damager.world, 0.0, 1000.0, 0.0), Zombie::class.java)
+        apply(fakeTarget, damager, sourceLoc)
+        fakeTarget.remove()
     }
 
     fun serialize(): Map<String, Any> {

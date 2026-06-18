@@ -5,7 +5,6 @@ import me.newburyminer.customItems.entity.components.projectiles.ElytraBreakerFi
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
-import org.bukkit.Bukkit
 import org.bukkit.Color
 import org.bukkit.FireworkEffect
 import org.bukkit.Sound
@@ -27,8 +26,8 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
         override val componentType: EntityComponentType = EntityComponentType.ELYTRA_BREAKER_SHOOTER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             val newDamage = HitEffects.Companion.deserialize(map["damage"])
-            val newCooldown = map["cooldown"].toInt()
-            val newDuration = map["disableduration"].toInt()
+            val newCooldown = map["cooldown"].asInt()
+            val newDuration = map["disableduration"].asInt()
             return ElytraBreakerShooter(newDamage, newCooldown, newDuration)
         }
     }
@@ -36,9 +35,9 @@ class ElytraBreakerShooter(private val damage: HitEffects, private val baseCoold
     override var cooldown: Int = 100
 
     override fun tick(wrapper: EntityWrapper) {
-        if (Bukkit.getCurrentTick() % 5 == 0) reduceCooldown(5)
+        if (wrapper.entity.ticksLived % 5 == 0) reduceCooldown(5)
 
-        if (Bukkit.getCurrentTick() % 10 == 0) {
+        if (wrapper.entity.ticksLived % 10 == 0) {
             if (!offCooldown()) return
             val target = getTarget(wrapper) ?: return
 

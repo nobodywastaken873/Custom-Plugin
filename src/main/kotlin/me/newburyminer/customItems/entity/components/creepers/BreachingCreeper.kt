@@ -1,11 +1,9 @@
 package me.newburyminer.customItems.entity.components.creepers
 
-import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Creeper
 import org.bukkit.entity.Player
@@ -21,13 +19,13 @@ class BreachingCreeper(private val threshold: Double): EntityComponent {
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.BREACHING_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return BreachingCreeper(map["threshold"].toDouble())
+            return BreachingCreeper(map["threshold"].asDouble())
         }
     }
 
     private var prevLoc: Location? = null
     override fun tick(wrapper: EntityWrapper) {
-        if (Bukkit.getCurrentTick() % 20 == 0) {
+        if (wrapper.entity.ticksLived % 20 == 0) {
             val currentLoc = wrapper.entity.location
             val distanceSquared = currentLoc.distanceSquared(prevLoc ?: Location(wrapper.entity.world, 0.0, 0.0, 0.0))
             prevLoc = currentLoc.clone()

@@ -31,7 +31,7 @@ class JerryIdolComponent(private var emeraldStacks: Int): EntityComponent {
         override val componentType: EntityComponentType = EntityComponentType.JERRY_IDOL_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return JerryIdolComponent(
-                map["emeraldStacks"].toInt(),
+                map["emeraldStacks"].asInt(),
             )
         }
     }

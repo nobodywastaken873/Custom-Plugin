@@ -14,7 +14,7 @@ class CustomKnockbackApply(val vec: Vector): HitEffect {
         val source = sourceLoc?.clone() ?: damager.location
         if (victim.location.subtract(source).length() < 0.001) return
 
-        val direction = victim.location.subtract(source).toVector().normalize()
+        val direction = victim.location.subtract(source).toVector().setY(0).normalize()
         val knockback = Vector(direction.x * vec.x, vec.y, direction.z * vec.z)
         victim.velocity = victim.velocity.add(knockback)
     }
@@ -31,9 +31,9 @@ class CustomKnockbackApply(val vec: Vector): HitEffect {
         override fun deserialize(map: Map<String, Any>): HitEffect {
             return CustomKnockbackApply(
                 Vector(
-                    map["x"].toDouble(),
-                    map["y"].toDouble(),
-                    map["z"].toDouble(),
+                    map["x"].asDouble(),
+                    map["y"].asDouble(),
+                    map["z"].asDouble(),
                 )
             )
         }

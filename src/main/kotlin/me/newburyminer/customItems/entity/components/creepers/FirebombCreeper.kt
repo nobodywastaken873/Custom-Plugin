@@ -1,7 +1,6 @@
 package me.newburyminer.customItems.entity.components.creepers
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -22,7 +21,7 @@ class FirebombCreeper(val rate: Double): EntityComponent {
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.FIREBOMB_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return FirebombCreeper(map["rate"].toDouble())
+            return FirebombCreeper(map["rate"].asDouble())
         }
     }
 

@@ -3,12 +3,10 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.damage.DamageSource
@@ -34,8 +32,8 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
             amount,
             DamageSource.builder(damageType)
                 .withDamageLocation(sourceLoc?.clone() ?: realDamager.location)
-                //.withDirectEntity(realDamager)
-                //.withCausingEntity(realDamager)
+                .withDirectEntity(realDamager)
+                .withCausingEntity(realDamager)
                 .build()
         )
 
@@ -54,10 +52,10 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.CUSTOM_DAMAGE
         override fun deserialize(map: Map<String, Any>): HitEffect {
-            val newAmount = map["amount"].toDouble()
-            val key = NamespacedKey.fromString(map["type"].toString())!!
+            val newAmount = map["amount"].asDouble()
+            val key = NamespacedKey.fromString(map["type"].asString())!!
             val newType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(key)!!
-            val newIFrames = map["iframes"].toInt()
+            val newIFrames = map["iframes"].asInt()
             return CustomDamageApply(newAmount, newType, newIFrames)
         }
     }

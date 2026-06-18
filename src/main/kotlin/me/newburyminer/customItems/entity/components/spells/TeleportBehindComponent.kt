@@ -5,7 +5,6 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
-import org.bukkit.Bukkit
 import org.bukkit.entity.Mob
 import kotlin.math.pow
 
@@ -20,14 +19,14 @@ class TeleportBehindComponent(private val baseCooldown: Int): EntityComponent, C
         override val componentType: EntityComponentType = EntityComponentType.TELEPORT_BEHIND
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return TeleportBehindComponent(
-                map["cooldown"].toInt(),
+                map["cooldown"].asInt(),
             )
         }
     }
 
     override var cooldown: Int = 100
     override fun tick(wrapper: EntityWrapper) {
-        if (Bukkit.getCurrentTick() % 20 == 0) {
+        if (wrapper.entity.ticksLived % 20 == 0) {
 
             reduceCooldown(20)
             if (!offCooldown()) return

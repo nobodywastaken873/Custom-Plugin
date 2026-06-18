@@ -49,6 +49,21 @@ class CustomEffects {
             }
         }
 
+        fun filledParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
+            for (i in 0..(radius.pow(2)*Math.PI*concentration).toInt()) {
+                val theta = Math.random() * 2 * Math.PI
+                val r = sqrt(Math.random()) * radius
+                val newLoc = loc.clone().add(r * cos(theta), 0.0, r * sin(theta))
+                particle.clone()
+                    .location(newLoc)
+                    .count(1)
+                    .offset(offset, offset, offset)
+                    .extra(extra)
+                    .receivers(60)
+                    .spawn()
+            }
+        }
+
         fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, count: Int, centerAxis: Vector, extraRotation: Double  = 0.0, offset: Double = 0.0, extra: Double = 0.0) {
 
             for (i in 1..count) {
@@ -122,11 +137,11 @@ class CustomEffects {
         }
 
         fun raycastParticleLine(particle: ParticleBuilder, loc: Location, direction: Vector, distance: Double,
-                                density: Double, collideEntity: Boolean = false, caster: Entity? = null,
+                                density: Double, collideEntity: Boolean = false, predicate: (Entity) -> Boolean = { true },
                                 offset: Double = 0.0, extra: Double = 0.0) {
             val result =
                 (if (collideEntity) {
-                    loc.world.rayTrace(loc, direction, distance, FluidCollisionMode.NEVER, true, 0.1, Predicate { it != caster })
+                    loc.world.rayTrace(loc, direction, distance, FluidCollisionMode.NEVER, true, 0.1, predicate)
                 } else {
                     loc.world.rayTraceBlocks(loc, direction, distance, FluidCollisionMode.NEVER, true,)
                 })?.hitPosition ?: loc.clone().add(direction.normalize().multiply(distance)).toVector()

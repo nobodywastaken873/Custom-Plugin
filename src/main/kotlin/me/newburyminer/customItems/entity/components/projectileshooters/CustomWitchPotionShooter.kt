@@ -33,8 +33,8 @@ class CustomWitchPotionShooter(private val effects: List<PotionEffect>): EntityC
                     .getRegistry(RegistryKey.MOB_EFFECT)
                     .get(key) ?: return null
                 val innerMap = it.value as Map<String, Any>
-                val duration = innerMap["duration"].toInt()
-                val amplifier = innerMap["amplifier"].toInt()
+                val duration = innerMap["duration"].asInt()
+                val amplifier = innerMap["amplifier"].asInt()
                 PotionEffect(type, duration, amplifier)
             }
             return CustomWitchPotionShooter(effects)

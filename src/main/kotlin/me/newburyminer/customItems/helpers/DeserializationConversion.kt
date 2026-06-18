@@ -1,19 +1,19 @@
 package me.newburyminer.customItems.helpers
 
 interface DeserializationConversion {
-    fun Any?.toInt(): Int {
+    fun Any?.asInt(): Int {
         return (this as Number).toInt()
     }
-    fun Any?.toDouble(): Double {
+    fun Any?.asDouble(): Double {
         return (this as Number).toDouble()
     }
-    fun Any?.toFloat(): Float {
+    fun Any?.asFloat(): Float {
         return (this as Number).toFloat()
     }
-    fun Any?.toString(): String {
+    fun Any?.asString(): String {
         return (this as String)
     }
-    fun Any?.toBoolean(): Boolean {
+    fun Any?.asBoolean(): Boolean {
         return (this as Boolean)
     }
 }

@@ -4,13 +4,11 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.components.utils.CooldownInterface
+import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
 import me.newburyminer.customItems.entity.components.utils.ProjectileType
-import me.newburyminer.customItems.entity.components.utils.SpellInterface
-import org.bukkit.Bukkit
 import org.bukkit.entity.Mob
 
-class SniperProjectileShooter(private val baseCooldown: Int, private val projectileType: ProjectileType): EntityComponent, CooldownInterface, SpellInterface {
+class SniperProjectileShooter(baseCooldown: Int, private val projectileType: ProjectileType): AbstractSpellComponent(baseCooldown, 30) {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
@@ -22,21 +20,17 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
         override val componentType: EntityComponentType = EntityComponentType.SNIPER_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return SniperProjectileShooter(
-                map["baseCooldown"].toInt(),
-                ProjectileType.valueOf(map["projectileType"].toString()),
+                map["baseCooldown"].asInt(),
+                ProjectileType.valueOf(map["projectileType"].asString()),
             )
         }
     }
 
-    override val spellDuration: Int = 30
-    override var cooldown: Int = 100
-    private var remainingCastTicks = 0
-
     override fun tick(wrapper: EntityWrapper) {
-        if (remainingCastTicks > 0) {
-            remainingCastTicks--
+        if (castingTicks > 0) {
+            castingTicks--
 
-            if (remainingCastTicks <= 0) {
+            if (castingTicks <= 0) {
 
                 val mob = wrapper.entity as? Mob ?: return
                 val targetLoc = mob.target?.location ?: return
@@ -51,17 +45,16 @@ class SniperProjectileShooter(private val baseCooldown: Int, private val project
 
         }
 
-        else if (Bukkit.getCurrentTick() % 10 == 0) {
+        else if (wrapper.entity.ticksLived % 10 == 0) {
             reduceCooldown(10)
             if (!offCooldown()) return
+            if (wrapper.isCasting()) return
 
             val shooter = wrapper.entity as? Mob ?: return
             val target = shooter.target ?: return
             if (!shooter.hasLineOfSight(target)) return
 
-            if (startCasting(wrapper)) {
-                remainingCastTicks = spellDuration
-            }
+            startCasting(wrapper)
         }
     }
 }

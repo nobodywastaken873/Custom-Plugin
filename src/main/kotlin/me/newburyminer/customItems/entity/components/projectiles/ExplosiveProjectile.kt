@@ -19,9 +19,9 @@ class ExplosiveProjectile(private val power: Float, private val setFire: Boolean
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.EXPLOSIVE_PROJECTILE
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newPower = map["power"].toFloat()
-            val newSetFire = map["setfire"].toBoolean()
-            val newBreakBlocks = map["breakblocks"].toBoolean()
+            val newPower = map["power"].asFloat()
+            val newSetFire = map["setfire"].asBoolean()
+            val newBreakBlocks = map["breakblocks"].asBoolean()
             return ExplosiveProjectile(newPower, newSetFire, newBreakBlocks)
         }
     }

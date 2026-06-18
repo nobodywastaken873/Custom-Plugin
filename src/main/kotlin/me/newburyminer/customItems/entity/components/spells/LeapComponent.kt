@@ -6,7 +6,6 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
-import org.bukkit.Bukkit
 import org.bukkit.entity.Mob
 import kotlin.math.pow
 
@@ -24,9 +23,9 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
         override val componentType: EntityComponentType = EntityComponentType.LEAPING_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return LeapComponent(
-                map["minDistance"].toDouble(),
-                map["extraHeight"].toDouble(),
-                map["baseCooldown"].toInt(),
+                map["minDistance"].asDouble(),
+                map["extraHeight"].asDouble(),
+                map["baseCooldown"].asInt(),
             )
         }
     }
@@ -35,7 +34,7 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
 
     override fun tick(wrapper: EntityWrapper) {
 
-        if (Bukkit.getCurrentTick() % 10 == 0) {
+        if (wrapper.entity.ticksLived % 10 == 0) {
 
             reduceCooldown(10)
             if (!offCooldown()) return

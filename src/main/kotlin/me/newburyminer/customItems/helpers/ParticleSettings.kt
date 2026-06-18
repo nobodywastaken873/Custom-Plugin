@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.helpers
 
 import com.destroystokyo.paper.ParticleBuilder
+import org.bukkit.Particle
 
 data class ParticleSettings(
     val particle: ParticleBuilder,

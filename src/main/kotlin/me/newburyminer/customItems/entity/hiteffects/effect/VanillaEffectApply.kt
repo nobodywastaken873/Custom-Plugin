@@ -36,12 +36,12 @@ class VanillaEffectApply(val type: PotionEffectType, val duration: Int, val pote
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.VANILLA_EFFECT
         override fun deserialize(map: Map<String, Any>): HitEffect {
-            val key = NamespacedKey.fromString(map["type"].toString())!!
+            val key = NamespacedKey.fromString(map["type"].asString())!!
             val newType = RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(key)!!
-            val newDuration = map["duration"].toInt()
-            val newPotency = map["potency"].toInt()
-            val newAmbient = map["ambient"].toBoolean()
-            val newShowParticles = map["showparticles"].toBoolean()
+            val newDuration = map["duration"].asInt()
+            val newPotency = map["potency"].asInt()
+            val newAmbient = map["ambient"].asBoolean()
+            val newShowParticles = map["showparticles"].asBoolean()
             return VanillaEffectApply(newType, newDuration, newPotency, newAmbient, newShowParticles)
         }
     }

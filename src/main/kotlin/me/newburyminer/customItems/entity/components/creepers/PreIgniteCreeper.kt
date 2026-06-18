@@ -5,9 +5,7 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
-import org.bukkit.Bukkit
 import org.bukkit.entity.Creeper
-import kotlin.math.min
 import kotlin.math.pow
 
 class PreIgniteCreeper(private val minDistance: Double): EntityComponent, LeapingInterface {
@@ -21,7 +19,7 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
         override val componentType: EntityComponentType = EntityComponentType.PRE_IGNITE_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return PreIgniteCreeper(
-                map["minDistance"].toDouble(),
+                map["minDistance"].asDouble(),
             )
         }
     }
@@ -63,7 +61,7 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
 
         }
 
-        else if (Bukkit.getCurrentTick() % 10 == 0) {
+        else if (wrapper.entity.ticksLived % 10 == 0) {
 
             val creeper = wrapper.entity as? Creeper ?: return
             val target = creeper.target ?: return

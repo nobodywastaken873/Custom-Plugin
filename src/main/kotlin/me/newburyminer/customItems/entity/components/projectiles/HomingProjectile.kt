@@ -20,8 +20,8 @@ class HomingProjectile(private val angleChange: Double, private val target: Enti
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE
         override fun deserialize(map: Map<String, Any>): EntityComponent? {
-            val newChange = map["change"].toDouble()
-            val uuid = UUID.fromString(map["target"].toString())
+            val newChange = map["change"].asDouble()
+            val uuid = UUID.fromString(map["target"].asString())
             val target = Bukkit.getEntity(uuid) ?: return null
             return HomingProjectile(newChange, target)
         }

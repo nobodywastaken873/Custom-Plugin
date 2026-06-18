@@ -52,7 +52,7 @@ class LineAttack(
     override fun execute() {
         if (duration != 0) return
         val direction = start.toVector().subtract(end.toVector())
-        val hitPlayers = start.world.rayTraceManyEntities(start, direction, direction.length()).filterIsInstance<Player>()
+        val hitPlayers = start.world.rayTraceManyEntities(start, direction, direction.length(), 0.0).filterIsInstance<Player>()
 
         hitPlayers.forEach {
             it.applyDamage(damage)

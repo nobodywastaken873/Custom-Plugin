@@ -23,45 +23,32 @@ import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
 import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
-import me.newburyminer.customItems.effects.AttributeData
-import me.newburyminer.customItems.effects.CustomEffectType
-import me.newburyminer.customItems.effects.EffectData
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
 import me.newburyminer.customItems.entity.components.MeleeCustomHit
-import me.newburyminer.customItems.entity.components.creepers.ArrowBombCreeper
 import me.newburyminer.customItems.entity.components.creepers.CustomExplosionCreeper
 import me.newburyminer.customItems.entity.components.creepers.PreIgniteCreeper
-import me.newburyminer.customItems.entity.components.creepers.TntHeadCreeper
-import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
-import me.newburyminer.customItems.entity.components.projectiles.TntHeadTnt
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
-import me.newburyminer.customItems.entity.components.projectileshooters.ElytraBreakerShooter
-import me.newburyminer.customItems.entity.components.projectileshooters.ExplosiveProjectileShooter
-import me.newburyminer.customItems.entity.components.projectileshooters.HomingProjectileShooter
 import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
-import me.newburyminer.customItems.entity.components.projectileshooters.SniperProjectileShooter
+import me.newburyminer.customItems.entity.components.spells.EffectAuraCaster
+import me.newburyminer.customItems.entity.components.spells.LaserBeamComponent
+import me.newburyminer.customItems.entity.components.spells.TrackingBeamComponent
 import me.newburyminer.customItems.entity.components.spells.LeapComponent
+import me.newburyminer.customItems.entity.components.spells.MagicMissileShooterComponent
 import me.newburyminer.customItems.entity.components.spells.TeleportBehindComponent
-import me.newburyminer.customItems.entity.components.utils.ProjectileType
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
-import me.newburyminer.customItems.entity.hiteffects.effect.CustomEffectApply
-import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.helpers.HomingSystem
+import me.newburyminer.customItems.helpers.ParticleTheme
 import net.kyori.adventure.key.Key
 import org.bukkit.*
-import org.bukkit.attribute.Attribute
-import org.bukkit.attribute.AttributeModifier
-import org.bukkit.block.data.type.TNT
-import org.bukkit.damage.DamageType
 import org.bukkit.entity.Creeper
 import org.bukkit.entity.Player
 import org.bukkit.entity.Skeleton
-import org.bukkit.entity.TNTPrimed
 import org.bukkit.entity.Zombie
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
@@ -250,6 +237,26 @@ class TestCommand : BasicCommand {
             val effects = HitEffects(CustomDamageApply(1.0, CustomDamageType.EXPLOSION_NO_CD), VanillaKnockbackApply())
             val hitter = sender.world.spawn(sender.location.add(Vector(0, 0, 5)), Zombie::class.java)
             effects.apply(sender, hitter)
+        } else if (args[0] == "spellcomponent") {
+            val component = EffectAuraCaster(3.0, 0.5, 100, 40, 40,
+                HitEffects(CustomDamageApply(10.0, CustomDamageType.PROJECTILE), VanillaKnockbackApply()),
+                10, ParticleTheme.BASIC_THEME, 40, 200, 20.0)
+                /*MagicMissileShooterComponent(30.0, 1.0, 0.25, 0.02, HomingSystem.Type.BOTH_SCALED,
+                HitEffects(CustomDamageApply(10.0, CustomDamageType.PROJECTILE), VanillaKnockbackApply()),
+                20, 200, ParticleTheme.BASIC_THEME)
+                TrackingBeamComponent(30.0, 0.25, 0.01, 10,
+                false, HitEffects(CustomDamageApply(10.0, CustomDamageType.PROJECTILE), VanillaKnockbackApply()),
+                200, 0, ParticleTheme.BASIC_THEME)
+                LaserBeamComponent(30.0, 0.25, true, false,
+                HitEffects(CustomDamageApply(10.0, CustomDamageType.PROJECTILE), VanillaKnockbackApply()),
+                40, 200, ParticleTheme.BASIC_THEME)*/
+            sender.world.spawn(
+                sender.location,
+                Zombie::class.java
+            ) {
+                val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                wrapper.addComponent(component)
+            }
         }
     }
 }

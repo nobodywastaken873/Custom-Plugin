@@ -37,7 +37,7 @@ class BlockPlaceApply(val block: Material, val transforms: List<Vector> = listOf
                 .map { coordString ->
                     val coords = coordString
                         .split(",")
-                        .map { it.toInt() }
+                        .map { it.asInt() }
                     Vector(coords[0], coords[1], coords[2])
                 }
             return BlockPlaceApply(newBlock, newTransforms)

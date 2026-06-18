@@ -12,7 +12,9 @@ import me.newburyminer.customItems.entity.components.projectileshooters.Projecti
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import org.bukkit.Bukkit
+import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
 class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
@@ -39,8 +41,12 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
             val damaged = e.entity as? LivingEntity ?: return@register
             e.isCancelled = true
 
+            val damager =
+                if (e.damager is Projectile) (e.damager as Projectile).shooter as? Entity ?: return@register
+                else e.damager
+
             //println("applying damage 1")
-            damage.apply(damaged, e.damager)
+            damage.apply(damaged, damager)
             wrapper.entity.remove()
             //println("finished applying and removing 5")
         })

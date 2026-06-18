@@ -1,7 +1,5 @@
 package me.newburyminer.customItems.entity.components.creepers
 
-import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -9,8 +7,6 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.projectiles.ExplosiveProjectile
 import me.newburyminer.customItems.entity.components.utils.DetonationInterface
 import org.bukkit.entity.Creeper
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.ExplosionPrimeEvent
 
 class CustomExplosionCreeper(private val power: Float, private val setFire: Boolean, private val breakBlocks: Boolean = false): EntityComponent, DetonationInterface {
@@ -25,9 +21,9 @@ class CustomExplosionCreeper(private val power: Float, private val setFire: Bool
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.CUSTOM_EXPLOSION_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            val newPower = map["power"].toFloat()
-            val newSetFire = map["setfire"].toBoolean()
-            val newBreakBlocks = map["breakblocks"].toBoolean()
+            val newPower = map["power"].asFloat()
+            val newSetFire = map["setfire"].asBoolean()
+            val newBreakBlocks = map["breakblocks"].asBoolean()
             return ExplosiveProjectile(newPower, newSetFire, newBreakBlocks)
         }
     }

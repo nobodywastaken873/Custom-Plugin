@@ -9,4 +9,7 @@ enum class HitEffectType {
     CUSTOM_DAMAGE,
     DISABLE_SHIELD,
     PROJECTILE_KNOCKBACK,
+    EFFECT_AURA,
+    DAMAGE_RADIUS,
+    EXPLOSION,
 }

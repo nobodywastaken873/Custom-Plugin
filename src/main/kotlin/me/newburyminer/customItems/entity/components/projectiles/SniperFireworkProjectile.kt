@@ -7,7 +7,6 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.helpers.CustomDamageType
-import org.bukkit.damage.DamageType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.FireworkExplodeEvent
@@ -20,9 +19,9 @@ class SniperFireworkProjectile(private val scalingPerBlock: Double): EntityCompo
         )
     }
     companion object: DeserializationInterface {
-        override val componentType: EntityComponentType = EntityComponentType.CUSTOM_DAMAGE_PROJECTILE
+        override val componentType: EntityComponentType = EntityComponentType.SNIPER_FIREWORK_PROJECTILE
         override fun deserialize(map: Map<String, Any>): EntityComponent {
-            return SniperFireworkProjectile(map["scalingperblock"].toDouble())
+            return SniperFireworkProjectile(map["scalingperblock"].asDouble())
         }
     }
 

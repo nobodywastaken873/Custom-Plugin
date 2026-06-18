@@ -47,8 +47,8 @@ class VillagerTradeComponent(startingTrades: MutableList<MerchantRecipe> = mutab
                 else null
             val result = ItemStack.deserializeBytes(resultBytes)
 
-            val demand = map["demand"].toInt()
-            val uses = map["uses"].toInt()
+            val demand = map["demand"].asInt()
+            val uses = map["uses"].asInt()
 
             val recipe = MerchantRecipe(result, uses, 0, true, 0, 0f)
             recipe.demand = demand

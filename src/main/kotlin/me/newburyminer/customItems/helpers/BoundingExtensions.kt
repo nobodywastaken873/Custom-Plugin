@@ -4,10 +4,31 @@ import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
 fun World.rayTraceManyEntities(start: Location, direction: Vector, maxDist: Double, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
+    return this.rayTraceManyEntities(start, direction, maxDist, radius, {it != ignore})
+}
+
+fun World.rayTraceManyEntities(start: Location, end: Location, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
+    val direction = end.toVector().subtract(start.toVector())
+    val maxDist = direction.length()
+    return this.rayTraceManyEntities(start, direction, maxDist, ignore, radius)
+}
+
+fun World.rayTraceEntity(start: Location, direction: Vector, maxDist: Double, radius: Double = 0.0, predicate: (Entity) -> Boolean = {true}): Entity? {
+    // Find endpoint at a block
+    val endpoint = this.rayTraceBlocks(start, direction, maxDist, FluidCollisionMode.NEVER, true)
+    val actualDist = endpoint?.hitPosition?.toLocation(start.world)?.subtract(start)?.length() ?: maxDist
+
+    val result = this.rayTraceEntities(start, direction, actualDist, radius, predicate)
+
+    return result?.hitEntity
+}
+
+fun World.rayTraceManyEntities(start: Location, direction: Vector, maxDist: Double, radius: Double = 0.0, predicate: (Entity) -> Boolean = {true}): List<Entity> {
     // Find endpoint at a block
     val endpoint = this.rayTraceBlocks(start, direction, maxDist, FluidCollisionMode.NEVER, true)
     val actualDist = endpoint?.hitPosition?.toLocation(start.world)?.subtract(start)?.length() ?: maxDist
@@ -17,7 +38,7 @@ fun World.rayTraceManyEntities(start: Location, direction: Vector, maxDist: Doub
     val hitEntities = mutableListOf<Entity>()
     // Loop through all entities near the ray and test if the ray hits them
     for (entity in start.world.getNearbyEntities(rayBox)) {
-        if (entity == ignore) continue
+        if (!predicate(entity)) continue
 
         // Perform raycast on only this entity's hit
         val result = entity.boundingBox.expand(radius).rayTrace(start.toVector(), direction, actualDist)
@@ -28,8 +49,14 @@ fun World.rayTraceManyEntities(start: Location, direction: Vector, maxDist: Doub
     return hitEntities
 }
 
-fun World.rayTraceManyEntities(start: Location, end: Location, ignore: Entity? = null, radius: Double = 0.0): List<Entity> {
-    val direction = end.toVector().subtract(start.toVector())
-    val maxDist = direction.length()
-    return this.rayTraceManyEntities(start, direction, maxDist, ignore, radius)
+fun Player.getCenterLoc(): Location {
+    val bottomCenter = location.clone()
+    val hitboxHeight = this.height
+    return bottomCenter.add(0.0, hitboxHeight / 2, 0.0)
+}
+
+fun Entity.getUpperCenter(): Location {
+    val bottomCenter = location.clone()
+    val hitboxHeight = this.height
+    return bottomCenter.add(0.0, hitboxHeight * 2/3, 0.0)
 }

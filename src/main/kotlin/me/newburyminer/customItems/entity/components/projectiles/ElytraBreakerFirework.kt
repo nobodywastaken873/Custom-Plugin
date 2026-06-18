@@ -34,7 +34,7 @@ class ElytraBreakerFirework(private val damage: HitEffects, private val disableD
             val newDamage = HitEffects.deserialize(map["damage"])
             val newUUID = (map["target"] ?: return null) as UUID
             val newTarget = Bukkit.getPlayer(newUUID) ?: return null
-            val newDuration = map["disableduration"].toInt()
+            val newDuration = map["disableduration"].asInt()
             return ElytraBreakerFirework(newDamage, newDuration, newTarget)
         }
     }

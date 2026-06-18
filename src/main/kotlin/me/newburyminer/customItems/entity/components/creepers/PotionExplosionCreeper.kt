@@ -2,7 +2,6 @@ package me.newburyminer.customItems.entity.components.creepers
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
-import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -34,12 +33,12 @@ class PotionExplosionCreeper(
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.POTION_EXPLOSION_CREEPER
         override fun deserialize(map: Map<String, Any>): PotionExplosionCreeper {
-            val key = NamespacedKey.fromString(map["type"].toString())!!
+            val key = NamespacedKey.fromString(map["type"].asString())!!
             val newType = RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(key)!!
-            val newDuration = map["duration"].toInt()
-            val newPotency = map["potency"].toInt()
-            val newAmbient = map["ambient"].toBoolean()
-            val newShowParticles = map["showparticles"].toBoolean()
+            val newDuration = map["duration"].asInt()
+            val newPotency = map["potency"].asInt()
+            val newAmbient = map["ambient"].asBoolean()
+            val newShowParticles = map["showparticles"].asBoolean()
             return PotionExplosionCreeper(newType, newDuration, newPotency, newAmbient, newShowParticles)
         }
     }

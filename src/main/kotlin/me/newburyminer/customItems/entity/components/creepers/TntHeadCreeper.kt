@@ -22,9 +22,9 @@ class TntHeadCreeper(private val tnt: Entity, private val power: Float, private 
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.TNT_HEAD_CREEPER
         override fun deserialize(map: Map<String, Any>): EntityComponent? {
-            val newTnt = Bukkit.getEntity(UUID.fromString(map["tnt"].toString())) ?: return null
-            val newPower = map["power"].toFloat()
-            val newBreakBlocks = map["breakblocks"].toBoolean()
+            val newTnt = Bukkit.getEntity(UUID.fromString(map["tnt"].asString())) ?: return null
+            val newPower = map["power"].asFloat()
+            val newBreakBlocks = map["breakblocks"].asBoolean()
             return TntHeadCreeper(newTnt, newPower, newBreakBlocks)
         }
     }
