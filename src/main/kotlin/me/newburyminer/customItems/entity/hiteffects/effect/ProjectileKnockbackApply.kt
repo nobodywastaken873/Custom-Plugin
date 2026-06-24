@@ -7,6 +7,7 @@ import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
 class ProjectileKnockbackApply(val strength: Double = 0.4): HitEffect {
@@ -18,6 +19,8 @@ class ProjectileKnockbackApply(val strength: Double = 0.4): HitEffect {
             .setY(0.0)
             .normalize()
             .multiply(newStr)
+
+        if (victim is Player && victim.isBlocking && isBlocking(direction, victim.location.direction)) return
 
         val oldVel = victim.velocity
         val newVel = Vector(

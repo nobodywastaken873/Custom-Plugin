@@ -6,6 +6,8 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
+import me.newburyminer.customItems.helpers.CustomEffects
+import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import kotlin.math.pow
 
@@ -45,6 +47,8 @@ class LeapComponent(private val minDistance: Double, private val extraHeight: Do
 
             mob.velocity = calculateLeapVelocity(mob.location, target.location).add(target.velocity)
             applyCooldown(baseCooldown)
+
+            CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_BREEZE_JUMP, 1.0F, 0.8F)
 
         }
 

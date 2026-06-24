@@ -13,6 +13,9 @@ interface EntityComponent {
     //fun deserialize(map: Map<String, Any>): EntityComponent?
     fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {}
     fun tick(wrapper: EntityWrapper) {}
+    fun onAdd(wrapper: EntityWrapper) {}
+    fun onCast(wrapper: EntityWrapper) {}
+    fun onFinishCast(wrapper: EntityWrapper) {}
 
     fun registerListeners(wrapper: EntityWrapper) {
         /*EventRegistry.register(ListenerEntry(

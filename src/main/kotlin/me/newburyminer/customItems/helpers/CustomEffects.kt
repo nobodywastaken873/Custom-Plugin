@@ -49,6 +49,11 @@ class CustomEffects {
             }
         }
 
+        fun particleCircle(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
+            val count = 2 * Math.PI * radius * concentration
+            particleCircle(particle, loc, radius, count.toInt(), offset, extra)
+        }
+
         fun filledParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
             for (i in 0..(radius.pow(2)*Math.PI*concentration).toInt()) {
                 val theta = Math.random() * 2 * Math.PI
@@ -91,6 +96,11 @@ class CustomEffects {
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
             }
+        }
+
+        fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, concentration: Double, centerAxis: Vector, extraRotation: Double  = 0.0, offset: Double = 0.0, extra: Double = 0.0) {
+            val count = radius.pow(2) * Math.PI * (totalAngleSpread / (2 * Math.PI)) * concentration
+            rotatedArc(particle, loc, radius, totalAngleSpread, count.toInt(), centerAxis, extraRotation, offset, extra)
         }
 
         fun rotatedParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {

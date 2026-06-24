@@ -11,9 +11,11 @@ import me.newburyminer.customItems.entity.components.projectiles.MagicMissileCom
 import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.Marker
 import org.bukkit.entity.Mob
@@ -78,6 +80,7 @@ class ArcingProjectileShooterComponent(
                 }
                 applyCooldown(baseCooldown)
                 targetPlayer = null
+                CustomEffects.playSound(caster.location, Sound.ITEM_CROSSBOW_SHOOT, 1.0F, 0.7F)
             }
         }
 
@@ -88,6 +91,7 @@ class ArcingProjectileShooterComponent(
                 if (!caster.hasLineOfSight(target)) return
 
                 targetPlayer = target
+                CustomEffects.playSound(caster.location, Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 1.0F, 0.7F)
             }
 
         }

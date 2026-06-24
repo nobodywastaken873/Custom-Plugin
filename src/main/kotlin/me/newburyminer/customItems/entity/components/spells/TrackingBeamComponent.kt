@@ -13,6 +13,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
+import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -88,6 +89,10 @@ class TrackingBeamComponent(
                 )
             }
 
+            if (wrapper.entity.ticksLived % 3 == 0) {
+                CustomEffects.playSound(caster.location, Sound.BLOCK_BEACON_AMBIENT, 6.0F, 0.5F)
+            }
+
             if (wrapper.entity.ticksLived % damageDelay == 0) {
                 val hitPlayers =
                     (if (piercing) wrapper.entity.world.rayTraceManyEntities(wrapper.entity.eyeLocation, currentDirection ?: return, range, radius, {it is Player})
@@ -111,6 +116,7 @@ class TrackingBeamComponent(
 
                 targetPlayer = target
                 currentDirection = caster.eyeLocation.direction
+                CustomEffects.playSound(caster.location, Sound.ENTITY_EVOKER_CAST_SPELL, 3.0F, 0.5F)
             }
 
         }

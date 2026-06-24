@@ -10,8 +10,10 @@ import me.newburyminer.customItems.entity.components.projectiles.EffectAuraCompo
 import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
 import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
+import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Marker
 import org.bukkit.entity.Mob
@@ -94,6 +96,7 @@ class EffectAuraCaster(
                 }
                 applyCooldown(baseCooldown)
                 targetPlayer = null
+                CustomEffects.playSound(caster.location, Sound.BLOCK_BEACON_DEACTIVATE, 1.5F, 0.5F)
             }
         }
 
@@ -104,6 +107,7 @@ class EffectAuraCaster(
                 if (!caster.hasLineOfSight(target)) return
 
                 targetPlayer = target
+                CustomEffects.playSound(caster.location, Sound.BLOCK_BEACON_POWER_SELECT, 1.5F, 2.0F)
             }
 
         }

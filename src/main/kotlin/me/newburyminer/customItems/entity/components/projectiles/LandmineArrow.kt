@@ -1,6 +1,8 @@
 package me.newburyminer.customItems.entity.components.projectiles
 
+import com.destroystokyo.paper.ParticleBuilder
 import me.newburyminer.customItems.entity.*
+import org.bukkit.Particle
 import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Arrow
 import org.bukkit.event.entity.CreatureSpawnEvent
@@ -40,6 +42,15 @@ class LandmineArrow: EntityComponent {
         {e ->
             e.isCancelled = true
         })
+    }
+
+    override fun tick(wrapper: EntityWrapper) {
+        if (wrapper.entity.ticksLived % 4 == 0) {
+            ParticleBuilder(Particle.SMOKE)
+                .location(wrapper.entity.location.add(0.0, 0.3 + wrapper.entity.height, 0.0))
+                .receivers(60)
+                .spawn()
+        }
     }
 
     /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {

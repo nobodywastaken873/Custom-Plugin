@@ -9,18 +9,18 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
 import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.velocity.VelocityProvider
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.helpers.getUpperCenter
 import org.bukkit.entity.Marker
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 
 class MagicMissileShooterComponent(
     private val range: Double,
-    private val speed: Double,
     private val size: Double,
-    private val angleChange: Double,
-    private val homingType: HomingSystem.Type,
+    private val velocityProvider: VelocityProvider,
     private val effects: HitEffects,
     castTime: Int,
     baseCooldown: Int,
@@ -30,10 +30,8 @@ class MagicMissileShooterComponent(
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "range" to range,
-            "speed" to speed,
             "size" to size,
-            "angleChange" to angleChange,
-            "homingType" to homingType.name,
+            "velocityProvider" to velocityProvider.serialize(),
             "effects" to effects.serialize(),
             "castTime" to spellDuration,
             "baseCooldown" to baseCooldown,
@@ -45,10 +43,8 @@ class MagicMissileShooterComponent(
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return MagicMissileShooterComponent(
                 map["range"].asDouble(),
-                map["speed"].asDouble(),
                 map["size"].asDouble(),
-                map["angleChange"].asDouble(),
-                HomingSystem.Type.valueOf(map["homingType"].asString()),
+                VelocityProvider.deserialize(map["velocityProvider"]),
                 HitEffects.deserialize(map["effects"]),
                 map["castTime"].asInt(),
                 map["baseCooldown"].asInt(),
@@ -72,10 +68,9 @@ class MagicMissileShooterComponent(
                 caster.world.spawn(caster.eyeLocation, Marker::class.java) {
                     val wrapper = EntityWrapperManager.getWrapperorNew(it)
                     wrapper.addComponent(MagicMissileComponent(
-                        speed,
                         size,
-                        angleChange,
-                        homingType,
+                        velocityProvider,
+                        VelocityProvider.getValidStartVelocity(caster.eyeLocation, targetPlayer?.getUpperCenter() ?: return@spawn, velocityProvider),
                         effects,
                         particleTheme,
                         caster,

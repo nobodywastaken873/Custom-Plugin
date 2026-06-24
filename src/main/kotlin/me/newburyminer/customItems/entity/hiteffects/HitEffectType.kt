@@ -12,4 +12,5 @@ enum class HitEffectType {
     EFFECT_AURA,
     DAMAGE_RADIUS,
     EXPLOSION,
+    MAGIC_MISSILE,
 }

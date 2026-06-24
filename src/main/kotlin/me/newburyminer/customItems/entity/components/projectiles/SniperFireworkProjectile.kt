@@ -7,6 +7,8 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.helpers.CustomEffects
+import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.FireworkExplodeEvent
@@ -39,6 +41,8 @@ class SniperFireworkProjectile(private val scalingPerBlock: Double): EntityCompo
             for (entity in firework.location.getNearbyEntities(3.0, 3.0, 3.0)) {
                 if (entity is LivingEntity) damage.apply(entity, e.entity)
             }
+
+            CustomEffects.playSound(firework.location, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST, 1.0F, 1.3F)
 
             wrapper.entity.remove()
         })

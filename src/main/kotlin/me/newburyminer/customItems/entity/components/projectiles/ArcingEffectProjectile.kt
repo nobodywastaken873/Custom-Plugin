@@ -11,7 +11,9 @@ import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
+import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
+import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Projectile
@@ -50,6 +52,8 @@ class ArcingEffectProjectile(
             val loc = e.entity.location
             damage.applyTargetless(caster ?: return@register, loc)
             wrapper.entity.remove()
+
+            CustomEffects.playSound(loc, Sound.ENTITY_GENERIC_BIG_FALL, 1f, 1.4F)
 
         })
     }

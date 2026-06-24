@@ -1,10 +1,12 @@
 package me.newburyminer.customItems.entity.hiteffects
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.entity.Allay
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Zombie
@@ -27,7 +29,9 @@ class HitEffects(private vararg val hitEffects: HitEffect) {
     }
 
     fun applyTargetless(damager: Entity, sourceLoc: Location) {
-        val fakeTarget = damager.world.spawn(Location(damager.world, 0.0, 1000.0, 0.0), Zombie::class.java)
+        val fakeTarget = damager.world.spawn(Location(damager.world, 0.0, 1000.0, 0.0), Zombie::class.java) {
+            it.setTag("faketarget", true)
+        }
         apply(fakeTarget, damager, sourceLoc)
         fakeTarget.remove()
     }

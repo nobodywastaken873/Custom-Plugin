@@ -11,6 +11,8 @@ import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponen
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.helpers.CustomEffects
+import org.bukkit.Sound
 import org.bukkit.entity.FallingBlock
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -57,6 +59,7 @@ class LeapSlamComponent(
         if (caster.isOnGround) {
             if (!wasOnGround && peakHeight - caster.location.y > 3.0) {
                 effects.applyTargetless(caster, caster.location)
+                CustomEffects.playSound(caster.location, Sound.ENTITY_GENERIC_EXPLODE, 1.0F, 1.3F)
             }
             wasOnGround = true
             peakHeight = -1000.0
@@ -74,6 +77,7 @@ class LeapSlamComponent(
             if (castingTicks <= 0) {
                 caster.velocity = calculateLeapVelocity(caster.location, targetPlayer?.location ?: return, extraHeight)
                 applyCooldown(baseCooldown)
+                CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_BREEZE_JUMP, 1.0F, 0.8F)
                 targetPlayer = null
             }
         }

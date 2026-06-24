@@ -5,6 +5,8 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.LeapingInterface
+import me.newburyminer.customItems.helpers.CustomEffects
+import org.bukkit.Sound
 import org.bukkit.entity.Creeper
 import kotlin.math.pow
 
@@ -34,9 +36,16 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
 
             val creeper = wrapper.entity as? Creeper ?: return
             val target = creeper.target ?: return
+            val separation = creeper.location.toVector().subtract(target.location.toVector()).length()
 
-            if (creeper.location.toVector().subtract(target.location.toVector()).length() < 1.3) {
+            if (separation < 1.3) {
                 creeper.explode()
+            }
+
+            if (creeper.fuseTicks < 5 && separation > 5.0) {
+                leaping = false
+                creeper.isIgnited = false
+                creeper.fuseTicks = 40
             }
             //val currentDistSquared = creeper.location.distanceSquared(target.location)
             //val increasing = currentDistSquared - prevDistSquared > 0
@@ -73,6 +82,8 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
             creeper.ignite()
             creeper.maxFuseTicks = 100
             creeper.fuseTicks = 40
+
+            CustomEffects.playSound(creeper.location, Sound.ENTITY_BLAZE_HURT, 1.0F, 0.75F)
 
         }
     }

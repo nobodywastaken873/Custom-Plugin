@@ -9,6 +9,7 @@ import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.HomingProjectile
+import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -63,7 +64,7 @@ class WindChargeCannon: CustomItemDefinition {
 
                 for (windCharge in windCharges)
                     EntityWrapperManager.getWrapperorNew(windCharge).addComponent(
-                        HomingProjectile(Math.PI / 24, closest)
+                        HomingProjectile(Math.PI / 24, HomingSystem.Type.BOTH_SCALED, closest)
                     )
                 shooter.setCooldown(CustomItem.WIND_CHARGE_CANNON, 7.0)
             } else {

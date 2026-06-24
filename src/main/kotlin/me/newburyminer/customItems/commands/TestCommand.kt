@@ -25,16 +25,13 @@ import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
-import me.newburyminer.customItems.entity.components.MeleeCustomHit
+import me.newburyminer.customItems.entity.components.melee.MeleeCustomHit
 import me.newburyminer.customItems.entity.components.creepers.CustomExplosionCreeper
 import me.newburyminer.customItems.entity.components.creepers.PreIgniteCreeper
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
 import me.newburyminer.customItems.entity.components.spells.EffectAuraCaster
-import me.newburyminer.customItems.entity.components.spells.LaserBeamComponent
-import me.newburyminer.customItems.entity.components.spells.TrackingBeamComponent
 import me.newburyminer.customItems.entity.components.spells.LeapComponent
-import me.newburyminer.customItems.entity.components.spells.MagicMissileShooterComponent
 import me.newburyminer.customItems.entity.components.spells.TeleportBehindComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
@@ -42,7 +39,6 @@ import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackAppl
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import net.kyori.adventure.key.Key
 import org.bukkit.*
@@ -143,7 +139,7 @@ class TestCommand : BasicCommand {
                     LeapComponent(8.0, 2.0, 5 * 20)
                 }
                 2 -> {
-                    TeleportBehindComponent(10 * 20)
+                    //TeleportBehindComponent(10 * 20)
                 }
                 3 -> {
                     PreIgniteCreeper(8.0)
@@ -207,7 +203,7 @@ class TestCommand : BasicCommand {
                 Creeper::class.java
             ) {
                 val wrapper = EntityWrapperManager.getWrapperorNew(it)
-                wrapper.addComponent(component)
+                //wrapper.addComponent(component)
                 wrapper.addComponent(CustomExplosionCreeper(3F, false, true))
             }
         } else if (args[0] == "eventbus") {

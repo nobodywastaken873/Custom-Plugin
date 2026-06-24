@@ -3,6 +3,7 @@ package me.newburyminer.customItems.entity
 import org.bukkit.entity.Entity
 import kotlin.reflect.KClass
 import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.safeCast
 
 class EntityWrapper(val entity: Entity, private val components: MutableList<EntityComponent> = mutableListOf()) {
 
@@ -63,9 +64,20 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
             }
     }
 
+    fun <T: EntityComponent> getComponentsExtending(type: KClass<T>): List<T> {
+        return components
+            .mapNotNull {
+                type.safeCast(it)
+            }
+    }
+
     private var isCasting = false
     fun isCasting(): Boolean {return isCasting}
-    fun setCasting(newIsCasting: Boolean) {isCasting = newIsCasting}
+    fun setCasting(newIsCasting: Boolean) {
+        isCasting = newIsCasting
+        if (newIsCasting) components.forEach {it.onCast(this)}
+        else components.forEach {it.onFinishCast(this)}
+    }
 
 
 }

@@ -73,7 +73,7 @@ enum class CustomEntity {
         return entries[id]
     }
 
-    companion object {
+    /*companion object {
         fun convert(entity: Entity, entityType: CustomEntity, diff: Double = -1.0) {
             entity.setTag("id", entityType.id)
             var difficulty = diff
@@ -118,7 +118,7 @@ enum class CustomEntity {
                 else -> {}
             }
         }
-    }
+    }*/
 
 
 }

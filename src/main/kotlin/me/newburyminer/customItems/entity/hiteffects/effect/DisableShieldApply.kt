@@ -32,10 +32,6 @@ class DisableShieldApply(private val ignoreDirection: Boolean = false): HitEffec
         victim.setCooldown(Material.SHIELD, 100)
     }
 
-    private fun isBlocking(hitterFacing: Vector, takerFacing: Vector): Boolean {
-        return hitterFacing.normalize().dot(takerFacing.normalize()) < 0
-    }
-
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "ignoreDirection" to ignoreDirection,

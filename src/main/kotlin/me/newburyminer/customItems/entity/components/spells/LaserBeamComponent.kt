@@ -13,6 +13,7 @@ import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import org.bukkit.Location
+import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 
@@ -107,6 +108,7 @@ class LaserBeamComponent(
                 applyCooldown(baseCooldown)
                 targetLoc = null
                 targetPlayer = null
+                CustomEffects.playSound(caster.location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3.0F, 1.7F)
             }
         }
 
@@ -118,6 +120,7 @@ class LaserBeamComponent(
 
                 if (followPlayer) targetPlayer = target
                 else targetLoc = target.location.add(0.0, 1.33, 0.0)
+                CustomEffects.playSound(caster.location, Sound.ENTITY_EVOKER_PREPARE_SUMMON, 3.0F, 1.7F)
             }
 
         }

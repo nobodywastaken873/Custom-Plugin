@@ -1,8 +1,5 @@
-package me.newburyminer.customItems.entity.components
+package me.newburyminer.customItems.entity.components.melee
 
-import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent
-import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -28,7 +25,8 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
     }
 
     override fun registerListeners(wrapper: EntityWrapper) {
-        register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
+        register(
+            EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
             e.damager == wrapper.entity &&
             !e.damageSource.damageType.isCustom()
         },

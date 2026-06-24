@@ -23,7 +23,6 @@ import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.commands.*
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
@@ -58,7 +57,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
                 "Operator command used to get custom items.",
                 listOf()
             )
-            commands.register(Commands.literal("customentity").then(
+            /*commands.register(Commands.literal("customentity").then(
                 Commands.argument("entityargument", CustomEntityArgument()).executes {
                         ctx: CommandContext<CommandSourceStack> ->
                     customEntityExecutor(ctx.source.sender, ctx.getArgument("entityargument", CustomEntity::class.java))
@@ -66,7 +65,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
                 }).build(),
                 "Operator command used to spawn custom mobs.",
                 listOf()
-            )
+            )*/
             commands.register(Commands.literal("afk").then(
                 Commands.argument("afkoptions", AfkArgument()).executes {
                     ctx: CommandContext<CommandSourceStack> ->
@@ -301,7 +300,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
             } }
         }
     }
-    private fun customEntityExecutor(sender: CommandSender, entity: CustomEntity) { // add another difficulty argument
+    /*private fun customEntityExecutor(sender: CommandSender, entity: CustomEntity) { // add another difficulty argument
         if (sender !is Player) return
         if (!sender.isOp) {
             sender.sendMessage(Utils.text("You do not have permission to use this command.", arrayOf(255, 0, 0)))
@@ -344,5 +343,5 @@ class CustomPluginBootstrapper: PluginBootstrap {
         }
         CustomEntity.convert(sender.location.world.spawn(sender.location, type), entity)
         //sender.addItemorDrop(Items.get(item))
-    }
+    }*/
 }

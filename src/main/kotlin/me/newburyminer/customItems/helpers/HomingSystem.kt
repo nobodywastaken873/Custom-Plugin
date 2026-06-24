@@ -36,7 +36,8 @@ object HomingSystem {
         BASIC_TURN,
         DISTANCE_SCALED,
         ANGLE_SCALED,
-        BOTH_SCALED
+        BOTH_SCALED,
+        NONE
     }
 
 }

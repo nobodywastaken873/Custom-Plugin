@@ -4,26 +4,35 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.helpers.HomingSystem
+import me.newburyminer.customItems.helpers.getUpperCenter
 import org.bukkit.Bukkit
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Marker
 import java.util.*
 
-class HomingProjectile(private val angleChange: Double, private val target: Entity): EntityComponent {
+class HomingProjectile(
+    private val angleChange: Double,
+    private val homingType: HomingSystem.Type,
+    private val target: Entity
+): EntityComponent {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
             "change" to angleChange,
+            "homingType" to homingType.name,
             "target" to target.uniqueId.toString()
         )
     }
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.HOMING_PROJECTILE
         override fun deserialize(map: Map<String, Any>): EntityComponent? {
-            val newChange = map["change"].asDouble()
-            val uuid = UUID.fromString(map["target"].asString())
-            val target = Bukkit.getEntity(uuid) ?: return null
-            return HomingProjectile(newChange, target)
+            return HomingProjectile(
+                map["change"].asDouble(),
+                HomingSystem.Type.valueOf(map["homingType"].asString()),
+                Bukkit.getEntity(UUID.fromString(map["target"].asString())) ?: return null
+            )
         }
     }
 
@@ -32,10 +41,28 @@ class HomingProjectile(private val angleChange: Double, private val target: Enti
         if (wrapper.entity is Arrow && wrapper.entity.isInBlock) { wrapper.entity.remove(); return }
 
         val projectile = wrapper.entity
-        val cross = projectile.velocity.getCrossProduct(target.location.subtract(projectile.location).toVector())
-        val angle = projectile.velocity.angle(target.location.subtract(projectile.location).toVector())
-        val newDirection = projectile.velocity.rotateAroundAxis(cross, angle.coerceAtMost(angleChange.toFloat()).toDouble())
-        projectile.velocity = newDirection
+        val currentLocation = projectile.location
+        val targetLocation = target.getUpperCenter()
+        val targetDirection = targetLocation.clone().subtract(currentLocation).toVector()
+        val currentVelocity = projectile.velocity
+
+        projectile.velocity = when (homingType) {
+            HomingSystem.Type.BASIC_TURN -> {
+                HomingSystem.basicCappedTurn(currentVelocity, targetDirection, angleChange)
+            }
+            HomingSystem.Type.DISTANCE_SCALED -> {
+                HomingSystem.distanceScalingTurn(currentVelocity, targetDirection, angleChange, targetDirection.length())
+            }
+            HomingSystem.Type.ANGLE_SCALED -> {
+                HomingSystem.angleScalingTurn(currentVelocity, targetDirection, angleChange, 0.4)
+            }
+            HomingSystem.Type.BOTH_SCALED -> {
+                HomingSystem.aggressiveScalingTurn(currentVelocity, targetDirection, angleChange, targetDirection.length(), 0.4)
+            }
+            else -> {
+                currentVelocity
+            }
+        }
 
     }
 }
