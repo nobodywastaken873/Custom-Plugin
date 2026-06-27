@@ -27,18 +27,19 @@ import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
+import me.newburyminer.customItems.structures.StructureRegistry
 import me.newburyminer.customItems.systems.EnchantmentListener
 import me.newburyminer.customItems.systems.EndSystem
 import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.TestingSystem
+import me.newburyminer.customItems.structures.TrialSpawnerSystem
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
-import org.bukkit.GameRule
 import org.bukkit.GameRules
 import org.bukkit.World
 import org.bukkit.WorldCreator
@@ -70,6 +71,7 @@ class CustomItems : JavaPlugin() {
         ComponentSerializationRegistry.bootstrap(this)
         HitEffectSerializationRegistry.bootstrap(this)
         //CustomEntityBootstrapper.registerAll(this)
+        StructureRegistry.bootstrap(this)
 
         registerWorlds()
         loadBosses()
@@ -93,6 +95,7 @@ class CustomItems : JavaPlugin() {
         //bossListener.run()
 
         TestingSystem.registerListeners()
+        TrialSpawnerSystem.registerListeners()
 
         // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()

@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:badlands_pyramid",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 25377504,
+        "spacing": 42,
+        "separation": 29,
+        "frequency": 1.0
+    }
+}

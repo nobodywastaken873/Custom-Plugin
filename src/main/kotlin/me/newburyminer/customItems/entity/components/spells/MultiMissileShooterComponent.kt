@@ -1,0 +1,106 @@
+package me.newburyminer.customItems.entity.components.spells
+
+import me.newburyminer.customItems.Utils.Companion.getNearestPlayer
+import me.newburyminer.customItems.entity.DeserializationInterface
+import me.newburyminer.customItems.entity.EntityComponent
+import me.newburyminer.customItems.entity.EntityComponentType
+import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
+import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.velocity.VelocityProvider
+import me.newburyminer.customItems.helpers.HomingSystem
+import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.helpers.getUpperCenter
+import org.bukkit.entity.Marker
+import org.bukkit.entity.Mob
+import org.bukkit.entity.Player
+
+class MultiMissileShooterComponent(
+    private val range: Double,
+    private val size: Double,
+    private val count: Int,
+    private val delay: Int,
+    private val velocityProvider: VelocityProvider,
+    private val effects: HitEffects,
+    castTime: Int,
+    baseCooldown: Int,
+    private val particleTheme: ParticleTheme
+): AbstractSpellComponent(baseCooldown, castTime) {
+
+    override fun serialize(): Map<String, Any> {
+        return mapOf(
+            "range" to range,
+            "size" to size,
+            "count" to count,
+            "delay" to delay,
+            "velocityProvider" to velocityProvider.serialize(),
+            "effects" to effects.serialize(),
+            "castTime" to spellDuration,
+            "baseCooldown" to baseCooldown,
+            "particleTheme" to particleTheme.name
+        )
+    }
+    companion object: DeserializationInterface {
+        override val componentType: EntityComponentType = EntityComponentType.MULTI_MISSILE_SHOOTER_COMPONENT
+        override fun deserialize(map: Map<String, Any>): EntityComponent {
+            return MultiMissileShooterComponent(
+                map["range"].asDouble(),
+                map["size"].asDouble(),
+                map["count"].asInt(),
+                map["delay"].asInt(),
+                VelocityProvider.deserialize(map["velocityProvider"]),
+                HitEffects.deserialize(map["effects"]),
+                map["castTime"].asInt(),
+                map["baseCooldown"].asInt(),
+                ParticleTheme.valueOf(map["particleTheme"].asString())
+            )
+        }
+    }
+
+    private var targetPlayer: Player? = null
+
+    override fun tick(wrapper: EntityWrapper) {
+        val caster = wrapper.entity as? Mob ?: return
+        reduceCooldown(1)
+
+        if (castingTicks > 0) {
+            castingTicks -= 1
+
+            if (!checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
+            val ticksTillFirst = castingTicks - delay * (count - 1)
+
+            if (ticksTillFirst <= 0 && ticksTillFirst % delay == 0) {
+                caster.world.spawn(caster.eyeLocation, Marker::class.java) {
+                    val wrapper = EntityWrapperManager.getWrapperorNew(it)
+                    wrapper.addComponent(MagicMissileComponent(
+                        size,
+                        velocityProvider,
+                        VelocityProvider.getValidStartVelocity(caster.eyeLocation, targetPlayer?.getUpperCenter() ?: return@spawn, velocityProvider),
+                        effects,
+                        particleTheme,
+                        caster,
+                        targetPlayer
+                    ))
+                }
+
+                if (castingTicks == 0) {
+                    applyCooldown(baseCooldown)
+                    targetPlayer = null
+                }
+            }
+        }
+
+        if (offCooldown()) {
+
+            if (startCasting(wrapper)) {
+                val target = (caster.target ?: caster.getNearestPlayer(range) ?: return) as? Player ?: return
+                if (!caster.hasLineOfSight(target)) return
+
+                targetPlayer = target
+            }
+
+        }
+    }
+}

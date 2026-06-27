@@ -59,7 +59,9 @@
     [
       "customworld:surface/spring_lava"
     ],
-    [],
+    [
+      "customworld:surface/dead_trees"
+    ],
     []
   ],
   "has_precipitation": false,

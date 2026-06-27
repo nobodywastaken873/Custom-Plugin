@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:broken_manor",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 52572394,
+        "spacing": 15,
+        "separation": 10,
+        "frequency": 1.0
+    }
+}

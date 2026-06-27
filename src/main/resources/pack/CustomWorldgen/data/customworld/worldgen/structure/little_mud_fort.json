@@ -1,11 +1,10 @@
 {
     "type": "minecraft:jigsaw",
     "biomes": [
-        "customworld:dead_forest",
-        "customworld:shattered_ashen_forest"
+        "customworld:dead_forest"
     ],
     "step": "top_layer_modification",
-    "terrain_adaptation": "beard_box",
+    "terrain_adaptation": "beard_thin",
     "spawn_overrides": {},
     "start_pool": "customworld:little_mud_fort",
     "max_distance_from_center": 1,

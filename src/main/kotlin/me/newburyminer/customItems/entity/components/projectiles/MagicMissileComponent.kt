@@ -96,7 +96,7 @@ class MagicMissileComponent(
             newLocation,
             currentVelocity,
             currentVelocity.length(),
-            particleSettings.concentration * 2 * particleSettings.spread.pow(2),
+            particleSettings.concentration * 2 * particleSettings.spread.pow(2).coerceAtLeast(1.0),
             offset = particleSettings.spread
         )
 

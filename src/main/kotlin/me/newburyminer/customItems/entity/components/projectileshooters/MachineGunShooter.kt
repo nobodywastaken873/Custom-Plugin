@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.entity.components.projectileshooters
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.entity.*
@@ -11,7 +12,10 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Color
 import org.bukkit.FireworkEffect
+import org.bukkit.NamespacedKey
 import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Firework
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
@@ -73,7 +77,7 @@ class MachineGunShooter(
                     Vector(locDiff.x, locDiffHoriz.length() * 0.2 + locDiff.y, locDiff.z)
                 }
                 else -> {
-                    target.location.subtract(shooter.location).toVector().multiply(0.119).add(Vector(
+                    target.location.subtract(shooter.location).toVector().multiply(0.15).add(Vector(
                         Utils.randomRange(-0.05, 0.05), Utils.randomRange(-0.05, 0.05), Utils.randomRange(-0.05, 0.05))
                     )
                 }
@@ -89,6 +93,32 @@ class MachineGunShooter(
             CustomEffects.playSound(wrapper.entity.location, Sound.ENTITY_ARROW_SHOOT, 1.0F, 1.4F)
 
             applyCooldown(delay)
+        }
+
+        if (wrapper.entity.ticksLived % 5 == 0) {
+
+            val shooter = wrapper.entity as? Mob ?: return
+            val target = shooter.target ?: return
+            val key = NamespacedKey(CustomItems.plugin, "machine_gun_slowdown")
+
+            if (shooter.location.subtract(target.location).length() > range &&
+                shooter.getAttribute(Attribute.MOVEMENT_SPEED)?.getModifier(key) != null)
+            {
+                shooter.getAttribute(Attribute.MOVEMENT_SPEED)?.removeModifier(key)
+            }
+
+            else if (shooter.location.subtract(target.location).length() < range &&
+                shooter.getAttribute(Attribute.MOVEMENT_SPEED)?.getModifier(key) == null)
+            {
+                shooter.getAttribute(Attribute.MOVEMENT_SPEED)?.addModifier(
+                    AttributeModifier(
+                        key,
+                        slowdown,
+                        AttributeModifier.Operation.MULTIPLY_SCALAR_1
+                    )
+                )
+            }
+
         }
     }
 }

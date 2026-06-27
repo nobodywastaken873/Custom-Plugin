@@ -1,0 +1,15 @@
+{
+    "name": "customworld:pyramid_of_anubis",
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "customworld:pyramid_of_anubis",
+                "processors": "minecraft:empty",
+                "projection": "rigid"
+            }
+        }
+    ]
+}

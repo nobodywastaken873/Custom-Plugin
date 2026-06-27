@@ -82,7 +82,7 @@ class MagicMissileShooterComponent(
             }
         }
 
-        if (wrapper.entity.ticksLived % 10 == 0 && offCooldown()) {
+        if (offCooldown()) {
 
             if (startCasting(wrapper)) {
                 val target = (caster.target ?: caster.getNearestPlayer(range) ?: return) as? Player ?: return

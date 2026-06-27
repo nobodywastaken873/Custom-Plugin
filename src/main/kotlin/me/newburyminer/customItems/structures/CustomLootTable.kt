@@ -8,10 +8,9 @@ class CustomLootTable(private val table: RandomSelector<*>, val rolls: IntRange)
         val items = mutableListOf<ItemStack>()
         for (i in 0..<(rolls.random()*mult).toInt()) {
             var result = table.next()
-            while (result!!::class.java != ItemStack::class.java) {
+            while (result !is ItemStack) {
                 result = (result as RandomSelector<*>).next()
             }
-            result = (result as ItemStack)
             items.add(result)
         }
         return items

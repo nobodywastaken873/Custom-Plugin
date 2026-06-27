@@ -1,0 +1,15 @@
+{
+    "name": "customworld:badlands_pyramid",
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "single_pool_element",
+                "location": "customworld:badlands_pyramid",
+                "processors": "minecraft:empty",
+                "projection": "rigid"
+            }
+        }
+    ]
+}

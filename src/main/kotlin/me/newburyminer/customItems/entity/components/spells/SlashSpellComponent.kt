@@ -79,7 +79,7 @@ class SlashSpellComponent(
             castingTicks -= 1
 
             if (!checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
-            val ticksTillFirst = castingTicks - delay * count
+            val ticksTillFirst = castingTicks - delay * (count - 1)
 
             if (ticksTillFirst <= 0 && ticksTillFirst % delay == 0) {
                 val direction = (targetPlayer ?: return).location.subtract(caster.eyeLocation).toVector()

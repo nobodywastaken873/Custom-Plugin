@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:decaying_citadel",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 93344297,
+        "spacing": 19,
+        "separation": 13,
+        "frequency": 1.0
+    }
+}

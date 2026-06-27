@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:stone_barracks",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 71525266,
+        "spacing": 183,
+        "separation": 128,
+        "frequency": 1.0
+    }
+}

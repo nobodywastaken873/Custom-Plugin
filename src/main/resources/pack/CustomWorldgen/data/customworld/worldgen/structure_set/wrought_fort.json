@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:wrought_fort",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 88578210,
+        "spacing": 113,
+        "separation": 79,
+        "frequency": 1.0
+    }
+}

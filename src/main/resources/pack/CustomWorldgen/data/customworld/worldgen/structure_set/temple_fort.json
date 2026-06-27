@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:temple_fort",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 2594632,
+        "spacing": 154,
+        "separation": 107,
+        "frequency": 1.0
+    }
+}

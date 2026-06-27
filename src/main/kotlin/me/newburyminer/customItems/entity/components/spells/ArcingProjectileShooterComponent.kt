@@ -26,6 +26,8 @@ class ArcingProjectileShooterComponent(
     private val peakHeight: Double,
     private val block: Material,
     private val effects: HitEffects,
+    private val count: Int,
+    private val delay: Int,
     castTime: Int,
     baseCooldown: Int
 ): AbstractSpellComponent(baseCooldown, castTime), LeapingInterface {
@@ -36,6 +38,8 @@ class ArcingProjectileShooterComponent(
             "peakHeight" to peakHeight,
             "block" to block.name,
             "effects" to effects.serialize(),
+            "count" to count,
+            "delay" to delay,
             "castTime" to spellDuration,
             "baseCooldown" to baseCooldown,
         )
@@ -48,6 +52,8 @@ class ArcingProjectileShooterComponent(
                 map["peakHeight"].asDouble(),
                 Material.valueOf(map["block"].asString()),
                 HitEffects.deserialize(map["effects"]),
+                map["count"].asInt(),
+                map["delay"].asInt(),
                 map["castTime"].asInt(),
                 map["baseCooldown"].asInt(),
             )
@@ -64,8 +70,9 @@ class ArcingProjectileShooterComponent(
             castingTicks -= 1
 
             if (!checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
+            val ticksTillFirst = castingTicks - delay * (count - 1)
 
-            if (castingTicks <= 0) {
+            if (ticksTillFirst <= 0 && ticksTillFirst % delay == 0) {
                 caster.world.spawn(caster.eyeLocation, FallingBlock::class.java) {
                     val newWrapper = EntityWrapperManager.getWrapperorNew(it)
                     newWrapper.addComponent(ArcingEffectProjectile(
@@ -78,8 +85,10 @@ class ArcingProjectileShooterComponent(
                     it.cancelDrop = true
                     it.dropItem = false
                 }
-                applyCooldown(baseCooldown)
-                targetPlayer = null
+                if (castingTicks == 0) {
+                    applyCooldown(baseCooldown)
+                    targetPlayer = null
+                }
                 CustomEffects.playSound(caster.location, Sound.ITEM_CROSSBOW_SHOOT, 1.0F, 0.7F)
             }
         }

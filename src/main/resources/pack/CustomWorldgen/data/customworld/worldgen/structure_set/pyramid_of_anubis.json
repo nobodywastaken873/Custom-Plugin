@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:pyramid_of_anubis",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 85945877,
+        "spacing": 52,
+        "separation": 36,
+        "frequency": 1.0
+    }
+}

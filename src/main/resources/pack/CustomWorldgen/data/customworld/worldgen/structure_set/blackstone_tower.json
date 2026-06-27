@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:blackstone_tower",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 44673489,
+        "spacing": 154,
+        "separation": 107,
+        "frequency": 1.0
+    }
+}
