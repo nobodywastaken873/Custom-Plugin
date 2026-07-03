@@ -820,7 +820,7 @@ class Utils {
                     "SUM" -> Attribute.SUBMERGED_MINING_SPEED
                     "SWD" -> Attribute.SWEEPING_DAMAGE_RATIO
                     "WAM" -> Attribute.WATER_MOVEMENT_EFFICIENCY
-                    else -> Attribute.LUCK
+                    else -> {CustomItems.plugin.logger.warning("Invalid attribute string used."); Attribute.LUCK}
                 }
                 val slot: EquipmentSlotGroup = when (attr.substring(attr.length-2, attr.length)) {
                     "AR" -> EquipmentSlotGroup.ARMOR

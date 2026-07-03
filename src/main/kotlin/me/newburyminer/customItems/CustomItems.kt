@@ -25,6 +25,7 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
+import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
 import me.newburyminer.customItems.structures.StructureRegistry
@@ -71,6 +72,7 @@ class CustomItems : JavaPlugin() {
         ComponentSerializationRegistry.bootstrap(this)
         HitEffectSerializationRegistry.bootstrap(this)
         //CustomEntityBootstrapper.registerAll(this)
+        MobRegistry.bootstrap(this)
         StructureRegistry.bootstrap(this)
 
         registerWorlds()

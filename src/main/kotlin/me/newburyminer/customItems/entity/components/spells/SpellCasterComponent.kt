@@ -21,7 +21,7 @@ import org.bukkit.entity.Mob
 import org.bukkit.inventory.EquipmentSlot
 import kotlin.math.pow
 
-class SpellCasterComponent(private val slowdown: Double = 1.0): EntityComponent {
+class SpellCasterComponent(private val slowdown: Double = 0.0): EntityComponent {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(

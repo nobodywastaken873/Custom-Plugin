@@ -47,26 +47,6 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
                 creeper.isIgnited = false
                 creeper.fuseTicks = 40
             }
-            //val currentDistSquared = creeper.location.distanceSquared(target.location)
-            //val increasing = currentDistSquared - prevDistSquared > 0
-
-            // if distance is increasing for 2 ticks, instantly explode
-            /*if (increasing && numTicksIncreasing > 6) {
-                creeper.explode()
-            }
-            else if (increasing) {
-                numTicksIncreasing++
-            }
-            else if (totalElapsedTicks > 30) {
-                creeper.explode()
-            }
-            else {
-                numTicksIncreasing = 0
-                creeper.fuseTicks = creeper.maxFuseTicks - 5
-            }*/
-
-            //prevDistSquared = currentDistSquared
-            //totalElapsedTicks++
 
         }
 

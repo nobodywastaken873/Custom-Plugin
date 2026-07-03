@@ -13,4 +13,6 @@ enum class HitEffectType {
     DAMAGE_RADIUS,
     EXPLOSION,
     MAGIC_MISSILE,
+    SPAWN_MOB,
+    SUMMON_MOBS,
 }

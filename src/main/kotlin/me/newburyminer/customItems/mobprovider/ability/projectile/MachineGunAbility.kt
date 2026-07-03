@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.mobprovider.ability
+package me.newburyminer.customItems.mobprovider.ability.projectile
 
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.projectileshooters.MachineGunShooter

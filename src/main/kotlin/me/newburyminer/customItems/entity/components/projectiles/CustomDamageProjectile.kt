@@ -14,8 +14,10 @@ import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.ProjectileHitEvent
 
 class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
 
@@ -49,6 +51,25 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
             damage.apply(damaged, damager)
             wrapper.entity.remove()
             //println("finished applying and removing 5")
+        })
+
+        register(ProjectileHitEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            val shooter = e.entity.shooter
+            val hit = e.hitEntity
+            // No entity is hit or an entity is hit but has iframes
+            if (shooter is Player && e.hitEntity != null) {
+                damage.applyTargetless(shooter, e.entity.location)
+            }
+            // If it hits not a player, if it hits the ground, then trigger the targetless
+            else if (e.hitEntity !is Player || e.hitEntity == null) {
+                damage.applyTargetless(shooter as? Entity ?: return@register, e.entity.location)
+            }
+
+            e.isCancelled = true
+            wrapper.entity.remove()
         })
     }
 

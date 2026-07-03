@@ -14,7 +14,11 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
 
-class SniperProjectileShooter(baseCooldown: Int, private val damage: HitEffects, private val projectileType: ProjectileType): AbstractSpellComponent(baseCooldown, 30) {
+class SniperProjectileShooter(
+    baseCooldown: Int,
+    private val damage: HitEffects,
+    private val projectileType: ProjectileType
+): AbstractSpellComponent(baseCooldown, 30) {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(

@@ -1,0 +1,36 @@
+package me.newburyminer.customItems.mobprovider.mobs.blackstone
+
+import me.newburyminer.customItems.entity.hiteffects.effect.DisableShieldApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
+import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.MobBuilder
+import me.newburyminer.customItems.mobprovider.MobContext
+import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.entity.EntityType
+
+object SwollenSkeleton: MobDefinition {
+
+    override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
+
+        ability(
+            MeleeEffectAbility(
+                damage(linear(28.0 to 56.0, ctx), CustomDamageType.MELEE_NO_CD),
+                DisableShieldApply(ignoreDirection = true),
+                VanillaKnockbackApply(1.0)
+            )
+        )
+
+        health(
+            linear(36.0 to 72.0, ctx)
+        )
+
+        movementSpeed(
+            linear(0.8 to 1.1, ctx)
+        )
+
+        scale(1.15)
+
+    }
+
+}

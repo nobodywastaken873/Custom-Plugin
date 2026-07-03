@@ -26,7 +26,7 @@ class MachineGunShooter(
     private val damage: HitEffects,
     private val delay: Int,
     private val range: Double,
-    private val slowdown: Double,
+    private val slowdown: Double = 0.0,
     private val projectileType: ProjectileType,
 ): EntityComponent, CooldownInterface {
 

@@ -36,7 +36,7 @@ object StructureRegistry {
     }
 
     fun bootstrap(plugin: Plugin) {
-        val reflections: Reflections = Reflections("me.newburyminer.customItems")
+        val reflections: Reflections = Reflections("me.newburyminer.customItems.structures")
         val classes = reflections.getSubTypesOf(StructureDefinition::class.java)
             .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
 

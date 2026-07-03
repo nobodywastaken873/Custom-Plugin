@@ -6,6 +6,8 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.util.BoundingBox
+import kotlin.collections.component1
 
 object MobFactory {
 
@@ -19,6 +21,10 @@ object MobFactory {
 
         val entity = ctx.location.world.spawnEntity(ctx.location, builder.entityType, false) as LivingEntity
         val wrapper = EntityWrapperManager.getWrapperorNew(entity)
+
+        builder.extraApplications.forEach {
+            entity.it()
+        }
 
         // double check for no duplicate components of certain types
         builder.components.forEach { wrapper.addComponent(it) }
@@ -37,6 +43,19 @@ object MobFactory {
 
         return entity
 
+    }
+
+    fun getHitbox(builder: MobBuilder, ctx: MobContext): BoundingBox {
+        val entity = ctx.location.world.spawnEntity(ctx.location, builder.entityType, false) as LivingEntity
+
+        builder.extraAttributes.forEach {(attribute, modifier) ->
+            entity.getAttribute(attribute)?.addModifier(modifier)
+        }
+
+        val boundingBox = entity.boundingBox
+        entity.remove()
+
+        return boundingBox
     }
 
 }

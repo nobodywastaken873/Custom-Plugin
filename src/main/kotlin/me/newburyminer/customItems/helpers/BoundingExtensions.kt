@@ -2,6 +2,10 @@ package me.newburyminer.customItems.helpers
 
 import me.newburyminer.customItems.Utils.Companion.containsLoc
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
+import me.newburyminer.customItems.mobprovider.MobContext
+import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.structures.StructureReference
+import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.World
@@ -104,6 +108,38 @@ fun World.getIntersectingBlocks(box: BoundingBox): List<Block> {
     }
 
     return foundBlocks.toList()
+}
+
+fun World.hasIntersectingBlocks(box: BoundingBox): Boolean {
+    val foundBlocks = mutableListOf<Block>()
+
+    for (x in floor(box.minX).toInt()..floor(box.maxX).toInt()) {
+        for (y in floor(box.minY).toInt()..floor(box.maxY).toInt()) {
+            for (z in floor(box.minZ).toInt()..floor(box.maxZ).toInt()) {
+
+                val block = this.getBlockAt(x, y, z)
+
+                if (!block.type.isSolid) continue
+
+                if (block.boundingBox.overlaps(box))
+                    return true
+            }
+        }
+    }
+
+    return false
+}
+
+fun World.getValidSpawnLocs(loc: Location, boundingBox: BoundingBox, radius: Int, count: Int = 1): List<Location> {
+    val locations = mutableListOf<Location>()
+    val center = loc.clone().toBlockLocation()
+
+    for (x in -radius..radius) for (y in -radius..radius) for (z in -radius..radius) {
+        if (!center.world.hasIntersectingBlocks(boundingBox.shift(Vector(x, y, z))))
+            locations.add(center.clone().add(Vector(x, y, z)))
+    }
+
+    return locations.shuffled().take(count)
 }
 
 fun Location.getNearestPlayer(radius: Double): Player? {

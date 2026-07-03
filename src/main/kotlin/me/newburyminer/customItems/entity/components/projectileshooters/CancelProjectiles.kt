@@ -7,6 +7,9 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.projectiles.CustomDamageProjectile
+import org.bukkit.entity.Evoker
+import org.bukkit.entity.Spellcaster
+import org.bukkit.event.entity.EntitySpellCastEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 
 class CancelProjectiles: EntityComponent {
@@ -30,6 +33,19 @@ class CancelProjectiles: EntityComponent {
         {e ->
             e.isCancelled = true
         })
+
+        register(
+        EntitySpellCastEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.isCancelled = true
+        })
+    }
+
+    override fun tick(wrapper: EntityWrapper) {
+        if (wrapper.entity !is Evoker) return
+        wrapper.entity.spell = Spellcaster.Spell.NONE
     }
 
     /*override fun handle(ctx: EntityEventContext, wrapper: EntityWrapper) {
