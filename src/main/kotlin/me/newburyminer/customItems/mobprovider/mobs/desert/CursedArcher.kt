@@ -7,16 +7,18 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object CursedArcher: MobDefinition {
-    
+object CursedArcher : MobDefinition() {
+
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
-    
+
         ability(
             ProjectileHomingAbility()
         )
@@ -40,15 +42,15 @@ object CursedArcher: MobDefinition {
                 VanillaEffectApply(PotionEffectType.WITHER, linear(200 to 300, ctx), linear(1 to 2, ctx))
             )
         )
-    
+
         health(
             linear(70.0 to 140.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.0 to 1.4, ctx)
         )
-    
+
     }
-    
+
 }

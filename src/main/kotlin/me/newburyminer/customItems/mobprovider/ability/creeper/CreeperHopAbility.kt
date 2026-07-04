@@ -7,7 +7,7 @@ import me.newburyminer.customItems.mobprovider.MobContext
 
 class CreeperHopAbility(): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             HoppingCreeper()
         )

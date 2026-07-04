@@ -4,6 +4,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.creeper.ArrowBombAbility
 import me.newburyminer.customItems.mobprovider.ability.creeper.CustomExplosionAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
@@ -11,8 +12,9 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object TrappingGrenade: MobDefinition {
+object TrappingGrenade : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CREEPER) {
 
         ability(

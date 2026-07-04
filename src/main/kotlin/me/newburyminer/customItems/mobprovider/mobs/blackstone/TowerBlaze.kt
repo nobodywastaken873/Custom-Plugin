@@ -6,14 +6,15 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.PullingBeamAbility
 import org.bukkit.entity.EntityType
 
-object TowerBlaze: MobDefinition {
+object TowerBlaze : MobDefinition() {
 
+	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BLAZE) {
 
         ability(
@@ -47,7 +48,7 @@ object TowerBlaze: MobDefinition {
         scale(1.2)
 
         apply {
-            val top = MobFactory.create(UpperTowerBlaze.build(ctx), ctx)
+            val top = UpperTowerBlaze.build(ctx).createEntity(ctx)
             this.addPassenger(top)
         }
 

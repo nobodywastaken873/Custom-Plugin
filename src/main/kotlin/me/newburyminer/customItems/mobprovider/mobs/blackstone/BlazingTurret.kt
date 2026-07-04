@@ -5,12 +5,14 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import org.bukkit.entity.EntityType
 
-object BlazingTurret: MobDefinition {
+object BlazingTurret : MobDefinition() {
 
+	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BLAZE) {
 
         ability(
@@ -25,7 +27,7 @@ object BlazingTurret: MobDefinition {
         )
 
         health(
-            linear(28.0 to 56.0, ctx)
+            linear(36.0 to 72.0, ctx)
         )
 
         movementSpeed(

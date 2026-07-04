@@ -6,15 +6,17 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.SniperProjectileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import org.bukkit.entity.EntityType
 
-object SandySniper: MobDefinition {
-    
+object SandySniper : MobDefinition() {
+
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
-    
+
         ability(
             SniperProjectileAbility(
                 linear(40.0 to 80.0, ctx),
@@ -43,15 +45,15 @@ object SandySniper: MobDefinition {
                 VanillaKnockbackApply(0.1)
             )
         )
-    
+
         health(
             linear(60.0 to 120.0, ctx)
         )
-    
+
         movementSpeed(
             linear(0.5 to 0.6, ctx)
         )
-    
+
     }
-    
+
 }

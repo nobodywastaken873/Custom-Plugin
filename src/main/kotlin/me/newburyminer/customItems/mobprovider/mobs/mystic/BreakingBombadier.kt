@@ -9,6 +9,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -17,8 +18,9 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object BreakingBombadier: MobDefinition {
+object BreakingBombadier : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BOGGED) {
 
         ability(
@@ -41,7 +43,12 @@ object BreakingBombadier: MobDefinition {
                 linear(40 to 30, ctx),
                 linear(200 to 150, ctx),
                 ParticleTheme.MYSTIC,
-                attribute(Attribute.ARMOR_TOUGHNESS, -2.0, AttributeModifier.Operation.ADD_NUMBER, linear(150 to 200, ctx)),
+                attribute(
+                    Attribute.ARMOR_TOUGHNESS,
+                    -2.0,
+                    AttributeModifier.Operation.ADD_NUMBER,
+                    linear(150 to 200, ctx)
+                ),
             )
         )
 

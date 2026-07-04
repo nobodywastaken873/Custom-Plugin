@@ -8,6 +8,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.MachineGunAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
@@ -16,8 +17,9 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object MachineGunFortification: MobDefinition {
+object MachineGunFortification : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PILLAGER) {
 
         ability(
@@ -41,7 +43,12 @@ object MachineGunFortification: MobDefinition {
                     1.0,
                     linear(150 to 200, ctx),
                     HitEffects(
-                        attribute(Attribute.MOVEMENT_SPEED, -0.5, AttributeModifier.Operation.ADD_SCALAR, linear(25 to 30, ctx))
+                        attribute(
+                            Attribute.MOVEMENT_SPEED,
+                            -0.5,
+                            AttributeModifier.Operation.ADD_SCALAR,
+                            linear(25 to 30, ctx)
+                        )
                     ),
                     20,
                     ParticleTheme.MILITARY

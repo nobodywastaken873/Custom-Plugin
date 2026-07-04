@@ -5,6 +5,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.creeper.ChainExplosionAbility
 import me.newburyminer.customItems.mobprovider.ability.creeper.CustomExplosionAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
@@ -12,8 +13,9 @@ import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
 import org.bukkit.entity.Creeper
 import org.bukkit.entity.EntityType
 
-object HyperReactiveCreeper: MobDefinition {
+object HyperReactiveCreeper : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CREEPER) {
 
         ability(
@@ -54,6 +56,8 @@ object HyperReactiveCreeper: MobDefinition {
         movementSpeed(
             linear(0.9 to 1.1, ctx)
         )
+
+        scale(1.2)
 
         apply {
             if (this !is Creeper) return@apply

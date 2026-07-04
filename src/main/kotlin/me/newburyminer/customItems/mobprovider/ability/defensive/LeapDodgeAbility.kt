@@ -11,7 +11,7 @@ class LeapDodgeAbility(
     val jumpStrength: Double
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             LeapDodgeComponent(
                 dodgeRate,

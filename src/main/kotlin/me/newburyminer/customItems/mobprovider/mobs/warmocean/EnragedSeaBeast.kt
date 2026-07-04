@@ -7,6 +7,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.LeapSlamAbility
 import org.bukkit.attribute.Attribute
@@ -14,14 +15,20 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.util.Vector
 
-object EnragedSeaBeast: MobDefinition {
+object EnragedSeaBeast : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOGLIN) {
 
         ability(
             MeleeEffectAbility(
                 damage(linear(34.0 to 68.0, ctx), CustomDamageType.MELEE_NO_CD),
-                attribute(Attribute.MOVEMENT_SPEED, -0.1, AttributeModifier.Operation.ADD_SCALAR, linear(40 to 80, ctx)),
+                attribute(
+                    Attribute.MOVEMENT_SPEED,
+                    -0.1,
+                    AttributeModifier.Operation.ADD_SCALAR,
+                    linear(40 to 80, ctx)
+                ),
                 CustomKnockbackApply(Vector(0.4, 0.8, 0.4))
             )
         )

@@ -14,7 +14,7 @@ class ProjectileEffectAbility(
 
     val hitEffects = hitEffect
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             ProjectileDamageShooter(
                 HitEffects(

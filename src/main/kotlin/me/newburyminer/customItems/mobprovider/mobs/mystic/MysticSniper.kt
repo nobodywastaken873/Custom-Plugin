@@ -8,6 +8,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.SniperProjectileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
@@ -17,8 +18,9 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object MysticSniper: MobDefinition {
+object MysticSniper : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BOGGED) {
 
         ability(
@@ -42,7 +44,13 @@ object MysticSniper: MobDefinition {
                     linear(3.0 to 4.0, ctx),
                     1.0,
                     linear(100 to 150, ctx),
-                    HitEffects(VanillaEffectApply(PotionEffectType.SLOWNESS, linear(40 to 60, ctx), linear(3 to 6, ctx))),
+                    HitEffects(
+                        VanillaEffectApply(
+                            PotionEffectType.SLOWNESS,
+                            linear(40 to 60, ctx),
+                            linear(3 to 6, ctx)
+                        )
+                    ),
                     20,
                     ParticleTheme.MYSTIC,
                 )

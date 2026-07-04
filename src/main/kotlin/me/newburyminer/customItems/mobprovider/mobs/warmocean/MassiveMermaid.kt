@@ -6,15 +6,17 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
 import org.bukkit.entity.EntityType
 
-object MassiveMermaid: MobDefinition {
-    
+object MassiveMermaid : MobDefinition() {
+
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
-    
+
         ability(
             MeleeEffectAbility(
                 damage(linear(28.0 to 56.0, ctx), CustomDamageType.MELEE_NO_CD),
@@ -40,17 +42,17 @@ object MassiveMermaid: MobDefinition {
                 ParticleTheme.WARM_OCEAN
             )
         )
-    
+
         health(
             linear(280.0 to 560.0, ctx)
         )
-    
+
         movementSpeed(
             linear(0.9 to 1.3, ctx)
         )
 
         scale(1.2)
-    
+
     }
-    
+
 }

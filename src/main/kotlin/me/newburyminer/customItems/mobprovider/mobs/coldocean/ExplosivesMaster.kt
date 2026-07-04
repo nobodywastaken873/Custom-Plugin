@@ -7,6 +7,7 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ExplosiveGrenadeAbility
@@ -15,10 +16,11 @@ import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
-object ExplosivesMaster: MobDefinition {
-    
+object ExplosivesMaster : MobDefinition() {
+
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
-    
+
         ability(
             ExplosiveGrenadeAbility(
                 linear(10.0 to 15.0, ctx),
@@ -45,15 +47,15 @@ object ExplosivesMaster: MobDefinition {
                 2.0
             )
         )
-    
+
         health(
-            linear(170.0 to 340.0, ctx)
+            linear(220.0 to 440.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.1 to 1.5, ctx)
         )
-    
+
     }
-    
+
 }

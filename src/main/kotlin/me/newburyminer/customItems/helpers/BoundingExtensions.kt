@@ -1,11 +1,6 @@
 package me.newburyminer.customItems.helpers
 
-import me.newburyminer.customItems.Utils.Companion.containsLoc
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
-import me.newburyminer.customItems.mobprovider.MobContext
-import me.newburyminer.customItems.mobprovider.MobFactory
-import me.newburyminer.customItems.structures.StructureReference
-import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.World
@@ -15,7 +10,6 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
-import java.util.UUID
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.sin
@@ -90,26 +84,6 @@ fun Entity.getUpperCenter(): Location {
     return bottomCenter.add(0.0, hitboxHeight * 2/3, 0.0)
 }
 
-fun World.getIntersectingBlocks(box: BoundingBox): List<Block> {
-    val foundBlocks = mutableListOf<Block>()
-
-    for (x in floor(box.minX).toInt()..floor(box.maxX).toInt()) {
-        for (y in floor(box.minY).toInt()..floor(box.maxY).toInt()) {
-            for (z in floor(box.minZ).toInt()..floor(box.maxZ).toInt()) {
-
-                val block = this.getBlockAt(x, y, z)
-
-                if (!block.type.isSolid) continue
-
-                if (block.boundingBox.overlaps(box))
-                    foundBlocks.add(block)
-            }
-        }
-    }
-
-    return foundBlocks.toList()
-}
-
 fun World.hasIntersectingBlocks(box: BoundingBox): Boolean {
     val foundBlocks = mutableListOf<Block>()
 
@@ -121,8 +95,11 @@ fun World.hasIntersectingBlocks(box: BoundingBox): Boolean {
 
                 if (!block.type.isSolid) continue
 
-                if (block.boundingBox.overlaps(box))
+                val shape = block.collisionShape
+
+                if (shape.boundingBoxes.any { it.overlaps(box) })
                     return true
+
             }
         }
     }
@@ -130,26 +107,61 @@ fun World.hasIntersectingBlocks(box: BoundingBox): Boolean {
     return false
 }
 
-fun World.getValidSpawnLocs(loc: Location, boundingBox: BoundingBox, radius: Int, count: Int = 1): List<Location> {
-    val locations = mutableListOf<Location>()
-    val center = loc.clone().toBlockLocation()
+fun Location.shiftToGround(maxDistance: Int = 8): Location? {
+    val world = world ?: return null
 
-    for (x in -radius..radius) for (y in -radius..radius) for (z in -radius..radius) {
-        if (!center.world.hasIntersectingBlocks(boundingBox.shift(Vector(x, y, z))))
-            locations.add(center.clone().add(Vector(x, y, z)))
+    for (dy in 0..maxDistance) {
+        for (dir in listOf(1, -1)) {
+            val test = clone().add(0.0, dy * dir.toDouble(), 0.0)
+
+            val below = test.clone().subtract(0.0, 1.0, 0.0).block
+
+            if (below.type.isSolid && test.block.isPassable)
+                return test
+        }
     }
 
-    return locations.shuffled().take(count)
+    return null
+}
+
+fun BoundingBox.copyTo(bottomCenter: Vector): BoundingBox {
+    return BoundingBox.of(
+        bottomCenter.subtract(Vector(this.widthX / 2, 0.0, this.widthZ / 2)),
+        bottomCenter.add(Vector(this.widthX / 2, this.height, this.widthZ / 2))
+    )
+}
+
+fun Location.getValidSpawnLocs(boundingBox: BoundingBox, count: Int, startRadius: Int = 2, maxRadius: Int = 5): List<Location> {
+    val locations = mutableListOf<Location>()
+    for (i in 0..<count) {
+        locations.add(getValidSpawnLoc(boundingBox, startRadius, maxRadius) ?: continue)
+    }
+    return locations
+}
+
+fun Location.getValidSpawnLoc(boundingBox: BoundingBox, startRadius: Int = 2, maxRadius: Int = 5): Location? {
+
+    val center = toVector()
+
+    for (radius in 2..5) {
+        for (i in 0..15) {
+
+            val direction = Vector.getRandom().setY(0).normalize().multiply(radius)
+            val newLoc = clone().add(direction).shiftToGround() ?: continue
+            val newBox = boundingBox.copyTo(newLoc.toVector())
+
+            if (!this.world.hasIntersectingBlocks(newBox))
+                return newLoc
+        }
+    }
+
+    return null
 }
 
 fun Location.getNearestPlayer(radius: Double): Player? {
-
     return getNearbyPlayers(radius).minByOrNull { it.location.subtract(this).length() }
-
 }
 
 fun Location.getNearestLivingEntity(radius: Double): LivingEntity? {
-
     return getNearbyEntitiesByType(LivingEntity::class.java, radius).minByOrNull { it.location.subtract(this).length() }
-
 }

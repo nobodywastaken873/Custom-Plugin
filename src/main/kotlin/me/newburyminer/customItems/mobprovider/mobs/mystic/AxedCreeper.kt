@@ -5,6 +5,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.creeper.CustomExplosionAbility
 import me.newburyminer.customItems.mobprovider.ability.creeper.PreIgniteAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -12,10 +13,11 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object AxedCreeper: MobDefinition {
-    
+object AxedCreeper : MobDefinition() {
+
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CREEPER) {
-    
+
         ability(
             PreIgniteAbility(
                 linear(8.0 to 10.0, ctx),
@@ -40,15 +42,15 @@ object AxedCreeper: MobDefinition {
                 DisableShieldApply(true)
             )
         )
-    
+
         health(
             linear(50.0 to 100.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.0 to 1.2, ctx)
         )
-    
+
     }
-    
+
 }

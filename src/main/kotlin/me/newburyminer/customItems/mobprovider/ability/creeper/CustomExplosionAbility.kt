@@ -13,7 +13,7 @@ class CustomExplosionAbility(
     val setLavaRate: Double = 0.0,
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             CustomExplosionCreeper(
                 power.toFloat(),

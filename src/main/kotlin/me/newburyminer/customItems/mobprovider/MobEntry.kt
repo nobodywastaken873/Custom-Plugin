@@ -2,5 +2,5 @@ package me.newburyminer.customItems.mobprovider
 
 data class MobEntry(
     val definition: MobDefinition,
-    val weight: (MobContext) -> Double
-)
+    val multiplier: Double = 1.0,
+): SpawnOption

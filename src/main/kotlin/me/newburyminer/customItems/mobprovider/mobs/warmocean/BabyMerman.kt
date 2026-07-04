@@ -9,25 +9,29 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import org.bukkit.entity.Drowned
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object BabyMerman: MobDefinition {
+object BabyMerman : MobDefinition() {
 
+	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
         component(
             SuicideBomberComponent(
-                HitEffects(EffectAuraApply(
-                    linear(3.5 to 5.0, ctx),
-                    1.0,
-                    linear(60 to 100, ctx),
-                    HitEffects(damage(linear(10.0 to 20.0, ctx), CustomDamageType.MAGIC_NO_CD)),
-                    10,
-                    ParticleTheme.WARM_OCEAN
-                ))
+                HitEffects(
+                    EffectAuraApply(
+                        linear(3.5 to 5.0, ctx),
+                        1.0,
+                        linear(60 to 100, ctx),
+                        HitEffects(damage(linear(10.0 to 20.0, ctx), CustomDamageType.MAGIC_NO_CD)),
+                        10,
+                        ParticleTheme.WARM_OCEAN
+                    )
+                )
             )
         )
 

@@ -1,19 +1,31 @@
 package me.newburyminer.customItems.mobprovider
 
-import org.bukkit.entity.Entity
+import kotlin.math.ln
+import kotlin.random.Random
 
 class MobProvider(
-    val entries: List<MobEntry>
+    val tierChances: MobTierMap,
+    vararg entry: SpawnOption
 ) {
 
-    fun new(context: MobContext): Entity {
-
-        // Need proper selector here + check that a certain mob definition fits within selected location (does not intersect blocks)
-        val definition = entries.random().definition
-        val builder = definition.build(context)
-
-        return MobFactory.create(builder, context)
-
+    val entries: List<MobEntry> = entry.map {
+        when (it) {
+            is MobDefinition -> MobEntry(it)
+            is MobEntry -> it
+        }
     }
 
+    fun new(context: MobContext): List<MobDefinition> {
+       val pickedTier = tierChances.getRandomTier(context)
+       return entries
+            .filter { (definition, _) ->
+                definition.tier == pickedTier
+            }
+            .sortedBy { (_, multiplier) ->
+                -ln(Random.nextDouble()) / multiplier
+            }
+            .map { (definition, _) ->
+                definition
+            }
+    }
 }

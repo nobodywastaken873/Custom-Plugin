@@ -12,7 +12,7 @@ class TeleportBehindAbility(
     val castTime: Int,
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
 
         component(
             TeleportBehindComponent(

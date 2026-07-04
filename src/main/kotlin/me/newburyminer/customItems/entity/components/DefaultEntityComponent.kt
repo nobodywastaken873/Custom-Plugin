@@ -1,21 +1,32 @@
 package me.newburyminer.customItems.entity.components
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobRegistry
+import me.newburyminer.customItems.mobprovider.MobTier
+import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
+import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import kotlin.math.max
 
-class DefaultEntityComponent(private val maxTargetRange: Double = 50.0): EntityComponent {
+class DefaultEntityComponent(
+    private val tier: MobTier,
+    private val maxTargetRange: Double = 50.0,
+): EntityComponent {
 
     override fun serialize(): Map<String, Any> {
         return mapOf(
+            "tier" to tier.name,
             "maxTargetRange" to maxTargetRange,
         )
     }
@@ -23,6 +34,7 @@ class DefaultEntityComponent(private val maxTargetRange: Double = 50.0): EntityC
         override val componentType: EntityComponentType = EntityComponentType.DEFAULT_ENTITY_COMPONENT
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return DefaultEntityComponent(
+                MobTier.valueOf(map["tier"].asString()),
                 map["maxTargetRange"].asDouble(),
             )
         }
@@ -41,6 +53,21 @@ class DefaultEntityComponent(private val maxTargetRange: Double = 50.0): EntityC
         {e ->
             e.isCancelled = true
         })
+
+        register(EntityDamageEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player)
+        },
+        {e ->
+            if (tier != MobTier.MINIBOSS) return@register
+            Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
+                (e.entity as LivingEntity).noDamageTicks = 0
+            })
+        })
+    }
+
+    fun getMobTier(): MobTier {
+        return tier
     }
 
     private var heldTarget: Player? = null

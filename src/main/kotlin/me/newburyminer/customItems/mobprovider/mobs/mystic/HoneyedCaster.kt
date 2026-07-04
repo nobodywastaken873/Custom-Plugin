@@ -7,6 +7,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.DamageAuraCastAbility
 import org.bukkit.attribute.Attribute
@@ -15,8 +16,9 @@ import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-object HoneyedCaster: MobDefinition {
+object HoneyedCaster : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITCH) {
 
         ability(
@@ -31,7 +33,12 @@ object HoneyedCaster: MobDefinition {
                 linear(50 to 30, ctx),
                 linear(250 to 150, ctx),
                 linear(12.0 to 16.0, ctx),
-                attribute(Attribute.MOVEMENT_SPEED, -0.1, AttributeModifier.Operation.ADD_SCALAR, linear(30 to 60, ctx)),
+                attribute(
+                    Attribute.MOVEMENT_SPEED,
+                    -0.1,
+                    AttributeModifier.Operation.ADD_SCALAR,
+                    linear(30 to 60, ctx)
+                ),
                 attribute(Attribute.JUMP_STRENGTH, -0.05, AttributeModifier.Operation.ADD_SCALAR, linear(30 to 60, ctx))
             )
         )

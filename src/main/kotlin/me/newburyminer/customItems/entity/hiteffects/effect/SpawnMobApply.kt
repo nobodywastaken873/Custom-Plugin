@@ -5,23 +5,20 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
 import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.util.Vector
 
 class SpawnMobApply(val mob: MobDefinition, val count: Int): HitEffect {
 
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         val ctx = MobContext(damager.location.length(), StructureReference.Difficulty.OMINOUS, AbandonedShip, damager.location)
         for (i in 0..<count) {
-            MobFactory.create(mob.build(ctx), ctx)
+            mob.build(ctx).createEntity(ctx)
         }
     }
 

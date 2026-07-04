@@ -4,11 +4,12 @@ import me.newburyminer.customItems.entity.components.spells.LeapComponent
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.mobprovider.MobTier
 import org.bukkit.entity.EntityType
 
-object TrustySteed: MobDefinition {
+object TrustySteed : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_HORSE) {
 
         component(
@@ -28,7 +29,7 @@ object TrustySteed: MobDefinition {
         )
 
         apply {
-            val top = MobFactory.create(JoustingKnight.build(ctx), ctx)
+            val top = JoustingKnight.build(ctx).createEntity(ctx)
             this.addPassenger(top)
         }
 

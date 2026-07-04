@@ -7,15 +7,17 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object BrutishSailor: MobDefinition {
-    
+object BrutishSailor : MobDefinition() {
+
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
-    
+
         ability(
             BasicSlashAbility(
                 linear(2 to 4, ctx),
@@ -36,15 +38,15 @@ object BrutishSailor: MobDefinition {
                 VanillaKnockbackApply()
             )
         )
-    
+
         health(
             linear(80.0 to 160.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.0 to 1.4, ctx)
         )
-    
+
     }
-    
+
 }

@@ -6,6 +6,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
@@ -14,8 +15,9 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object BlackstoneHermit: MobDefinition {
+object BlackstoneHermit : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
         ability(
@@ -48,7 +50,7 @@ object BlackstoneHermit: MobDefinition {
         )
 
         health(
-            linear(60.0 to 120.0, ctx)
+            linear(70.0 to 140.0, ctx)
         )
 
         movementSpeed(

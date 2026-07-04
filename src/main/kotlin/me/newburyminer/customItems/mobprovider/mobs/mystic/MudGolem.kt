@@ -6,6 +6,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.TrackingBeamAbility
@@ -13,8 +14,9 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object MudGolem: MobDefinition {
+object MudGolem : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.IRON_GOLEM) {
 
         ability(
@@ -36,7 +38,12 @@ object MudGolem: MobDefinition {
                 linear(40 to 30, ctx),
                 linear(150 to 100, ctx),
                 ParticleTheme.MYSTIC,
-                attribute(Attribute.ARMOR, -linear(3.0 to 6.0, ctx), AttributeModifier.Operation.ADD_NUMBER, linear(150 to 200, ctx))
+                attribute(
+                    Attribute.ARMOR,
+                    -linear(3.0 to 6.0, ctx),
+                    AttributeModifier.Operation.ADD_NUMBER,
+                    linear(150 to 200, ctx)
+                )
             )
         )
 

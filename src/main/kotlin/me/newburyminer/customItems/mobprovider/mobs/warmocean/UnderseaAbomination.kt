@@ -6,6 +6,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -14,8 +15,9 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.MagmaCube
 
-object UnderseaAbomination: MobDefinition {
+object UnderseaAbomination : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SLIME) {
 
         ability(
@@ -56,10 +58,10 @@ object UnderseaAbomination: MobDefinition {
 
         apply {
             if (this !is MagmaCube) return@apply
-            this.size = 0
+            this.size = 1
         }
 
-        scale(3.5)
+        scale(2.5)
 
     }
 

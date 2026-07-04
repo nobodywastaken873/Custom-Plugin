@@ -6,12 +6,14 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import org.bukkit.entity.EntityType
 
-object DarkDuelist: MobDefinition {
+object DarkDuelist : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
 
         ability(

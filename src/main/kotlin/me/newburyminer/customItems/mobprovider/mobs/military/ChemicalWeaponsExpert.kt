@@ -8,6 +8,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.DamageAuraCastAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -17,8 +18,9 @@ import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-object ChemicalWeaponsExpert: MobDefinition {
-    
+object ChemicalWeaponsExpert : MobDefinition() {
+
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITCH) {
 
         ability(
@@ -61,15 +63,15 @@ object ChemicalWeaponsExpert: MobDefinition {
         ability(
             ProjectileHomingAbility()
         )
-    
+
         health(
             linear(240.0 to 480.0, ctx)
         )
-    
+
         movementSpeed(
             linear(0.8 to 1.2, ctx)
         )
-    
+
     }
-    
+
 }

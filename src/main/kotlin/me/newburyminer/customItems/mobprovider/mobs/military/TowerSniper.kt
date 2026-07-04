@@ -6,12 +6,14 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.SniperProjectileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BeamShooterAbility
 import org.bukkit.entity.EntityType
 
-object TowerSniper: MobDefinition {
+object TowerSniper : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PILLAGER) {
 
         ability(

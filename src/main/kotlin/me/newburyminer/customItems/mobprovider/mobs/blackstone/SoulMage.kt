@@ -7,6 +7,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
@@ -17,14 +18,15 @@ import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object SoulMage: MobDefinition {
+object SoulMage : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
         ability(
             MeleeEffectAbility(
                 damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE_NO_CD),
-                attribute(Attribute.MAX_HEALTH, -1.0, AttributeModifier.Operation.ADD_NUMBER, linear(40 to 80, ctx)),
+                attribute(Attribute.MAX_HEALTH, -1.0, Operation.ADD_NUMBER, linear(40 to 80, ctx)),
                 VanillaKnockbackApply()
             )
         )

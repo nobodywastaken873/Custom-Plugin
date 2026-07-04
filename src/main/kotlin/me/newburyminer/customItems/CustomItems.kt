@@ -93,6 +93,7 @@ class CustomItems : JavaPlugin() {
         EffectManager.runTaskTimer(this, 0L, 1L)
         wrapperManager.runTaskTimer(this, 0L, 1L)
         BossManager.runTaskTimer(this, 0L, 1L)
+        TrialSpawnerSystem.runTaskTimer(this, 0L, 20L)
         //entityListener.run()
         //bossListener.run()
 

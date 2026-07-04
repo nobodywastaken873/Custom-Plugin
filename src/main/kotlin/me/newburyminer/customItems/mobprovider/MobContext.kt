@@ -10,6 +10,14 @@ class MobContext(
     val structure: StructureDefinition,
     val location: Location,
 ) {
+
+    constructor(distance: Double, isOminous: Boolean, structure: StructureDefinition, location: Location) : this(
+        distance,
+        if (isOminous) StructureReference.Difficulty.OMINOUS else StructureReference.Difficulty.NORMAL,
+        structure,
+        location
+    )
+
     val difficulty: Double =
         distance / 600.0 *
                 when (spawnerType) {

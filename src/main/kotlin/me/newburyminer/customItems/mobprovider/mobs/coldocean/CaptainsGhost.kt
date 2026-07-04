@@ -5,13 +5,15 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
 import org.bukkit.entity.EntityType
 
-object CaptainsGhost: MobDefinition {
+object CaptainsGhost : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.EVOKER) {
 
         ability(
@@ -42,7 +44,7 @@ object CaptainsGhost: MobDefinition {
         )
 
         health(
-            linear(150.0 to 300.0, ctx)
+            linear(250.0 to 500.0, ctx)
         )
 
         movementSpeed(

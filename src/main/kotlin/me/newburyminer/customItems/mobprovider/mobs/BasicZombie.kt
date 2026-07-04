@@ -5,12 +5,14 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import org.bukkit.entity.EntityType
 
-object BasicZombie: MobDefinition {
+object BasicZombie : MobDefinition() {
 
-    override fun build(ctx: MobContext): MobBuilder = mob(org.bukkit.entity.EntityType.ZOMBIE) {
+	override val tier: MobTier = MobTier.GRUNT
+    override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
 
         ability(
             MeleeEffectAbility(

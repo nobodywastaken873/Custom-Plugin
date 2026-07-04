@@ -8,16 +8,18 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.EntityType
 
-object ChainmailFighter: MobDefinition {
-    
+object ChainmailFighter : MobDefinition() {
+
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
-    
+
         ability(
             DamageShieldAbility(
                 linear(2 to 4, ctx),
@@ -47,11 +49,11 @@ object ChainmailFighter: MobDefinition {
                 ParticleTheme.COLD_OCEAN
             )
         )
-    
+
         health(
             linear(240.0 to 480.0, ctx)
         )
-    
+
         movementSpeed(
             linear(0.8 to 1.1, ctx)
         )
@@ -59,5 +61,5 @@ object ChainmailFighter: MobDefinition {
         attribute(Attribute.KNOCKBACK_RESISTANCE, 1.0, Operation.ADD_NUMBER)
 
     }
-    
+
 }

@@ -8,17 +8,20 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object RobedSkirmisher: MobDefinition {
+object RobedSkirmisher : MobDefinition() {
 
+	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
         ability(
@@ -87,6 +90,10 @@ object RobedSkirmisher: MobDefinition {
         )
 
         scale(1.3)
+
+        equipment {
+            mainhand(Material.AIR)
+        }
 
     }
 

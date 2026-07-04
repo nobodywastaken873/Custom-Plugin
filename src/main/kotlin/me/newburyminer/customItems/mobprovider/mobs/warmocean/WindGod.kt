@@ -5,15 +5,16 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.spell.TrackingBeamAbility
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 import org.bukkit.util.Vector
 
-object WindGod: MobDefinition {
+object WindGod : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BREEZE) {
 
         ability(
@@ -24,7 +25,12 @@ object WindGod: MobDefinition {
                 10,
                 ParticleTheme.WARM_OCEAN,
                 CustomKnockbackApply(Vector(0, 3, 0)),
-                attribute(Attribute.FALL_DAMAGE_MULTIPLIER, linear(4.0 to 8.0, ctx), AttributeModifier.Operation.ADD_NUMBER, linear(40 to 80, ctx),)
+                attribute(
+                    Attribute.FALL_DAMAGE_MULTIPLIER,
+                    linear(4.0 to 8.0, ctx),
+                    AttributeModifier.Operation.ADD_NUMBER,
+                    linear(40 to 80, ctx),
+                )
             )
         )
 
@@ -37,7 +43,7 @@ object WindGod: MobDefinition {
         )
 
         apply {
-            val top = MobFactory.create(UpperWindGod.build(ctx), ctx)
+            val top = UpperWindGod.build(ctx).createEntity(ctx)
             this.addPassenger(top)
         }
 

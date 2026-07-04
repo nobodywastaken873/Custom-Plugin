@@ -5,17 +5,10 @@ import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.components.utils.CooldownInterface
-import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.ParticleTheme
-import me.newburyminer.customItems.helpers.getIntersectingBlocks
 import org.bukkit.Sound
-import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.util.Vector
-import kotlin.math.sqrt
-import kotlin.random.Random
 
 class LeapDodgeComponent(
     private val dodgeRate: Double,

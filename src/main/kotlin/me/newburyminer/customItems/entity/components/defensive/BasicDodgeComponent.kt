@@ -4,17 +4,11 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.ParticleTheme
-import me.newburyminer.customItems.helpers.getIntersectingBlocks
+import me.newburyminer.customItems.helpers.hasIntersectingBlocks
 import org.bukkit.Sound
-import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.util.Vector
-import kotlin.math.sqrt
-import kotlin.random.Random
 
 class BasicDodgeComponent(
     private val dodgeRate: Double
@@ -50,7 +44,7 @@ class BasicDodgeComponent(
                 val randomOffset = Vector.getRandom().setY(0).normalize().multiply(2.5)
                 val newBox = wrapper.entity.boundingBox.shift(randomOffset)
 
-                if (wrapper.entity.world.getIntersectingBlocks(newBox).isEmpty()) {
+                if (!wrapper.entity.world.hasIntersectingBlocks(newBox)) {
                     wrapper.entity.teleport(wrapper.entity.location.add(randomOffset))
                     break
                 }

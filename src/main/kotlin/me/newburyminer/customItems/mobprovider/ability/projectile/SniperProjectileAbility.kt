@@ -29,7 +29,7 @@ class SniperProjectileAbility(
     val projectileType: ProjectileType = ProjectileType.ARROW
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             SniperProjectileShooter(
                 cooldown,

@@ -6,6 +6,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.DeathSummonAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
@@ -13,8 +14,9 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.MagmaCube
 import kotlin.math.roundToInt
 
-object ReplicatingCube: MobDefinition {
+object ReplicatingCube : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.MAGMA_CUBE) {
 
         val size = (Math.random() * 0.85).roundToInt()

@@ -7,6 +7,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
@@ -14,10 +15,11 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object CastingBones: MobDefinition {
-    
+object CastingBones : MobDefinition() {
+
+	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
-    
+
         ability(
             MultiMissileAbility(
                 linear(25.0 to 35.0, ctx),
@@ -50,15 +52,15 @@ object CastingBones: MobDefinition {
                 damage(linear(25.0 to 50.0, ctx), CustomDamageType.BURNING_NO_CD)
             )
         )
-    
+
         health(
             linear(40.0 to 80.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.0 to 1.5, ctx)
         )
-        
+
     }
-    
+
 }

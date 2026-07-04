@@ -1,19 +1,19 @@
 package me.newburyminer.customItems.mobprovider.mobs.desert
 
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
-import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.HealerAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.util.Vector
 
-object AncientBeast: MobDefinition {
+object AncientBeast : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOGLIN) {
 
         ability(
@@ -42,7 +42,7 @@ object AncientBeast: MobDefinition {
         )
 
         apply {
-            val rider = MobFactory.create(BeastRider.build(ctx), ctx)
+            val rider = BeastRider.build(ctx).createEntity(ctx)
             this.addPassenger(rider)
         }
 

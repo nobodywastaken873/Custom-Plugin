@@ -25,7 +25,7 @@ class DamageAuraCastAbility(
     vararg val damage: HitEffect,
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
 
         component(
             EffectAuraCaster(

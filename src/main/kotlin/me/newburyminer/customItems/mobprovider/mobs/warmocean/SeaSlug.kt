@@ -7,13 +7,15 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object SeaSlug: MobDefinition {
+object SeaSlug : MobDefinition() {
 
+	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ENDERMITE) {
 
         ability(

@@ -7,15 +7,17 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.MachineGunAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.util.Vector
 
-object SandstormMage: MobDefinition {
-    
+object SandstormMage : MobDefinition() {
+
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BREEZE) {
-    
+
         ability(
             MachineGunAbility(
                 linear(5.0 to 10.0, ctx),
@@ -45,15 +47,15 @@ object SandstormMage: MobDefinition {
                 damage(linear(15.0 to 35.0, ctx), CustomDamageType.MELEE_NO_CD)
             )
         )
-    
+
         health(
             linear(120.0 to 240.0, ctx)
         )
-    
+
         movementSpeed(
             linear(1.0 to 1.5, ctx)
         )
-    
+
     }
-    
+
 }

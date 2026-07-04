@@ -5,12 +5,14 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.MachineGunAbility
 import org.bukkit.entity.EntityType
 
-object PirateMachineGunner: MobDefinition {
+object PirateMachineGunner : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
         ability(
@@ -29,7 +31,7 @@ object PirateMachineGunner: MobDefinition {
         )
 
         health(
-            linear(40.0 to 90.0, ctx)
+            linear(60.0 to 120.0, ctx)
         )
 
         movementSpeed(

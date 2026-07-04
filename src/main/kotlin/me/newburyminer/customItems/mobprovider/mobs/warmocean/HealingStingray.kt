@@ -6,15 +6,17 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.HealerAbility
 import org.bukkit.entity.EntityType
 
-object HealingStingray: MobDefinition {
-    
+object HealingStingray : MobDefinition() {
+
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SILVERFISH) {
-    
+
         ability(
             HealerAbility(
                 linear(15.0 to 20.0, ctx),
@@ -39,17 +41,17 @@ object HealingStingray: MobDefinition {
                 VanillaKnockbackApply()
             )
         )
-    
+
         health(
             linear(70.0 to 140.0, ctx)
         )
-    
+
         movementSpeed(
             linear(0.6 to 0.8, ctx)
         )
 
         scale(2.0)
-    
+
     }
-    
+
 }

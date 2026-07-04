@@ -1,16 +1,21 @@
 package me.newburyminer.customItems.mobprovider
 
-import jdk.dynalink.Operation
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.EntityComponent
+import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.util.BoundingBox
 
 class MobBuilder(
     val entityType: EntityType,
+    val tier: MobTier,
+    val targetRange: Double,
 ) {
     var health: Double = 20.0
     var armor: Double = 0.0
@@ -35,20 +40,49 @@ class MobBuilder(
     fun attribute(attribute: Attribute, amount: Double, operation: AttributeModifier.Operation) {
         extraAttributes[attribute] = AttributeModifier(NamespacedKey(CustomItems.plugin, "spawned"), amount, operation)
     }
+    fun equipment(block: EquipmentBuilder.() -> Unit) { equipment.block() }
+    fun ability(ability: MobAbility) { abilities += ability }
+    fun component(component: EntityComponent) { components.add(component) }
+    fun apply(block: LivingEntity.() -> Unit) { extraApplications.add(block) }
 
-    fun equipment(block: EquipmentBuilder.() -> Unit) {
-        equipment.block()
+    fun createEntity(ctx: MobContext): LivingEntity {
+
+        abilities.forEach {
+            with (it) {
+                applyAbility(ctx)
+            }
+        }
+
+        component(
+            DefaultEntityComponent(
+                tier,
+                targetRange,
+            )
+        )
+
+        val entity = ctx.location.world.spawnEntity(ctx.location, entityType, false) as LivingEntity
+
+        entity.getAttribute(Attribute.MAX_HEALTH)?.baseValue = health
+        entity.getAttribute(Attribute.MOVEMENT_SPEED)?.baseValue = movementSpeed
+        entity.getAttribute(Attribute.ARMOR)?.baseValue = armor
+        entity.getAttribute(Attribute.SCALE)?.baseValue = scale
+
+        val wrapper = EntityWrapperManager.getWrapperorNew(entity)
+
+        extraApplications.forEach { entity.it() }
+
+        // double check for no duplicate components of certain types
+        components.forEach { wrapper.addComponent(it) }
+
+        extraAttributes.forEach { (attribute, modifier) ->
+            entity.getAttribute(attribute)?.addModifier(modifier)
+        }
+
+        equipment.equipment.forEach { (slot, stack) ->
+            entity.equipment?.setItem(slot, stack)
+        }
+
+        return entity
     }
 
-    fun ability(ability: MobAbility) {
-        abilities += ability
-    }
-
-    fun component(component: EntityComponent) {
-        components.add(component)
-    }
-
-    fun apply(block: LivingEntity.() -> Unit) {
-        extraApplications.add(block)
-    }
 }

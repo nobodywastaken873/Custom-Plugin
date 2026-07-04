@@ -7,10 +7,12 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import org.bukkit.entity.EntityType
 
-object BlackSilverfish: MobDefinition {
+object BlackSilverfish : MobDefinition() {
 
+    override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ENDERMITE) {
 
         component(

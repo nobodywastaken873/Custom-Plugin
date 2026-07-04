@@ -8,14 +8,16 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
-object CastingCorpse: MobDefinition {
+object CastingCorpse : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
         ability(

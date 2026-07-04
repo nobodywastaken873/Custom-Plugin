@@ -1,13 +1,12 @@
 package me.newburyminer.customItems.mobprovider.mobs.military
 
-import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -15,8 +14,9 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
 
-object MutatedBeast: MobDefinition {
+object MutatedBeast : MobDefinition() {
 
+	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.RAVAGER) {
 
         ability(
@@ -57,7 +57,7 @@ object MutatedBeast: MobDefinition {
         )
 
         apply {
-            val top = MobFactory.create(CavalryRider.build(ctx), ctx)
+            val top = CavalryRider.build(ctx).createEntity(ctx)
             this.addPassenger(top)
         }
 

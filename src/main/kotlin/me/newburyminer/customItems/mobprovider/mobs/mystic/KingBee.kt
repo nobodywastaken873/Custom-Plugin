@@ -8,6 +8,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
@@ -16,8 +17,9 @@ import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object KingBee: MobDefinition {
+object KingBee : MobDefinition() {
 
+	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BEE) {
 
         ability(

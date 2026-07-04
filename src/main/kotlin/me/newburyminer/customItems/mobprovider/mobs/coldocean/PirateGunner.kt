@@ -7,13 +7,15 @@ import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
-object PirateGunner: MobDefinition {
+object PirateGunner : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PILLAGER) {
 
         ability(
@@ -25,7 +27,7 @@ object PirateGunner: MobDefinition {
         )
 
         health(
-            linear(60.0 to 120.0, ctx)
+            linear(65.0 to 130.0, ctx)
         )
 
         movementSpeed(

@@ -8,19 +8,21 @@ import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobProvider
+import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.LeapSlamAbility
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
-object LeapingSpider: MobDefinition {
+object LeapingSpider : MobDefinition() {
 
+	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CAVE_SPIDER) {
 
         ability(
             LeapSlamAbility(
                 linear(8.0 to 12.0, ctx),
-                5.0,
+                3.0,
                 linear(2.0 to 3.0, ctx),
                 linear(30.0 to 60.0, ctx),
                 0.8,

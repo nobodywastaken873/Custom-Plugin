@@ -22,7 +22,7 @@ class HealerAbility(
     vararg val extraEffects: HitEffect
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
 
         component(
             MobHealerComponent(

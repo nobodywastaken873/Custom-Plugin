@@ -1,27 +1,46 @@
 package me.newburyminer.customItems.mobprovider
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.effects.AttributeData
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectData
-import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomEffectApply
+import me.newburyminer.customItems.helpers.copyTo
+import me.newburyminer.customItems.structures.StructureReference
+import me.newburyminer.customItems.structures.structure.AbandonedShip
+import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.EntityType
+import org.bukkit.util.BoundingBox
 import kotlin.math.roundToInt
 
-interface MobDefinition {
+abstract class MobDefinition : SpawnOption {
     val id: String
         get() = this::class.java.name
+    abstract val tier: MobTier
+    val targetRange: Double
+        get() = 40.0
 
-    fun build(ctx: MobContext): MobBuilder
+    abstract fun build(ctx: MobContext): MobBuilder
 
     fun mob(type: EntityType, block: MobBuilder.() -> Unit): MobBuilder {
-        val builder = MobBuilder(type)
+        val builder = MobBuilder(type, tier, targetRange)
         builder.block()
         return builder
+    }
+
+    private var box: BoundingBox? = null
+    fun getHitbox(center: Location = Location(null, 0.0, 0.0, 0.0)): BoundingBox {
+        if (box != null) return box!!.copyTo(center.toVector())
+
+        val context = MobContext(0.1, StructureReference.Difficulty.NORMAL, AbandonedShip, Location(CustomItems.aridWorld, 0.0, 1000.0, 0.0))
+        val testMob = build(context).createEntity(context)
+        box = testMob.boundingBox
+        testMob.remove()
+        return box!!.copyTo(center.toVector())
     }
 
     fun linear(base: Double, rate: Double, ctx: MobContext): Double { return base + rate * ctx.difficulty }

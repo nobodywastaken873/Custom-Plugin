@@ -26,7 +26,7 @@ class ElytraBreakerAbility(
     val stunMultiplier: Double = 0.0,
 ): MobAbility {
 
-    override fun MobBuilder.apply(ctx: MobContext) {
+    override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(
             ElytraBreakerShooter(
                 HitEffects(

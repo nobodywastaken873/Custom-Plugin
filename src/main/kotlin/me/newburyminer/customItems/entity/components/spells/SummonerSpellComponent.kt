@@ -1,34 +1,22 @@
 package me.newburyminer.customItems.entity.components.spells
 
-import me.newburyminer.customItems.Utils.Companion.getNearestPlayer
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
-import me.newburyminer.customItems.entity.EntityWrapperManager
-import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
 import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
-import me.newburyminer.customItems.entity.hiteffects.HitEffects
-import me.newburyminer.customItems.entity.velocity.VelocityProvider
 import me.newburyminer.customItems.helpers.CustomEffects
-import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
-import me.newburyminer.customItems.helpers.getIntersectingBlocks
-import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.getValidSpawnLocs
-import me.newburyminer.customItems.helpers.hasIntersectingBlocks
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
-import me.newburyminer.customItems.mobprovider.MobFactory
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
 import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.entity.Marker
 import org.bukkit.entity.Mob
-import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
 class SummonerSpellComponent(
@@ -90,7 +78,7 @@ class SummonerSpellComponent(
                 for (loc in spawnLocs) {
 
                     val context = MobContext(center.length(), StructureReference.Difficulty.NORMAL, AbandonedShip, loc)
-                    MobFactory.create(mob.build(context), context)
+                    mob.build(context).createEntity(context)
 
                 }
 
@@ -102,10 +90,9 @@ class SummonerSpellComponent(
         if (offCooldown()) {
 
             if (startCasting(wrapper)) {
-                val ctx = MobContext(caster.location.length(), StructureReference.Difficulty.NORMAL, AbandonedShip, caster.location)
-                val boundingBox = MobFactory.getHitbox(mob.build(ctx), ctx)
+                val boundingBox = mob.getHitbox()
 
-                spawnLocs.addAll(caster.location.world.getValidSpawnLocs(caster.location, boundingBox, 3, count))
+                spawnLocs.addAll(caster.location.getValidSpawnLocs(boundingBox, count))
                 CustomEffects.playSound(caster.location, Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 3.0F, 1.2F)
             }
 
