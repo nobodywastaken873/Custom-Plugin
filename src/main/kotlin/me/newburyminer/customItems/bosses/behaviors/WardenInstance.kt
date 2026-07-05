@@ -837,7 +837,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
 
         }
     }
-    private fun arcAttack(origin: Location, radius: Double, totalDegrees: Double, direction: Vector, particleSettings: ParticleSettings, damage: DamageSettings, possRandomOffset: Double = 0.0, delay: Int = 0) {
+    private fun arcAttack(origin: Location, radius: Double, totalDegrees: Double, direction: Vector, particleSettings: ParticleSettings, damage: DamageSettings, delay: Int = 0) {
 
 
         var k = delay / particleSettings.preParticleSeparation
@@ -845,7 +845,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
         tasks.add(object : BukkitRunnable() { override fun run() {
             if (k == 0) this.cancel()
 
-            CustomEffects.rotatedArc(particleSettings.preParticle, origin, radius, totalDegrees, (Math.PI * radius.pow(2) * (totalDegrees/360.0) * 50).toInt(), direction, possRandomOffset)
+            CustomEffects.rotatedArc(particleSettings.preParticle, origin, radius, totalDegrees, (Math.PI * radius.pow(2) * (totalDegrees/360.0) * 50).toInt(), direction)
 
             k--
         }}.runTaskTimer(CustomItems.plugin, 0L, particleSettings.preParticleSeparation.toLong()).taskId)
@@ -875,7 +875,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                 Bukkit.getPlayer(player)?.applyDamage(damage)
             }
 
-            CustomEffects.rotatedArc(particleSettings.particle, origin, radius, totalDegrees, (Math.PI * radius.pow(2) * (totalDegrees/360.0) * 50).toInt(), direction, possRandomOffset)
+            CustomEffects.rotatedArc(particleSettings.particle, origin, radius, totalDegrees, (Math.PI * radius.pow(2) * (totalDegrees/360.0) * 50).toInt(), direction)
         }}.runTaskLater(CustomItems.plugin, delay.toLong()).taskId)
     }
     private fun planeAttack(shape: Shape, yLevel: Double, particleSettings: ParticleSettings, concentration: Double, damage: DamageSettings, above: Boolean = true, delay: Int = 0) {

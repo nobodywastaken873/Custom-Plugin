@@ -14,14 +14,15 @@ class PullingBeamAbility(
     val strength: Double,
     val duration: Int,
     val cooldown: Int,
-    val particleTheme: ParticleTheme
+    val particleTheme: ParticleTheme,
+    val range: Double = 30.0
 ): MobAbility {
 
     override fun MobBuilder.applyAbility(ctx: MobContext) {
 
         component(
             TrackingBeamComponent(
-                30.0,
+                range,
                 0.25,
                 0.03,
                 20,

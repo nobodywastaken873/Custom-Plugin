@@ -2,6 +2,7 @@ package me.newburyminer.customItems.entity.components.utils
 
 import org.bukkit.Location
 import org.bukkit.util.Vector
+import kotlin.math.max
 import kotlin.math.sqrt
 
 interface LeapingInterface {
@@ -11,10 +12,10 @@ interface LeapingInterface {
         if (start.toVector().subtract(end.toVector()).length() < 0.001) {return Vector(0.0, 0.0, 0.0)}
 
         val distanceVect = end.clone().subtract(start).toVector()
-        val horizDist = distanceVect.setY(0).length()
+        val horizDist = distanceVect.clone().setY(0).length()
         val yInitial = start.y
         val yFinal = end.y
-        val yApex = yFinal + extraHeight
+        val yApex = max(yFinal, yInitial) + extraHeight
 
         // yVel calculated using 1/2mv^2 = mg deltay
         // Then time is calculated with velocity / acceleration
@@ -25,6 +26,12 @@ interface LeapingInterface {
 
         val direction = distanceVect.setY(0).normalize()
         val velocity = Vector(direction.x * xVel, yVel, direction.z * xVel)
+
+        try {
+            velocity.checkFinite()
+        } catch (_: Exception) {
+            return Vector(0.0, 0.0, 0.0)
+        }
 
         return velocity
 

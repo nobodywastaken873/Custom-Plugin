@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:sunken_island",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 37625367,
+        "spacing": 96,
+        "separation": 67,
+        "frequency": 1.0
+    }
+}

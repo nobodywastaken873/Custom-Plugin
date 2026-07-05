@@ -81,8 +81,7 @@ class ArcingProjectileShooterComponent(
                     ))
 
                     it.blockData = block.createBlockData()
-                    it.velocity = calculateLeapVelocity(it.location, targetPlayer?.location ?: return@spawn, peakHeight)
-                    it.cancelDrop = true
+                    it.velocity = calculateLeapVelocity(caster.eyeLocation, targetPlayer?.location ?: return@spawn, peakHeight).multiply(0.5)
                     it.dropItem = false
                 }
                 if (castingTicks == 0) {

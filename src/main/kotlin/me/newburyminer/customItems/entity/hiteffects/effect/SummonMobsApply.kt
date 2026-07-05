@@ -10,7 +10,6 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
-import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
@@ -25,7 +24,7 @@ class SummonMobsApply(val mob: MobDefinition, val count: Int): HitEffect {
         CustomEffects.playSound(damager.location, Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 3.0F, 1.2F)
 
         for (loc in locs) {
-            val newCtx = MobContext(damager.location.length(), StructureReference.Difficulty.OMINOUS, AbandonedShip, loc)
+            val newCtx = MobContext(damager.location.length(), StructureReference.Difficulty.OMINOUS, loc)
             mob.build(newCtx).createEntity(newCtx)
         }
     }

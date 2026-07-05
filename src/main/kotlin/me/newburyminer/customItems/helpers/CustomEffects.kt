@@ -69,24 +69,30 @@ class CustomEffects {
             }
         }
 
-        fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, count: Int, centerAxis: Vector, extraRotation: Double  = 0.0, offset: Double = 0.0, extra: Double = 0.0) {
+        fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
 
             for (i in 1..count) {
                 //initial phi and theta will create a circle perpendicular to the x-axis
                 //phi is offset from xz plane
                 //theta is offset from x-axis on the horizontal plane
-                val radians = Math.toRadians(totalAngleSpread) / 2
+                val radians = totalAngleSpread / 2
                 val theta = Utils.randomRange(-radians, radians)
 
                 //phi += phiOffset
                 //theta += thetaOffset
                 val newRadius = sqrt(Math.random()) * radius
 
+                //val baseVec = Vector(newRadius * cos(theta), 0.0, newRadius * sin(theta))
+                //baseVec.checkFinite()
+                //val rotated1 = baseVec.rotateToAxis(centerAxis)
+                //rotated1.checkFinite()
+
                 val newLoc = loc.clone().add(
                     Vector(newRadius * cos(theta), 0.0, newRadius * sin(theta))
                         .rotateToAxis(centerAxis)
-                        .rotateAroundAxis(centerAxis, extraRotation)
+                        //.rotateAroundAxis(centerAxis, extraRotation)
                 )
+
                 particle.clone()
                     .location(newLoc)
                     .count(1)
@@ -98,9 +104,9 @@ class CustomEffects {
             }
         }
 
-        fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, concentration: Double, centerAxis: Vector, extraRotation: Double  = 0.0, offset: Double = 0.0, extra: Double = 0.0) {
+        fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, concentration: Double, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
             val count = radius.pow(2) * Math.PI * (totalAngleSpread / (2 * Math.PI)) * concentration
-            rotatedArc(particle, loc, radius, totalAngleSpread, count.toInt(), centerAxis, extraRotation, offset, extra)
+            rotatedArc(particle, loc, radius, totalAngleSpread, count.toInt(), centerAxis, offset, extra)
         }
 
         fun rotatedParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {

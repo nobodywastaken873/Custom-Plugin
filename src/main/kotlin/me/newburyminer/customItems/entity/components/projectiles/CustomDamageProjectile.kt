@@ -47,7 +47,6 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
                 if (e.damager is Projectile) (e.damager as Projectile).shooter as? Entity ?: return@register
                 else e.damager
 
-            //println("applying damage 1")
             damage.apply(damaged, damager)
             wrapper.entity.remove()
             //println("finished applying and removing 5")
@@ -59,17 +58,11 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
         {e ->
             val shooter = e.entity.shooter
             val hit = e.hitEntity
-            // No entity is hit or an entity is hit but has iframes
-            if (shooter is Player && e.hitEntity != null) {
-                damage.applyTargetless(shooter, e.entity.location)
-            }
-            // If it hits not a player, if it hits the ground, then trigger the targetless
-            else if (e.hitEntity !is Player || e.hitEntity == null) {
+            // No entity is hit
+            if (hit == null) {
                 damage.applyTargetless(shooter as? Entity ?: return@register, e.entity.location)
+                wrapper.entity.remove()
             }
-
-            e.isCancelled = true
-            wrapper.entity.remove()
         })
     }
 

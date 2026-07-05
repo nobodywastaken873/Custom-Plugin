@@ -13,7 +13,6 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
-import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
@@ -77,7 +76,7 @@ class SummonerSpellComponent(
                 val center = caster.location
                 for (loc in spawnLocs) {
 
-                    val context = MobContext(center.length(), StructureReference.Difficulty.NORMAL, AbandonedShip, loc)
+                    val context = MobContext(center.length(), StructureReference.Difficulty.NORMAL, loc)
                     mob.build(context).createEntity(context)
 
                 }
@@ -89,7 +88,9 @@ class SummonerSpellComponent(
 
         if (offCooldown()) {
 
-            if (startCasting(wrapper)) {
+            val nearbyOfSummonedType = caster.location.getNearbyEntitiesByType(mob.getType().java, 12.0).size
+
+            if (caster.target != null && nearbyOfSummonedType < 25 && startCasting(wrapper)) {
                 val boundingBox = mob.getHitbox()
 
                 spawnLocs.addAll(caster.location.getValidSpawnLocs(boundingBox, count))

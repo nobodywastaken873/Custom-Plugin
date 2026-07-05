@@ -19,12 +19,12 @@ class HitEffects(private vararg val hitEffects: HitEffect) {
         // Apply knockback before damage
         hitEffects.filter {
             it is CustomKnockbackApply || it is VanillaKnockbackApply // Custom or vanilla knockback components
-        }.forEach { it.apply(damaged, damager) }
+        }.forEach { it.apply(damaged, damager, sourceLoc) }
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             // Apply all other effects after
             hitEffects.filter {
                 it !is VanillaKnockbackApply && it !is CustomKnockbackApply // Not a knockback component
-            }.forEach { it.apply(damaged, damager) }
+            }.forEach { it.apply(damaged, damager, sourceLoc) }
         })
     }
 

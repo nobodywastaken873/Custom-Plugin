@@ -8,20 +8,21 @@ import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomEffectApply
 import me.newburyminer.customItems.helpers.copyTo
 import me.newburyminer.customItems.structures.StructureReference
-import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.LivingEntity
 import org.bukkit.util.BoundingBox
 import kotlin.math.roundToInt
+import kotlin.reflect.KClass
 
 abstract class MobDefinition : SpawnOption {
     val id: String
         get() = this::class.java.name
     abstract val tier: MobTier
-    val targetRange: Double
+    open val targetRange: Double
         get() = 40.0
 
     abstract fun build(ctx: MobContext): MobBuilder
@@ -36,11 +37,24 @@ abstract class MobDefinition : SpawnOption {
     fun getHitbox(center: Location = Location(null, 0.0, 0.0, 0.0)): BoundingBox {
         if (box != null) return box!!.copyTo(center.toVector())
 
-        val context = MobContext(0.1, StructureReference.Difficulty.NORMAL, AbandonedShip, Location(CustomItems.aridWorld, 0.0, 1000.0, 0.0))
+        val context = MobContext(0.1, StructureReference.Difficulty.NORMAL,
+            Location(CustomItems.aridWorld, 0.0, 1000.0, 0.0))
         val testMob = build(context).createEntity(context)
         box = testMob.boundingBox
         testMob.remove()
         return box!!.copyTo(center.toVector())
+    }
+
+    private var type: KClass<out LivingEntity>? = null
+    fun getType(): KClass<out LivingEntity> {
+        if (type != null) return type!!
+
+        val context = MobContext(0.1, StructureReference.Difficulty.NORMAL,
+            Location(CustomItems.aridWorld, 0.0, 1000.0, 0.0))
+        val testMob = build(context).createEntity(context)
+        type = testMob::class
+        testMob.remove()
+        return type!!
     }
 
     fun linear(base: Double, rate: Double, ctx: MobContext): Double { return base + rate * ctx.difficulty }

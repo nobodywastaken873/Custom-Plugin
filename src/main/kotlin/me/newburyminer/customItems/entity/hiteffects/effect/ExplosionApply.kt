@@ -23,7 +23,7 @@ class ExplosionApply(
 ): HitEffect {
 
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
-        damager.world.createExplosion(damager, sourceLoc ?: damager.location, power, setFire, breakBlocks)
+        damager.world.createExplosion(damager, sourceLoc ?: damager.location, power, setFire, breakBlocks, true)
     }
 
     override fun serialize(): Map<String, Any> {

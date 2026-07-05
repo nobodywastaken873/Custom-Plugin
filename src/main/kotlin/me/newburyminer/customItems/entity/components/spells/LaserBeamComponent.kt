@@ -68,7 +68,7 @@ class LaserBeamComponent(
         if (castingTicks > 0) {
             castingTicks -= 1
 
-            if (!checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
+            if (followPlayer && !checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
 
             if (wrapper.entity.ticksLived % particleSettings.preParticleSeparation == 0) {
                 val direction = // Get the direction to the targetLoc or to the targetPlayer from eyes

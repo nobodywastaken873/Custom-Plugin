@@ -9,10 +9,8 @@ import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 
 class ProjectileEffectAbility(
-    vararg hitEffect: HitEffect
+    vararg val hitEffects: HitEffect
 ): MobAbility {
-
-    val hitEffects = hitEffect
 
     override fun MobBuilder.applyAbility(ctx: MobContext) {
         component(

@@ -5,12 +5,10 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import me.newburyminer.customItems.helpers.getValidSpawnLoc
 import me.newburyminer.customItems.mobprovider.MobContext
-import org.bukkit.Bukkit
 import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.block.TrialSpawner
 import org.bukkit.entity.LivingEntity
-import org.bukkit.spawner.Spawner
 import kotlin.math.pow
 
 class SpawnerSession(
@@ -67,7 +65,7 @@ class SpawnerSession(
         }
 
         // Spawn new mob
-        val newCtx = MobContext(spawner.location.length(), reference.difficulty, structureDefinition, spawnLoc)
+        val newCtx = MobContext(spawner.location.length(), reference.difficulty, spawnLoc)
         val newMob = (newMobType ?: return null).build(newCtx).createEntity(newCtx)
 
         weightBudget -= newMobType.tier.weight
@@ -89,7 +87,7 @@ class SpawnerSession(
     }
 
     private fun getWeightBudget(playerCount: Int): Double {
-        val difficulty = MobContext(spawner.location.length(), spawner.isOminous, structureDefinition, spawner.location).difficulty
+        val difficulty = MobContext(spawner.location.length(), spawner.isOminous, spawner.location).difficulty
         return (difficulty + 30) * playerCount.toDouble().pow(3.0/4.0)
     }
 

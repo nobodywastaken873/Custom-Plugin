@@ -22,7 +22,8 @@ class MultiMissileAbility(
     val aggression: Double,
     val castTime: Int,
     val cooldown: Int,
-    val particleTheme: ParticleTheme
+    val particleTheme: ParticleTheme,
+    val stopTime: Int = 20
 ): MobAbility {
 
     override fun MobBuilder.applyAbility(ctx: MobContext) {
@@ -33,7 +34,7 @@ class MultiMissileAbility(
                 0.05,
                 count,
                 5,
-                StoppedStartVelocity(0.2 * aggression, 0.05 * aggression, HomingSystem.Type.BOTH_SCALED, 20, 1.5),
+                StoppedStartVelocity(0.2 * aggression, 0.05 * aggression, HomingSystem.Type.BOTH_SCALED, stopTime, 1.5),
                 HitEffects(
                     CustomDamageApply(damage, CustomDamageType.PROJECTILE_NO_CD),
                     knockback

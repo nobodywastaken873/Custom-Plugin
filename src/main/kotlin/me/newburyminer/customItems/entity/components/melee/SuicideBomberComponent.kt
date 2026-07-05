@@ -9,6 +9,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import org.bukkit.Bukkit
 import org.bukkit.Particle
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
@@ -31,14 +32,16 @@ class SuicideBomberComponent(val hitEffects: HitEffects): EntityComponent {
         register(
             EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
             e.damager == wrapper.entity &&
-            !e.damageSource.damageType.isCustom()
+            !e.damageSource.damageType.isCustom() &&
+            e.damageSource.damageType != DamageType.EXPLOSION &&
+            e.damageSource.damageType != DamageType.PLAYER_EXPLOSION
         },
         {e ->
             e.isCancelled = true
-            hitEffects.apply(e.entity as LivingEntity, e.damager)
-
             val damager = e.damager as? LivingEntity ?: return@register
             damager.damage(1000.0)
+
+            hitEffects.apply(e.entity as LivingEntity, e.damager)
         })
     }
 

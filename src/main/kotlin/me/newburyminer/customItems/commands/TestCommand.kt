@@ -26,13 +26,9 @@ import me.newburyminer.customItems.Utils.Companion.unb
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
 import me.newburyminer.customItems.entity.components.melee.MeleeCustomHit
-import me.newburyminer.customItems.entity.components.creepers.CustomExplosionCreeper
-import me.newburyminer.customItems.entity.components.creepers.PreIgniteCreeper
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
 import me.newburyminer.customItems.entity.components.spells.EffectAuraCaster
-import me.newburyminer.customItems.entity.components.spells.LeapComponent
-import me.newburyminer.customItems.entity.components.spells.TeleportBehindComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
@@ -40,9 +36,13 @@ import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.MobContext
+import me.newburyminer.customItems.mobprovider.mobs.military.AttackHound
+import me.newburyminer.customItems.mobprovider.mobs.military.BattleMedic
+import me.newburyminer.customItems.mobprovider.mobs.military.TraineeFighter
+import me.newburyminer.customItems.mobprovider.mobs.military.WalkingExplosives
 import net.kyori.adventure.key.Key
 import org.bukkit.*
-import org.bukkit.entity.Creeper
 import org.bukkit.entity.Player
 import org.bukkit.entity.Skeleton
 import org.bukkit.entity.Zombie
@@ -131,81 +131,26 @@ class TestCommand : BasicCommand {
         } else if (args[0] == "check_event_count") {
             println(EventRegistry.getAllRegisteredListeners()[EntityDeathEvent::class]?.size)
         } else if (args[0] == "summon_test") {
-            val component = when (args[1].toInt()) {
+            val definition = when (args[1].toInt()) {
                 0 -> {
-                    MeleeCustomHit(HitEffects(VanillaKnockbackApply(), CustomDamageApply(20.0, CustomDamageType.EXPLOSION)))
+                    TraineeFighter
                 }
                 1 -> {
-                    LeapComponent(8.0, 2.0, 5 * 20)
+                    AttackHound
                 }
                 2 -> {
-                    //TeleportBehindComponent(10 * 20)
+                    BattleMedic
                 }
                 3 -> {
-                    PreIgniteCreeper(8.0)
+                    WalkingExplosives
                 }
-                /*0 -> { TntHeadCreeper(sender.world.spawn(sender.location, TNTPrimed::class.java) { EntityWrapperManager.getWrapperorNew(it).addComponent(TntHeadTnt(2.0, 5.0F, true))}, 5.0F)  }
-                1 -> { CancelProjectiles() }
-                2 -> { ExplosiveProjectileShooter(5.0F, true) }
-                3 -> { ElytraBreakerShooter(HitEffects(CustomDamageApply(20.0, CustomDamageType.EXPLOSION), CustomKnockbackApply(Vector(0.0, -10.0, 0.0))), 10*20, 20*20) }
-                4 -> { HomingProjectileShooter(0.1) }
-                5 -> { ProjectileDamageShooter(HitEffects(VanillaKnockbackApply(), CustomDamageApply(20.0,
-                    CustomDamageType.EXPLOSION))) }
-                6 -> { SniperProjectileShooter(10*20, ProjectileType.ARROW) }
-                7 -> {
-                    ArrowBombCreeper(
-                        100, HitEffects(
-                            CustomDamageApply(15.0, CustomDamageType.PROJECTILE_NO_CD, 0),
-                            CustomEffectApply(CustomEffectType.ATTRIBUTE, EffectData(40,
-                                AttributeData(-2.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER))
-                            ),
-                            VanillaKnockbackApply()))
-                }*/
-                /*0 -> {
-                    ArrowBombCreeper(
-                        100, HitEffects(
-                            CustomDamageApply(15.0, DamageType.ARROW, 0),
-                            CustomEffectApply(CustomEffectType.ATTRIBUTE, EffectData(40,
-                                AttributeData(-2.0, Attribute.ARMOR, AttributeModifier.Operation.ADD_NUMBER))
-                            )))
-                }
-                1 -> {
-                    BreachingCreeper(5.0)
-                }
-                2 -> {
-                    ChainExplosionCreeper()
-                }
-                3 -> {
-                    CustomExplosionCreeper(5F, false, true)
-                }
-                4 -> {
-                    FirebombCreeper(0.8)
-                }
-                5 -> {
-                    FireworkCreeper(10, 30.0)
-                }
-                6 -> {
-                    HoppingCreeper()
-                }
-                7 -> {
-                    PotionExplosionCreeper(PotionEffectType.POISON, 40, 2)
-                }
-                8 -> {
-                    PreIgniteCreeper(8.0)
-                }*/
                 else -> {
                     return
                 }
             }
 
-            sender.world.spawn(
-                sender.location,
-                Creeper::class.java
-            ) {
-                val wrapper = EntityWrapperManager.getWrapperorNew(it)
-                //wrapper.addComponent(component)
-                wrapper.addComponent(CustomExplosionCreeper(3F, false, true))
-            }
+            val ctx = MobContext(sender.location.length(), false, sender.location.add(0.0, 0.0, 2.0))
+            definition.build(ctx).createEntity(ctx)
         } else if (args[0] == "eventbus") {
             println(EventRegistry.getAllRegisteredListeners())
         } else if (args[0] == "kbtest") {

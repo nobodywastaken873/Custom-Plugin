@@ -4,6 +4,8 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
+import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
+import me.newburyminer.customItems.entity.components.spells.SpellCasterComponent
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
@@ -11,6 +13,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.util.BoundingBox
+import kotlin.reflect.KClass
 
 class MobBuilder(
     val entityType: EntityType,
@@ -60,9 +63,20 @@ class MobBuilder(
             )
         )
 
+        if (entityType == EntityType.EVOKER || entityType == EntityType.ILLUSIONER) {
+            component(
+                CancelProjectiles()
+            )
+        }
+
+        removeDuplicateComponents(SpellCasterComponent::class)
+        removeDuplicateComponents(CancelProjectiles::class)
+
         val entity = ctx.location.world.spawnEntity(ctx.location, entityType, false) as LivingEntity
 
+        entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = 2000.0
         entity.getAttribute(Attribute.MAX_HEALTH)?.baseValue = health
+        entity.health = health
         entity.getAttribute(Attribute.MOVEMENT_SPEED)?.baseValue = movementSpeed
         entity.getAttribute(Attribute.ARMOR)?.baseValue = armor
         entity.getAttribute(Attribute.SCALE)?.baseValue = scale
@@ -83,6 +97,21 @@ class MobBuilder(
         }
 
         return entity
+    }
+
+    private fun <T : EntityComponent> removeDuplicateComponents(clazz: KClass<T>) {
+
+        var found = false
+        components.removeIf {
+            if (clazz.isInstance(it)) {
+                if (found) true
+                else {
+                    found = true
+                    false
+                }
+            } else false
+        }
+
     }
 
 }

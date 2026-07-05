@@ -19,7 +19,7 @@ interface SpellInterface {
 
         cancelTask = Bukkit.getScheduler().runTaskLater(CustomItems.plugin, Runnable {
             wrapper.setCasting(false)
-        }, spellDuration.toLong() + 5)
+        }, spellDuration.toLong() + 10)
         return true
     }
 

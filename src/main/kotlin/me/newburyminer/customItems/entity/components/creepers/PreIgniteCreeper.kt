@@ -38,14 +38,14 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
             val target = creeper.target ?: return
             val separation = creeper.location.toVector().subtract(target.location.toVector()).length()
 
-            if (separation < 1.3) {
+            if (separation < 1.7) {
                 creeper.explode()
             }
 
-            if (creeper.fuseTicks < 5 && separation > 5.0) {
+            if (creeper.fuseTicks > 50 && separation > 5.0) {
                 leaping = false
                 creeper.isIgnited = false
-                creeper.fuseTicks = 40
+                creeper.fuseTicks = 0
             }
 
         }
@@ -60,8 +60,8 @@ class PreIgniteCreeper(private val minDistance: Double): EntityComponent, Leapin
             creeper.velocity = calculateLeapVelocity(creeper.location, target.location, 2.0)
             leaping = true
             creeper.ignite()
-            creeper.maxFuseTicks = 100
-            creeper.fuseTicks = 40
+            creeper.maxFuseTicks = 80
+            creeper.fuseTicks = 0
 
             CustomEffects.playSound(creeper.location, Sound.ENTITY_BLAZE_HURT, 1.0F, 0.75F)
 

@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.MobTier
@@ -16,8 +17,11 @@ import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
 import kotlin.math.max
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 class DefaultEntityComponent(
     private val tier: MobTier,
@@ -63,6 +67,14 @@ class DefaultEntityComponent(
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 (e.entity as LivingEntity).noDamageTicks = 0
             })
+        })
+
+        register(EntityDeathEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity
+        },
+        {e ->
+            e.drops.clear()
+            e.droppedExp *= sqrt(MobContext.calculateDifficulty(e.entity.location)).roundToInt()
         })
     }
 

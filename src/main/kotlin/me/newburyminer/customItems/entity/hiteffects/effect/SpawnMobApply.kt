@@ -8,7 +8,6 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
-import me.newburyminer.customItems.structures.structure.AbandonedShip
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -16,7 +15,7 @@ import org.bukkit.entity.LivingEntity
 class SpawnMobApply(val mob: MobDefinition, val count: Int): HitEffect {
 
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
-        val ctx = MobContext(damager.location.length(), StructureReference.Difficulty.OMINOUS, AbandonedShip, damager.location)
+        val ctx = MobContext(damager.location.length(), StructureReference.Difficulty.OMINOUS, damager.location)
         for (i in 0..<count) {
             mob.build(ctx).createEntity(ctx)
         }

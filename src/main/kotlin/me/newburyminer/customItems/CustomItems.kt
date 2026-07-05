@@ -34,7 +34,7 @@ import me.newburyminer.customItems.systems.EndSystem
 import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.TestingSystem
-import me.newburyminer.customItems.structures.TrialSpawnerSystem
+import me.newburyminer.customItems.structures.CustomSpawningSystem
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import net.kyori.adventure.key.Key
@@ -93,12 +93,12 @@ class CustomItems : JavaPlugin() {
         EffectManager.runTaskTimer(this, 0L, 1L)
         wrapperManager.runTaskTimer(this, 0L, 1L)
         BossManager.runTaskTimer(this, 0L, 1L)
-        TrialSpawnerSystem.runTaskTimer(this, 0L, 20L)
+        CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
         //entityListener.run()
         //bossListener.run()
 
         TestingSystem.registerListeners()
-        TrialSpawnerSystem.registerListeners()
+        CustomSpawningSystem.registerListeners()
 
         // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()

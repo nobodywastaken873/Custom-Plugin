@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:wrecked_galleon",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 52124952,
+        "spacing": 122,
+        "separation": 85,
+        "frequency": 1.0
+    }
+}

@@ -56,16 +56,17 @@ class SpellCasterComponent(private val slowdown: Double = 0.0): EntityComponent 
         if (wrapper.isCasting() && wrapper.entity.ticksLived % 3 == 0) {
 
             val caster = wrapper.entity as? LivingEntity ?: return
+
             val castingComponent =
                 wrapper.getComponentsExtending(AbstractSpellComponent::class)
-                    .first { it.castingTicks > 0 }
+                    .firstOrNull { it.castingTicks > 0 } ?: return
 
             val currentFraction = castingComponent.castingTicks.toDouble() / castingComponent.spellDuration
             val colorInt = ( (1 - currentFraction) * (255) ).toInt().coerceIn(0, 255)
             ParticleBuilder(Particle.DUST)
                 .color(colorInt, colorInt, colorInt)
-                .receivers(80)
                 .location(caster.location.add(0.0, 0.3 + caster.height, 0.0))
+                .receivers(80)
                 .spawn()
         }
     }

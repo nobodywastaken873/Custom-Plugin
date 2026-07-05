@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:walled_rampart",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 52056398,
+        "spacing": 167,
+        "separation": 116,
+        "frequency": 1.0
+    }
+}

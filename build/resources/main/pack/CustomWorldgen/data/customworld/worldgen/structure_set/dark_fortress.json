@@ -1,0 +1,15 @@
+{
+    "structures": [
+        {
+            "structure": "customworld:dark_fortress",
+            "weight": 1 
+        }
+    ],
+    "placement": {
+        "type": "random_spread",
+        "salt": 65061013,
+        "spacing": 196,
+        "separation": 137,
+        "frequency": 1.0
+    }
+}
