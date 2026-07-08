@@ -1,13 +1,14 @@
 package me.newburyminer.customItems.helpers
 
 import com.destroystokyo.paper.ParticleBuilder
-import com.google.common.base.Predicate
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
+import me.newburyminer.customItems.bosses.rendering.shapes.Shape
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
+import org.bukkit.World
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -19,7 +20,22 @@ import kotlin.math.sqrt
 class CustomEffects {
     companion object {
 
+        fun particleFullShape(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
+            particleShape(world, particle, shape, concentration)
+            particleShapeOutline(world, particle, shape, concentration)
+        }
 
+        fun particleShape(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
+            for (i in 0..(concentration * shape.area).toInt()) {
+                particle(particle, shape.randomPoint().toLocation(world), 1)
+            }
+        }
+
+        fun particleShapeOutline(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
+            for (point in shape.linePoints(2 * sqrt(concentration))) {
+                particle(particle, point.toLocation(world), 1)
+            }
+        }
 
         fun particle(particle: ParticleBuilder, loc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
             particle.clone()
@@ -109,6 +125,23 @@ class CustomEffects {
             rotatedArc(particle, loc, radius, totalAngleSpread, count.toInt(), centerAxis, offset, extra)
         }
 
+        fun rotatedCylinder(particle: ParticleBuilder, start: Location, end: Location, radius: Double, concentration: Double) {
+
+            val direction = end.clone().subtract(start)
+
+            val newLoc = start.clone()
+            val circleCount = (concentration * direction.length()).toInt()
+
+            val separation = 1.0 / concentration
+            val unit = direction.toVector().normalize().multiply(separation)
+
+            for (i in 0..circleCount) {
+                rotatedParticleCircle(particle, newLoc.clone(), radius, (6.28 * radius * concentration).toInt(), unit)
+                newLoc.add(unit)
+            }
+
+        }
+
         fun rotatedParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
             for (i in 1..count) {
                 //initial phi and theta will create a circle perpendicular to the x-axis
@@ -130,6 +163,39 @@ class CustomEffects {
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
             }
 
+        }
+
+        fun renderParticlePlane(
+            particle: ParticleBuilder, center: Location, normal: Vector, up: Vector, width: Double, height: Double, concentration: Double = 4.0
+        ) {
+
+            val n = normal.clone().normalize()
+            val u = up.clone().normalize()
+
+            val right = u.clone().crossProduct(n).normalize()
+            val correctedUp = n.clone().crossProduct(right).normalize()
+
+            val origin = center.clone()
+                .subtract(right.clone().multiply(width / 2))
+                .subtract(correctedUp.clone().multiply(height / 2))
+
+            val count = (width * height * concentration).toInt()
+
+            repeat(count) {
+
+                val x = Math.random() * width
+                val y = Math.random() * height
+
+                val point = origin.clone()
+                    .add(right.clone().multiply(x))
+                    .add(correctedUp.clone().multiply(y))
+
+                particle.clone()
+                    .location(point)
+                    .count(1)
+                    .receivers(60)
+                    .spawn()
+            }
         }
 
         fun particleSphere(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {

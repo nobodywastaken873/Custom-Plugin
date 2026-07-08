@@ -12,6 +12,7 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -63,6 +64,7 @@ class DefaultEntityComponent(
             (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player)
         },
         {e ->
+            if (e.damageSource.damageType == DamageType.MACE_SMASH) e.damage *= 0.15
             if (tier != MobTier.MINIBOSS) return@register
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 (e.entity as LivingEntity).noDamageTicks = 0

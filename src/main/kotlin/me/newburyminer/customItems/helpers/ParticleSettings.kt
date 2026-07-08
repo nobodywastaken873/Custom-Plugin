@@ -9,5 +9,6 @@ data class ParticleSettings(
     val preParticle: ParticleBuilder = particle,
     val preParticleSeparation: Int = particleSeperation,
     val concentration: Double = 5.0,
+    val preConcentration: Double = 5.0,
     val spread: Double = 1.0,
 )

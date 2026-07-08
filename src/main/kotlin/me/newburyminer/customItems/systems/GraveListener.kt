@@ -12,7 +12,6 @@ import me.newburyminer.customItems.Utils.Companion.serializeAsBytes
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
-import me.newburyminer.customItems.entity3.CustomEntity
 import me.newburyminer.customItems.gui.combat.GraveItemsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -39,6 +38,7 @@ class GraveListener: Listener {
     fun onPlayerDeath(e: PlayerDeathEvent) {
         createGrave(e)
     }
+    private val graveMarkerId = "gravemarker"
     private fun createGrave(e: PlayerDeathEvent) {
         // soulbound, perm consumable to keep xp
         // change settings for custom worlds
@@ -122,7 +122,7 @@ class GraveListener: Listener {
         armorStand.setNoPhysics(true)
         //armorStand.customName(text("${e.player.name}'s grave", arrayOf(199, 4, 30)))
         //armorStand.isCustomNameVisible = false
-        armorStand.setTag("id", CustomEntity.GRAVE_MARKER.id)
+        armorStand.setTag("id", graveMarkerId)
         armorStand.setTag("currentlyopen", false)
         armorStand.setTag("owner", e.player.uniqueId)
         if (e.damageSource.causingEntity is Player) {
@@ -169,7 +169,7 @@ class GraveListener: Listener {
     private fun openGrave(e: PlayerInteractAtEntityEvent) {
         e.player.activeBossBars()
         if (e.rightClicked !is Interaction) return
-        if (e.rightClicked.getTag<Int>("id") != CustomEntity.GRAVE_MARKER.id) return
+        if (e.rightClicked.getTag<String>("id") != graveMarkerId) return
         val armorStand: Interaction = e.rightClicked as Interaction
         if (armorStand.getTag<Boolean>("currentlyopen") == true) {e.player.sendActionBar(text("Grave is currently opened by another player", arrayOf(199, 4, 30))); return}
         val owner = armorStand.getTag<UUID>("owner")!!

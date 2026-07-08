@@ -23,6 +23,20 @@ import me.newburyminer.customItems.Utils.Companion.storeEnch
 import me.newburyminer.customItems.Utils.Companion.toByteArray
 import me.newburyminer.customItems.Utils.Companion.trim
 import me.newburyminer.customItems.Utils.Companion.unb
+import me.newburyminer.customItems.bosses.rendering.HollowCylinderRenderable
+import me.newburyminer.customItems.bosses.rendering.QuadRenderable
+import me.newburyminer.customItems.bosses.rendering.RectangularPrismRenderable
+import me.newburyminer.customItems.bosses.rendering.RenderManager
+import me.newburyminer.customItems.bosses.rendering.Transform
+import me.newburyminer.customItems.bosses.rendering.combinator.CylinderCombinator
+import me.newburyminer.customItems.bosses.rendering.combinator.FloorCombinator
+import me.newburyminer.customItems.bosses.rendering.combinator.PrismCombinator
+import me.newburyminer.customItems.bosses.rendering.floor.FloorPatternRenderer
+import me.newburyminer.customItems.bosses.rendering.floor.GreedyShapeMesher
+import me.newburyminer.customItems.bosses.rendering.shapes.Circle
+import me.newburyminer.customItems.bosses.rendering.shapes.NegativeShape
+import me.newburyminer.customItems.bosses.rendering.shapes.Polygon
+import me.newburyminer.customItems.bosses.rendering.shapes.ShapeLayer
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
 import me.newburyminer.customItems.entity.components.melee.MeleeCustomHit
@@ -54,6 +68,8 @@ import org.bukkit.inventory.meta.trim.TrimMaterial
 import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionType
 import org.bukkit.util.Vector
+import kotlin.math.cos
+import kotlin.math.sin
 
 class TestCommand : BasicCommand {
     override fun execute(stack: CommandSourceStack, args: Array<out String>) {
@@ -198,6 +214,140 @@ class TestCommand : BasicCommand {
                 val wrapper = EntityWrapperManager.getWrapperorNew(it)
                 wrapper.addComponent(component)
             }
+        } else if (args[0] == "test_renderer") {
+
+            val manager = RenderManager()
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
+
+            val cylinder = CylinderCombinator(
+                Transform(
+                    position = Vector(0.0, 100.0, 0.0),
+                    Transform.lookRotation(Vector(0, 0, 1))
+                ),
+                radius = 1.0,
+                length = 20.0,
+                material = Material.LIGHT_BLUE_STAINED_GLASS,
+                Particle.DUST.builder().color(255,0,0),
+                0.5,
+                sender.world
+            )
+            cylinder.spawn(Bukkit.getWorlds()[0])
+            manager.add(
+                cylinder
+            )
+
+            var material = 0
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {
+                cylinder.transform.rotateWorldY(0.03F)
+                //cylinder.length = abs(cos(angle) + 1) * 5.0
+                //cylinder.radius = abs(sin(angle) + 2)
+
+                val materialOrder = listOf(Material.RED_STAINED_GLASS, Material.ORANGE_STAINED_GLASS, Material.YELLOW_STAINED_GLASS, Material.LIME_STAINED_GLASS,
+                    Material.GREEN_STAINED_GLASS, Material.CYAN_STAINED_GLASS, Material.BLUE_STAINED_GLASS, Material.PURPLE_STAINED_GLASS, Material.MAGENTA_STAINED_GLASS)
+
+                if (Bukkit.getCurrentTick() % 5 == 0) {
+                    cylinder.material = materialOrder[material]
+                    material++
+                    if (material !in materialOrder.indices) material = 0
+                }
+
+            }, 1L, 1L)
+
+        } else if (args[0] == "display_block") {
+            val manager = RenderManager()
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
+
+            val quad = QuadRenderable(
+                origin = Vector(0, 100, 0),
+                center = sender.location.toVector(),
+                normal = Vector(0,1,1),
+                up = Vector(0,1,0),
+                width = 2.0F,
+                height = 2.0F,
+                thickness = 0.1F,
+                material = Material.LIGHT_BLUE_STAINED_GLASS,
+            )
+            quad.spawn(sender.world)
+
+            manager.add(
+                quad
+            )
+        } else if (args[0] == "meshed_plane") {
+            val manager = RenderManager()
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
+
+            val y = 100.0
+            val circle = Circle(y, Vector(0, 100, 0), 6.0)
+            val secondCircle = Circle(y, Vector(0, 100, 0), 6.0)
+            val floorPattern = FloorCombinator(
+                NegativeShape(
+                    listOf(
+                        ShapeLayer(Polygon(listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1).map { Vector(it.first * 20.0, y, it.second * 20.0) }, y), ShapeLayer.Operation.ADD),
+                        ShapeLayer(circle, ShapeLayer.Operation.SUBTRACT),
+                        ShapeLayer(secondCircle, ShapeLayer.Operation.SUBTRACT)
+                    ),
+                    y
+                ),
+                0.5,
+                Material.RED_CONCRETE,
+                Particle.DUST.builder().color(255,0,0),
+                0.5,
+                sender.world
+            )
+
+            floorPattern.spawn(sender.world)
+            manager.add(floorPattern)
+
+            var angle = 0.0
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {
+                angle += 0.03
+
+                circle.circleCenter = Vector(10 * cos(angle), y, 10 * sin(angle))
+                secondCircle.circleCenter = Vector(-10 * cos(angle), y, -10 * sin(angle))
+            }, 1L, 1L)
+        } else if (args[0] == "rectangular_prism") {
+            val manager = RenderManager()
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
+
+            val rectangle = PrismCombinator(
+                Transform(
+                    position = Vector(0, 99, 0),
+                    rotation = Transform.lookRotation(Vector(0, 0, 1), Vector(1, 1, 0))
+                ),
+                2.0F,
+                2.0F,
+                20.0F,
+                Material.RED_CONCRETE,
+                0.05F,
+                Particle.DUST.builder().color(255,0,0),
+                0.5,
+                sender.world
+            )
+
+            val rectangle2 = PrismCombinator(
+                Transform(
+                    position = Vector(0, 99, 0),
+                    rotation = Transform.lookRotation(Vector(0, 0, -1), Vector(-1, 1, 0))
+                ),
+                2.0F,
+                2.0F,
+                20.0F,
+                Material.RED_CONCRETE,
+                0.05F,
+                Particle.DUST.builder().color(255,0,0),
+                0.5,
+                sender.world
+            )
+
+            rectangle.spawn(sender.world)
+            rectangle2.spawn(sender.world)
+            manager.add(rectangle)
+            manager.add(rectangle2)
+
+            Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {
+                rectangle.transform.rotateWorldY(0.03F)
+                rectangle2.transform.rotateWorldY(0.03F)
+            }, 1L, 1L)
         }
     }
 }

@@ -3,17 +3,12 @@ package me.newburyminer.customItems.bosses.behaviors
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
-import me.newburyminer.customItems.Utils.Companion.applyDamage
-import me.newburyminer.customItems.Utils.Companion.containsLoc
 import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.Utils.Companion.getCustom
-import me.newburyminer.customItems.Utils.Companion.getHitboxCorners
 import me.newburyminer.customItems.Utils.Companion.getTag
-import me.newburyminer.customItems.Utils.Companion.randomToInt
-import me.newburyminer.customItems.Utils.Companion.rotateToAxis
-import me.newburyminer.customItems.Utils.Companion.round
 import me.newburyminer.customItems.Utils.Companion.setAttr
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.bosses.ActionController
 import me.newburyminer.customItems.bosses.BossInstance
 import me.newburyminer.customItems.bosses.CustomBossType
 import me.newburyminer.customItems.entity.EntityWrapperManager
@@ -21,11 +16,7 @@ import me.newburyminer.customItems.entity.components.bosses.WardenBossComponent
 import me.newburyminer.customItems.entity.components.bosses.WardenMinibossComponent
 import me.newburyminer.customItems.helpers.*
 import me.newburyminer.customItems.helpers.damage.CenterKnockback
-import me.newburyminer.customItems.helpers.damage.ConstantKnockback
 import me.newburyminer.customItems.helpers.damage.DamageSettings
-import me.newburyminer.customItems.helpers.shapes.Circle
-import me.newburyminer.customItems.helpers.shapes.NegativePolygon
-import me.newburyminer.customItems.helpers.shapes.Shape
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.structures.CustomLootTable
@@ -41,11 +32,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.util.Vector
-import java.util.*
-import kotlin.math.cos
 import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 class WardenInstance(players: MutableList<Player>): BossInstance(players, CustomBossType.WARDEN) {
 
@@ -103,6 +90,8 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
         EntityWrapperManager.getWrapperorNew(boss).addComponent(WardenBossComponent(this))
     }
 
+    override val actionController: ActionController = WardenController(this)
+
     override fun setupBossbar() {
         bossBar.color = BarColor.BLUE
         bossBar.setTitle("The Warden")
@@ -128,9 +117,10 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
     private var phase: Int = 0
     fun getCurrentPhase(): Int = phase
 
-    private var stunCounter: Int = 0
-    private var isStunned = false
-    fun getCurrentStunCounter(): Int = stunCounter
+    var stunCounter: Int = 0
+        private set
+    var isStunned: Boolean = false
+        private set
     fun stun() {
         boss.isInvulnerable = false
         attackDelay = -1
@@ -238,7 +228,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
             Particle.DUST.builder().data(DustOptions(Color.fromRGB(125, 1, 11), 3.0F))
         )
 
-        when (phase) {
+        /*when (phase) {
             1 -> {
                 attackCount++
                 //predictive sonic boom attack
@@ -656,7 +646,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
             3 -> {
 
             }
-        }
+        }*/
     }
 
     override fun tick() {
@@ -702,14 +692,14 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                 damager = boss, CenterKnockback(getCenter(), 2.5)
             )
 
-            planeAttack(
+            /*planeAttack(
                 Circle(5.0, getLowerCenter()), getLowerCenter().y,
                 ParticleSettings(
                     Particle.DUST.builder().data(DustOptions(Color.fromRGB(102, 226, 232), 1.0F)), 5,
                     Particle.DUST.builder().data(DustOptions(Color.fromRGB(50, 117, 120), 1.0F))
                 ),
                 0.15, damageSettings, delay = 10
-            )
+            )*/
         }
     }
 
@@ -742,7 +732,7 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
                 phase < 3
     }
 
-    private fun playReapeatingSound(soundSettings: SoundSettings, delay: Int) {
+    /*private fun playReapeatingSound(soundSettings: SoundSettings, delay: Int) {
         var s = 0
         val period = delay / soundSettings.steps
 
@@ -1011,6 +1001,6 @@ class WardenInstance(players: MutableList<Player>): BossInstance(players, Custom
             }}.runTaskTimer(CustomItems.plugin, delay.toLong(), singleDuration.toLong()).taskId)
 
         }
-    }
+    }*/
 
 }
