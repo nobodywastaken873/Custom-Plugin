@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.entity.components.bosses
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.bosses.behaviors.WardenInstance
+import me.newburyminer.customItems.bosses.definitions.warden.WardenInstance
 import me.newburyminer.customItems.entity.*
 import org.bukkit.Bukkit
 import org.bukkit.damage.DamageType

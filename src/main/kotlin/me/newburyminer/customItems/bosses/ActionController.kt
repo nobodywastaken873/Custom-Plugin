@@ -6,11 +6,15 @@ abstract class ActionController(
     protected val boss: BossInstance
 ) {
     val actions: MutableList<BossAction> = mutableListOf()
+    fun add(action: BossAction) {
+        actions.add(action)
+        action.start()
+    }
 
     open fun tick() {
-        actions.removeIf {
+        actions.toList().forEach {
             it.tick()
-            it.finished
+            if (it.finished) actions.remove(it)
         }
     }
 
@@ -23,7 +27,7 @@ abstract class ActionController(
         return actions.filter { it.category == category }.size
     }
 
-    protected fun endTasksOf(klass: KClass<out BossAction>) {
+    protected fun endTaskOf(klass: KClass<out BossAction>) {
         actions.toMutableList().forEach {
             if (it::class == klass) {
                 it.cancel()
@@ -32,11 +36,15 @@ abstract class ActionController(
         }
     }
 
-    protected fun endTasks(category: ActionCategory) {
-        actions.toMutableList().forEach {
-            if (it.category == category) {
-                it.cancel()
-                actions.remove(it)
+    protected fun endTasks(vararg categories: ActionCategory) {
+        categories.forEach { category ->
+            actions.toMutableList().forEach {
+                println(it.category)
+                println(it)
+                if (it.category == category) {
+                    it.cancel()
+                    actions.remove(it)
+                }
             }
         }
     }

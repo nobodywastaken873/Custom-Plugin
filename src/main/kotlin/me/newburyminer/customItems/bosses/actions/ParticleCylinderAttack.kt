@@ -5,12 +5,18 @@ import me.newburyminer.customItems.bosses.ActionTimeline
 import me.newburyminer.customItems.bosses.BossAction
 import me.newburyminer.customItems.bosses.BossInstance
 import me.newburyminer.customItems.bosses.Collision
+import me.newburyminer.customItems.bosses.rendering.RenderManager
+import me.newburyminer.customItems.bosses.rendering.Transform
+import me.newburyminer.customItems.bosses.rendering.combinator.CylinderCombinator
+import me.newburyminer.customItems.bosses.rendering.combinator.FloorCombinator
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleSettings
 import me.newburyminer.customItems.helpers.SoundSettings
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.entity.Player
 
 class ParticleCylinderAttack(
@@ -29,9 +35,29 @@ class ParticleCylinderAttack(
 
     private val timeline = ActionTimeline()
 
+    private val renderManager = RenderManager()
+
     override fun start() {
-        timeline.every(0, delay, particleSettings.preParticleSeparation) {
-            CustomEffects.rotatedCylinder(particleSettings.preParticle, start, end, radius, particleSettings.preConcentration)
+        val cylinderRendering = CylinderCombinator(
+            Transform(start.toVector(), Transform.lookRotation(end.toVector().subtract(start.toVector()))),
+            radius,
+            start.clone().subtract(end).length(),
+            Material.YELLOW_CONCRETE,
+            Particle.DUST.builder().color(235, 225, 52),
+            0.25,
+            boss.boss.world
+        )
+        timeline.after(0) {
+            cylinderRendering.spawn(boss.boss.world)
+            renderManager.add(cylinderRendering)
+        }
+
+        timeline.at(delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 134, 52); cylinderRendering.material = Material.ORANGE_CONCRETE }
+        timeline.at(2 * delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 67, 52); cylinderRendering.material = Material.RED_CONCRETE }
+
+        timeline.repeat(0, delay) {
+            cylinderRendering.transform.rotateLocalZ(0.1F)
+            renderManager.tick()
         }
 
         val soundDelay = delay / soundSettings.steps
@@ -40,12 +66,16 @@ class ParticleCylinderAttack(
         }
 
         if (lineDuration == 0) {
-            timeline.after(delay) {
+            timeline.at(delay) {
                 executeAttack()
+                finish()
             }
         } else {
             timeline.repeat(delay, delay + lineDuration) {
                 tickAttack()
+            }
+            timeline.at(delay + lineDuration) {
+                finish()
             }
         }
     }
@@ -90,6 +120,10 @@ class ParticleCylinderAttack(
 
         boss.playSound(boss.getCenter(), soundSettings.postSound, 1.5F, (soundSettings.minPitch + soundSettings.maxPitch) / 2)
         CustomEffects.rotatedCylinder(particleSettings.preParticle, currentStart, currentEnd, radius, particleSettings.preConcentration)
+    }
+
+    override fun cancel() {
+        renderManager.clear()
     }
 
 }

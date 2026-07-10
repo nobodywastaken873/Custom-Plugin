@@ -74,7 +74,7 @@ class Circle(
 
         for (i in 0..totalPoints.toInt()) {
             val theta = Math.PI * 2 * Math.random()
-            possPoints.add(circleCenter.add(Vector(radius * cos(theta), 0.0, radius * sin(theta))))
+            possPoints.add(circleCenter.clone().add(Vector(radius * cos(theta), 0.0, radius * sin(theta))))
         }
 
         return possPoints

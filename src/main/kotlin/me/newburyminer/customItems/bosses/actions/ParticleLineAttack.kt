@@ -39,12 +39,16 @@ class ParticleLineAttack(
         }
 
         if (lineDuration == 0) {
-            timeline.after(delay) {
+            timeline.at(delay) {
                 executeLine()
+                finish()
             }
         } else {
             timeline.repeat(delay, delay + lineDuration) {
                 tickLine()
+            }
+            timeline.at(delay + lineDuration) {
+                finish()
             }
         }
     }
@@ -55,7 +59,7 @@ class ParticleLineAttack(
     }
 
     private fun executeLine() {
-        val direction = start.toVector().subtract(end.toVector())
+        val direction = end.toVector().subtract(start.toVector())
         val hitPlayers = start.world.rayTraceManyEntities(start, direction, direction.length(), 0.0).filterIsInstance<Player>()
 
         hitPlayers.forEach {

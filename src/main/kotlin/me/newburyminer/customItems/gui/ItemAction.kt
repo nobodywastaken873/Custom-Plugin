@@ -9,4 +9,7 @@ enum class ItemAction {
     GO_BACK,
     DELETE_GRAVE,
     TELEPORT_GRAVE,
+    OPEN_ONE,
+    OPEN_FIVE,
+    OPEN_ALL,
 }

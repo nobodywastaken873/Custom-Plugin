@@ -7,7 +7,9 @@ class SoundSettings(
     val minPitch: Float,
     val maxPitch: Float,
     val steps: Int,
-    val postSound: Sound = preSound
+    val postSound: Sound = preSound,
+    val postPeriod: Int = 5,
+    val volume: Float = 1.5f,
 ) {
     fun getPitch(step: Int): Float {
         return minPitch + (maxPitch - minPitch) / steps * step

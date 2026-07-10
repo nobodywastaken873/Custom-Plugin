@@ -25,6 +25,7 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
+import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
@@ -83,7 +84,8 @@ class CustomItems : JavaPlugin() {
         //bossListener = BossListeners()
         systemsListener = SystemsListener()
         wrapperManager = EntityWrapperManager()
-
+        MobRegistry.bootstrap(this)
+        PlayerLootManager.initialize()
 
         registerListeners()
 
@@ -94,6 +96,7 @@ class CustomItems : JavaPlugin() {
         wrapperManager.runTaskTimer(this, 0L, 1L)
         BossManager.runTaskTimer(this, 0L, 1L)
         CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
+        PlayerLootManager.runTaskTimerAsynchronously(this, 0L, 200L)
         //entityListener.run()
         //bossListener.run()
 
@@ -174,6 +177,7 @@ class CustomItems : JavaPlugin() {
     }
 
     override fun onDisable() {
+        PlayerLootManager.pushToFile()
         EntityWrapperManager.removeAllWrappers()
         BossManager.cancelAllBosses()
         cooldownTask.cancel()

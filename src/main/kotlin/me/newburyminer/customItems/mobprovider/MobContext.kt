@@ -15,6 +15,10 @@ class MobContext(
         location
     )
 
+    constructor(targetDifficulty: Double, location: Location) : this(
+        targetDifficulty * 600.0, false, location
+    )
+
     val difficulty: Double =
         distance / 600.0 *
                 when (spawnerType) {

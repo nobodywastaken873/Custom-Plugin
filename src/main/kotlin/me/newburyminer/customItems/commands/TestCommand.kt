@@ -281,12 +281,10 @@ class TestCommand : BasicCommand {
             val secondCircle = Circle(y, Vector(0, 100, 0), 6.0)
             val floorPattern = FloorCombinator(
                 NegativeShape(
-                    listOf(
-                        ShapeLayer(Polygon(listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1).map { Vector(it.first * 20.0, y, it.second * 20.0) }, y), ShapeLayer.Operation.ADD),
-                        ShapeLayer(circle, ShapeLayer.Operation.SUBTRACT),
-                        ShapeLayer(secondCircle, ShapeLayer.Operation.SUBTRACT)
-                    ),
-                    y
+                    y,
+                    ShapeLayer(Polygon(listOf(1 to 1, -1 to 1, 1 to -1, -1 to -1).map { Vector(it.first * 20.0, y, it.second * 20.0) }, y), ShapeLayer.Operation.ADD),
+                    ShapeLayer(circle, ShapeLayer.Operation.SUBTRACT),
+                    ShapeLayer(secondCircle, ShapeLayer.Operation.SUBTRACT)
                 ),
                 0.5,
                 Material.RED_CONCRETE,

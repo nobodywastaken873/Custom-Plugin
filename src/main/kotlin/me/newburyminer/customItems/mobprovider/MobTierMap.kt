@@ -29,7 +29,7 @@ class MobTierMap(
         val eliteWeight = scale(elite, ctx) + standardWeight
         val minibossWeight = scale(miniboss, ctx) + eliteWeight
 
-        val random = Random.nextDouble() * (gruntWeight + standardWeight + eliteWeight + minibossWeight)
+        val random = Random.nextDouble() * minibossWeight
 
         return when {
             random < gruntWeight -> MobTier.GRUNT

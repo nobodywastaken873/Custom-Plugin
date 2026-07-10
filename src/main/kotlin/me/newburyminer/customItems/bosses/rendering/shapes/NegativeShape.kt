@@ -5,8 +5,8 @@ import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
 class NegativeShape(
-    layers: List<ShapeLayer>,
-    y: Double
+    y: Double,
+    vararg layers: ShapeLayer
 ): Shape(y) {
 
     override val version: Int

@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.entity.components.bosses
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.bosses.behaviors.WardenInstance
+import me.newburyminer.customItems.bosses.definitions.warden.WardenInstance
 import me.newburyminer.customItems.entity.*
 import org.bukkit.Bukkit
 import org.bukkit.damage.DamageType
@@ -38,20 +38,12 @@ class WardenBossComponent(private val instance: WardenInstance?): EntityComponen
                 damageTick = Bukkit.getCurrentTick()
                 lastDamage = e.damage
 
+                //if (instance.hpPercent >= 1.0) instance.start()
+
                 Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
 
                     instance.updateBossbar()
-
-                    val progress = instance.hpPercent
-                    val phase = instance.getCurrentPhase()
-
-                    if (phase == 2 && progress <= 0.2) {
-                        instance.startPhase3()
-                    } else if (phase == 1 && progress <= 0.6) {
-                        instance.startPhase2()
-                    } else if (phase == 0 && progress < 1.0) {
-                        instance.startPhase1()
-                    }
+                    instance.checkStunning()
 
                     (e.entity as LivingEntity).noDamageTicks = 0
                 })

@@ -32,4 +32,11 @@ object EncounterStyle {
         miniboss = 0 to 4
     )
 
+    val GRUNT_ONLY: MobTierMap = MobTierMap(
+        grunt = 100 to 100,
+        standard = 0 to 0,
+        elite = 0 to 0,
+        miniboss = 0 to 0
+    )
+
 }

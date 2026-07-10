@@ -50,6 +50,8 @@ abstract class BossInstance(
         }}
     }
 
+    val bottomY: Double
+        get() = getLowerCenter().y
     protected abstract val bossCenter: Location
     fun getCenter(): Location {return bossCenter.clone()}
     fun getLowerCenter(): Location {
@@ -78,6 +80,7 @@ abstract class BossInstance(
 
     // Entity handling
     protected val activeEntities: MutableList<Entity> = mutableListOf()
+    fun addEntity(entity: Entity) { activeEntities.add(entity) }
     private fun checkEntities() {
         activeEntities.removeIf {
             !it.isValid

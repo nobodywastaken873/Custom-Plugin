@@ -143,10 +143,12 @@ fun Location.getValidSpawnLoc(boundingBox: BoundingBox, startRadius: Int = 2, ma
 
     val center = toVector()
 
-    for (radius in 2..5) {
+    for (radius in startRadius..maxRadius) {
         for (i in 0..15) {
 
-            val direction = Vector.getRandom().setY(0).normalize().multiply(radius)
+            val randomAngle = Math.random() * Math.PI * 2
+
+            val direction = Vector(sin(randomAngle), 0.0, cos(randomAngle)).normalize().multiply(radius)
             val newLoc = clone().add(direction).shiftToGround() ?: continue
             val newBox = boundingBox.copyTo(newLoc.toVector())
 

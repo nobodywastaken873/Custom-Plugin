@@ -20,8 +20,8 @@ class SpawnerSession(
         if (spawner.cooldownLength == 36000) {
             // Initialize spawner, not been previously loaded before
             spawner.cooldownLength = 72000
-            spawner.normalConfiguration.delay = 20 // TODO: make this correct
-            spawner.ominousConfiguration.delay = 20
+            spawner.normalConfiguration.delay = 200 // TODO: make this correct
+            spawner.ominousConfiguration.delay = 200
             spawner.requiredPlayerRange = 10.0.pow(2).toInt()
             spawner.update()
         }

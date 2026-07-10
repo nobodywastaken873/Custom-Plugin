@@ -16,4 +16,9 @@ abstract class BossAction(
     abstract fun tick()
 
     open fun cancel() {}
+
+    fun finish() {
+        finished = true
+        cancel()
+    }
 }

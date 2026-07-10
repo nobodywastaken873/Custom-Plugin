@@ -12,10 +12,10 @@ class ActionTimeline {
     }
 
     private fun lastTick(): Int {
-        return timeline.keys.maxOf { it }
+        return timeline.keys.maxOfOrNull { it } ?: 0
     }
 
-    fun once(time: Int, value: () -> Unit) {
+    fun at(time: Int, value: () -> Unit) {
         timeline.getOrPut(time) { mutableListOf() }.add(value)
     }
 
@@ -26,7 +26,8 @@ class ActionTimeline {
     }
 
     fun every(start: Int, end: Int, delay: Int, value: () -> Unit) {
-        for (i in start until end step delay) {
+        val correctedDelay = if (delay != 0) delay else 1
+        for (i in start until end step correctedDelay) {
             timeline.getOrPut(i) { mutableListOf() }.add(value)
         }
     }
@@ -42,7 +43,8 @@ class ActionTimeline {
     fun afterEvery(duration: Int, delay: Int, value: () -> Unit) {
         val start = lastTick() + 1
         val end = start + duration + 1
-        for (i in start until end step delay) {
+        val correctedDelay = if (delay != 0) delay else 1
+        for (i in start until end step correctedDelay) {
             timeline.getOrPut(i) { mutableListOf() }.add(value)
         }
     }

@@ -6,8 +6,15 @@ import org.bukkit.util.Vector
 
 class GreedyShapeMesher(
     private val cellSize: Double = 0.25,
-    var material: Material
+    material: Material
 ) : ShapeMesher {
+
+    private var materialHash: Int = 0
+    var material: Material = material
+        set(value) {
+            field = value
+            materialHash++
+        }
 
     private val rasterizer = ShapeRasterizer(cellSize)
 
@@ -78,6 +85,6 @@ class GreedyShapeMesher(
             }
         }
 
-        return Mesh(shape.version, tiles)
+        return Mesh(shape.version + materialHash, tiles)
     }
 }
