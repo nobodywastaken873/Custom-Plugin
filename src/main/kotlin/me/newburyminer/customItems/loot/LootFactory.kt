@@ -6,7 +6,9 @@ import org.bukkit.inventory.ItemStack
 object LootFactory {
 
     fun evaluate(table: LootTable, scaler: Double, player: Player): List<ItemStack> {
-        return emptyList()
+        val results = table.evaluate(scaler, player)
+        PlayerPityManager.increasePity(player, table, scaler)
+        return results
     }
 
 }

@@ -25,7 +25,9 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
+import me.newburyminer.customItems.loot.LootRegistry
 import me.newburyminer.customItems.loot.PlayerLootManager
+import me.newburyminer.customItems.loot.PlayerPityManager
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
 import me.newburyminer.customItems.structures.LootListener
@@ -75,6 +77,7 @@ class CustomItems : JavaPlugin() {
         //CustomEntityBootstrapper.registerAll(this)
         MobRegistry.bootstrap(this)
         StructureRegistry.bootstrap(this)
+        LootRegistry.bootstrap(this)
 
         registerWorlds()
         loadBosses()
@@ -86,6 +89,7 @@ class CustomItems : JavaPlugin() {
         wrapperManager = EntityWrapperManager()
         MobRegistry.bootstrap(this)
         PlayerLootManager.initialize()
+        PlayerPityManager.initialize()
 
         registerListeners()
 
@@ -97,6 +101,7 @@ class CustomItems : JavaPlugin() {
         BossManager.runTaskTimer(this, 0L, 1L)
         CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
         PlayerLootManager.runTaskTimerAsynchronously(this, 0L, 200L)
+        PlayerPityManager.runTaskTimerAsynchronously(this, 0L, 200L)
         //entityListener.run()
         //bossListener.run()
 

@@ -1,14 +1,10 @@
 package me.newburyminer.customItems.loot
 
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-class LootTable(
-    vararg val entries: LootEntry,
-    val rolls: IntRange
-) {
+interface LootTable {
 
-    fun evaluate(scaler: Double): List<ItemStack> {
-        return emptyList()
-    }
+    fun evaluate(scaler: Double, player: Player): List<ItemStack>
 
 }

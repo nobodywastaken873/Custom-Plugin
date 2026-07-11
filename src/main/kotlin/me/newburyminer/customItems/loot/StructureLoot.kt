@@ -38,7 +38,7 @@ abstract class StructureLoot(
 
         val allLoot = mutableListOf<ItemStack>()
         repeat(count) {
-            allLoot.addAll(LootFactory.evaluate(lootTable, scaler, player))
+            allLoot.addAll(LootFactory.evaluate(lootTable, scaler / 30.0, player))
         }
 
         return allLoot

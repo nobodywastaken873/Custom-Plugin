@@ -1,7 +1,6 @@
 package me.newburyminer.customItems.loot.rewards
 
-import me.newburyminer.customItems.loot.rewards.MaterialReward
-import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class ItemReward(
@@ -14,7 +13,7 @@ class ItemReward(
         count: Int
     ) : this(item, { count })
 
-    override fun evaluate(scaler: Double): List<ItemStack> {
+    override fun evaluate(scaler: Double, player: Player): List<ItemStack> {
         val itemStack = item(scaler)
         itemStack.amount = count(scaler)
         return listOf(itemStack)

@@ -37,7 +37,7 @@ abstract class BossLoot (
 
         val allLoot = mutableListOf<ItemStack>()
         repeat(count) {
-            allLoot.addAll(LootFactory.evaluate(lootTable, scaler, player))
+            allLoot.addAll(LootFactory.evaluate(lootTable, 0.0, player))
         }
 
         return allLoot

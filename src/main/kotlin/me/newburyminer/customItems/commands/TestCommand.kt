@@ -50,6 +50,9 @@ import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.loot.LootContext
+import me.newburyminer.customItems.loot.PlayerLootManager
+import me.newburyminer.customItems.loot.providers.boss.WardenLoot
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.mobs.military.AttackHound
 import me.newburyminer.customItems.mobprovider.mobs.military.BattleMedic
@@ -66,6 +69,7 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.trim.ArmorTrim
 import org.bukkit.inventory.meta.trim.TrimMaterial
 import org.bukkit.inventory.meta.trim.TrimPattern
+import org.bukkit.loot.LootTables
 import org.bukkit.potion.PotionType
 import org.bukkit.util.Vector
 import kotlin.math.cos
@@ -346,6 +350,8 @@ class TestCommand : BasicCommand {
                 rectangle.transform.rotateWorldY(0.03F)
                 rectangle2.transform.rotateWorldY(0.03F)
             }, 1L, 1L)
+        } else if (args[0] == "warden_loot") {
+            PlayerLootManager.addLoot(LootContext(WardenLoot.id, "normal", 0), sender, 500)
         }
     }
 }

@@ -117,6 +117,7 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("endfight", "Use to begin the end fight.", EndFightCommand())
             commands.register("createrecipe", "Use to open the recipe creation GUI.", MakeRecipeCommand())
             commands.register("lootmenu", "Use to open your loot list GUI.", LootCommand())
+            commands.register("pitymenu", "Use to open your pity list GUI.", PityCommand())
         }
         manager.registerEventHandler(RegistryEvents.ENCHANTMENT.compose().newHandler {
             event ->

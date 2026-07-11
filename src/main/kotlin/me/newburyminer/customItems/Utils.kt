@@ -358,18 +358,22 @@ class Utils {
             )
         }
         fun String.beautify(): String {
-            return this.replace("_", " ").lowercase().capitalize()
+            return this.lowercase().split('_').joinToString(" ") { word ->
+                word.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase() else it.toString()
+                }
+            }
         }
         fun toExpLevel(total: Int): Pair<Int, Int> {
             if (total in 0..352) {
                 val levels = sqrt((total + 9).toDouble()) - 3
-                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())).toInt())
+                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())))
             } else if (total in 353..1507) {
                 val levels = sqrt(2.0/5 * (total - 7839.0/40)) + 81.0/10
-                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())).toInt())
+                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())))
             } else if (total >= 1508) {
                 val levels = sqrt(2.0/9 * (total - 54215.0/72)) + 325.0/18
-                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())).toInt())
+                return Pair(levels.toInt(), (total - toExpAmount(levels.toInt())))
             }
             return Pair(0, 0)
         }

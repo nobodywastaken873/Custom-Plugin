@@ -11,5 +11,5 @@ enum class ItemAction {
     TELEPORT_GRAVE,
     OPEN_ONE,
     OPEN_FIVE,
-    OPEN_ALL,
+    OPEN_FIFTY,
 }
