@@ -58,7 +58,9 @@ object BlackstoneHermit : MobDefinition() {
         )
 
         equipment {
-            mainhand(Material.AIR)
+            mainhand(Material.BREEZE_ROD)
+            offhand(Material.AIR)
+            chest(Material)
         }
 
     }

@@ -12,6 +12,7 @@ import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.armorsets.ArmorSet
+import me.newburyminer.customItems.loot.ItemClaimManager
 import me.newburyminer.customItems.persistent.PersistentCustomType
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
@@ -142,7 +143,7 @@ class Utils {
                 Bukkit.getWorlds()[1] -> "Nether"
                 Bukkit.getWorlds()[2] -> "End"
                 CustomItems.aridWorld -> "Arid Lands"
-                CustomItems.bossWorld -> ""
+                CustomItems.bossWorld -> "Boss World"
                 else -> ""
             }
         }
@@ -235,6 +236,14 @@ class Utils {
             if (this.inventory.firstEmpty() == -1) {
                 val itemEntity = this.world.spawn(this.location, Item::class.java)
                 itemEntity.itemStack = item
+            } else {
+                this.inventory.addItem(item)
+            }
+        }
+        fun Player.addItemorClaim(item: ItemStack) {
+            if (this.inventory.firstEmpty() == -1) {
+                ItemClaimManager.add(this.uniqueId, item)
+                this.sendMessage(text("An item has been added to your /itemclaims menu.", GRAY))
             } else {
                 this.inventory.addItem(item)
             }

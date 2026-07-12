@@ -14,6 +14,9 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.util.BoundingBox
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
@@ -24,11 +27,12 @@ abstract class MobDefinition : SpawnOption {
     abstract val tier: MobTier
     open val targetRange: Double
         get() = 40.0
+    open val trim: ArmorTrim? = null
 
     abstract fun build(ctx: MobContext): MobBuilder
 
     fun mob(type: EntityType, block: MobBuilder.() -> Unit): MobBuilder {
-        val builder = MobBuilder(type, tier, targetRange)
+        val builder = MobBuilder(type, tier, targetRange, trim ?: ArmorTrim(TrimMaterial.IRON, TrimPattern.RIB))
         builder.block()
         return builder
     }

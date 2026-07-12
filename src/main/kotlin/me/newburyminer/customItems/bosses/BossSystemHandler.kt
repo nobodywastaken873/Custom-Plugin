@@ -6,8 +6,11 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockSpreadEvent
 import org.bukkit.event.entity.EntityDeathEvent
+import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
@@ -65,6 +68,19 @@ class BossSystemHandler: Listener {
     @EventHandler fun onPlayerDeath(e: PlayerDeathEvent) {
         if (e.player.world != CustomItems.bossWorld) return
         BossManager.removePlayer(e.player)
+    }
+    // Cancel block breaks by players and explosions
+    @EventHandler fun onBlockBreak(e: BlockBreakEvent) {
+        if (e.player.world != CustomItems.bossWorld) return
+        e.isCancelled = true
+    }
+    @EventHandler fun onEntityExplode(e: EntityExplodeEvent) {
+        if (e.entity.world != CustomItems.bossWorld) return
+        e.blockList().clear()
+    }
+    @EventHandler fun onBlockExplode(e: BlockExplodeEvent) {
+        if (e.block.world != CustomItems.bossWorld) return
+        e.blockList().clear()
     }
 
 }

@@ -6,12 +6,16 @@ import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.spells.SpellCasterComponent
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.util.BoundingBox
 import kotlin.reflect.KClass
 
@@ -19,6 +23,7 @@ class MobBuilder(
     val entityType: EntityType,
     val tier: MobTier,
     val targetRange: Double,
+    val trim: ArmorTrim,
 ) {
     var health: Double = 20.0
     var armor: Double = 0.0
@@ -73,6 +78,18 @@ class MobBuilder(
         removeDuplicateComponents(CancelProjectiles::class)
 
         val entity = ctx.location.world.spawnEntity(ctx.location, entityType, false) as LivingEntity
+
+        if (entity.equipment != null) {
+            equipment.boots(
+                when (tier) {
+                    MobTier.GRUNT -> Material.COPPER_BOOTS
+                    MobTier.STANDARD -> Material.IRON_BOOTS
+                    MobTier.ELITE -> Material.GOLDEN_BOOTS
+                    MobTier.MINIBOSS -> Material.DIAMOND_BOOTS
+                },
+                trim = trim
+            )
+        }
 
         entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = 2000.0
         entity.getAttribute(Attribute.MAX_HEALTH)?.baseValue = health

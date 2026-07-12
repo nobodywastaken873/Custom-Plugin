@@ -118,6 +118,8 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("createrecipe", "Use to open the recipe creation GUI.", MakeRecipeCommand())
             commands.register("lootmenu", "Use to open your loot list GUI.", LootCommand())
             commands.register("pitymenu", "Use to open your pity list GUI.", PityCommand())
+            commands.register("itemclaims", "Use to open your item claims GUI.", ItemClaimCommand())
+            commands.register("kothloot", "Use to check past and future KOTH loot.", KothLootCommand())
         }
         manager.registerEventHandler(RegistryEvents.ENCHANTMENT.compose().newHandler {
             event ->

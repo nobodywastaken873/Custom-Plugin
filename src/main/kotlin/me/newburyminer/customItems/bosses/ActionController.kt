@@ -39,8 +39,6 @@ abstract class ActionController(
     protected fun endTasks(vararg categories: ActionCategory) {
         categories.forEach { category ->
             actions.toMutableList().forEach {
-                println(it.category)
-                println(it)
                 if (it.category == category) {
                     it.cancel()
                     actions.remove(it)

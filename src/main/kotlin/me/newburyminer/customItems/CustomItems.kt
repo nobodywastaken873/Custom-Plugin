@@ -26,6 +26,7 @@ import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
 import me.newburyminer.customItems.items.armorsets.ArmorSetBootstrapper
+import me.newburyminer.customItems.loot.ItemClaimManager
 import me.newburyminer.customItems.loot.LootRegistry
 import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.loot.PlayerPityManager
@@ -41,6 +42,8 @@ import me.newburyminer.customItems.systems.TestingSystem
 import me.newburyminer.customItems.structures.CustomSpawningSystem
 import me.newburyminer.customItems.structures.locations.StructureBlockManager
 import me.newburyminer.customItems.structures.locations.StructureBounding
+import me.newburyminer.customItems.systems.KothSystem
+import me.newburyminer.customItems.systems.TabMenuSystem
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.ores.OreSystemManager
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
@@ -84,6 +87,7 @@ class CustomItems : JavaPlugin() {
         StructureRegistry.bootstrap(this)
         LootRegistry.bootstrap(this)
         OreSystemManager.registerEvents()
+        KothSystem.registerListeners()
 
         registerWorlds()
         loadBosses()
@@ -105,6 +109,8 @@ class CustomItems : JavaPlugin() {
         wrapperManager.runTaskTimer(this, 0L, 1L)
         BossManager.runTaskTimer(this, 0L, 1L)
         CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
+        KothSystem.runTaskTimer(this, 0L, 1200L)
+        TabMenuSystem.runTaskTimer(this, 0L, 20L)
         //entityListener.run()
         //bossListener.run()
 
@@ -122,6 +128,7 @@ class CustomItems : JavaPlugin() {
         StructureBlockManager,
         PlayerLootManager,
         PlayerPityManager,
+        ItemClaimManager,
     )
     private fun loadFileRegistries() {
         fileRegistries.forEach {
@@ -139,7 +146,7 @@ class CustomItems : JavaPlugin() {
     private fun registerWorlds() {
         aridWorld = this.server.getWorld(Key.key("customworld:arid_lands"))!!
         aridWorld.setGameRule(GameRules.ADVANCE_TIME, false)
-        bossWorld = Bukkit.createWorld(WorldCreator("testworld"))!!
+        bossWorld = this.server.getWorld(Key.key("customworld:boss_world"))!!
         bossWorld.setGameRule(GameRules.ADVANCE_TIME, false)
         bossWorld.time = 20000
     }

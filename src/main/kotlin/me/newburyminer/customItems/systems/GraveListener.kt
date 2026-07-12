@@ -3,6 +3,7 @@ package me.newburyminer.customItems.systems
 import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.addItemorClaim
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getCustom
 import me.newburyminer.customItems.Utils.Companion.getListTag
@@ -231,9 +232,12 @@ class GraveListener: Listener {
                 val steal = possibleSteals.random()
                 items.remove(steal.clone())
                 armorStand.setListTag("graveitems", items)
+
                 e.player.sendMessage(text("Item stolen.", Utils.SUCCESS_COLOR))
+                Bukkit.getPlayer(owner)?.sendMessage(text("A(n) ${steal.displayName()} has been stolen from your grave.", Utils.FAILED_COLOR))
+
                 CustomEffects.playSound(armorStand.location, Sound.BLOCK_CHEST_CLOSE, 1.0F, 1.2F)
-                e.player.addItemorDrop(steal)
+                e.player.addItemorClaim(steal)
             }
             return
         }
