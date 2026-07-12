@@ -37,6 +37,9 @@ class SimpleEffectAura(
     companion object: DeserializationInterface {
         override val componentType: EntityComponentType = EntityComponentType.SIMPLE_EFFECT_AURA
         override fun deserialize(map: Map<String, Any>): EntityComponent {
+            val uuid = map["uuid"]
+            val newSummoner = if (uuid == null) null
+                else Bukkit.getEntity(UUID.fromString(uuid as String))
             return SimpleEffectAura(
                 map["radius"].asDouble(),
                 map["height"].asDouble(),
@@ -44,7 +47,7 @@ class SimpleEffectAura(
                 HitEffects.deserialize(map["effects"]),
                 map["apply_period"].asInt(),
                 ParticleTheme.valueOf(map["particle_theme"].asString()),
-                Bukkit.getEntity(UUID.fromString(map["summoner"].asString())),
+                newSummoner
             )
         }
     }

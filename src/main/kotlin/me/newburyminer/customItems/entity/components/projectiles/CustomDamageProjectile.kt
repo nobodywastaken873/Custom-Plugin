@@ -12,6 +12,7 @@ import me.newburyminer.customItems.entity.components.projectileshooters.Projecti
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import org.bukkit.Bukkit
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -37,7 +38,9 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
     override fun registerListeners(wrapper: EntityWrapper) {
         register(EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
             e.damager == wrapper.entity &&
-            !e.damageSource.damageType.isCustom()
+            !e.damageSource.damageType.isCustom() &&
+            e.damageSource.damageType != DamageType.EXPLOSION &&
+            e.damageSource.damageType != DamageType.PLAYER_EXPLOSION
         },
         {e ->
             val damaged = e.entity as? LivingEntity ?: return@register

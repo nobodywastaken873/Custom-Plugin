@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.helpers
 
 import me.newburyminer.customItems.Utils.Companion.rotateToAxis
+import me.newburyminer.customItems.structures.locations.ChunkPos
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.World
@@ -166,4 +167,22 @@ fun Location.getNearestPlayer(radius: Double): Player? {
 
 fun Location.getNearestLivingEntity(radius: Double): LivingEntity? {
     return getNearbyEntitiesByType(LivingEntity::class.java, radius).minByOrNull { it.location.subtract(this).length() }
+}
+
+fun BoundingBox.getChunkPositions(): List<ChunkPos> {
+    val minChunkX = floor(minX).toInt() shr 4
+    val maxChunkX = floor(maxX).toInt() shr 4
+
+    val minChunkZ = floor(minZ).toInt() shr 4
+    val maxChunkZ = floor(maxZ).toInt() shr 4
+
+    val chunks = ArrayList<ChunkPos>((maxChunkX - minChunkX + 1) * (maxChunkZ - minChunkZ + 1))
+
+    for (chunkX in minChunkX..maxChunkX) {
+        for (chunkZ in minChunkZ..maxChunkZ) {
+            chunks += ChunkPos(chunkX, chunkZ)
+        }
+    }
+
+    return chunks
 }

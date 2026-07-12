@@ -21,36 +21,40 @@ class CustomEffects {
     companion object {
 
         fun particleFullShape(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
-            particleShape(world, particle, shape, concentration)
-            particleShapeOutline(world, particle, shape, concentration)
+            val receivers = shape.center.toLocation(world).getNearbyPlayers(60.0).toList()
+            particleShape(world, particle, shape, concentration, receivers)
+            particleShapeOutline(world, particle, shape, concentration, receivers)
         }
 
-        fun particleShape(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
+        fun particleShape(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double, preReceivers: List<Player>? = null) {
+            val receivers = preReceivers ?: shape.center.toLocation(world).getNearbyPlayers(60.0).toList()
             for (i in 0..(concentration * shape.area).toInt()) {
-                particle(particle, shape.randomPoint().toLocation(world), 1)
+                particle(particle, shape.randomPoint().toLocation(world), 1, receivers = receivers)
             }
         }
 
-        fun particleShapeOutline(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double) {
+        fun particleShapeOutline(world: World, particle: ParticleBuilder, shape: Shape, concentration: Double, preReceivers: List<Player>? = null) {
+            val receivers = preReceivers ?: shape.center.toLocation(world).getNearbyPlayers(60.0).toList()
             for (point in shape.linePoints(2 * sqrt(concentration))) {
-                particle(particle, point.toLocation(world), 1)
+                particle(particle, point.toLocation(world), 1, receivers = receivers)
             }
         }
 
-        fun particle(particle: ParticleBuilder, loc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
+        fun particle(particle: ParticleBuilder, loc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0, receivers: List<Player>? = null) {
+            val calcedReceivers = receivers ?: loc.getNearbyPlayers(60.0)
             particle.clone()
                 .count(count)
                 .location(loc.clone())
                 .offset(offset, offset, offset)
                 .extra(extra)
-                .receivers(60)
+                .receivers(calcedReceivers)
                 .spawn()
 
             //loc.world.spawnParticle(particle, loc, count, offset, offset, offset, extra)
         }
 
         fun particleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, offset: Double = 0.0, extra: Double = 0.0) {
-
+            val receivers = loc.getNearbyPlayers(60.0)
             for (i in 1..count) {
                 val rad = Math.random() * Math.PI * 2
                 val newLoc = loc.clone().add(Vector(cos(rad) * radius, 0.0, sin(rad) * radius))
@@ -59,7 +63,7 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
             }
@@ -71,6 +75,7 @@ class CustomEffects {
         }
 
         fun filledParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
+            val receivers = loc.getNearbyPlayers(60.0)
             for (i in 0..(radius.pow(2)*Math.PI*concentration).toInt()) {
                 val theta = Math.random() * 2 * Math.PI
                 val r = sqrt(Math.random()) * radius
@@ -80,13 +85,13 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
             }
         }
 
         fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
-
+            val receivers = loc.getNearbyPlayers(60.0)
             for (i in 1..count) {
                 //initial phi and theta will create a circle perpendicular to the x-axis
                 //phi is offset from xz plane
@@ -114,7 +119,7 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
             }
@@ -126,7 +131,7 @@ class CustomEffects {
         }
 
         fun rotatedCylinder(particle: ParticleBuilder, start: Location, end: Location, radius: Double, concentration: Double) {
-
+            val receivers = midpoint(start, end).getNearbyPlayers(60.0).toList()
             val direction = end.clone().subtract(start)
 
             val newLoc = start.clone()
@@ -136,13 +141,14 @@ class CustomEffects {
             val unit = direction.toVector().normalize().multiply(separation)
 
             for (i in 0..circleCount) {
-                rotatedParticleCircle(particle, newLoc.clone(), radius, (6.28 * radius * concentration).toInt(), unit)
+                rotatedParticleCircle(particle, newLoc.clone(), radius, (6.28 * radius * concentration).toInt(), unit, preReceivers = receivers)
                 newLoc.add(unit)
             }
 
         }
 
-        fun rotatedParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
+        fun rotatedParticleCircle(particle: ParticleBuilder, loc: Location, radius: Double, count: Int, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0, preReceivers: List<Player>? = null) {
+            val receivers = preReceivers ?: loc.getNearbyPlayers(60.0)
             for (i in 1..count) {
                 //initial phi and theta will create a circle perpendicular to the x-axis
                 //phi is offset from xz plane
@@ -158,7 +164,7 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
             }
@@ -168,6 +174,8 @@ class CustomEffects {
         fun renderParticlePlane(
             particle: ParticleBuilder, center: Location, normal: Vector, up: Vector, width: Double, height: Double, concentration: Double = 4.0
         ) {
+
+            val receivers = center.getNearbyPlayers(60.0)
 
             val n = normal.clone().normalize()
             val u = up.clone().normalize()
@@ -193,13 +201,13 @@ class CustomEffects {
                 particle.clone()
                     .location(point)
                     .count(1)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
             }
         }
 
         fun particleSphere(particle: ParticleBuilder, loc: Location, radius: Double, concentration: Double, offset: Double = 0.0, extra: Double = 0.0) {
-
+            val receivers = loc.getNearbyPlayers(60.0)
             val surfaceArea = (4*Math.PI*radius.pow(2) * concentration).toInt()
             for (i in 0..surfaceArea) {
 
@@ -213,7 +221,7 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
             }
         }
@@ -234,10 +242,15 @@ class CustomEffects {
         }
         fun particleLine(particle: ParticleBuilder, startLoc: Location, endLoc: Location, density: Double, offset: Double = 0.0, extra: Double = 0.0) {
 
+            val receivers = (
+                startLoc.getNearbyPlayers(60.0) +
+                endLoc.getNearbyPlayers(60.0) +
+                midpoint(startLoc, endLoc).getNearbyPlayers(60.0)
+            ).toSet()
+
             val totalDistance = endLoc.clone().subtract(startLoc)
             val newCount = (totalDistance.length() * density).toInt()
             val distBetween = totalDistance.clone().toVector().multiply(1.0 / newCount)
-
 
             val newStart = startLoc.clone()
 
@@ -247,7 +260,7 @@ class CustomEffects {
                     .count(1)
                     .offset(offset, offset, offset)
                     .extra(extra)
-                    .receivers(60)
+                    .receivers(receivers)
                     .spawn()
                 //startLoc.world.spawnParticle(particle, startLoc.add(distBetween.clone().multiply(i)), 1, offset, offset, offset, extra)
             }
@@ -256,12 +269,14 @@ class CustomEffects {
 
         fun particleCloud(particle: ParticleBuilder, loc: Location, count: Int, offset: Double, extra: Double) {
 
+            val receivers = loc.getNearbyPlayers(60.0)
+
             particle.clone()
                 .location(loc.clone())
                 .count(count)
                 .offset(offset, offset, offset)
                 .extra(extra)
-                .receivers(60)
+                .receivers(receivers)
                 .spawn()
             //loc.world.spawnParticle(particle, loc, count, offset, offset, offset, extra)
         }
@@ -276,5 +291,10 @@ class CustomEffects {
         fun playSoundToPlayer(player: Player, sound: Sound, volume: Float, pitch: Float, randomAmount: Float = 0.02F) {
             player.playSound(player.location, sound, volume, (pitch + randomAmount * (2 * Math.random() - 1)).toFloat())
         }
+
+        private fun midpoint(start: Location, end: Location): Location {
+            return start.clone().add(end.clone().subtract(start).toVector().multiply(0.5))
+        }
     }
+
 }

@@ -57,19 +57,28 @@ class GraveListener: Listener {
         if (e.drops.isEmpty()) return
         // finding location
         val loc = e.player.location
-        loc.y = if (e.player.world == Bukkit.getServer().worlds[0] && loc.y < -64.0) -64.0 else loc.y
-        loc.y = if (e.player.world != Bukkit.getServer().worlds[0] && loc.y < 0.0) 0.0 else loc.y
-        if (loc.world.getBlockAt(loc).type != Material.AIR && loc.world.getBlockAt(loc).type != Material.WATER) {
-            while (loc.world.getBlockAt(loc).type != Material.AIR && loc.world.getBlockAt(loc).type != Material.WATER) {
+        when (e.player.world) {
+            Bukkit.getServer().worlds[0] -> {
+                if (loc.y < -64.0) loc.y = -64.0
+            }
+            CustomItems.aridWorld -> {
+                if (loc.y < -256.0) loc.y = -256.0
+            }
+            else -> {
+                if (loc.y < 0.0) loc.y = 0.0
+            }
+        }
+        if (!loc.world.getBlockAt(loc).isPassable) {
+            while (!loc.world.getBlockAt(loc).isPassable) {
                 loc.y += 1
-                if (loc.y >= 255) {
+                if (loc.y >= 319) {
                     e.keepInventory = true
                     e.drops.clear()
                     return
                 }
             }
         } else {
-            while (loc.world.getBlockAt(loc).type == Material.AIR || loc.world.getBlockAt(loc).type == Material.WATER) {
+            while (loc.world.getBlockAt(loc).isPassable) {
                 loc.y -= 1
             }
             loc.y += 1

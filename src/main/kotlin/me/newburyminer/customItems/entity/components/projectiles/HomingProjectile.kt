@@ -37,7 +37,7 @@ class HomingProjectile(
     }
 
     override fun tick(wrapper: EntityWrapper) {
-        if (!target.isValid) { wrapper.entity.remove(); return }
+        if (!target.isValid || target.world != wrapper.entity.world) { wrapper.entity.remove(); return }
         if (wrapper.entity is Arrow && wrapper.entity.isInBlock) { wrapper.entity.remove(); return }
 
         val projectile = wrapper.entity

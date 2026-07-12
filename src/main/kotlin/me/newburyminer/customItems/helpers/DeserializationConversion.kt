@@ -1,5 +1,9 @@
 package me.newburyminer.customItems.helpers
 
+import org.bukkit.Bukkit
+import org.bukkit.entity.Entity
+import java.util.UUID
+
 interface DeserializationConversion {
     fun Any?.asInt(): Int {
         return (this as Number).toInt()
@@ -15,5 +19,12 @@ interface DeserializationConversion {
     }
     fun Any?.asBoolean(): Boolean {
         return (this as Boolean)
+    }
+    fun fromNullUUID(data: Any?): Entity? {
+        if (data == null) {
+            return null
+        } else {
+            return Bukkit.getEntity(UUID.fromString(data.asString()))
+        }
     }
 }

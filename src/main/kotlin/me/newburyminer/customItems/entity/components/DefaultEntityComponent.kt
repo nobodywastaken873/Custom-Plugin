@@ -88,6 +88,7 @@ class DefaultEntityComponent(
 
     override fun tick(wrapper: EntityWrapper) {
         if (heldTarget != null) {
+            if ((heldTarget as Player).world != wrapper.entity.world || (heldTarget as Player).isDead) {heldTarget = null}
             (wrapper.entity as? Mob ?: return).target = heldTarget
         }
 

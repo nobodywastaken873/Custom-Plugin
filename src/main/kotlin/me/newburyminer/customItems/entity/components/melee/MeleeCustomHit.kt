@@ -6,6 +6,7 @@ import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
@@ -28,7 +29,9 @@ class MeleeCustomHit(val hitEffects: HitEffects): EntityComponent {
         register(
             EntityDamageByEntityEvent::class, wrapper.entity.uniqueId, { e ->
             e.damager == wrapper.entity &&
-            !e.damageSource.damageType.isCustom()
+            !e.damageSource.damageType.isCustom() &&
+            e.damageSource.damageType != DamageType.EXPLOSION &&
+            e.damageSource.damageType != DamageType.PLAYER_EXPLOSION
         },
         {e ->
             e.isCancelled = true

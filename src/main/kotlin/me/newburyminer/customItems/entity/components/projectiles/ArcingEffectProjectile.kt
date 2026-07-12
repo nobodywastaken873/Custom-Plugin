@@ -37,7 +37,7 @@ class ArcingEffectProjectile(
         override fun deserialize(map: Map<String, Any>): EntityComponent {
             return ArcingEffectProjectile(
                 HitEffects.deserialize(map["damage"]),
-                Bukkit.getEntity(UUID.fromString(map["caster"].asString()))
+                fromNullUUID(map["caster"])
             )
         }
     }

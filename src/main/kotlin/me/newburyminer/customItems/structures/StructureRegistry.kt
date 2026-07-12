@@ -53,4 +53,8 @@ object StructureRegistry {
         structures[structure.id] = structure
     }
 
+    fun get(id: String): StructureDefinition? {
+        return structures[id]
+    }
+
 }

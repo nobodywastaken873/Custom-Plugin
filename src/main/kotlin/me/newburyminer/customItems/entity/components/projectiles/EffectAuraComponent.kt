@@ -46,12 +46,12 @@ class EffectAuraComponent(
                 map["height"].asDouble(),
                 map["duration"].asInt(),
                 map["start_time"].asInt(),
-                Bukkit.getEntity(UUID.fromString(map["anchor"].asString())),
+                fromNullUUID(map["anchor"]),
                 map["anchor_time"].asInt(),
                 HitEffects.deserialize(map["effects"]),
                 map["apply_period"].asInt(),
                 ParticleTheme.valueOf(map["particle_theme"].asString()),
-                Bukkit.getEntity(UUID.fromString(map["summoner"].asString())),
+                fromNullUUID(map["summoner"]),
             )
         }
     }

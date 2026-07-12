@@ -3,6 +3,7 @@ package me.newburyminer.customItems.loot
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
+import me.newburyminer.customItems.helpers.FileDatabase
 import me.newburyminer.customItems.loot.rewards.LootTableReward
 import me.newburyminer.customItems.loot.rewards.VanillaTableReward
 import org.bukkit.Material
@@ -12,21 +13,15 @@ import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
 import java.util.UUID
 
-object PlayerPityManager: BukkitRunnable() {
+object PlayerPityManager: FileDatabase() {
 
     private val pities = mutableMapOf<UUID, MutableMap<String, PityProgress>>()
 
-    fun initialize() {
+    override val fileName: String = "playerPityData.txt"
 
-        val folderPath = System.getProperty("user.dir") + "/plugins/customItems/"
-        val directory = File(folderPath)
-        if (!directory.exists()) { directory.mkdir() }
+    override fun initialize() {
 
-        val fileName = folderPath + "playerPityData.txt"
-        val file = File(fileName)
-        if (!file.exists()) { file.createNewFile() }
-
-        val text = file.readText()
+        val text = readFromFile()
         if (text.isEmpty()) return
 
         val entries = text.split("\n")
@@ -42,24 +37,14 @@ object PlayerPityManager: BukkitRunnable() {
 
     }
 
-    fun pushToFile() {
-        val folderPath = System.getProperty("user.dir") + "/plugins/customItems/"
-        val directory = File(folderPath)
-        if (!directory.exists()) { directory.mkdir() }
-
-        val fileName = folderPath + "playerPityData.txt"
-        val file = File(fileName)
-        if (!file.exists()) { file.createNewFile() }
-
-        val text = pities.map { (key, value) ->
+    override fun pushToFile(backup: Boolean) {
+        val text = pities.toList().map { (key, value) ->
             "$key:" + value.map { (loot, progress) ->
                 "$loot=${progress.progress}=${progress.material.name}"
             }.joinToString(",")
         }.joinToString("\n")
 
-        file.writeText(
-            text
-        )
+        writeToFile(text, backup)
     }
 
     fun increasePity(player: Player, table: LootTable, scaler: Double) {
@@ -119,10 +104,6 @@ object PlayerPityManager: BukkitRunnable() {
 
     fun getAllPity(player: Player): Map<String, PityProgress> {
         return pities[player.uniqueId]?.toMap() ?: mutableMapOf()
-    }
-
-    override fun run() {
-        pushToFile()
     }
 
 }

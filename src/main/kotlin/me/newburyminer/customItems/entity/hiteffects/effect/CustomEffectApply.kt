@@ -28,11 +28,12 @@ class CustomEffectApply(val type: CustomEffectType, val data: EffectData): HitEf
             "data" to data.serialize()
         )
     }
+    @Suppress("UNCHECKED_CAST")
     companion object: HitEffectDeserialization {
         override val componentType: HitEffectType = HitEffectType.CUSTOM_EFFECT
         override fun deserialize(map: Map<String, Any>): HitEffect {
             val type = CustomEffectType.valueOf(map["type"].asString())
-            val data = EffectData.deserialize(map)
+            val data = EffectData.deserialize(map["data"] as Map<String, Any>)
             return CustomEffectApply(type, data)
         }
     }

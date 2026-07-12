@@ -50,8 +50,8 @@ class MagicMissileComponent(
                 Vector.deserialize(map["initialVel"] as Map<String, Any>),
                 HitEffects.deserialize(map["effects"]),
                 ParticleTheme.valueOf(map["particleTheme"].asString()),
-                Bukkit.getEntity(UUID.fromString(map["shooter"].asString())),
-                Bukkit.getEntity(UUID.fromString(map["target"].asString()))
+                fromNullUUID(map["shooter"]),
+                fromNullUUID(map["target"])
             )
         }
     }
@@ -62,13 +62,20 @@ class MagicMissileComponent(
 
     override fun tick(wrapper: EntityWrapper) {
         // need target validity check
+        if (target?.isValid == false || target?.world != wrapper.entity.world) { wrapper.entity.remove(); return }
 
         val projectile = wrapper.entity as Marker
         val currentLocation = projectile.location
-        val targetLocation = target?.getUpperCenter() ?: return
+        val targetLocation = target.getUpperCenter()
 
         currentVelocity = velocityProvider.next(currentLocation, targetLocation, currentVelocity, timeIndex)
         timeIndex++
+
+        try {
+            currentVelocity.checkFinite()
+        } catch (e: Exception) {
+            println(currentVelocity)
+        }
 
         // Stop it if it would hit a block
         if (projectile.world.rayTraceBlocks(currentLocation, currentVelocity,

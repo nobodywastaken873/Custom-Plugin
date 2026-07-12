@@ -21,6 +21,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegis
 import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
+import me.newburyminer.customItems.helpers.FileDatabase
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
@@ -38,7 +39,10 @@ import me.newburyminer.customItems.systems.GraveListener
 import me.newburyminer.customItems.systems.SystemsListener
 import me.newburyminer.customItems.systems.TestingSystem
 import me.newburyminer.customItems.structures.CustomSpawningSystem
+import me.newburyminer.customItems.structures.locations.StructureBlockManager
+import me.newburyminer.customItems.structures.locations.StructureBounding
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
+import me.newburyminer.customItems.systems.ores.OreSystemManager
 import me.newburyminer.customItems.systems.playertask.PlayerTaskHandler
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
@@ -50,6 +54,7 @@ import org.bukkit.WorldCreator
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 
 class CustomItems : JavaPlugin() {
@@ -78,6 +83,7 @@ class CustomItems : JavaPlugin() {
         MobRegistry.bootstrap(this)
         StructureRegistry.bootstrap(this)
         LootRegistry.bootstrap(this)
+        OreSystemManager.registerEvents()
 
         registerWorlds()
         loadBosses()
@@ -88,10 +94,9 @@ class CustomItems : JavaPlugin() {
         systemsListener = SystemsListener()
         wrapperManager = EntityWrapperManager()
         MobRegistry.bootstrap(this)
-        PlayerLootManager.initialize()
-        PlayerPityManager.initialize()
 
         registerListeners()
+        loadFileRegistries()
 
         systemsListener.run()
         this.run()
@@ -100,18 +105,29 @@ class CustomItems : JavaPlugin() {
         wrapperManager.runTaskTimer(this, 0L, 1L)
         BossManager.runTaskTimer(this, 0L, 1L)
         CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
-        PlayerLootManager.runTaskTimerAsynchronously(this, 0L, 200L)
-        PlayerPityManager.runTaskTimerAsynchronously(this, 0L, 200L)
         //entityListener.run()
         //bossListener.run()
 
         TestingSystem.registerListeners()
         CustomSpawningSystem.registerListeners()
+        StructureBounding.registerListeners()
 
         // Should maybe be here because it accesses Bukkit values that may not be initialized
         MaterialConverterBootstrapper.registerAll()
 
         logger.info("Custom items has successfully loaded!")
+    }
+
+    private val fileRegistries = listOf(
+        StructureBlockManager,
+        PlayerLootManager,
+        PlayerPityManager,
+    )
+    private fun loadFileRegistries() {
+        fileRegistries.forEach {
+            it.initialize()
+            it.startPushing(this)
+        }
     }
 
     private fun loadBosses() {
@@ -182,7 +198,10 @@ class CustomItems : JavaPlugin() {
     }
 
     override fun onDisable() {
-        PlayerLootManager.pushToFile()
+        fileRegistries.forEach {
+            it.pushToFile()
+            it.backup()
+        }
         EntityWrapperManager.removeAllWrappers()
         BossManager.cancelAllBosses()
         cooldownTask.cancel()

@@ -40,6 +40,7 @@ class SpellCasterComponent(private val slowdown: Double = 0.0): EntityComponent 
     private val nameKey = NamespacedKey(CustomItems.plugin, "spell_slowdown")
     override fun onCast(wrapper: EntityWrapper) {
         val caster = wrapper.entity as? LivingEntity ?: return
+        caster.getAttribute(Attribute.MOVEMENT_SPEED)?.removeModifier(nameKey)
         caster.getAttribute(Attribute.MOVEMENT_SPEED)?.addModifier(
             AttributeModifier(
                 nameKey, slowdown, AttributeModifier.Operation.MULTIPLY_SCALAR_1
@@ -53,6 +54,7 @@ class SpellCasterComponent(private val slowdown: Double = 0.0): EntityComponent 
     }
 
     override fun tick(wrapper: EntityWrapper) {
+
         if (wrapper.isCasting() && wrapper.entity.ticksLived % 3 == 0) {
 
             val caster = wrapper.entity as? LivingEntity ?: return

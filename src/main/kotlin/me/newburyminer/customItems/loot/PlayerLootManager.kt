@@ -1,26 +1,20 @@
 package me.newburyminer.customItems.loot
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.helpers.FileDatabase
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
 import java.util.UUID
 
-object PlayerLootManager: BukkitRunnable() {
+object PlayerLootManager: FileDatabase() {
 
     private val loots = mutableMapOf<UUID, MutableMap<LootContext, Int>>()
 
-    fun initialize() {
+    override val fileName: String = "playerLootData.txt"
 
-        val folderPath = System.getProperty("user.dir") + "/plugins/customItems/"
-        val directory = File(folderPath)
-        if (!directory.exists()) { directory.mkdir() }
-
-        val fileName = folderPath + "playerLootData.txt"
-        val file = File(fileName)
-        if (!file.exists()) { file.createNewFile() }
-
-        val text = file.readText()
+    override fun initialize() {
+        val text = readFromFile()
         if (text.isEmpty()) return
 
         val entries = text.split("\n")
@@ -33,27 +27,16 @@ object PlayerLootManager: BukkitRunnable() {
             }
             loots[uuid] = loot.toMap().toMutableMap()
         }
-
     }
 
-    fun pushToFile() {
-        val folderPath = System.getProperty("user.dir") + "/plugins/customItems/"
-        val directory = File(folderPath)
-        if (!directory.exists()) { directory.mkdir() }
-
-        val fileName = folderPath + "playerLootData.txt"
-        val file = File(fileName)
-        if (!file.exists()) { file.createNewFile() }
-
-        val text = loots.map { (key, value) ->
+    override fun pushToFile(backup: Boolean) {
+        val text = loots.toList().map { (key, value) ->
             "$key:" + value.map { (loot, amount) ->
                 "${loot.toStringData()}=$amount"
             }.joinToString(",")
         }.joinToString("\n")
 
-        file.writeText(
-            text
-        )
+        writeToFile(text, backup)
     }
 
     fun addLoot(loot: LootContext, player: Player, count: Int = 1) {
@@ -76,10 +59,6 @@ object PlayerLootManager: BukkitRunnable() {
 
     fun getAllLoot(player: Player): Map<LootContext, Int> {
         return loots[player.uniqueId]?.toMap() ?: mutableMapOf()
-    }
-
-    override fun run() {
-        pushToFile()
     }
 
 }
