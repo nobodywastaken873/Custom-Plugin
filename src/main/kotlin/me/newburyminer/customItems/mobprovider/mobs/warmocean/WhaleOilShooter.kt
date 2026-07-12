@@ -10,13 +10,18 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object WhaleOilShooter : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.EYE)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -67,6 +72,12 @@ object WhaleOilShooter : MobDefinition() {
         scale(
             1.2
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(49, 159, 181), trim)
+        }
 
     }
 

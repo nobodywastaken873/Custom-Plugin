@@ -13,7 +13,9 @@ import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbili
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.Bat
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.Warden
 
 object MutatedShark : MobDefinition() {
 
@@ -74,6 +76,13 @@ object MutatedShark : MobDefinition() {
         movementSpeed(
             linear(1.3 to 1.5, ctx)
         )
+
+        apply {
+            if (this !is Warden) return@apply
+            val target = this.world.spawn(this.location, Bat::class.java)
+            this.setAnger(target, 100)
+            target.remove()
+        }
 
     }
 

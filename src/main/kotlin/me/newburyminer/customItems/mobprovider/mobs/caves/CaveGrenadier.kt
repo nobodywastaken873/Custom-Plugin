@@ -10,9 +10,13 @@ import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ExplosiveGrenadeAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object CaveGrenadier: MobDefinition() {
-    
+
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.BOLT)
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
@@ -42,6 +46,12 @@ object CaveGrenadier: MobDefinition() {
         movementSpeed(
             linear(0.9 to 1.2, ctx)
         )
+        
+        equipment {
+            mainhand(Material.DIAMOND_AXE)
+            offhand(Material.AIR)
+            setArmor(arrayOf(111, 117, 117), trim)
+        }
     
     }
     

@@ -8,11 +8,16 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object LeadenSkeleton : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.COAST)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -31,6 +36,12 @@ object LeadenSkeleton : MobDefinition() {
         movementSpeed(
             linear(0.9 to 1.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.AIR)
+            setArmor(arrayOf(80, 82, 89), trim)
+        }
 
     }
 

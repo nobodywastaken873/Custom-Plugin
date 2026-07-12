@@ -7,10 +7,15 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object WardenZombie: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.RIB)
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
@@ -29,6 +34,12 @@ object WardenZombie: MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.3, ctx)
         )
+
+        equipment {
+            mainhand(Material.DIAMOND_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(15, 74, 82), trim)
+        }
 
     }
 

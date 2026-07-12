@@ -29,7 +29,7 @@ object SwarmingSpider: MobDefinition() {
                 1,
                 SwarmingSpider,
                 linear(50 to 40, ctx),
-                linear(300 to 250, ctx),
+                linear(400 to 350, ctx),
                 ParticleTheme.CAVES
             )
         )

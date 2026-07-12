@@ -14,9 +14,13 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object BlackstoneHermit : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.SENTRY)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -60,7 +64,7 @@ object BlackstoneHermit : MobDefinition() {
         equipment {
             mainhand(Material.BREEZE_ROD)
             offhand(Material.AIR)
-            chest(Material)
+            setArmor(arrayOf(40, 32, 48), trim)
         }
 
     }

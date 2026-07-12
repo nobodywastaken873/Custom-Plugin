@@ -10,9 +10,13 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object Buccaneer : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -34,6 +38,8 @@ object Buccaneer : MobDefinition() {
 
         equipment {
             mainhand(Material.IRON_AXE)
+            offhand(Material.AIR)
+            setArmor(arrayOf(47, 64, 158), trim)
         }
 
     }

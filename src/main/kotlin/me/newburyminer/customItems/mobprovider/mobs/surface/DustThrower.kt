@@ -10,9 +10,13 @@ import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.ExplosiveGrenadeAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object DustThrower: MobDefinition() {
-    
+
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.BOLT)
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 56.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_VILLAGER) {
@@ -42,6 +46,12 @@ object DustThrower: MobDefinition() {
         movementSpeed(
             linear(1.3 to 1.6, ctx)
         )
+
+        equipment {
+            mainhand(Material.STONE_SWORD)
+            offhand(Material.GUNPOWDER)
+            setArmor(arrayOf(125, 122, 109), trim)
+        }
     
     }
     

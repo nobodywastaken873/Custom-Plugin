@@ -9,12 +9,17 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object SeaweedWrapper : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.COAST)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -49,6 +54,12 @@ object SeaweedWrapper : MobDefinition() {
         movementSpeed(
             linear(1.2 to 1.5, ctx)
         )
+        
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.AIR)
+            setArmor(arrayOf(49, 159, 181), trim)
+        }
 
     }
 

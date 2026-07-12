@@ -10,9 +10,13 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object SwollenSkeleton : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.HOST)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
 
@@ -36,6 +40,12 @@ object SwollenSkeleton : MobDefinition() {
 
         equipment {
             mainhand(Material.AIR)
+        }
+        
+        equipment {
+            mainhand(Material.NETHERITE_AXE)
+            offhand(Material.AIR)
+            setArmor(arrayOf(40, 32, 48), trim)
         }
 
     }

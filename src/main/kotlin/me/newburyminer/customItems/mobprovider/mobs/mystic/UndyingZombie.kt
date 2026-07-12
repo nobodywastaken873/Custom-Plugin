@@ -8,10 +8,15 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.DeathSummonAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object UndyingZombie : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_VILLAGER) {
 
@@ -38,6 +43,12 @@ object UndyingZombie : MobDefinition() {
         movementSpeed(
             linear(0.8 to 1.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.WOODEN_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(89, 70, 46), trim)
+        }
 
     }
 

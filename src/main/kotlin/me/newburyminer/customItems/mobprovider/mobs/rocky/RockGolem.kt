@@ -13,10 +13,15 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RockGolem : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.VEX)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
 
@@ -49,6 +54,12 @@ object RockGolem : MobDefinition() {
         movementSpeed(
             linear(0.7 to 0.9, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(80, 82, 89), trim)
+        }
 
     }
 

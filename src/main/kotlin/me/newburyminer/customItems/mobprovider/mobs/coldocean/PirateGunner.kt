@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.mobprovider.mobs.coldocean
 
+import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
@@ -9,7 +10,9 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
@@ -33,6 +36,10 @@ object PirateGunner : MobDefinition() {
         movementSpeed(
             linear(1.25 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(ItemStack(Material.CROSSBOW).ench("QC1"))
+        }
 
     }
 

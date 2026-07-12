@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.rocky
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.DamageRadiusApply
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
@@ -13,9 +14,13 @@ import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffe
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object StoneThrower : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.BOLT)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -36,7 +41,10 @@ object StoneThrower : MobDefinition() {
                 DamageRadiusApply(
                     linear(2.0 to 3.5, ctx),
                     1.0,
-                    HitEffects(damage(linear(25.0 to 50.0, ctx), CustomDamageType.EXPLOSION_NO_CD)),
+                    HitEffects(
+                        damage(linear(25.0 to 50.0, ctx), CustomDamageType.EXPLOSION_NO_CD),
+                        VanillaKnockbackApply()
+                    ),
                     ParticleTheme.ROCKY
                 )
             )
@@ -49,6 +57,12 @@ object StoneThrower : MobDefinition() {
         movementSpeed(
             linear(0.9 to 1.3, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.GUNPOWDER)
+            setArmor(arrayOf(80, 82, 89), trim)
+        }
 
     }
 

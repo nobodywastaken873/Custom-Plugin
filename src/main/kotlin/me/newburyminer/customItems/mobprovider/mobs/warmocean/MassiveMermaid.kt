@@ -10,10 +10,15 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object MassiveMermaid : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.SENTRY)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -52,6 +57,12 @@ object MassiveMermaid : MobDefinition() {
         )
 
         scale(1.2)
+
+        equipment {
+            mainhand(Material.DIAMOND_SWORD)
+            offhand(Material.BREEZE_ROD)
+            setArmor(arrayOf(49, 159, 181), trim)
+        }
 
     }
 

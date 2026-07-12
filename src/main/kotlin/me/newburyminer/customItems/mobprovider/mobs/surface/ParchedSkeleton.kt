@@ -10,13 +10,18 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object ParchedSkeleton: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.COAST)
     override val targetRange: Double = 50.0
     override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
@@ -47,6 +52,12 @@ object ParchedSkeleton: MobDefinition() {
         movementSpeed(
             linear(1.3 to 1.6, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(125, 122, 109), trim)
+        }
 
     }
 

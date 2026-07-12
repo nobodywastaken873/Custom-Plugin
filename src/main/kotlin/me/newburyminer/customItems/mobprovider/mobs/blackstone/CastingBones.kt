@@ -11,12 +11,17 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object CastingBones : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.VEX)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -60,6 +65,12 @@ object CastingBones : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(40, 32, 48), trim)
+        }
 
     }
 

@@ -13,13 +13,18 @@ import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbili
 import me.newburyminer.customItems.mobprovider.ability.projectile.SniperProjectileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object MysticSniper : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.EYE)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BOGGED) {
 
@@ -70,6 +75,12 @@ object MysticSniper : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.SPYGLASS)
+            setArmor(arrayOf(89, 70, 46), trim)
+        }
 
     }
 

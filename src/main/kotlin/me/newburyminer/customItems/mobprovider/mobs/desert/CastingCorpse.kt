@@ -14,9 +14,13 @@ import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbilit
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object CastingCorpse : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.VEX)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -60,6 +64,12 @@ object CastingCorpse : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.GOLDEN_SWORD)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

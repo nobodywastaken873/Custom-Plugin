@@ -2,21 +2,29 @@ package me.newburyminer.customItems.mobprovider.mobs.coldocean
 
 import me.newburyminer.customItems.entity.components.spells.MagicMissileShooterComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.entity.velocity.DelayedStartVelocity
+import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
+import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object ChainmailFighter : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.SENTRY)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -50,6 +58,13 @@ object ChainmailFighter : MobDefinition() {
             )
         )
 
+        ability(
+            MeleeEffectAbility(
+                damage(linear(27.0 to 54.0, ctx), CustomDamageType.MELEE_NO_CD),
+                VanillaKnockbackApply()
+            )
+        )
+
         health(
             linear(240.0 to 480.0, ctx)
         )
@@ -59,6 +74,13 @@ object ChainmailFighter : MobDefinition() {
         )
 
         attribute(Attribute.KNOCKBACK_RESISTANCE, 1.0, Operation.ADD_NUMBER)
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.BLAZE_ROD)
+            chest(Material.CHAINMAIL_CHESTPLATE, trim)
+            legs(Material.CHAINMAIL_LEGGINGS, trim)
+        }
 
     }
 

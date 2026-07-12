@@ -11,12 +11,17 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.TeleportBehindAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object HuskyDuelist : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.TIDE)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -51,6 +56,12 @@ object HuskyDuelist : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.4, ctx)
         )
+
+        equipment {
+            mainhand(Material.GOLDEN_SWORD)
+            offhand(Material.ENDER_PEARL)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

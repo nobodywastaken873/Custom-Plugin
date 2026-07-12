@@ -46,9 +46,13 @@ class EquipmentBuilder {
         setSlot(EquipmentSlot.LEGS, legs, resetAttributes)
     }
     fun leatherChest(color: Array<Int>, trim: ArmorTrim, resetAttributes: Boolean = true) {
-        val legs = ItemStack(Material.LEATHER_LEGGINGS).trim(trim)
+        val legs = ItemStack(Material.LEATHER_CHESTPLATE).trim(trim)
         legs.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromRGB(color[0], color[1], color[2])))
-        setSlot(EquipmentSlot.LEGS, legs, resetAttributes)
+        setSlot(EquipmentSlot.CHEST, legs, resetAttributes)
+    }
+    fun setArmor(color: Array<Int>, trim: ArmorTrim) {
+        leatherLegs(color, trim)
+        leatherChest(color, trim)
     }
 
 }

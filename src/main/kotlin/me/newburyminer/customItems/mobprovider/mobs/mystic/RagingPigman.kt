@@ -7,12 +7,17 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RagingPigman : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.SNOUT)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIFIED_PIGLIN) {
 
@@ -34,6 +39,12 @@ object RagingPigman : MobDefinition() {
         attribute(
             Attribute.KNOCKBACK_RESISTANCE, 1.0, AttributeModifier.Operation.ADD_NUMBER
         )
+        
+        equipment {
+            mainhand(Material.WOODEN_SPEAR)
+            offhand(Material.AIR)
+            setArmor(arrayOf(89, 70, 46), trim)
+        }
 
     }
 

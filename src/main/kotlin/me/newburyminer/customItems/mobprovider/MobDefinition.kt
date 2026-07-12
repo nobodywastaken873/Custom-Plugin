@@ -28,11 +28,17 @@ abstract class MobDefinition : SpawnOption {
     open val targetRange: Double
         get() = 40.0
     open val trim: ArmorTrim? = null
+    val name: String
+        get() {
+            return id
+                .replace(Regex("([a-z0-9])([A-Z])"), "$1 $2")
+                .replace(Regex("([A-Z])([A-Z][a-z])"), "$1 $2")
+        }
 
     abstract fun build(ctx: MobContext): MobBuilder
 
     fun mob(type: EntityType, block: MobBuilder.() -> Unit): MobBuilder {
-        val builder = MobBuilder(type, tier, targetRange, trim ?: ArmorTrim(TrimMaterial.IRON, TrimPattern.RIB))
+        val builder = MobBuilder(type, tier, targetRange, trim ?: ArmorTrim(TrimMaterial.IRON, TrimPattern.RIB), name)
         builder.block()
         return builder
     }

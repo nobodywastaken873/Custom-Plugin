@@ -14,10 +14,14 @@ import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffe
 import me.newburyminer.customItems.mobprovider.ability.spell.ArcingEffectAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object SludgeTosser : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.BOLT)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -52,6 +56,12 @@ object SludgeTosser : MobDefinition() {
         movementSpeed(
             linear(0.8 to 1.0, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.GUNPOWDER)
+            setArmor(arrayOf(49, 159, 181), trim)
+        }
 
     }
 

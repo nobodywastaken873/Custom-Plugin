@@ -9,6 +9,7 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.TeleportBehindAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.potion.PotionEffectType
 
@@ -40,6 +41,11 @@ object ExperiencedAssassin : MobDefinition() {
         movementSpeed(
             linear(1.3 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.IRON_SWORD)
+        }
 
     }
 

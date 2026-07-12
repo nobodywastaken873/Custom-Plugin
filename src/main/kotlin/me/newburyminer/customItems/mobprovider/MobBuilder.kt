@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
@@ -24,6 +25,7 @@ class MobBuilder(
     val tier: MobTier,
     val targetRange: Double,
     val trim: ArmorTrim,
+    val name: String,
 ) {
     var health: Double = 20.0
     var armor: Double = 0.0
@@ -79,6 +81,8 @@ class MobBuilder(
 
         val entity = ctx.location.world.spawnEntity(ctx.location, entityType, false) as LivingEntity
 
+        entity.customName(Utils.text(name))
+
         if (entity.equipment != null) {
             equipment.boots(
                 when (tier) {
@@ -89,6 +93,10 @@ class MobBuilder(
                 },
                 trim = trim
             )
+        }
+
+        if (tier == MobTier.MINIBOSS) {
+            entity.isGlowing = true
         }
 
         entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = 2000.0

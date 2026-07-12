@@ -8,10 +8,15 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RopeswingerCrew : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.SNOUT)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -37,6 +42,12 @@ object RopeswingerCrew : MobDefinition() {
         movementSpeed(
             linear(1.25 to 2.0, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(47, 64, 158), trim)
+        }
 
     }
 

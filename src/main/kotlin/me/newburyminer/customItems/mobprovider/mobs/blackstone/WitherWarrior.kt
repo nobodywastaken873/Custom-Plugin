@@ -8,11 +8,16 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object WitherWarrior : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
 
@@ -33,6 +38,12 @@ object WitherWarrior : MobDefinition() {
         )
 
         scale(0.82)
+
+        equipment {
+            mainhand(Material.NETHERITE_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(40, 32, 48), trim)
+        }
 
     }
 

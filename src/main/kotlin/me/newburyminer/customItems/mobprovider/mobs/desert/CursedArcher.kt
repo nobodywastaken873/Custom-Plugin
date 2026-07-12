@@ -11,11 +11,16 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object CursedArcher : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.COAST)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -50,6 +55,12 @@ object CursedArcher : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.4, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

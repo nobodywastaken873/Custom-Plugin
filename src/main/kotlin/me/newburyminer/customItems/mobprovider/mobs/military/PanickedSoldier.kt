@@ -9,6 +9,7 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
@@ -39,6 +40,11 @@ object PanickedSoldier : MobDefinition() {
         movementSpeed(
             linear(1.3 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.APPLE)
+        }
 
     }
 

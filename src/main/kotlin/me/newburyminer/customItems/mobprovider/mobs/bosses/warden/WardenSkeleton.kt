@@ -7,10 +7,15 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object WardenSkeleton: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.RIB)
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -23,12 +28,18 @@ object WardenSkeleton: MobDefinition() {
         )
 
         health(
-            linear(20.0 to 50.0, ctx)
+            linear(20.0 to 40.0, ctx)
         )
 
         movementSpeed(
             linear(1.0 to 1.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.AIR)
+            setArmor(arrayOf(15, 74, 82), trim)
+        }
 
     }
 

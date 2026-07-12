@@ -10,7 +10,9 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
+import org.bukkit.entity.Bat
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.Warden
 
 object CaveDweller: MobDefinition() {
 
@@ -45,6 +47,13 @@ object CaveDweller: MobDefinition() {
         movementSpeed(
             linear(1.5 to 2.0, ctx)
         )
+
+        apply {
+            if (this !is Warden) return@apply
+            val target = this.world.spawn(this.location, Bat::class.java)
+            this.setAnger(target, 100)
+            target.remove()
+        }
 
     }
 

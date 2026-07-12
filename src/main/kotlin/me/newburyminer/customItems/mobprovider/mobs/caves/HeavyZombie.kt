@@ -9,10 +9,15 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object HeavyZombie: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.SNOUT)
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_VILLAGER) {
@@ -42,6 +47,12 @@ object HeavyZombie: MobDefinition() {
         )
 
         scale(1.2)
+
+        equipment {
+            mainhand(Material.NETHERITE_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(111, 117, 117), trim)
+        }
 
     }
 

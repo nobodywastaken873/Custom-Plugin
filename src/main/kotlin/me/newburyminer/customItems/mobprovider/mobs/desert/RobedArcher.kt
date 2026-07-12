@@ -9,10 +9,15 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffectAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RobedArcher : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.COAST)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -36,6 +41,12 @@ object RobedArcher : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.AIR)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

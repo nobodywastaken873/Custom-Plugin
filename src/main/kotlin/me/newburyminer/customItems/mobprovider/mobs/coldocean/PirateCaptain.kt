@@ -19,14 +19,19 @@ import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
 object PirateCaptain : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.SILENCE)
 	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
 
@@ -107,6 +112,12 @@ object PirateCaptain : MobDefinition() {
         scale(
             1.2
         )
+
+        equipment {
+            mainhand(Material.DIAMOND_SWORD)
+            offhand(Material.BREEZE_ROD)
+            setArmor(arrayOf(47, 64, 158), trim)
+        }
 
     }
 

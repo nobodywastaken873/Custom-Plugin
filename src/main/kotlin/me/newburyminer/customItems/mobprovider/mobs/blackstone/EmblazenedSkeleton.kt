@@ -10,11 +10,16 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.projectile.MachineGunAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object EmblazenedSkeleton : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.FLOW)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -44,6 +49,12 @@ object EmblazenedSkeleton : MobDefinition() {
         movementSpeed(
             linear(0.7 to 0.9, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.CROSSBOW)
+            setArmor(arrayOf(40, 32, 48), trim)
+        }
 
     }
 

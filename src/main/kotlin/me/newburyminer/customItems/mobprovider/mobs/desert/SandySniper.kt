@@ -10,10 +10,15 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.defensive.LeapDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.projectile.SniperProjectileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object SandySniper : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.EYE)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -53,6 +58,12 @@ object SandySniper : MobDefinition() {
         movementSpeed(
             linear(0.5 to 0.6, ctx)
         )
+        
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.CROSSBOW)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

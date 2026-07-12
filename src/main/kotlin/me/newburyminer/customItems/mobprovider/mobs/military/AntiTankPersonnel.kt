@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.mobprovider.mobs.military
 
+import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.SummonMobsApply
@@ -14,7 +15,9 @@ import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomi
 import me.newburyminer.customItems.mobprovider.ability.spell.BeamShooterAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.mobs.mystic.UnstableHornet
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.ItemStack
 
 object AntiTankPersonnel : MobDefinition() {
 
@@ -62,6 +65,10 @@ object AntiTankPersonnel : MobDefinition() {
         movementSpeed(
             linear(0.7 to 1.1, ctx)
         )
+
+        equipment {
+            mainhand(ItemStack(Material.CROSSBOW).ench("QC2"))
+        }
 
     }
 

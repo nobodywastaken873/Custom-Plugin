@@ -33,13 +33,13 @@ object AridLandsMobs {
 
         LeapingCreeper * 1.4,
         FirebombCreeper * 1.4,
-        RapidFireSkeleton * 0.8,
         SwarmingSpider,
         CaveGrenadier,
+        RPGSkeleton * 0.6,
 
+        RapidFireSkeleton * 0.8,
         BewitchingDweller * 1.2,
         CaveAssassin * 1.4,
-        RPGSkeleton,
         CaveSniper,
         CreepingCreaking * 0.8,
         HeavyZombie * 1.2,

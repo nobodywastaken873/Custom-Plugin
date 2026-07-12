@@ -8,12 +8,17 @@ import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object ParchedZombie: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.WARD)
     override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -40,6 +45,12 @@ object ParchedZombie: MobDefinition() {
         movementSpeed(
             linear(1.6 to 2.2, ctx)
         )
+
+        equipment {
+            mainhand(Material.STONE_SWORD)
+            offhand(Material.AIR)
+            setArmor(arrayOf(125, 122, 109), trim)
+        }
 
     }
 

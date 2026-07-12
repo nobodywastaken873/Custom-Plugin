@@ -11,12 +11,17 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.PullingBeamAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
 object GrapplingMaster : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -53,6 +58,12 @@ object GrapplingMaster : MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.4, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_SWORD)
+            offhand(Material.FISHING_ROD)
+            setArmor(arrayOf(47, 64, 158), trim)
+        }
 
     }
 

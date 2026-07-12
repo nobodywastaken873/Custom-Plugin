@@ -10,11 +10,16 @@ import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object MaskedMummy : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -42,6 +47,12 @@ object MaskedMummy : MobDefinition() {
         movementSpeed(
             linear(0.8 to 1.0, ctx)
         )
+
+        equipment {
+            mainhand(Material.GOLDEN_AXE)
+            offhand(Material.AIR)
+            setArmor(arrayOf(181, 160, 103), trim)
+        }
 
     }
 

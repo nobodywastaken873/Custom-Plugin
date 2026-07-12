@@ -13,11 +13,16 @@ import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffe
 import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileHomingAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectMissileAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object InterceptorPilot: MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.EYE)
     override val tier: MobTier = MobTier.ELITE
     override val targetRange: Double = 120.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -55,6 +60,12 @@ object InterceptorPilot: MobDefinition() {
         movementSpeed(
             linear(1.0 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.BLAZE_ROD)
+            setArmor(arrayOf(125, 122, 109), trim)
+        }
 
     }
 

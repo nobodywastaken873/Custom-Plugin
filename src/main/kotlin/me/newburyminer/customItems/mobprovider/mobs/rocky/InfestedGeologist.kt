@@ -10,10 +10,15 @@ import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.DamageShieldAbility
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object InfestedGeologist : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.WARD)
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
 
@@ -37,6 +42,12 @@ object InfestedGeologist : MobDefinition() {
         movementSpeed(
             linear(1.4 to 1.8, ctx)
         )
+
+        equipment {
+            mainhand(Material.IRON_PICKAXE)
+            offhand(Material.AIR)
+            setArmor(arrayOf(80, 82, 89), trim)
+        }
 
     }
 

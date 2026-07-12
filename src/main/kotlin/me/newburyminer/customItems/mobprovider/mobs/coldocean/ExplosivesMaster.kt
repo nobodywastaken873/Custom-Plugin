@@ -13,11 +13,15 @@ import me.newburyminer.customItems.mobprovider.ability.projectile.ProjectileEffe
 import me.newburyminer.customItems.mobprovider.ability.spell.ExplosiveGrenadeAbility
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
 
 object ExplosivesMaster : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.BOLT)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -55,6 +59,12 @@ object ExplosivesMaster : MobDefinition() {
         movementSpeed(
             linear(1.1 to 1.5, ctx)
         )
+
+        equipment {
+            mainhand(Material.BOW)
+            offhand(Material.GUNPOWDER)
+            setArmor(arrayOf(47, 64, 158), trim)
+        }
 
     }
 

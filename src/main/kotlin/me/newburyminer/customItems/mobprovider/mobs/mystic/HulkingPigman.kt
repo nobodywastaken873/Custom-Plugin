@@ -14,9 +14,13 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 
 object HulkingPigman : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.RIB)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIFIED_PIGLIN) {
 
@@ -62,6 +66,12 @@ object HulkingPigman : MobDefinition() {
         attribute(
             Attribute.KNOCKBACK_RESISTANCE, 1.0, AttributeModifier.Operation.ADD_NUMBER
         )
+        
+        equipment {
+            mainhand(Material.WOODEN_AXE)
+            offhand(Material.SHIELD)
+            setArmor(arrayOf(89, 70, 46), trim)
+        }
 
     }
 

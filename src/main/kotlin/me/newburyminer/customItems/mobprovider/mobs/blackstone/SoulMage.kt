@@ -12,14 +12,19 @@ import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
 import me.newburyminer.customItems.mobprovider.ability.defensive.BasicDodgeAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.EffectAuraAbility
 import me.newburyminer.customItems.mobprovider.ability.spell.HealerAbility
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.attribute.AttributeModifier.Operation
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object SoulMage : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.DUNE)
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -66,6 +71,12 @@ object SoulMage : MobDefinition() {
             linear(0.6 to 0.8, ctx)
         )
 
+        equipment {
+            mainhand(Material.NETHERITE_SWORD)
+            offhand(Material.GOLDEN_APPLE)
+            setArmor(arrayOf(40, 32, 48), trim)
+        }
+        
     }
 
 }

@@ -17,10 +17,14 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import org.bukkit.potion.PotionEffectType
 
 object RobedSkirmisher : MobDefinition() {
 
+    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.SILENCE)
 	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -92,7 +96,9 @@ object RobedSkirmisher : MobDefinition() {
         scale(1.3)
 
         equipment {
-            mainhand(Material.AIR)
+            mainhand(Material.GOLDEN_SWORD)
+            offhand(Material.BREEZE_ROD)
+            setArmor(arrayOf(181, 160, 103), trim)
         }
 
     }

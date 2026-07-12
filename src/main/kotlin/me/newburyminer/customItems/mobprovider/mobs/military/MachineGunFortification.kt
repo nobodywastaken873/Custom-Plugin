@@ -72,6 +72,10 @@ object MachineGunFortification : MobDefinition() {
             linear(0.8 to 1.0, ctx)
         )
 
+        equipment {
+            mainhand(Material.CROSSBOW)
+        }
+
     }
 
 }
