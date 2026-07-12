@@ -2,6 +2,7 @@ package me.newburyminer.customItems.effects
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.readName
+import me.newburyminer.customItems.systems.TabMenuSystem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextColor
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 
-object EffectManager: BukkitRunnable() {
+object EffectManager: BukkitRunnable(), TabMenuSystem.Provider {
 
     private val activeEffects = mutableMapOf<UUID, MutableMap<Int, MutableList<ActiveEffect>>>()
 
@@ -69,24 +70,26 @@ object EffectManager: BukkitRunnable() {
 
         if (currentTick % 20 == 0) {
             for (player in Bukkit.getOnlinePlayers()) {
-                val activeEffects = getActiveEffects(player)
-                var baseComponent = Utils.text("\nActive Effects:").style(
-                    Style.style(TextColor.color(128, 196, 174),
-                        TextDecoration.BOLD,
-                    )
-                )
 
-                for (effect in activeEffects) {
-                    baseComponent = baseComponent.append(toComponent(effect))
-                }
-                if (activeEffects.isEmpty())
-                    baseComponent = baseComponent.append(Utils.text("\nNone", Utils.GRAY))
-
-                player.sendPlayerListFooter(
-                    baseComponent
-                )
             }
         }
+    }
+
+    override fun getLines(player: Player): List<Component> {
+        val activeEffects = getActiveEffects(player)
+        var baseComponent = Utils.text("Active Effects:").style(
+            Style.style(TextColor.color(128, 196, 174),
+                TextDecoration.BOLD,
+            )
+        )
+
+        for (effect in activeEffects) {
+            baseComponent = baseComponent.append(toComponent(effect))
+        }
+        if (activeEffects.isEmpty())
+            baseComponent = baseComponent.append(Utils.text("\nNone", Utils.GRAY))
+
+        return listOf(baseComponent)
     }
 
     private fun toComponent(effect: ActiveEffect): Component {

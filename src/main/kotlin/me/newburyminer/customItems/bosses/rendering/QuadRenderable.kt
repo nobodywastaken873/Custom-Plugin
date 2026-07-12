@@ -21,22 +21,22 @@ class QuadRenderable(
     val smooth: Boolean = true
 ) : DisplayRenderable() {
 
-    private lateinit var display: BlockDisplay
+    private lateinit var display: DisplayWrapper
 
     override fun spawn(world: World) {
 
-        display = world.spawn(
+        display = DisplayWrapper(world.spawn(
             origin.toLocation(world),
             BlockDisplay::class.java
-        )
+        ))
 
-        display.block = material.createBlockData()
+        display.block?.block = material.createBlockData()
 
         val duration = if (smooth) 1 else 0
 
-        display.interpolationDelay = 0
-        display.interpolationDuration = duration
-        display.teleportDuration = duration
+        display.block?.interpolationDelay = 0
+        display.block?.interpolationDuration = duration
+        display.block?.teleportDuration = duration
 
         displays += display
 
@@ -45,6 +45,8 @@ class QuadRenderable(
     }
 
     override fun update() {
+
+        if (display.block == null) return
 
         val n = normal.clone().normalize()
         val u = up.clone().normalize()
@@ -59,7 +61,7 @@ class QuadRenderable(
 
         val offset = spawnPos.subtract(origin)
 
-        if (display.block.material != material) display.block = material.createBlockData()
+        if (display.block?.block?.material != material) display.block?.block = material.createBlockData()
 
         //val t = display.transformation
 
@@ -68,14 +70,14 @@ class QuadRenderable(
         //t.translation.set(Vector3f())
         //t.rightRotation.set(Quaternionf())
 
-        display.transformation = Transformation(
+        display.block?.transformation = Transformation(
             offset.toVector3f(),
             Transform.lookRotation(normal, correctedUp),
             Vector3f(width, height, thickness),
             Quaternionf()
         )
 
-        display.teleport(origin.toLocation(display.world))
+        display.block?.teleport(origin.toLocation(display.block?.world ?: return))
     }
 
     fun activate() {
@@ -83,7 +85,7 @@ class QuadRenderable(
     }
     private val hiddenLocation: Vector = Vector(0, -1024, 0)
     fun deactivate() {
-        display.transformation = Transformation(
+        display.block?.transformation = Transformation(
             hiddenLocation.toVector3f(),
             Quaternionf(),
             Vector3f(),

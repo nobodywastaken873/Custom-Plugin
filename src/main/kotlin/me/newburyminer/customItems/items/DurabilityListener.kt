@@ -2,6 +2,7 @@ package me.newburyminer.customItems.items
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.addItemorClaim
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -21,9 +22,9 @@ class DurabilityListener: Listener {
     @EventHandler fun onItemBreak(e: PlayerItemBreakEvent) {
         if (e.brokenItem.itemMeta is ArmorMeta) {
             if (e.player.inventory.firstEmpty() == -1) {
-                e.player.sendMessage(Utils.text("An item of yours has broken and dropped on the floor.", Utils.FAILED_COLOR))
+                e.player.sendMessage(Utils.text("An item of yours has broken and added to your /itemclaims menu.", Utils.FAILED_COLOR))
             }
-            e.player.addItemorDrop(e.brokenItem.clone())
+            e.player.addItemorClaim(e.brokenItem.clone())
         } else {
             e.brokenItem.amount += 1
         }

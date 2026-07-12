@@ -20,12 +20,13 @@ class HollowCylinderRenderable(
     var radius: Double,
     var length: Double,
 
-    var material: Material
+    var material: Material,
+    segments: Int? = null
 
 ) : DisplayRenderable() {
 
     private val quads = mutableListOf<QuadRenderable>()
-    private val segments = (radius * 14)
+    private val segments = segments ?: (radius * 14)
         .roundToInt()
         .coerceIn(8, 48)
 

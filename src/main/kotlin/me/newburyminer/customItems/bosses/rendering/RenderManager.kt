@@ -10,13 +10,13 @@ class RenderManager {
 
     fun tick() {
 
-        renderables.forEach(Renderable::update)
+        renderables.forEach {it.update()}
 
     }
 
     fun clear() {
 
-        renderables.forEach(Renderable::remove)
+        renderables.forEach {it.remove()}
 
         renderables.clear()
     }

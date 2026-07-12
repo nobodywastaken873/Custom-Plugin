@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.structures.locations
 
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.eventbus.ListenerEntry
@@ -25,7 +27,7 @@ object StructureBounding {
                 e.world == CustomItems.aridWorld
             },
             {e ->
-                val structureName = e.structure.structureType.key.value()
+                val structureName = RegistryAccess.registryAccess().getRegistry(RegistryKey.STRUCTURE).getKey(e.structure)?.value() ?: "abandoned_ship"
                 val defintion = StructureRegistry.get(structureName) ?: AbandonedShip
                 val box = e.boundingBox.clone().expand(0.0, 0.0, 0.0, 1.0, 0.0, 1.0)
                 val region = StructureRegion(

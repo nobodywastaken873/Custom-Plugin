@@ -7,6 +7,7 @@ import io.papermc.paper.datacomponent.item.UseCooldown
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addElytraComponent
+import me.newburyminer.customItems.Utils.Companion.addItemorClaim
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.basePotion
 import me.newburyminer.customItems.Utils.Companion.crossbowProj
@@ -50,6 +51,8 @@ import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.loot.LootContext
 import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.loot.providers.boss.WardenLoot
@@ -58,6 +61,7 @@ import me.newburyminer.customItems.mobprovider.mobs.military.AttackHound
 import me.newburyminer.customItems.mobprovider.mobs.military.BattleMedic
 import me.newburyminer.customItems.mobprovider.mobs.military.TraineeFighter
 import me.newburyminer.customItems.mobprovider.mobs.military.WalkingExplosives
+import me.newburyminer.customItems.systems.KothSystem
 import net.kyori.adventure.key.Key
 import org.bukkit.*
 import org.bukkit.entity.Player
@@ -352,6 +356,10 @@ class TestCommand : BasicCommand {
             }, 1L, 1L)
         } else if (args[0] == "warden_loot") {
             PlayerLootManager.addLoot(LootContext(WardenLoot.id, "normal", 0), sender, 500)
+        } else if (args[0] == "koth_start") {
+            KothSystem.startKoth(30)
+        } else if (args[0] == "item_claims") {
+            sender.addItemorClaim(ItemRegistry.get(CustomItem.AXE_OF_PEACE))
         }
     }
 }

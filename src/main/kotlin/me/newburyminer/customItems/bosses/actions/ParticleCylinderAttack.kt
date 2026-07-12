@@ -42,7 +42,7 @@ class ParticleCylinderAttack(
             Transform(start.toVector(), Transform.lookRotation(end.toVector().subtract(start.toVector()))),
             radius,
             start.clone().subtract(end).length(),
-            Material.YELLOW_CONCRETE,
+            Material.YELLOW_STAINED_GLASS,
             Particle.DUST.builder().color(235, 225, 52),
             0.25,
             boss.boss.world
@@ -52,8 +52,8 @@ class ParticleCylinderAttack(
             renderManager.add(cylinderRendering)
         }
 
-        timeline.at(delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 134, 52); cylinderRendering.material = Material.ORANGE_CONCRETE }
-        timeline.at(2 * delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 67, 52); cylinderRendering.material = Material.RED_CONCRETE }
+        timeline.at(delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 134, 52); cylinderRendering.material = Material.ORANGE_STAINED_GLASS }
+        timeline.at(2 * delay / 3) { cylinderRendering.particle = Particle.DUST.builder().color(235, 67, 52); cylinderRendering.material = Material.RED_STAINED_GLASS }
 
         timeline.repeat(0, delay) {
             cylinderRendering.transform.rotateLocalZ(0.1F)
