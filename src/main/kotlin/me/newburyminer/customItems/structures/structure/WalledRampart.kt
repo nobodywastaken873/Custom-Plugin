@@ -1,15 +1,14 @@
 package me.newburyminer.customItems.structures.structure
 
-import me.newburyminer.customItems.mobprovider.MobEntry
+import me.newburyminer.customItems.loot.StructureLoot
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
 import me.newburyminer.customItems.mobprovider.MobProvider
-import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.mobprovider.mobs.military.AntiTankPersonnel
 import me.newburyminer.customItems.mobprovider.mobs.military.ArmoredKnight
 import me.newburyminer.customItems.mobprovider.mobs.military.BattleMedic
 import me.newburyminer.customItems.mobprovider.mobs.military.CharismaticCommando
 import me.newburyminer.customItems.mobprovider.mobs.military.DroneSwarmer
 import me.newburyminer.customItems.mobprovider.mobs.military.Infantryman
-import me.newburyminer.customItems.mobprovider.mobs.military.MachineGunFortification
 import me.newburyminer.customItems.mobprovider.mobs.military.PanickedSoldier
 import me.newburyminer.customItems.mobprovider.mobs.military.TowerSniper
 import me.newburyminer.customItems.mobprovider.mobs.military.TrainedBeast
@@ -19,8 +18,6 @@ import me.newburyminer.customItems.mobprovider.mobs.military.TrustySteed
 import me.newburyminer.customItems.mobprovider.mobs.military.WalkingExplosives
 import me.newburyminer.customItems.structures.EncounterStyle
 import me.newburyminer.customItems.structures.StructureDefinition
-import me.newburyminer.customItems.structures.TrialSpawnerDefinition
-import me.newburyminer.customItems.structures.VaultDefinition
 
 object WalledRampart : StructureDefinition {
 
@@ -46,9 +43,7 @@ object WalledRampart : StructureDefinition {
         DroneSwarmer * 0.8
     )
 
-    override val normalSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
-    override val ominousSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
+    override val lootProvider: StructureLoot =
+        AbandonedShip
 
-    override val normalVault: VaultDefinition = VaultDefinition(loot = 1)
-    override val ominousVault: VaultDefinition = VaultDefinition(loot = 1)
 }

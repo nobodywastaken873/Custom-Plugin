@@ -1,8 +1,8 @@
 package me.newburyminer.customItems.structures.structure
 
-import me.newburyminer.customItems.mobprovider.MobEntry
+import me.newburyminer.customItems.loot.StructureLoot
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
 import me.newburyminer.customItems.mobprovider.MobProvider
-import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.DrownedCreature
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.EnragedSeaBeast
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.ExplosiveCoral
@@ -12,11 +12,8 @@ import me.newburyminer.customItems.mobprovider.mobs.warmocean.SeaSlug
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.SludgeTosser
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.UnderseaAbomination
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.WhaleOilShooter
-import me.newburyminer.customItems.mobprovider.mobs.warmocean.WindGod
 import me.newburyminer.customItems.structures.EncounterStyle
 import me.newburyminer.customItems.structures.StructureDefinition
-import me.newburyminer.customItems.structures.TrialSpawnerDefinition
-import me.newburyminer.customItems.structures.VaultDefinition
 
 object OceanQuarry : StructureDefinition {
 
@@ -38,9 +35,7 @@ object OceanQuarry : StructureDefinition {
         GiantSquid
     )
 
-    override val normalSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
-    override val ominousSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
+    override val lootProvider: StructureLoot =
+        AbandonedShip
 
-    override val normalVault: VaultDefinition = VaultDefinition(loot = 1)
-    override val ominousVault: VaultDefinition = VaultDefinition(loot = 1)
 }

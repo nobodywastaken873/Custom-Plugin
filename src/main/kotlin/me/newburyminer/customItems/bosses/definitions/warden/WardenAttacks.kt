@@ -255,13 +255,13 @@ object WardenAttacks : AttackHelper {
                     )
 
                     val warden = CustomItems.bossWorld.spawn(loc, Warden::class.java) {
-                        it.getAttribute(Attribute.MAX_HEALTH)?.baseValue *= linear(0.5 to 0.8, ctx, false)
-                        it.health *= linear(0.5 to 0.8, ctx, false)
                         it.getAttribute(Attribute.MOVEMENT_SPEED)?.baseValue *= linear(0.7 to 1.0, ctx, false)
                         it.getAttribute(Attribute.ATTACK_DAMAGE)?.baseValue *= linear(0.85 to 1.4, ctx, false)
                     }
                     EntityWrapperManager.getWrapperorNew(warden)
-                        .addComponent(WardenMinibossComponent(ctx.boss as WardenInstance))
+                        .addComponent(WardenMinibossComponent(ctx.boss as WardenInstance,
+                            linear(0.5 to 0.8, ctx, false) * 500.0 * (boss.playerCount.toDouble().pow(0.8))
+                        ))
                     boss.addEntity(warden)
                     finish()
                 }

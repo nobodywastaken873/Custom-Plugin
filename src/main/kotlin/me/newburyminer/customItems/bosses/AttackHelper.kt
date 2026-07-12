@@ -23,9 +23,8 @@ interface AttackHelper {
         val cycle = if (useScalingCycle) ctx.scalingCycle else ctx.cycle
         // Factor must be from 0.0 to 1.0, should be 0.0 to 0.6 for difficulty = 1, should be 0.4 to 1.0 for difficulty = 2
         val factor = when (ctx.difficulty) {
-            1 -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
-            2 -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
-            else -> 0.0
+            BossDifficulty.EASY -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
+            BossDifficulty.HARD -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
         }
         return range.first + (range.second - range.first) * factor
     }
@@ -34,9 +33,8 @@ interface AttackHelper {
         val cycle = if (useScalingCycle) ctx.scalingCycle else ctx.cycle
         // Factor must be from 0.0 to 1.0, should be 0.0 to 0.6 for difficulty = 1, should be 0.4 to 1.0 for difficulty = 2
         val factor = when (ctx.difficulty) {
-            1 -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
-            2 -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
-            else -> 0.0
+            BossDifficulty.EASY -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
+            BossDifficulty.HARD -> {cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
         }
         return (range.first + (range.second - range.first) * factor).roundToInt()
     }

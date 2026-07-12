@@ -1,6 +1,8 @@
 package me.newburyminer.customItems.structures
 
 import me.newburyminer.customItems.Utils.Companion.beautify
+import me.newburyminer.customItems.loot.LootProvider
+import me.newburyminer.customItems.loot.StructureLoot
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobEntry
 import me.newburyminer.customItems.mobprovider.MobProvider
@@ -11,11 +13,7 @@ interface StructureDefinition {
 
     val mobProvider: MobProvider
 
-    val normalSpawner: TrialSpawnerDefinition
-    val ominousSpawner: TrialSpawnerDefinition
-
-    val normalVault: VaultDefinition
-    val ominousVault: VaultDefinition
+    val lootProvider: StructureLoot
 
     operator fun MobDefinition.times(multiplier: Double): MobEntry =
         MobEntry(this, multiplier)

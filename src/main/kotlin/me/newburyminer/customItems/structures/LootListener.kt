@@ -6,6 +6,9 @@ import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.readableName
 import me.newburyminer.customItems.Utils.Companion.setTag
+import me.newburyminer.customItems.loot.LootContext
+import me.newburyminer.customItems.loot.PlayerLootManager
+import me.newburyminer.customItems.mobprovider.MobContext
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -24,7 +27,15 @@ class LootListener: Listener {
         // Retrieve structure reference
         val wholeTag = e.entity.itemStack.itemMeta.customModelDataComponent.strings.first()
         val reference = StructureRegistry.lookupLootTag(wholeTag)
-        val color = reference.getColor()
+        val definition = reference.structure
+
+        val difficulty = MobContext(e.entity.location.length(), reference.difficulty, e.entity.location).difficulty
+        val lootContext = LootContext(definition.lootProvider.id, "vault", difficulty.roundToInt().coerceAtMost(30))
+
+        val lootGetter = e.entity.location.getNearbyPlayers(10.0).sortedBy { e.entity.location.subtract(it.location).length() }.firstOrNull() ?: return
+        PlayerLootManager.addLoot(lootContext, lootGetter)
+
+        /*val color = reference.getColor()
 
         // Initialize item
         val newItem = e.entity.itemStack
@@ -40,11 +51,11 @@ class LootListener: Listener {
         newItem.setTag("lootquality", (e.entity.location.length() / 200.0).roundToInt() * 200)
         newItem.setTag("loottag", wholeTag)
         newItem.name(Utils.text(reference.structure.name + " " + reference.difficulty.readableName() + " " + reference.type.readableName(), color))
-        e.entity.itemStack = newItem
+        e.entity.itemStack = newItem*/
     }
 
     // needs to be redone
-    @EventHandler fun onPlayerRightClick(e: PlayerInteractEvent) {
+    /*@EventHandler fun onPlayerRightClick(e: PlayerInteractEvent) {
         if (e.item == null) return
         if (e.action != Action.RIGHT_CLICK_AIR && e.action != Action.RIGHT_CLICK_BLOCK) return
         val item = e.item ?: return
@@ -60,6 +71,6 @@ class LootListener: Listener {
             e.player.addItemorDrop(item)
         }
         item.amount -= 1
-    }
+    }*/
 
 }

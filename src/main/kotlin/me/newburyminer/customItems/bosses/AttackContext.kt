@@ -5,6 +5,6 @@ data class AttackContext<T: BossPhase<*>>(
     val cycle: Int,
     val scalingCycle: Int,
     val maxCycle: Int,
-    val difficulty: Int,
+    val difficulty: BossDifficulty,
     val boss: BossInstance
 )

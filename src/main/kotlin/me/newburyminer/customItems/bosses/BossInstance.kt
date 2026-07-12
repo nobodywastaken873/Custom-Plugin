@@ -1,24 +1,40 @@
 package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
-import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorDrop
-import me.newburyminer.customItems.structures.CustomLootTable
+import me.newburyminer.customItems.loot.BossLoot
+import me.newburyminer.customItems.loot.LootContext
+import me.newburyminer.customItems.loot.PlayerLootManager
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.KeyedBossBar
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
-import org.bukkit.util.Vector
 import java.util.*
+import kotlin.math.max
 
 abstract class BossInstance(
     protected val players: MutableList<Player>,
-    val bossType: CustomBossType
+    val bossType: CustomBossType,
+    val difficulty: BossDifficulty
 ) {
+
+    abstract val maxHp: Double
+    var currentHp: Double = maxHp
+        protected set
+    fun reduceHp(amount: Double, damageType: DamageType) {
+        currentHp -=
+            if (damageType == DamageType.MACE_SMASH) amount * 0.1
+            else amount
+
+        if (currentHp <= 0.0) {
+            boss.damage(10000.0)
+            bossWin()
+        }
+    }
 
     protected abstract fun spawnBoss(): LivingEntity
     lateinit var boss: LivingEntity
@@ -38,16 +54,18 @@ abstract class BossInstance(
         setupBossbar()
     }
 
-    abstract val loot: CustomLootTable
+    abstract val loot: BossLoot
     fun bossWin() {
         val toLoot = players.toMutableList()
         endBoss()
         giveLoot(toLoot)
     }
     open fun giveLoot(lootPlayers: List<Player>) {
-        lootPlayers.forEach { player -> loot.roll().forEach {
-            player.addItemorDrop(it)
-        }}
+        lootPlayers.forEach { player ->
+            val diff = if (difficulty == BossDifficulty.EASY) "normal" else "hard"
+            val context = LootContext(loot.id, diff, 0)
+            PlayerLootManager.addLoot(context, player)
+        }
     }
 
     val bottomY: Double
@@ -88,7 +106,7 @@ abstract class BossInstance(
     }
 
 
-    val hpPercent: Double get() = boss.health / boss.getAttribute(Attribute.MAX_HEALTH)!!.baseValue
+    val hpPercent: Double get() = currentHp / maxHp
 
     abstract val actionController: ActionController
 
@@ -114,19 +132,6 @@ abstract class BossInstance(
         }
         bossBar.removeAll()
         markedForRemoval = true
-    }
-
-    // TODO: make this not bad and actually check hitboxes, probably add a mobprovider function so that the boss can determine what mobs it wants to spawn
-    protected val mobSpawnRadius: Double = 15.0
-    fun getValidMobSpawn(): Location {
-        var possOffset = Vector(Utils.randomRange(-mobSpawnRadius, mobSpawnRadius), 0.0, Utils.randomRange(-mobSpawnRadius, mobSpawnRadius))
-        while (bossCenter.clone().add(possOffset).block.type != Material.AIR ||
-            bossCenter.clone().add(possOffset).add(0.0, 1.0, 0.0).block.type != Material.AIR ||
-            bossCenter.clone().add(possOffset).getNearbyPlayers(5.0).isNotEmpty()
-        ) {
-            possOffset = Vector(Utils.randomRange(-mobSpawnRadius, mobSpawnRadius), 0.0, Utils.randomRange(-mobSpawnRadius, mobSpawnRadius))
-        }
-        return bossCenter.clone().add(possOffset).block.location
     }
 
     protected val tasks: MutableList<Int> = mutableListOf()

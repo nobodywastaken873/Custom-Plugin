@@ -1,8 +1,8 @@
 package me.newburyminer.customItems.structures.structure
 
-import me.newburyminer.customItems.mobprovider.MobEntry
+import me.newburyminer.customItems.loot.StructureLoot
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
 import me.newburyminer.customItems.mobprovider.MobProvider
-import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.Buccaneer
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.CaptainsGhost
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.ExplosivesMaster
@@ -10,14 +10,11 @@ import me.newburyminer.customItems.mobprovider.mobs.coldocean.FattenedMaggot
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.GrapplingMaster
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.PirateCaptain
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.PirateCrew
-import me.newburyminer.customItems.mobprovider.mobs.coldocean.PirateMachineGunner
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.ProjectileVomitingPirate
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.RopeswingerCrew
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.SickenedPirate
 import me.newburyminer.customItems.structures.EncounterStyle
 import me.newburyminer.customItems.structures.StructureDefinition
-import me.newburyminer.customItems.structures.TrialSpawnerDefinition
-import me.newburyminer.customItems.structures.VaultDefinition
 
 object WreckedGalleon : StructureDefinition {
 
@@ -41,9 +38,7 @@ object WreckedGalleon : StructureDefinition {
         PirateCaptain
     )
 
-    override val normalSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
-    override val ominousSpawner: TrialSpawnerDefinition = TrialSpawnerDefinition(loot = 1)
+    override val lootProvider: StructureLoot =
+        AbandonedShip
 
-    override val normalVault: VaultDefinition = VaultDefinition(loot = 1)
-    override val ominousVault: VaultDefinition = VaultDefinition(loot = 1)
 }

@@ -4,12 +4,16 @@ import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
 import me.newburyminer.customItems.helpers.getValidSpawnLoc
+import me.newburyminer.customItems.loot.LootContext
+import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.mobprovider.MobContext
 import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.block.TrialSpawner
 import org.bukkit.entity.LivingEntity
 import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.text.compareTo
 
 class SpawnerSession(
     private val spawner: TrialSpawner,
@@ -20,14 +24,12 @@ class SpawnerSession(
         if (spawner.cooldownLength == 36000) {
             // Initialize spawner, not been previously loaded before
             spawner.cooldownLength = 72000
-            spawner.normalConfiguration.delay = 200 // TODO: make this correct
-            spawner.ominousConfiguration.delay = 200
+            spawner.normalConfiguration.delay = 100 // TODO: make this correct
+            spawner.ominousConfiguration.delay = 80
             spawner.requiredPlayerRange = 10.0.pow(2).toInt()
             spawner.update()
         }
     }
-
-
 
     private var currentlyTrackedPlayers: Int = spawner.trackedPlayers.size
     private var isCurrentlyOminous: Boolean = spawner.isOminous
@@ -42,7 +44,7 @@ class SpawnerSession(
             return
         }
 
-        if (tooManyNearbyMobs(ctx)) return
+        if (tooManyNearbyMobs(spawner.location, maxNearbyWeight(ctx.difficulty))) return
         val newMob = spawnMob(ctx, reference) ?: return
 
         spawner.startTrackingEntity(newMob)
@@ -83,7 +85,11 @@ class SpawnerSession(
 
     private fun outputLoot() {
         val lootPlayers = spawner.trackedPlayers.toMutableList()
-        // TODO: create loot gui/thing to give out loot, playsound to show that it is over
+        lootPlayers.forEach {
+            val mobContext = MobContext(spawner.location.length(), isCurrentlyOminous, spawner.location)
+            val lootContext = LootContext(structureDefinition.lootProvider.id, "spawner", mobContext.difficulty.roundToInt().coerceAtMost(30))
+            PlayerLootManager.addLoot(lootContext, it)
+        }
     }
 
     private fun getWeightBudget(playerCount: Int): Double {
@@ -102,24 +108,26 @@ class SpawnerSession(
         isCurrentlyOminous = spawner.isOminous
     }
 
-    private fun tooManyNearbyMobs(ctx: MobContext): Boolean {
-        val weightSum = spawner.location.getNearbyLivingEntities(12.0).toMutableList().sumOf {
-            val wrapper = EntityWrapperManager.getWrapper(it.uniqueId)
-            if (wrapper == null) 0
+    companion object {
+        fun tooManyNearbyMobs(location: Location, maxWeight: Double, radius: Double = 15.0): Boolean {
+            val weightSum = location.getNearbyLivingEntities(radius).toMutableList().sumOf {
+                val wrapper = EntityWrapperManager.getWrapper(it.uniqueId)
+                if (wrapper == null) 0
 
-            else {
-                val mobComponent = wrapper.getComponents(DefaultEntityComponent::class).firstOrNull()
+                else {
+                    val mobComponent = wrapper.getComponents(DefaultEntityComponent::class).firstOrNull()
 
-                if (mobComponent == null) 0
-                else (mobComponent as DefaultEntityComponent).getMobTier().weight
+                    if (mobComponent == null) 0
+                    else (mobComponent as DefaultEntityComponent).getMobTier().weight
+                }
             }
+
+            return weightSum > maxWeight
         }
 
-        return weightSum > maxNearbyWeight(ctx.difficulty)
-    }
-
-    private fun maxNearbyWeight(difficulty: Double): Double {
-        return 60.0 + 12 * difficulty.pow(2.0/3.0)
+        fun maxNearbyWeight(difficulty: Double): Double {
+            return 60.0 + 12 * difficulty.pow(2.0/3.0)
+        }
     }
 
 }

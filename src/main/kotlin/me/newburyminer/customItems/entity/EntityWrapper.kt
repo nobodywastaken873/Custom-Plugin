@@ -30,11 +30,11 @@ class EntityWrapper(val entity: Entity, private val components: MutableList<Enti
         component.registerListeners(this)
     }
 
-    fun handle(ctx: EntityEventContext) {
+    /*fun handle(ctx: EntityEventContext) {
         components.forEach {
             it.handle(ctx, this)
         }
-    }
+    }*/
 
     fun tick() {
         components.forEach {

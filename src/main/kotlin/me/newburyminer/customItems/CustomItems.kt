@@ -15,7 +15,6 @@ import me.newburyminer.customItems.effects.CustomEffectBootstrapper
 import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity.ComponentSerializationRegistry
-import me.newburyminer.customItems.entity.EntityEventHandler
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
 import me.newburyminer.customItems.eventbus.EventBus
@@ -159,7 +158,6 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(GraveListener(), this)
         server.pluginManager.registerEvents(EnchantmentListener(), this)
         server.pluginManager.registerEvents(GuiEventHandler(), this)
-        server.pluginManager.registerEvents(EntityEventHandler(), this)
         server.pluginManager.registerEvents(wrapperManager, this)
         server.pluginManager.registerEvents(BossSystemHandler(), this)
         server.pluginManager.registerEvents(EndSystem, this)

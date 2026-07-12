@@ -56,6 +56,8 @@ object CustomSpawningSystem: BukkitRunnable() {
                         else AridLandsMobs.CAVES
 
                     val context = MobContext(e.entity.location.length(), isOminous, e.entity.location)
+                    if (SpawnerSession.tooManyNearbyMobs(e.entity.location, context.difficulty * 1.5, 60.0)) return@ListenerEntry
+
                     val possibleMobs = provider.new(context).toMutableList()
 
                     var possibleSpawn = possibleMobs.removeFirstOrNull() ?: return@ListenerEntry

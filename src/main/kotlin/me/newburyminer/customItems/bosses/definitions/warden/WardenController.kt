@@ -163,7 +163,7 @@ class WardenController(
 
     private fun buildContext(): AttackContext<Phase> {
         val scalingCycle = if (phase == Phase.Phase1) cycle else 3
-        val ctx = AttackContext(phase, cycle, scalingCycle, Phase.Phase1.cycles, 1, boss)
+        val ctx = AttackContext(phase, cycle, scalingCycle, Phase.Phase1.cycles, boss.difficulty, boss)
         return ctx
     }
 
