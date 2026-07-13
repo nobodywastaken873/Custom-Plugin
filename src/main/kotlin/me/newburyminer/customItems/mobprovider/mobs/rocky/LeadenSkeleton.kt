@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.rocky
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,7 +18,8 @@ import org.bukkit.potion.PotionEffectType
 
 object LeadenSkeleton : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.COAST)
+    override val colorTheme: ColorTheme = ColorTheme.ROCKY
+    override val trim: TrimPattern = TrimPattern.COAST
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -40,7 +42,7 @@ object LeadenSkeleton : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.AIR)
-            setArmor(arrayOf(80, 82, 89), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

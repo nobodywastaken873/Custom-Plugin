@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.velocity.VelocityProvider
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -21,6 +22,7 @@ import org.bukkit.entity.EntityType
 
 object UpperTowerBlaze : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
 	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BLAZE) {
 

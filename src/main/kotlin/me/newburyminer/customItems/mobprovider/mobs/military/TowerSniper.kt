@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.military
 import me.newburyminer.customItems.entity.components.utils.ProjectileType
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -14,6 +15,7 @@ import org.bukkit.entity.EntityType
 
 object TowerSniper : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.MILITARY
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PILLAGER) {
 

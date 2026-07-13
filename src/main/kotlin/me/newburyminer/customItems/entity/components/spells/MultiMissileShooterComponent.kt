@@ -10,9 +10,11 @@ import me.newburyminer.customItems.entity.components.projectiles.MagicMissileCom
 import me.newburyminer.customItems.entity.components.utils.AbstractSpellComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.velocity.VelocityProvider
+import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.getUpperCenter
+import org.bukkit.Sound
 import org.bukkit.entity.Marker
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -83,6 +85,8 @@ class MultiMissileShooterComponent(
                         caster,
                         targetPlayer
                     ))
+
+                    CustomEffects.playSound(caster.location, Sound.ENTITY_SKELETON_SHOOT, 1.5F, 1.6F)
                 }
 
                 if (castingTicks == 0) {
@@ -97,6 +101,7 @@ class MultiMissileShooterComponent(
             if (startCasting(wrapper)) {
                 val target = (caster.target ?: caster.getNearestPlayer(range) ?: return) as? Player ?: return
                 if (!caster.hasLineOfSight(target)) return
+                CustomEffects.playSound(caster.location, Sound.ITEM_BOTTLE_FILL_DRAGONBREATH, 1.5F, 1.5F)
 
                 targetPlayer = target
             }

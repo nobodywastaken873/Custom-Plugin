@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider.mobs.mystic
 
 import me.newburyminer.customItems.entity.components.projectileshooters.CustomWitchPotionShooter
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -13,6 +14,7 @@ import org.bukkit.potion.PotionEffectType
 
 object HealerMage : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.MYSTIC
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITCH) {
 

@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.velocity.StoppedStartVelocity
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -21,7 +22,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RockGolem : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.VEX)
+    override val colorTheme: ColorTheme = ColorTheme.ROCKY
+    override val trim: TrimPattern = TrimPattern.VEX
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
 
@@ -58,7 +60,7 @@ object RockGolem : MobDefinition() {
         equipment {
             mainhand(Material.IRON_SWORD)
             offhand(Material.BLAZE_ROD)
-            setArmor(arrayOf(80, 82, 89), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

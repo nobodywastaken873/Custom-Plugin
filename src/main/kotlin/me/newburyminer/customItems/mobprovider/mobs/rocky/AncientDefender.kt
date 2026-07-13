@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.rocky
 
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,7 +18,8 @@ import org.bukkit.util.Vector
 
 object AncientDefender : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.FLOW)
+    override val colorTheme: ColorTheme = ColorTheme.ROCKY
+    override val trim: TrimPattern = TrimPattern.FLOW
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -53,7 +55,7 @@ object AncientDefender : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.CROSSBOW)
-            setArmor(arrayOf(80, 82, 89), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

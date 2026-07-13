@@ -41,15 +41,20 @@ import me.newburyminer.customItems.bosses.rendering.shapes.ShapeLayer
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.LavaOnDeath
 import me.newburyminer.customItems.entity.components.melee.MeleeCustomHit
+import me.newburyminer.customItems.entity.components.projectiles.MagicMissileComponent
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.projectileshooters.ProjectileDamageShooter
 import me.newburyminer.customItems.entity.components.spells.EffectAuraCaster
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.CustomDamageApply
+import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
+import me.newburyminer.customItems.entity.velocity.DelaylessConstantVelocity
+import me.newburyminer.customItems.entity.velocity.StoppedStartVelocity
 import me.newburyminer.customItems.eventbus.EventRegistry
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
@@ -57,6 +62,10 @@ import me.newburyminer.customItems.loot.LootContext
 import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.loot.providers.boss.WardenLoot
 import me.newburyminer.customItems.mobprovider.MobContext
+import me.newburyminer.customItems.mobprovider.mobs.blackstone.BlackstoneHermit
+import me.newburyminer.customItems.mobprovider.mobs.blackstone.CastingBones
+import me.newburyminer.customItems.mobprovider.mobs.caves.CaveGrenadier
+import me.newburyminer.customItems.mobprovider.mobs.caves.RPGSkeleton
 import me.newburyminer.customItems.mobprovider.mobs.military.AttackHound
 import me.newburyminer.customItems.mobprovider.mobs.military.BattleMedic
 import me.newburyminer.customItems.mobprovider.mobs.military.TraineeFighter
@@ -64,6 +73,8 @@ import me.newburyminer.customItems.mobprovider.mobs.military.WalkingExplosives
 import me.newburyminer.customItems.systems.KothSystem
 import net.kyori.adventure.key.Key
 import org.bukkit.*
+import org.bukkit.entity.BlockDisplay
+import org.bukkit.entity.Marker
 import org.bukkit.entity.Player
 import org.bukkit.entity.Skeleton
 import org.bukkit.entity.Zombie
@@ -149,24 +160,32 @@ class TestCommand : BasicCommand {
             val zombie = sender.world.spawn(sender.location, Zombie::class.java)
             EntityWrapperManager.getWrapperorNew(zombie).addComponent(LavaOnDeath())
             //damageSettings.apply(sender, sender)
-        } else if (args[0] == "cancel_projectiles") {
+        }
+        else if (args[0] == "cancel_projectiles") {
             val zombie = sender.world.spawn(sender.location, Skeleton::class.java)
             EntityWrapperManager.getWrapperorNew(zombie).addComponent(CancelProjectiles())
-        } else if (args[0] == "check_event_count") {
+        }
+        else if (args[0] == "check_event_count") {
             println(EventRegistry.getAllRegisteredListeners()[EntityDeathEvent::class]?.size)
         } else if (args[0] == "summon_test") {
             val definition = when (args[1].toInt()) {
                 0 -> {
-                    TraineeFighter
+                    CaveGrenadier
                 }
                 1 -> {
-                    AttackHound
+                    RPGSkeleton
                 }
                 2 -> {
                     BattleMedic
                 }
                 3 -> {
                     WalkingExplosives
+                }
+                4 -> {
+                    CastingBones
+                }
+                5 -> {
+                    BlackstoneHermit
                 }
                 else -> {
                     return
@@ -175,9 +194,11 @@ class TestCommand : BasicCommand {
 
             val ctx = MobContext(sender.location.length(), false, sender.location.add(0.0, 0.0, 2.0))
             definition.build(ctx).createEntity(ctx)
-        } else if (args[0] == "eventbus") {
+        }
+        else if (args[0] == "eventbus") {
             println(EventRegistry.getAllRegisteredListeners())
-        } else if (args[0] == "kbtest") {
+        }
+        else if (args[0] == "kbtest") {
             when (args[1].toInt()) {
                 1 -> {
                     sender.world.spawn(
@@ -198,11 +219,13 @@ class TestCommand : BasicCommand {
                     }
                 }
             }
-        } else if (args[0] == "damageapply") {
+        }
+        else if (args[0] == "damageapply") {
             val effects = HitEffects(CustomDamageApply(1.0, CustomDamageType.EXPLOSION_NO_CD), VanillaKnockbackApply())
             val hitter = sender.world.spawn(sender.location.add(Vector(0, 0, 5)), Zombie::class.java)
             effects.apply(sender, hitter)
-        } else if (args[0] == "spellcomponent") {
+        }
+        else if (args[0] == "spellcomponent") {
             val component = EffectAuraCaster(3.0, 0.5, 100, 40, 40,
                 HitEffects(CustomDamageApply(10.0, CustomDamageType.PROJECTILE), VanillaKnockbackApply()),
                 10, ParticleTheme.BASIC_THEME, 40, 200, 20.0)
@@ -222,7 +245,8 @@ class TestCommand : BasicCommand {
                 val wrapper = EntityWrapperManager.getWrapperorNew(it)
                 wrapper.addComponent(component)
             }
-        } else if (args[0] == "test_renderer") {
+        }
+        else if (args[0] == "test_renderer") {
 
             val manager = RenderManager()
             Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
@@ -280,7 +304,8 @@ class TestCommand : BasicCommand {
             manager.add(
                 quad
             )
-        } else if (args[0] == "meshed_plane") {
+        }
+        else if (args[0] == "meshed_plane") {
             val manager = RenderManager()
             Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
 
@@ -311,7 +336,8 @@ class TestCommand : BasicCommand {
                 circle.circleCenter = Vector(10 * cos(angle), y, 10 * sin(angle))
                 secondCircle.circleCenter = Vector(-10 * cos(angle), y, -10 * sin(angle))
             }, 1L, 1L)
-        } else if (args[0] == "rectangular_prism") {
+        }
+        else if (args[0] == "rectangular_prism") {
             val manager = RenderManager()
             Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
 
@@ -354,12 +380,46 @@ class TestCommand : BasicCommand {
                 rectangle.transform.rotateWorldY(0.03F)
                 rectangle2.transform.rotateWorldY(0.03F)
             }, 1L, 1L)
-        } else if (args[0] == "warden_loot") {
+        }
+        else if (args[0] == "warden_loot") {
             PlayerLootManager.addLoot(LootContext(WardenLoot.id, "normal", 0), sender, 500)
-        } else if (args[0] == "koth_start") {
+        }
+        else if (args[0] == "koth_start") {
             KothSystem.startKoth(30)
-        } else if (args[0] == "item_claims") {
+        }
+        else if (args[0] == "item_claims") {
             sender.addItemorClaim(ItemRegistry.get(CustomItem.AXE_OF_PEACE))
+        }
+        else if (args[0] == "magic_missile") {
+            val spawnLoc = sender.location.add(0.0, 0.0, 20.0)
+
+            val velProvider = when (args[1]) {
+
+                "delayless_constant" -> {DelaylessConstantVelocity(
+                    0.1,
+                    0.05,
+                    HomingSystem.Type.BOTH_SCALED
+                )}
+                "stopped_start" -> {
+                    StoppedStartVelocity(0.2, 0.05, HomingSystem.Type.BOTH_SCALED, 20, 1.5)
+                }
+                else -> {DelaylessConstantVelocity(0.1, 0.05, HomingSystem.Type.BOTH_SCALED)}
+
+            }
+
+            val marker = sender.world.spawn(spawnLoc, Marker::class.java)
+            val wrapper = EntityWrapperManager.getWrapperorNew(marker)
+            wrapper.addComponent(
+                MagicMissileComponent(
+                    0.0,
+                    velProvider,
+                    Vector(0.0, 2.0, 0.0),
+                    HitEffects(ExplosionApply(4.0F, false)),
+                    ParticleTheme.SURFACE,
+                    sender,
+                    sender
+                )
+            )
         }
     }
 }

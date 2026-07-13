@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.bosses.warden
 
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -15,7 +16,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object WardenZombie: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.QUARTZ, TrimPattern.RIB)
+    override val colorTheme: ColorTheme = ColorTheme.WARDEN
+    override val trim: TrimPattern = TrimPattern.RIB
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
@@ -38,7 +40,7 @@ object WardenZombie: MobDefinition() {
         equipment {
             mainhand(Material.DIAMOND_SWORD)
             offhand(Material.AIR)
-            setArmor(arrayOf(15, 74, 82), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

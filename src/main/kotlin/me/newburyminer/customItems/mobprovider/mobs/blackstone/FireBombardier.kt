@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.EffectAuraApply
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,6 +18,7 @@ import org.bukkit.entity.EntityType
 
 object FireBombardier : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BLAZE) {
 

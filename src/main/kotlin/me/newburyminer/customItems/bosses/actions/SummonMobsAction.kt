@@ -4,6 +4,7 @@ import me.newburyminer.customItems.bosses.ActionCategory
 import me.newburyminer.customItems.bosses.ActionTimeline
 import me.newburyminer.customItems.bosses.AttackContext
 import me.newburyminer.customItems.bosses.BossAction
+import me.newburyminer.customItems.bosses.BossDifficulty
 import me.newburyminer.customItems.bosses.BossInstance
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleSettings
@@ -32,9 +33,8 @@ class SummonMobsAction(
     override fun start() {
         repeat(count) {
             val factor = when (ctx.difficulty) {
-                1 -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
-                2 -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
-                else -> 0.0
+                BossDifficulty.EASY -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
+                BossDifficulty.HARD -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
             } * 30.0
 
             val context = MobContext(factor, boss.getCenter())
@@ -54,9 +54,8 @@ class SummonMobsAction(
         timeline.at(delay) {
             for ((spawnLoc, mob) in spawnMap) {
                 val factor = when (ctx.difficulty) {
-                    1 -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
-                    2 -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
-                    else -> 0.0
+                    BossDifficulty.EASY -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6}
+                    BossDifficulty.HARD -> {ctx.cycle.toDouble() / (ctx.maxCycle - 1) * 0.6 + 0.4}
                 } * 30.0
 
                 val context = MobContext(factor, spawnLoc.toLocation(boss.boss.world))

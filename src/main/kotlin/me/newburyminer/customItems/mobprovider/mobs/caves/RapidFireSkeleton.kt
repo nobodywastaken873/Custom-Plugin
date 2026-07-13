@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.mobprovider.mobs.caves
 
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -13,7 +14,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RapidFireSkeleton: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.FLOW)
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
+    override val trim: TrimPattern = TrimPattern.FLOW
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -38,7 +40,7 @@ object RapidFireSkeleton: MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.CROSSBOW)
-            setArmor(arrayOf(111, 117, 117), trim)
+            setArmor(colorTheme.color, trim)
         }
     
     }

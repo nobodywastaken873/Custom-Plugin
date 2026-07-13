@@ -32,6 +32,10 @@ class GraveItemsGui(private val armorStand: Interaction): CustomGui() {
         val text = text("${owner.name}'s grave", arrayOf(199, 4, 30))
         inv = Bukkit.createInventory(this, 54, text)
         inv.contents = items.toTypedArray()
+        inv.contents.forEach {
+            if (it == null) return@forEach
+            it.removeTag("graveslot")
+        }
     }
 
     override fun open(player: Player) {

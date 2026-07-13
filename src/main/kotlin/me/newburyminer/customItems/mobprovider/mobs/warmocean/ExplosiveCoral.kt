@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.warmocean
 
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -14,6 +15,7 @@ import org.bukkit.potion.PotionEffectType
 
 object ExplosiveCoral : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.WARM_OCEAN
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CREEPER) {
 

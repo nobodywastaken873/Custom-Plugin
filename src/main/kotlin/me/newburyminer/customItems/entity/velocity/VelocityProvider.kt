@@ -67,7 +67,7 @@ abstract class VelocityProvider {
             for (i in 0..40) {
                 val randomDirection = Vector.getRandom().normalize()
                 val result = currentLoc.world.rayTraceBlocks(currentLoc, randomDirection, distance)
-                if (result != null && result.hitBlock != null) {
+                if (result == null || result.hitBlock == null) {
                     return randomDirection
                 }
             }

@@ -7,6 +7,7 @@ import me.newburyminer.customItems.entity.velocity.DelayedStartVelocity
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -24,7 +25,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object ChainmailFighter : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.SENTRY)
+    override val colorTheme: ColorTheme = ColorTheme.COLD_OCEAN
+    override val trim: TrimPattern = TrimPattern.SENTRY
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 

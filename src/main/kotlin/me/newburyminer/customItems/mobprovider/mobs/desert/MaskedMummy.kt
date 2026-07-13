@@ -4,6 +4,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -19,7 +20,8 @@ import org.bukkit.potion.PotionEffectType
 
 object MaskedMummy : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.WARD)
+    override val colorTheme: ColorTheme = ColorTheme.DESERT
+    override val trim: TrimPattern = TrimPattern.WARD
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -51,7 +53,7 @@ object MaskedMummy : MobDefinition() {
         equipment {
             mainhand(Material.GOLDEN_AXE)
             offhand(Material.AIR)
-            setArmor(arrayOf(181, 160, 103), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

@@ -1,6 +1,6 @@
 package me.newburyminer.customItems.items
 
-enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String = "", val stackable: Boolean = false) {
+enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String = "", val stackable: Boolean = false, val isArtifact: Boolean = false) {
     ALL,
     JERRY_IDOL,
     VILLAGER_ATOMIZER,

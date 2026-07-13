@@ -33,7 +33,7 @@ object BossManager: BukkitRunnable() {
         return activeInstances.any { it.bossType == boss }
     }
 
-    fun spawnBoss(boss: CustomBossType, spawner: Player, players: List<Player>): Boolean {
+    fun spawnBoss(boss: CustomBossType, difficulty: BossDifficulty, spawner: Player, players: List<Player>): Boolean {
         if (isActive(boss)) {
             spawner.sendMessage(text("This boss is already alive. Please try again later.", Utils.FAILED_COLOR))
             return false
@@ -41,7 +41,7 @@ object BossManager: BukkitRunnable() {
 
         val instance = when (boss) {
             CustomBossType.WARDEN -> {
-                WardenInstance(players.toMutableList())
+                WardenInstance(players.toMutableList(), difficulty)
             }
             CustomBossType.GUARDIAN -> TODO()
             CustomBossType.WITHER -> TODO()

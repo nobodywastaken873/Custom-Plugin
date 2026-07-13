@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.blackstone
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,7 +18,8 @@ import org.bukkit.potion.PotionEffectType
 
 object WitherWarrior : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.WARD)
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
+    override val trim: TrimPattern = TrimPattern.WARD
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
 
@@ -42,7 +44,7 @@ object WitherWarrior : MobDefinition() {
         equipment {
             mainhand(Material.NETHERITE_SWORD)
             offhand(Material.AIR)
-            setArmor(arrayOf(40, 32, 48), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider.mobs.caves
 
 import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -14,7 +15,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RPGSkeleton: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.BOLT)
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
+    override val trim: TrimPattern = TrimPattern.BOLT
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 55.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -39,7 +41,7 @@ object RPGSkeleton: MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.GUNPOWDER)
-            setArmor(arrayOf(111, 117, 117), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.desert
 
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,7 +18,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object ScarabSoldier : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.TIDE)
+    override val colorTheme: ColorTheme = ColorTheme.DESERT
+    override val trim: TrimPattern = TrimPattern.TIDE
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -44,7 +46,7 @@ object ScarabSoldier : MobDefinition() {
         equipment {
             mainhand(Material.GOLDEN_SWORD)
             offhand(Material.WIND_CHARGE)
-            setArmor(arrayOf(181, 160, 103), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

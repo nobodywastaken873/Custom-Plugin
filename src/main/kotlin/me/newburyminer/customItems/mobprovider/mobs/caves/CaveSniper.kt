@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.caves
 
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -16,7 +17,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object CaveSniper: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.EYE)
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
+    override val trim: TrimPattern = TrimPattern.EYE
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 60.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -52,7 +54,7 @@ object CaveSniper: MobDefinition() {
         equipment {
             mainhand(Material.OXEYE_DAISY)
             offhand(Material.FLINT)
-            setArmor(arrayOf(111, 117, 117), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

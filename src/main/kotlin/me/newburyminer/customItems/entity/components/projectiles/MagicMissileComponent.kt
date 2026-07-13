@@ -12,6 +12,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.getUpperCenter
 import org.bukkit.Bukkit
 import org.bukkit.FluidCollisionMode
+import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Marker
@@ -91,21 +92,30 @@ class MagicMissileComponent(
             projectile.remove()
 
             effects.apply(target as? LivingEntity ?: return, shooter ?: return, currentLocation)
+            CustomEffects.playSound(currentLocation, Sound.ENTITY_PLAYER_HURT, 1.0F, 0.5F)
             return
         }
 
         val newLocation = currentLocation.clone().add(currentVelocity)
         projectile.teleport(newLocation)
 
-        // Need to implement more different ways of showing the missile
-        CustomEffects.raycastParticleLine(
-            particleSettings.preParticle,
-            newLocation,
-            currentVelocity,
-            currentVelocity.length(),
-            particleSettings.concentration * 2 * particleSettings.spread.pow(2).coerceAtLeast(1.0),
-            offset = particleSettings.spread
-        )
+        if (currentVelocity.length() * particleSettings.concentration < 1.0) {
+            CustomEffects.particle(
+                particleSettings.preParticle,
+                newLocation,
+                1
+            )
+        }
+        else {
+            CustomEffects.raycastParticleLine(
+                particleSettings.preParticle,
+                newLocation,
+                currentVelocity,
+                currentVelocity.length(),
+                particleSettings.concentration/* * 2 * particleSettings.spread.pow(2).coerceAtLeast(1.0),*/
+                //offset = particleSettings.spread
+            )
+        }
 
     }
 }

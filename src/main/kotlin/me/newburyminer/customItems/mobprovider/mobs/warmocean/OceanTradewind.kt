@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider.mobs.warmocean
 
 import me.newburyminer.customItems.entity.components.utils.ProjectileType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -11,6 +12,7 @@ import org.bukkit.entity.EntityType
 
 object OceanTradewind : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.WARM_OCEAN
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BREEZE) {
 

@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.coldocean
 import me.newburyminer.customItems.entity.components.spells.LeapComponent
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -16,7 +17,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object RopeswingerCrew : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.SNOUT)
+    override val colorTheme: ColorTheme = ColorTheme.COLD_OCEAN
+    override val trim: TrimPattern = TrimPattern.SNOUT
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -46,7 +48,7 @@ object RopeswingerCrew : MobDefinition() {
         equipment {
             mainhand(Material.IRON_SWORD)
             offhand(Material.AIR)
-            setArmor(arrayOf(47, 64, 158), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

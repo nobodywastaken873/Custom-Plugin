@@ -4,6 +4,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -21,7 +22,8 @@ import org.bukkit.util.Vector
 
 object ExplosivesMaster : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.BOLT)
+    override val colorTheme: ColorTheme = ColorTheme.COLD_OCEAN
+    override val trim: TrimPattern = TrimPattern.BOLT
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -63,7 +65,7 @@ object ExplosivesMaster : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.GUNPOWDER)
-            setArmor(arrayOf(47, 64, 158), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

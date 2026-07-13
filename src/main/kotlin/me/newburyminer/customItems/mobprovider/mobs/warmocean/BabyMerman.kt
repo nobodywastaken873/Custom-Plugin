@@ -6,6 +6,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.EffectAuraApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -20,7 +21,8 @@ import org.bukkit.potion.PotionEffectType
 
 object BabyMerman : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.SENTRY)
+    override val colorTheme: ColorTheme = ColorTheme.WARM_OCEAN
+    override val trim: TrimPattern = TrimPattern.SENTRY
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 

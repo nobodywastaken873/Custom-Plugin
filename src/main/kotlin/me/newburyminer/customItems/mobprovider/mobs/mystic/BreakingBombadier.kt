@@ -6,6 +6,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackA
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -24,7 +25,8 @@ import org.bukkit.potion.PotionEffectType
 
 object BreakingBombadier : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.BOLT)
+    override val colorTheme: ColorTheme = ColorTheme.MYSTIC
+    override val trim: TrimPattern = TrimPattern.BOLT
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BOGGED) {
 
@@ -68,7 +70,7 @@ object BreakingBombadier : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.GUNPOWDER)
-            setArmor(arrayOf(89, 70, 46), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

@@ -96,10 +96,7 @@ fun World.hasIntersectingBlocks(box: BoundingBox): Boolean {
 
                 if (!block.type.isSolid) continue
 
-                val shape = block.collisionShape
-
-                if (shape.boundingBoxes.any { it.overlaps(box) })
-                    return true
+                return true
 
             }
         }

@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.coldocean
 
 import me.newburyminer.customItems.entity.components.utils.ProjectileType
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -16,7 +17,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object PirateMachineGunner : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.FLOW)
+    override val colorTheme: ColorTheme = ColorTheme.COLD_OCEAN
+    override val trim: TrimPattern = TrimPattern.FLOW
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.STRAY) {
 
@@ -46,7 +48,7 @@ object PirateMachineGunner : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.CROSSBOW)
-            setArmor(arrayOf(47, 64, 158), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

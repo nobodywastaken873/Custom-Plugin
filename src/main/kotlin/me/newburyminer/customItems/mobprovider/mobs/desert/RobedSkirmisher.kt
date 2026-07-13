@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -24,7 +25,8 @@ import org.bukkit.potion.PotionEffectType
 
 object RobedSkirmisher : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.SILENCE)
+    override val colorTheme: ColorTheme = ColorTheme.DESERT
+    override val trim: TrimPattern = TrimPattern.SILENCE
 	override val tier: MobTier = MobTier.MINIBOSS
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PARCHED) {
 
@@ -98,7 +100,7 @@ object RobedSkirmisher : MobDefinition() {
         equipment {
             mainhand(Material.GOLDEN_SWORD)
             offhand(Material.BREEZE_ROD)
-            setArmor(arrayOf(181, 160, 103), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

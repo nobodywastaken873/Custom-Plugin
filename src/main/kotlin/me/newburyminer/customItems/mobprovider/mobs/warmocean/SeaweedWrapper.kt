@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.warmocean
 import me.newburyminer.customItems.entity.components.projectileshooters.HomingProjectileShooter
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.HomingSystem
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -19,7 +20,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object SeaweedWrapper : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.COAST)
+    override val colorTheme: ColorTheme = ColorTheme.WARM_OCEAN
+    override val trim: TrimPattern = TrimPattern.COAST
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -58,7 +60,7 @@ object SeaweedWrapper : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.AIR)
-            setArmor(arrayOf(49, 159, 181), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

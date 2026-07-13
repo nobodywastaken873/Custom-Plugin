@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.mobprovider.mobs.surface
 
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -10,6 +11,7 @@ import org.bukkit.entity.EntityType
 
 object FirebombCreeper: MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.SURFACE
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.CREEPER) {

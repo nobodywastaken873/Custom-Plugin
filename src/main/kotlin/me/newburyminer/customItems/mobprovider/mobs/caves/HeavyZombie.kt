@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.caves
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -17,7 +18,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object HeavyZombie: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.SNOUT)
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
+    override val trim: TrimPattern = TrimPattern.SNOUT
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_VILLAGER) {
@@ -51,7 +53,7 @@ object HeavyZombie: MobDefinition() {
         equipment {
             mainhand(Material.NETHERITE_SWORD)
             offhand(Material.AIR)
-            setArmor(arrayOf(111, 117, 117), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

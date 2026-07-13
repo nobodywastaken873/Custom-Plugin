@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.EffectAuraApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -24,7 +25,8 @@ import org.bukkit.potion.PotionEffectType
 
 object MysticSniper : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.EYE)
+    override val colorTheme: ColorTheme = ColorTheme.MYSTIC
+    override val trim: TrimPattern = TrimPattern.EYE
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BOGGED) {
 
@@ -79,7 +81,7 @@ object MysticSniper : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.SPYGLASS)
-            setArmor(arrayOf(89, 70, 46), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

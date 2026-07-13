@@ -4,6 +4,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -24,7 +25,8 @@ import org.bukkit.potion.PotionEffectType
 
 object SoulMage : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.DUNE)
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
+    override val trim: TrimPattern = TrimPattern.DUNE
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.HUSK) {
 
@@ -74,7 +76,7 @@ object SoulMage : MobDefinition() {
         equipment {
             mainhand(Material.NETHERITE_SWORD)
             offhand(Material.GOLDEN_APPLE)
-            setArmor(arrayOf(40, 32, 48), trim)
+            setArmor(colorTheme.color, trim)
         }
         
     }

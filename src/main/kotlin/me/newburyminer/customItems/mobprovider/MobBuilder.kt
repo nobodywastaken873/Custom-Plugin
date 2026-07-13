@@ -26,6 +26,7 @@ class MobBuilder(
     val targetRange: Double,
     val trim: ArmorTrim,
     val name: String,
+    val color: Array<Int>,
 ) {
     var health: Double = 20.0
     var armor: Double = 0.0
@@ -81,7 +82,7 @@ class MobBuilder(
 
         val entity = ctx.location.world.spawnEntity(ctx.location, entityType, false) as LivingEntity
 
-        entity.customName(Utils.text(name))
+        entity.customName(Utils.text(name, color))
 
         if (entity.equipment != null) {
             equipment.boots(

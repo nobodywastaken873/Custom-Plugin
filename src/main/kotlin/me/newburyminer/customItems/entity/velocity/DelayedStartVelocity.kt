@@ -15,7 +15,7 @@ class DelayedStartVelocity(
 ): VelocityProvider() {
 
     override fun next(currentLoc: Location, target: Location, currentVel: Vector, timeIndex: Int): Vector {
-        return if (timeIndex < delay) currentVel
+        return if (timeIndex < delay) currentVel.clone().normalize().multiply(initialSpeed)
             else if (timeIndex == delay && resetOnBegin) target.clone().subtract(currentLoc).toVector().normalize().multiply(speed)
             else getHomingVelocity(currentLoc, target, currentVel, homingType, angleChange)
     }

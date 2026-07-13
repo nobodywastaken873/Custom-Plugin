@@ -22,12 +22,15 @@ import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 abstract class MobDefinition : SpawnOption {
-    val id: String
-        get() = this::class.java.name
+
+    abstract val colorTheme: ColorTheme
     abstract val tier: MobTier
     open val targetRange: Double
         get() = 40.0
-    open val trim: ArmorTrim? = null
+    open val trim: TrimPattern? = null
+
+    val id: String
+        get() = this::class.simpleName ?: "Unknown"
     val name: String
         get() {
             return id
@@ -38,7 +41,8 @@ abstract class MobDefinition : SpawnOption {
     abstract fun build(ctx: MobContext): MobBuilder
 
     fun mob(type: EntityType, block: MobBuilder.() -> Unit): MobBuilder {
-        val builder = MobBuilder(type, tier, targetRange, trim ?: ArmorTrim(TrimMaterial.IRON, TrimPattern.RIB), name)
+        val trimPattern = trim ?: TrimPattern.RIB
+        val builder = MobBuilder(type, tier, targetRange, ArmorTrim(colorTheme.trimMaterial, trimPattern), name, colorTheme.color)
         builder.block()
         return builder
     }

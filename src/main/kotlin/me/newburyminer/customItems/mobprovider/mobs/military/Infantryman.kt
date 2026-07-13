@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.military
 import me.newburyminer.customItems.Utils.Companion.ench
 import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack
 
 object Infantryman : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.MILITARY
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.PILLAGER) {
 

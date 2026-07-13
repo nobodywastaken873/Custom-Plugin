@@ -18,7 +18,7 @@ class StoppedStartVelocity(
         val prevVel = if (timeIndex == 0) (2 * travelDist) / (3 * delay) else currentVel.length()
         val scaledSpeed = prevVel - (2 * travelDist) / (3 * delay.toDouble().pow(2))
 
-        return if (timeIndex < delay) currentVel.normalize().multiply(scaledSpeed)
+        return if (timeIndex < delay) currentVel.clone().normalize().multiply(scaledSpeed)
             else if (timeIndex == delay) target.clone().subtract(currentLoc).toVector().normalize().multiply(speed)
             else getHomingVelocity(currentLoc, target, currentVel, homingType, angleChange)
     }

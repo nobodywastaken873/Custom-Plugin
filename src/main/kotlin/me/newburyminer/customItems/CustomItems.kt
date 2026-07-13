@@ -155,7 +155,7 @@ class CustomItems : JavaPlugin() {
         server.pluginManager.registerEvents(DurabilityListener(), this)
         server.pluginManager.registerEvents(systemsListener, this)
         server.pluginManager.registerEvents(EffectEventHandler(), this)
-        server.pluginManager.registerEvents(GraveListener(), this)
+        server.pluginManager.registerEvents(GraveListener, this)
         server.pluginManager.registerEvents(EnchantmentListener(), this)
         server.pluginManager.registerEvents(GuiEventHandler(), this)
         server.pluginManager.registerEvents(wrapperManager, this)

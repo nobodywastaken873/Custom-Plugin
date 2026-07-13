@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.caves
 
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -16,7 +17,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object CaveGrenadier: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.BOLT)
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
+    override val trim: TrimPattern = TrimPattern.BOLT
     override val tier: MobTier = MobTier.GRUNT
     override val targetRange: Double = 50.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE) {
@@ -50,7 +52,7 @@ object CaveGrenadier: MobDefinition() {
         equipment {
             mainhand(Material.DIAMOND_AXE)
             offhand(Material.AIR)
-            setArmor(arrayOf(111, 117, 117), trim)
+            setArmor(colorTheme.color, trim)
         }
     
     }

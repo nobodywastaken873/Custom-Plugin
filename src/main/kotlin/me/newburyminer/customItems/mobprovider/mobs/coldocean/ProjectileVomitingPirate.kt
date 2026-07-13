@@ -4,6 +4,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -19,7 +20,8 @@ import org.bukkit.potion.PotionEffectType
 
 object ProjectileVomitingPirate : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.COPPER, TrimPattern.VEX)
+    override val colorTheme: ColorTheme = ColorTheme.COLD_OCEAN
+    override val trim: TrimPattern = TrimPattern.VEX
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.DROWNED) {
 
@@ -58,7 +60,7 @@ object ProjectileVomitingPirate : MobDefinition() {
         equipment {
             mainhand(Material.IRON_SWORD)
             offhand(Material.BLAZE_ROD)
-            setArmor(arrayOf(47, 64, 158), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

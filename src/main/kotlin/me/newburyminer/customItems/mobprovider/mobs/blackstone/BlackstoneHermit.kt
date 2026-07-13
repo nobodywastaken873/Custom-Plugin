@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.blackstone
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -20,7 +21,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object BlackstoneHermit : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.DIAMOND, TrimPattern.SENTRY)
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
+    override val trim: TrimPattern = TrimPattern.SENTRY
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -64,7 +66,7 @@ object BlackstoneHermit : MobDefinition() {
         equipment {
             mainhand(Material.BREEZE_ROD)
             offhand(Material.AIR)
-            setArmor(arrayOf(40, 32, 48), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

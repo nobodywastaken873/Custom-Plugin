@@ -28,7 +28,7 @@ class EffectMissileAbility(
                 range,
                 size,
                 DelaylessConstantVelocity(
-                    aggression * 0.1,
+                    aggression * 0.25,
                     aggression * 0.05,
                     HomingSystem.Type.BOTH_SCALED
                 ),

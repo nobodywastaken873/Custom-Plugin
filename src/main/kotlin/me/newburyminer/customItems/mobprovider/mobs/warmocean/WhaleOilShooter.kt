@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.warmocean
 import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -21,7 +22,8 @@ import org.bukkit.potion.PotionEffectType
 
 object WhaleOilShooter : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.GOLD, TrimPattern.EYE)
+    override val colorTheme: ColorTheme = ColorTheme.WARM_OCEAN
+    override val trim: TrimPattern = TrimPattern.EYE
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
 
@@ -76,7 +78,7 @@ object WhaleOilShooter : MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.BLAZE_ROD)
-            setArmor(arrayOf(49, 159, 181), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

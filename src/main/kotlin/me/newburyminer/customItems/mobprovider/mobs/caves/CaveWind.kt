@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider.mobs.caves
 
 import me.newburyminer.customItems.entity.components.utils.ProjectileType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -11,6 +12,7 @@ import org.bukkit.entity.EntityType
 
 object CaveWind: MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.CAVES
     override val tier: MobTier = MobTier.ELITE
     override val targetRange: Double = 60.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.BREEZE) {

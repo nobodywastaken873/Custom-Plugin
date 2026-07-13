@@ -5,6 +5,7 @@ import me.newburyminer.customItems.entity.hiteffects.effect.ProjectileKnockbackA
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -22,7 +23,8 @@ import org.bukkit.potion.PotionEffectType
 
 object InterceptorPilot: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.EYE)
+    override val colorTheme: ColorTheme = ColorTheme.SURFACE
+    override val trim: TrimPattern = TrimPattern.EYE
     override val tier: MobTier = MobTier.ELITE
     override val targetRange: Double = 120.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.SKELETON) {
@@ -64,7 +66,7 @@ object InterceptorPilot: MobDefinition() {
         equipment {
             mainhand(Material.BOW)
             offhand(Material.BLAZE_ROD)
-            setArmor(arrayOf(125, 122, 109), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

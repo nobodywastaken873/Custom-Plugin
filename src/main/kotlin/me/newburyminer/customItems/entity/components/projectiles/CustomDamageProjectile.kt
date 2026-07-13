@@ -50,7 +50,7 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
                 if (e.damager is Projectile) (e.damager as Projectile).shooter as? Entity ?: return@register
                 else e.damager
 
-            damage.apply(damaged, damager)
+            damage.apply(damaged, damager, sourceLoc = wrapper.entity.location)
             wrapper.entity.remove()
             //println("finished applying and removing 5")
         })

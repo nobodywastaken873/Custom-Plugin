@@ -4,6 +4,7 @@ import me.newburyminer.customItems.entity.components.melee.SuicideBomberComponen
 import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.entity.hiteffects.effect.ExplosionApply
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -13,6 +14,7 @@ import org.bukkit.potion.PotionEffectType
 
 object FPVDrone : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.MILITARY
 	override val tier: MobTier = MobTier.GRUNT
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.VEX) {
 

@@ -3,6 +3,7 @@ package me.newburyminer.customItems.mobprovider.mobs.mystic
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
 import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -20,7 +21,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object HulkingPigman : MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.EMERALD, TrimPattern.RIB)
+    override val colorTheme: ColorTheme = ColorTheme.MYSTIC
+    override val trim: TrimPattern = TrimPattern.RIB
 	override val tier: MobTier = MobTier.ELITE
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIFIED_PIGLIN) {
 
@@ -70,7 +72,7 @@ object HulkingPigman : MobDefinition() {
         equipment {
             mainhand(Material.WOODEN_AXE)
             offhand(Material.SHIELD)
-            setArmor(arrayOf(89, 70, 46), trim)
+            setArmor(colorTheme.color, trim)
         }
 
     }

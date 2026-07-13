@@ -2,6 +2,7 @@ package me.newburyminer.customItems.mobprovider.mobs.surface
 
 import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
 import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -16,7 +17,8 @@ import org.bukkit.inventory.meta.trim.TrimPattern
 
 object DustThrower: MobDefinition() {
 
-    override val trim: ArmorTrim = ArmorTrim(TrimMaterial.NETHERITE, TrimPattern.BOLT)
+    override val colorTheme: ColorTheme = ColorTheme.SURFACE
+    override val trim: TrimPattern = TrimPattern.BOLT
     override val tier: MobTier = MobTier.STANDARD
     override val targetRange: Double = 56.0
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_VILLAGER) {
@@ -50,7 +52,7 @@ object DustThrower: MobDefinition() {
         equipment {
             mainhand(Material.STONE_SWORD)
             offhand(Material.GUNPOWDER)
-            setArmor(arrayOf(125, 122, 109), trim)
+            setArmor(colorTheme.color, trim)
         }
     
     }

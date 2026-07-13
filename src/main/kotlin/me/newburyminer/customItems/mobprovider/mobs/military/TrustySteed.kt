@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.mobprovider.mobs.military
 
 import me.newburyminer.customItems.entity.components.spells.LeapComponent
+import me.newburyminer.customItems.mobprovider.ColorTheme
 import me.newburyminer.customItems.mobprovider.MobBuilder
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
@@ -9,6 +10,7 @@ import org.bukkit.entity.EntityType
 
 object TrustySteed : MobDefinition() {
 
+    override val colorTheme: ColorTheme = ColorTheme.MILITARY
 	override val tier: MobTier = MobTier.STANDARD
     override fun build(ctx: MobContext): MobBuilder = mob(EntityType.ZOMBIE_HORSE) {
 
