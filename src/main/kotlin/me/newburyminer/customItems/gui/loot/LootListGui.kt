@@ -1,4 +1,4 @@
-package me.newburyminer.customItems.gui.combat
+package me.newburyminer.customItems.gui.loot
 
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop

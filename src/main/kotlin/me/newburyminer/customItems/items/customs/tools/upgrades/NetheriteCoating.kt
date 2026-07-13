@@ -30,7 +30,6 @@ class NetheriteCoating: CustomItemDefinition {
     private val name = text("Netherite Coating", color)
     private val lore = Utils.loreBlockToList(
         text("This item applies the Fireproof enchantment to any item, which prevents it from being burned in fire or lava. " +
-                "You may apply Blast Resistant to an item with Fireproof, but it will overwrite the bonus. " +
                 "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
     )
 

@@ -69,7 +69,7 @@ class EntityWrapperManager: Listener, BukkitRunnable() {
     // Only register if it has the tag data to do so, on spawn will register a wrapper
     @EventHandler(priority = EventPriority.LOWEST) fun entityAdd(e: EntityAddToWorldEvent) {
         // Check if it has tag, deserialize, remove tag?, register to map
-        val entity = e.entity as? LivingEntity ?: return
+        val entity = e.entity
         val jsonText = entity.getTag<String>("wrapperjson") ?: return
         val map = Gson().fromJson(jsonText, Map::class.java) as Map<String, Any>
         val wrapper = EntityWrapper.deserialize(map, entity) ?: return

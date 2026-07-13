@@ -1,11 +1,9 @@
-package me.newburyminer.customItems.gui.combat
+package me.newburyminer.customItems.gui.loot
 
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorDrop
 import me.newburyminer.customItems.Utils.Companion.getItemAction
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.lock
-import me.newburyminer.customItems.Utils.Companion.maxStack
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setItemAction
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -13,14 +11,11 @@ import me.newburyminer.customItems.gui.GuiItems
 import me.newburyminer.customItems.gui.GuiLayout
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.gui.PagedGui
-import me.newburyminer.customItems.loot.LootRegistry
-import me.newburyminer.customItems.loot.PlayerLootManager
 import me.newburyminer.customItems.systems.KothSystem
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory

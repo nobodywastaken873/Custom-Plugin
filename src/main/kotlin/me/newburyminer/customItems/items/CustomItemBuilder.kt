@@ -40,8 +40,9 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
         item.setData(DataComponentTypes.USE_COOLDOWN, UseCooldown.useCooldown(0.05F).cooldownGroup(Key.key("customitems", custom.name.lowercase())))
     }
 
-    fun setName(component: Component): CustomItemBuilder {
-        val styledComponent = component.style(Style.style(component.color(), TextDecoration.BOLD).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE))
+    fun setName(component: Component, bold: Boolean = true): CustomItemBuilder {
+        var styledComponent = component.style(Style.style(component.color()).decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE))
+        if (bold) styledComponent = styledComponent.decoration(TextDecoration.BOLD, TextDecoration.State.TRUE)
         item.setData(DataComponentTypes.CUSTOM_NAME, styledComponent)
         return this
     }
@@ -118,6 +119,11 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
     fun noNoiseEquippable(slot: EquipmentSlot): CustomItemBuilder {
         val equippable = Equippable.equippable(slot).equipSound(Key.key("intentionally_empty"))
         item.setData(DataComponentTypes.EQUIPPABLE, equippable)
+        return this
+    }
+
+    fun maxStack(size: Int): CustomItemBuilder {
+        item.setData(DataComponentTypes.MAX_STACK_SIZE, size)
         return this
     }
 

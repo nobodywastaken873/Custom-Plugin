@@ -15,6 +15,7 @@ import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.combat.GraveItemsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
+import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.*
 import org.bukkit.entity.*
@@ -238,7 +239,7 @@ object GraveListener: Listener {
 
             e.player.sendMessage(text("Item stolen.", Utils.SUCCESS_COLOR))
             Bukkit.getPlayer(owner)?.sendMessage(text("A(n) ${
-                PlainTextComponentSerializer.plainText().serialize(steal.displayName())
+                (steal.displayName() as TextComponent).content()
             } has been stolen from your grave.", Utils.FAILED_COLOR))
 
             CustomEffects.playSound(interaction.location, Sound.BLOCK_CHEST_CLOSE, 1.0F, 1.2F)

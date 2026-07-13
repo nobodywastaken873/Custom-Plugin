@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.set.RegistryKeySet
+import io.papermc.paper.registry.set.RegistrySet
 import io.papermc.paper.registry.tag.TagKey
 import me.newburyminer.customItems.gui.ItemAction
 import me.newburyminer.customItems.helpers.damage.DamageSettings
@@ -889,7 +890,18 @@ class Utils {
             return this
         }
         fun ItemStack.resist(type: RegistryKeySet<DamageType>): ItemStack {
-            this.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(type))
+            val current = this.getData(DataComponentTypes.DAMAGE_RESISTANT)?.types()
+            if (current != null) {
+                val set = current.toMutableSet()
+                set.addAll(type.toMutableSet())
+                val newSet = RegistrySet.keySet(
+                    RegistryKey.DAMAGE_TYPE,
+                    set
+                )
+                this.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(newSet))
+            } else {
+                this.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(type))
+            }
             return this
         }
         fun ItemStack.lore(vararg lines: Component): ItemStack {

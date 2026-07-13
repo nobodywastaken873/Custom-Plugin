@@ -13,6 +13,7 @@ import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.niceName
 import me.newburyminer.customItems.Utils.Companion.setItemAction
+import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.effects.CustomEffectType
 import me.newburyminer.customItems.effects.EffectManager
@@ -153,6 +154,7 @@ class GraveListGui(private val player: Player, page: Int = 0): PagedGui(page) {
             }
             ItemAction.DELETE_GRAVE -> {
                 graves.removeAt(openGrave ?: return)
+                player.setListTag("gravelist", graves)
                 openPage(currentPage)
             }
             ItemAction.GO_BACK -> {

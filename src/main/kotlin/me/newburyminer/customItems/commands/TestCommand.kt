@@ -3,7 +3,12 @@ package me.newburyminer.customItems.commands
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.DeathProtection
+import io.papermc.paper.datacomponent.item.KineticWeapon
+import io.papermc.paper.datacomponent.item.PiercingWeapon
 import io.papermc.paper.datacomponent.item.UseCooldown
+import io.papermc.paper.datacomponent.item.Weapon
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addElytraComponent
@@ -73,6 +78,7 @@ import me.newburyminer.customItems.mobprovider.mobs.military.WalkingExplosives
 import me.newburyminer.customItems.systems.KothSystem
 import net.kyori.adventure.key.Key
 import org.bukkit.*
+import org.bukkit.damage.DamageType
 import org.bukkit.entity.BlockDisplay
 import org.bukkit.entity.Marker
 import org.bukkit.entity.Player
@@ -420,6 +426,59 @@ class TestCommand : BasicCommand {
                     sender
                 )
             )
+        }
+        else if (args[0] == "data_component") {
+            var item = ItemStack(Material.DIAMOND_SWORD)
+            item.setData(DataComponentTypes.DAMAGE_TYPE, DamageType.SONIC_BOOM)
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.CLAY_BALL)
+            item.setData(DataComponentTypes.DEATH_PROTECTION, DeathProtection.deathProtection()
+                .addEffect(ConsumeEffect.teleportRandomlyEffect(4.0F))
+                .addEffect(ConsumeEffect.playSoundConsumeEffect(Registry.SOUNDS.getKey(Sound.ENTITY_ENDERMAN_TELEPORT)!!))
+            )
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.DIAMOND_HOE)
+            item.setData(DataComponentTypes.WEAPON, Weapon.weapon().disableBlockingForSeconds(100.0F))
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.STICK)
+            item.setData(DataComponentTypes.PIERCING_WEAPON,
+                PiercingWeapon.piercingWeapon().dismounts(true).dealsKnockback(true)
+            )
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.DIAMOND_AXE)
+            item.setData(DataComponentTypes.MINIMUM_ATTACK_CHARGE, 0.8F)
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.BLAZE_ROD)
+            item.setData(DataComponentTypes.KINETIC_WEAPON, KineticWeapon.kineticWeapon()
+                .contactCooldownTicks(5)
+                .damageConditions(KineticWeapon.condition(500, 0.1F, 0.1F))
+                .damageMultiplier(3.0F)
+                .delayTicks(10)
+                .forwardMovement(2.0F)
+                .build()
+            )
+            sender.addItemorDrop(item)
+
+            item = ItemStack(Material.BREEZE_ROD)
+            item.setData(DataComponentTypes.KINETIC_WEAPON, KineticWeapon.kineticWeapon()
+                .contactCooldownTicks(5)
+                .damageConditions(KineticWeapon.condition(500, 0.1F, 0.1F))
+                .damageMultiplier(3.0F)
+                .delayTicks(10)
+                .forwardMovement(2.0F)
+                .build()
+            )
+            item.setData(DataComponentTypes.PIERCING_WEAPON,
+                PiercingWeapon.piercingWeapon().dismounts(true).dealsKnockback(true)
+            )
+            sender.addItemorDrop(item)
+
+
         }
     }
 }

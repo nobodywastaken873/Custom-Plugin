@@ -5,6 +5,7 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.DefaultEntityComponent
+import me.newburyminer.customItems.entity.components.NonPickuppableComponent
 import me.newburyminer.customItems.entity.components.projectileshooters.CancelProjectiles
 import me.newburyminer.customItems.entity.components.spells.SpellCasterComponent
 import org.bukkit.Material
@@ -69,6 +70,10 @@ class MobBuilder(
                 tier,
                 targetRange,
             )
+        )
+
+        component(
+            NonPickuppableComponent()
         )
 
         if (entityType == EntityType.EVOKER || entityType == EntityType.ILLUSIONER) {

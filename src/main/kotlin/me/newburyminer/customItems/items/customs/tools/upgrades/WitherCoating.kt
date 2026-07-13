@@ -26,7 +26,6 @@ class WitherCoating: CustomItemDefinition {
     private val name = text("Wither Coating", color)
     private val lore = Utils.loreBlockToList(
         text("This item applies the Blast Resistant enchantment to any item, which prevents it from being blown up by explosions. " +
-                "You may apply Fireproof to an item with Blast Resistant, but it will overwrite the bonus. " +
                 "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
     )
 
