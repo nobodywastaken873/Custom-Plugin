@@ -16,7 +16,7 @@ class ProjectileKnockbackApply(val strength: Double = 0.3): HitEffect {
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         val newStr = strength * (1.0 - (victim.getAttribute(Attribute.KNOCKBACK_RESISTANCE)?.value ?: 0.0))
         if (newStr <= 0.000001) return
-        val source = sourceLoc?.clone() ?: damager.location
+        val source = damager.location
 
         val direction =
             if (damager is Projectile)

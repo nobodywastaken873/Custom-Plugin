@@ -28,7 +28,7 @@ object StoneThrower : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(25.0 to 45.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(25.0 to 45.0, ctx), CustomDamageType.PROJECTILE),
                 ProjectileKnockbackApply(0.6)
             )
         )

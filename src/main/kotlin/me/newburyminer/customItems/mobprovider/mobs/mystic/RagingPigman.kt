@@ -25,7 +25,7 @@ object RagingPigman : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

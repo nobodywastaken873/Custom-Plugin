@@ -40,7 +40,7 @@ object ExplosivesMaster : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(30.0 to 60.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(30.0 to 60.0, ctx), CustomDamageType.PROJECTILE),
                 VanillaEffectApply(PotionEffectType.SLOWNESS, linear(15 to 30, ctx), 6),
                 CustomKnockbackApply(Vector(0, -2, 0))
             )

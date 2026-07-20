@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
+import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
@@ -67,12 +68,6 @@ object EffectManager: BukkitRunnable(), TabMenuSystem.Provider {
                 }
             }
         }
-
-        if (currentTick % 20 == 0) {
-            for (player in Bukkit.getOnlinePlayers()) {
-
-            }
-        }
     }
 
     override fun getLines(player: Player): List<Component> {
@@ -118,6 +113,48 @@ object EffectManager: BukkitRunnable(), TabMenuSystem.Provider {
             }
         }
         return effectList.toList()
+    }
+
+    fun getMergedActiveEffects(player: Player): List<ActiveEffect> {
+        val effects = getActiveEffects(player)
+        val mergedAttributes = mutableListOf<Pair<Attribute, AttributeModifier.Operation>>()
+        val mergedEffects = mutableListOf<ActiveEffect>()
+
+        effects.forEach { effect ->
+            if (effect.type == CustomEffectType.ATTRIBUTE) {
+                val attributeData = effect.data.attributeData ?: return@forEach
+                if (attributeData.attribute to attributeData.operation in mergedAttributes) return@forEach
+
+                val matching = effects.filter {
+                    it.type == CustomEffectType.ATTRIBUTE &&
+                    it.data.attributeData != null &&
+                    it.data.attributeData.attribute == attributeData.attribute &&
+                    it.data.attributeData.operation == attributeData.operation
+                }
+
+                val valueSum = matching.sumOf { it.data.attributeData?.amount ?: 0.0 }
+                val maxDuration = matching.maxOfOrNull { it.remaining } ?: 0
+
+                mergedAttributes.add(attributeData.attribute to attributeData.operation)
+                mergedEffects.add(
+                    ActiveEffect(
+                        effect.behavior,
+                        maxDuration,
+                        EffectData(
+                            effect.data.duration,
+                            AttributeData(valueSum, attributeData.attribute, attributeData.operation),
+                            effect.data.unique
+                        ),
+                        effect.type
+                    )
+                )
+
+            } else {
+                mergedEffects.add(effect)
+            }
+        }
+
+        return mergedEffects
     }
 
     fun hasEffect(player: Player, type: CustomEffectType): Boolean {

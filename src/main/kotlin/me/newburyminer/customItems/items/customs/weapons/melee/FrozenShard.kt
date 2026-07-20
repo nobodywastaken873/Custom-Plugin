@@ -41,8 +41,8 @@ class FrozenShard: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
         .build()

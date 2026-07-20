@@ -35,8 +35,8 @@ class HeavyGreathammer: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -3.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 16.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -3.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
         .build()

@@ -1,0 +1,7 @@
+{
+  "asset_name": "flame",
+  "description": {
+    "color": "#EA780E",
+    "translate": "trim_material.customworld.flame"
+  },
+  "ingredient": "minecraft:fire_charge"}

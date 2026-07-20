@@ -8,6 +8,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleTheme
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -60,7 +61,7 @@ class DamageBlockerComponent(
             currentShieldCount = (currentShieldCount + 1).coerceAtMost(shieldCount)
         }
 
-        if (wrapper.entity.ticksLived % particleSettings.particleSeperation == 0 && currentShieldCount > 0) {
+        if (wrapper.entity.ticksLived % 4 == 0 && currentShieldCount > 0) {
 
             val height = wrapper.entity.height
 
@@ -68,10 +69,10 @@ class DamageBlockerComponent(
             for (i in 0..<currentShieldCount) {
 
                 CustomEffects.particleCircle(
-                    particleSettings.particle,
+                    Particle.OMINOUS_SPAWNING.builder(),
                     wrapper.entity.location.add(0.0, separation / 2 + separation * i, 0.0),
                     wrapper.entity.width / 2 * sqrt(2.0),
-                    particleSettings.concentration
+                    4.0
                 )
 
             }

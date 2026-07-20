@@ -29,7 +29,7 @@ class GoldenChorusFruit: CustomItemDefinition {
         text("Can be eaten at full hunger.", Utils.GRAY),
         text("1.2s Eat Time, 4 Hunger, 9.6 Saturation", Utils.GRAY),
         text("Potion effects: Regen II (4s), Absorption I (2m)", Utils.GRAY),
-        text("Teleports you randomly in an 8 block radius.", Utils.GRAY),
+        text("Teleports you randomly in an 6 block radius.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -39,7 +39,7 @@ class GoldenChorusFruit: CustomItemDefinition {
         .consumable(arrayOf(ConsumeEffect.applyStatusEffects(
             listOf(PotionEffect(PotionEffectType.REGENERATION, 80, 1), PotionEffect(PotionEffectType.ABSORPTION, 2400, 0)), 1.0F
         ),
-        ConsumeEffect.teleportRandomlyEffect(8.0F)
+        ConsumeEffect.teleportRandomlyEffect(12.0F)
         ), eatSeconds = 1.6F)
         .maxStack(64)
         .build()

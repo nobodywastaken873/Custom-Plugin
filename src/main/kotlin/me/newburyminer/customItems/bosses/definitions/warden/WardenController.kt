@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.bosses.definitions.warden
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.random
 import me.newburyminer.customItems.bosses.ActionCategory
 import me.newburyminer.customItems.bosses.ActionController
 import me.newburyminer.customItems.bosses.AttackContext
@@ -123,13 +124,18 @@ class WardenController(
                     WardenAttacks.flameSquares(ctx)
                 } else {
                     val random = Math.random()
-                    when {
-                        random < 0.2 -> WardenAttacks.safeCircles(ctx)
-                        random < 0.45 -> WardenAttacks.flameLasers(ctx)
-                        random < 0.70 -> WardenAttacks.sonicBoom(ctx)
-                        random < 0.85 -> WardenAttacks.mobWave(ctx)
-                        else -> WardenAttacks.flameSquares(ctx)
-                    }
+
+                    val attackWeights = mapOf(
+                        WardenAttacks::safeCircles to 0.65,
+                        WardenAttacks::flameLasers to 1.0,
+                        WardenAttacks::sonicBoom to 1.0,
+                        WardenAttacks::mobWave to (if (summonedMobWave) 0.7 else 0.0),
+                        WardenAttacks::flameSquares to (if (attackCounter > 3) 0.7 else 0.0)
+                    )
+
+                    val attack = attackWeights.random()
+                    if (attack == WardenAttacks::mobWave) {summonedMobWave = true}
+                    attack(ctx)
                 }
             }
             Phase.Phase2 -> {

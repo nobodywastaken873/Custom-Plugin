@@ -13,6 +13,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Bukkit
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -56,5 +57,15 @@ class ArcingEffectProjectile(
             CustomEffects.playSound(loc, Sound.ENTITY_GENERIC_BIG_FALL, 1f, 1.4F)
 
         })
+    }
+
+    override fun tick(wrapper: EntityWrapper) {
+        if (wrapper.entity.ticksLived % 3 == 0) {
+            CustomEffects.particle(
+                Particle.SMOKE.builder(),
+                wrapper.entity.location,
+                1,
+            )
+        }
     }
 }

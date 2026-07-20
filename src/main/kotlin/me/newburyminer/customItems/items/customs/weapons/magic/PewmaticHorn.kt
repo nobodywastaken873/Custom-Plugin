@@ -1,5 +1,9 @@
 package me.newburyminer.customItems.items.customs.weapons.magic
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.Consumable
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -10,6 +14,7 @@ import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
 import me.newburyminer.customItems.items.behaviors.HeldActivation
 import net.kyori.adventure.text.Component
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.*
@@ -26,48 +31,49 @@ class PewmaticHorn: CustomItemDefinition {
     private val material = Material.POPPED_CHORUS_FRUIT
     private val color = arrayOf(179, 57, 75)
     private val name = text("Pew-matic Horn", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = mutableListOf(
+        text("Hold right click for 6 seconds to begin shooting random projectiles.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
+        .setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
+            .animation(ItemUseAnimation.TRIDENT)
+            .consumeSeconds(32000.0F)
+            .hasConsumeParticles(false)
+            .build()
+        )
         .build()
 
     init {
         register(PlayerInteractEvent::class, { e ->
             e.item.isItem(custom) &&
-            (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) &&
-            e.player.offCooldown(custom)
+            (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR)
         },
         {e ->
-           heldActivation.used(e.player)
+            CustomEffects.playSound(e.player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, 0.3F)
         })
     }
 
     override val extraTasks: Map<Int, (Player) -> Unit>
         get() = mapOf(
-            6 to {player -> pewmaticHornTick(player)},
-            4 to {player -> pewmaticHornShoot(player)}
+            4 to {player -> pewmaticHornTick(player)},
         )
 
-    private val heldActivation = HeldActivation(13)
     private fun pewmaticHornTick(player: Player) {
-        when (val result = heldActivation.tick(player)) {
-            is HeldActivation.ActivationResult.Cancelled -> {
-                CustomEffects.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 0.7F, 1.2F)
-                if (result.ticks >= 13) player.setCooldown(custom, (0.3 * 4 * result.ticks * 10).toInt() / 10.0)
-            }
-            is HeldActivation.ActivationResult.Charging ->
-                CustomEffects.playSound(player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, (0.15 * result.ticks.coerceAtMost(13)).toFloat())
-            is HeldActivation.ActivationResult.Activated ->
-                CustomEffects.playSound(player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, (0.15 * result.ticks.coerceAtMost(13)).toFloat())
-            else -> {}
+        if (!player.activeItem.isItem(custom)) return
+        if (player.activeItemUsedTime < 120) {
+            CustomEffects.playSound(player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, 0.3F)
+            return
         }
+
+
+        CustomEffects.playSound(player.location, Sound.BLOCK_AZALEA_PLACE, 0.7F, 1.3F)
+
+        pewmaticHornShoot(player)
     }
     private fun pewmaticHornShoot(player: Player) {
-        val result = heldActivation.currentResult(player)
-        if (result !is HeldActivation.ActivationResult.Activated) return
-
         val facing = player.location.direction.normalize().clone().multiply(0.1)
         val startingLocation = player.location.clone().add(Vector(0.0, 1.0, 0.0))
         val possProj: Array<Pair<EntityType, Double>> =
@@ -93,7 +99,7 @@ class PewmaticHorn: CustomItemDefinition {
                 Pair(EntityType.WITHER_SKULL, 1.0)
             )
         val type = possProj.random().first
-        var entity: Entity? = null
+        var entity: Entity?
         if (type == EntityType.ARROW) {
             entity = player.world.spawnEntity(startingLocation, type) as Arrow
             entity.basePotionType = PotionType.entries.random()

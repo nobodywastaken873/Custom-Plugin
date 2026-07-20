@@ -50,7 +50,7 @@ class JerryIdol: CustomItemDefinition {
             loc.add(Vector(0.5, 1.0, 0.5))
             val villager: Villager = e.player.world.spawnEntity(loc, EntityType.VILLAGER) as Villager
 
-            val emeraldStacks = item.getTag<Int>("emeraldstacks") ?: 0
+            val emeraldStacks = e.item?.getTag<Int>("emeraldstacks") ?: 0
             val wrapper = EntityWrapperManager.getWrapperorNew(villager)
             wrapper.addComponent(JerryIdolComponent(emeraldStacks))
             wrapper.addComponent(NonPickuppableComponent())

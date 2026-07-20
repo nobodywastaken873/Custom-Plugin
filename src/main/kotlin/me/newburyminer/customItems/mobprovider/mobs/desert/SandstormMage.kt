@@ -46,7 +46,7 @@ object SandstormMage : MobDefinition() {
                 2.0,
                 ParticleTheme.DESERT,
                 10,
-                damage(linear(15.0 to 35.0, ctx), CustomDamageType.MELEE_NO_CD)
+                damage(linear(15.0 to 35.0, ctx), CustomDamageType.MELEE)
             )
         )
 

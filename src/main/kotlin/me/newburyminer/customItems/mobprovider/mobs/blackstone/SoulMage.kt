@@ -32,7 +32,7 @@ object SoulMage : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.MAX_HEALTH, -1.0, Operation.ADD_NUMBER, linear(40 to 80, ctx)),
                 VanillaKnockbackApply()
             )

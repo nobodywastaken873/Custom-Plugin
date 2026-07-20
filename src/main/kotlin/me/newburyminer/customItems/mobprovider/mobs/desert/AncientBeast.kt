@@ -20,7 +20,7 @@ object AncientBeast : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(30.0 to 55.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(30.0 to 55.0, ctx), CustomDamageType.MELEE),
                 CustomKnockbackApply(Vector(0.4, 2.0, 0.4))
             )
         )

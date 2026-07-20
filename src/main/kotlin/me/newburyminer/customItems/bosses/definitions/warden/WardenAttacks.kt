@@ -55,11 +55,11 @@ object WardenAttacks : AttackHelper {
 
     private val particleSettings = ParticleSettings(
         Particle.DUST.builder().data(DustOptions(Color.fromRGB(102, 226, 232), 1.0F)), 5,
-        Particle.DUST.builder().data(DustOptions(Color.fromRGB(50, 117, 120), 1.0F))
+        Particle.DUST.builder().data(DustOptions(Color.fromRGB(50, 117, 120), 1.0F)), preConcentration = 2.5, concentration = 2.5
     )
     private val floorSettings = ParticleSettings(
         Particle.DUST.builder().data(DustOptions(Color.fromRGB(247, 2, 2), 3.0F)), 5,
-        Particle.DUST.builder().data(DustOptions(Color.fromRGB(125, 1, 11), 3.0F))
+        Particle.DUST.builder().data(DustOptions(Color.fromRGB(125, 1, 11), 3.0F)), preConcentration = 2.5, concentration = 2.5
     )
 
     fun flameSquares(ctx: AttackContext<WardenController.Phase>): BossAction {
@@ -82,7 +82,7 @@ object WardenAttacks : AttackHelper {
                 floorSettings,
                 SoundSettings(Sound.BLOCK_BASALT_BREAK, 0.5F, 1.5F, 10, Sound.BLOCK_ANVIL_PLACE),
                 HitEffects(
-                    damage(linear(65.0 to 90.0, ctx), CustomDamageType.BURNING_NO_CD),
+                    damage(linear(70.0 to 90.0, ctx), CustomDamageType.BURNING_NO_CD),
                     attribute(Attribute.MOVEMENT_SPEED, -1.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1, linear(40 to 80, ctx)),
                     attribute(Attribute.JUMP_STRENGTH, -1.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1, linear(40 to 80, ctx))
                 )
@@ -217,7 +217,7 @@ object WardenAttacks : AttackHelper {
                 SummonMobsAction(ctx.boss,
                     spawningProvider,
                     (linear(2 to 4, ctx) * ctx.boss.playerCount.toDouble().pow(0.7)).roundToInt(),
-                    linear(60 to 40, ctx),
+                    linear(80 to 60, ctx),
                     particleSettings,
                     ctx,
                     SoundSettings(Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 0.5F, 0.5F, 1, Sound.ITEM_TRIDENT_RETURN)
@@ -260,7 +260,7 @@ object WardenAttacks : AttackHelper {
                     }
                     EntityWrapperManager.getWrapperorNew(warden)
                         .addComponent(WardenMinibossComponent(ctx.boss as WardenInstance,
-                            linear(0.5 to 0.8, ctx, false) * 500.0 * (boss.playerCount.toDouble().pow(0.8))
+                            linear(0.7 to 1.2, ctx, false) * 500.0 * (boss.playerCount.toDouble().pow(0.8))
                         ))
                     boss.addEntity(warden)
                     finish()

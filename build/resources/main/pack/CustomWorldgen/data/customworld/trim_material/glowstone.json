@@ -1,0 +1,7 @@
+{
+  "asset_name": "glowstone",
+  "description": {
+    "color": "#AF8141",
+    "translate": "trim_material.customworld.glowstone"
+  },
+  "ingredient": "minecraft:glowstone_dust"}

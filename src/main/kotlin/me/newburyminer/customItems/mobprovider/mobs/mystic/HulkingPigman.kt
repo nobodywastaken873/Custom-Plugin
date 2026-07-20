@@ -28,7 +28,7 @@ object HulkingPigman : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(29.0 to 58.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(29.0 to 58.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

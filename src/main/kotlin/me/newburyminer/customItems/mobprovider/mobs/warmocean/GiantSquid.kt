@@ -34,7 +34,7 @@ object GiantSquid : MobDefinition() {
                 2.0,
                 ParticleTheme.WARM_OCEAN,
                 5,
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE_NO_CD)
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE)
             )
         )
 

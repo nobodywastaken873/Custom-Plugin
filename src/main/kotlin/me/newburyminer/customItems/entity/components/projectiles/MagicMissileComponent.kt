@@ -12,6 +12,8 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.getUpperCenter
 import org.bukkit.Bukkit
 import org.bukkit.FluidCollisionMode
+import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -99,20 +101,20 @@ class MagicMissileComponent(
         val newLocation = currentLocation.clone().add(currentVelocity)
         projectile.teleport(newLocation)
 
-        if (currentVelocity.length() * particleSettings.concentration < 1.0) {
+        if (currentVelocity.length() * 5.0 < 1.0) {
             CustomEffects.particle(
-                particleSettings.preParticle,
+                Particle.BLOCK.builder().data(Material.PEARLESCENT_FROGLIGHT.createBlockData()),
                 newLocation,
                 1
             )
         }
         else {
             CustomEffects.raycastParticleLine(
-                particleSettings.preParticle,
+                Particle.BLOCK.builder().data(Material.PEARLESCENT_FROGLIGHT.createBlockData()),
                 newLocation,
                 currentVelocity,
                 currentVelocity.length(),
-                particleSettings.concentration/* * 2 * particleSettings.spread.pow(2).coerceAtLeast(1.0),*/
+                5.0/* * 2 * particleSettings.spread.pow(2).coerceAtLeast(1.0),*/
                 //offset = particleSettings.spread
             )
         }

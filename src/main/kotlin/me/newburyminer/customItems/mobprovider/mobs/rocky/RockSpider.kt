@@ -20,7 +20,7 @@ object RockSpider : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.ARMOR_TOUGHNESS, -0.25, Operation.ADD_NUMBER, linear(80 to 120, ctx)),
                 VanillaKnockbackApply()
             )

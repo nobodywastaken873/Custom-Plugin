@@ -51,7 +51,7 @@ object MudGolem : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(26.0 to 52.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(26.0 to 52.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

@@ -25,7 +25,7 @@ object PirateGunner : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(30.0 to 55.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(30.0 to 55.0, ctx), CustomDamageType.PROJECTILE),
                 VanillaEffectApply(PotionEffectType.SLOWNESS, linear(40 to 160, ctx), 1),
                 CustomKnockbackApply(Vector(0, -2, 0))
             )

@@ -21,7 +21,7 @@ object BasicSkeleton : MobDefinition() {
             ProjectileEffectAbility(
                 damage(
                     linear(20.0 to 40.0, ctx),
-                    CustomDamageType.PROJECTILE_NO_CD
+                    CustomDamageType.PROJECTILE
                 )
             )
         )

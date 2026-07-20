@@ -25,7 +25,7 @@ object ScarabSoldier : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.ARMOR, -1.0, AttributeModifier.Operation.ADD_NUMBER, linear(30 to 60, ctx)),
                 VanillaKnockbackApply()
             )

@@ -3,14 +3,19 @@ package me.newburyminer.customItems.commands
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.AttackRange
+import io.papermc.paper.datacomponent.item.Consumable
 import io.papermc.paper.datacomponent.item.DeathProtection
 import io.papermc.paper.datacomponent.item.KineticWeapon
 import io.papermc.paper.datacomponent.item.PiercingWeapon
+import io.papermc.paper.datacomponent.item.SwingAnimation
 import io.papermc.paper.datacomponent.item.UseCooldown
 import io.papermc.paper.datacomponent.item.Weapon
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.addDoubleChestLoot
 import me.newburyminer.customItems.Utils.Companion.addElytraComponent
 import me.newburyminer.customItems.Utils.Companion.addItemorClaim
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
@@ -429,7 +434,7 @@ class TestCommand : BasicCommand {
         }
         else if (args[0] == "data_component") {
             var item = ItemStack(Material.DIAMOND_SWORD)
-            item.setData(DataComponentTypes.DAMAGE_TYPE, DamageType.SONIC_BOOM)
+            /*item.setData(DataComponentTypes.DAMAGE_TYPE, DamageType.SONIC_BOOM)
             sender.addItemorDrop(item)
 
             item = ItemStack(Material.CLAY_BALL)
@@ -443,9 +448,17 @@ class TestCommand : BasicCommand {
             item.setData(DataComponentTypes.WEAPON, Weapon.weapon().disableBlockingForSeconds(100.0F))
             sender.addItemorDrop(item)
 
-            item = ItemStack(Material.STICK)
+            item = ItemStack(Material.DIAMOND_SWORD)
             item.setData(DataComponentTypes.PIERCING_WEAPON,
                 PiercingWeapon.piercingWeapon().dismounts(true).dealsKnockback(true)
+                    .sound(Registry.SOUNDS.getKey(Sound.ENTITY_PLAYER_ATTACK_SWEEP)!!)
+            )
+            item.setData(DataComponentTypes.SWING_ANIMATION,
+                SwingAnimation.swingAnimation().type(SwingAnimation.Animation.WHACK).duration(10)
+                )
+            item.setData(DataComponentTypes.MINIMUM_ATTACK_CHARGE, 0.5F)
+            item.setData(DataComponentTypes.ATTACK_RANGE,
+                AttackRange.attackRange().hitboxMargin(0.5F).minReach(0.0F).maxReach(4.5F)
             )
             sender.addItemorDrop(item)
 
@@ -453,13 +466,15 @@ class TestCommand : BasicCommand {
             item.setData(DataComponentTypes.MINIMUM_ATTACK_CHARGE, 0.8F)
             sender.addItemorDrop(item)
 
-            item = ItemStack(Material.BLAZE_ROD)
+            item = ItemStack(Material.DIAMOND_SPEAR)
             item.setData(DataComponentTypes.KINETIC_WEAPON, KineticWeapon.kineticWeapon()
-                .contactCooldownTicks(5)
-                .damageConditions(KineticWeapon.condition(500, 0.1F, 0.1F))
-                .damageMultiplier(3.0F)
-                .delayTicks(10)
-                .forwardMovement(2.0F)
+                .contactCooldownTicks(10)
+                .damageConditions(KineticWeapon.condition(500, 0.1F, 0.0F))
+                .knockbackConditions(KineticWeapon.condition(500, 0.1F, 0.0F))
+                .dismountConditions(KineticWeapon.condition(500, 0.1F, 0.0F))
+                .damageMultiplier(2.0F)
+                .delayTicks(15)
+                .forwardMovement(0.0F)
                 .build()
             )
             sender.addItemorDrop(item)
@@ -476,9 +491,33 @@ class TestCommand : BasicCommand {
             item.setData(DataComponentTypes.PIERCING_WEAPON,
                 PiercingWeapon.piercingWeapon().dismounts(true).dealsKnockback(true)
             )
+            sender.addItemorDrop(item)*/
+
+            item = ItemStack(Material.BREEZE_ROD)
+            item.setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
+                .animation(ItemUseAnimation.BOW)
+                .consumeSeconds(10000.0F)
+                .hasConsumeParticles(false)
+            )
             sender.addItemorDrop(item)
 
+            item = ItemStack(Material.BREEZE_ROD)
+            item.setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
+                .animation(ItemUseAnimation.TRIDENT)
+                .consumeSeconds(10000.0F)
+                .hasConsumeParticles(false)
+            )
+            sender.addItemorDrop(item)
 
+        }
+        else if (args[0] == "ancient_tome") {
+            val ench = args[1]
+            sender.addItemorDrop(
+                ItemRegistry.get(CustomItem.ANCIENT_TOME).ench(ench)
+            )
+        }
+        else if (args[0] == "double_chest") {
+            sender.addItemorDrop(ItemStack(Material.DIAMOND_HELMET).addDoubleChestLoot(5.0))
         }
     }
 }

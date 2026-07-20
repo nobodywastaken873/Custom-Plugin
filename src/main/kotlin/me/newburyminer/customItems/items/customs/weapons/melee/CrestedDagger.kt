@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.weapons.melee
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -25,7 +26,7 @@ class CrestedDagger: CustomItemDefinition {
     private val material = Material.NETHERITE_SWORD
     private val color = arrayOf(155, 165, 168)
     private val name = text("Crested Dagger", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(text("Removed."))
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)

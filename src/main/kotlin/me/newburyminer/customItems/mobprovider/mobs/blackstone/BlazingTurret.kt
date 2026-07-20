@@ -19,7 +19,7 @@ object BlazingTurret : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(26.0 to 52.0, ctx), CustomDamageType.BURNING_NO_CD),
+                damage(linear(26.0 to 52.0, ctx), CustomDamageType.BURNING),
                 ProjectileKnockbackApply()
             )
         )

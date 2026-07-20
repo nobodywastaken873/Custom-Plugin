@@ -24,6 +24,7 @@ class AncientTome: CustomItemDefinition {
     private val color = arrayOf(128, 95, 11)
     private val name = text("Ancient Tome", color)
     private val lore = Utils.loreBlockToList(
+        text(""),
         text("This item can be applied to any item that has this enchant at one level below the level on this item. " +
                 "Sneak and swap hands with this in your offhand and the item you want to apply it to in your mainhand to apply.", Utils.GRAY)
     )

@@ -23,7 +23,7 @@ abstract class BossInstance(
 ) {
 
     abstract val maxHp: Double
-    var currentHp: Double = maxHp
+    abstract var currentHp: Double
         protected set
     fun reduceHp(amount: Double, damageType: DamageType) {
         currentHp -=
@@ -31,7 +31,7 @@ abstract class BossInstance(
             else amount
 
         if (currentHp <= 0.0) {
-            boss.damage(10000.0)
+            boss.remove()
             bossWin()
         }
     }
@@ -43,7 +43,7 @@ abstract class BossInstance(
     protected val bossBar: KeyedBossBar = Bukkit.getServer().createBossBar(NamespacedKey(CustomItems.plugin, UUID.randomUUID().toString()), "", BarColor.RED, BarStyle.SEGMENTED_6)
     abstract fun setupBossbar()
     fun updateBossbar() {
-        bossBar.progress = hpPercent
+        bossBar.progress = hpPercent.coerceAtLeast(0.0)
     }
 
     // Starting

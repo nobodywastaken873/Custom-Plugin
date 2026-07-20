@@ -188,37 +188,8 @@ class SystemsListener: Listener, Runnable  {
 
         val inventory = e.player.inventory.contents.toMutableList()
         inventory.removeIf { it == null }
-        val items: MutableList<ItemStack> = inventory as MutableList<ItemStack>
-        val possibleSteals = mutableListOf<ItemStack>()
-        for (item in items) {
-            if (item.getCustom() != null) {
-                possibleSteals.add(item)
-            }
-        }
-        if (possibleSteals.isEmpty()) {
-            for (item in items) {
-                var overMax = false
-                var totalMax = 0
-                for (enchantment in item.enchantments.keys) {
-                    if (item.enchantments[enchantment]!! > enchantment.maxLevel) {
-                        overMax = true
-                        totalMax++
-                    } else if (item.enchantments[enchantment]!! == enchantment.maxLevel) {
-                        totalMax++
-                    }
-                }
-                if (totalMax > 2 || overMax) {
-                    possibleSteals.add(item)
-                }
-            }
-        }
-        if (possibleSteals.isEmpty()) {
-            for (item in items) {
-                if (item.hasData(DataComponentTypes.MAX_DAMAGE)) {
-                    possibleSteals.add(item)
-                }
-            }
-        }
+        val items = inventory.filterNotNull()
+        val possibleSteals = GraveListener.getPossibleSteals(items)
 
         val steal = possibleSteals.randomOrNull() ?: if (e.player.health == 0.0) ItemStack(Material.AIR) else ItemStack(Material.PAPER).loreBlock(
             Utils.text(
@@ -243,7 +214,7 @@ class SystemsListener: Listener, Runnable  {
     }
     private fun closeInventories(e: PlayerQuitEvent) {
         val openInventory = e.player.openInventory
-        if (openInventory?.topInventory?.holder is CustomGui) {
+        if (openInventory.topInventory.holder is CustomGui) {
             (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory))
         }
         e.player.closeInventory()

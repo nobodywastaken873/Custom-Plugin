@@ -24,18 +24,8 @@ object ReplicatingCube : MobDefinition() {
         val size = (Math.random() * 0.85).roundToInt()
 
         ability(
-            SummonerAbility(
-                linear(3 to 6, ctx),
-                ReplicatingCube,
-                linear(30 to 20, ctx),
-                linear(100 to 80, ctx),
-                ParticleTheme.BLACKSTONE,
-            )
-        )
-
-        ability(
             MeleeEffectAbility(
-                damage(linear(18.0 to 36.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(18.0 to 36.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply(0.25)
             )
         )

@@ -26,7 +26,7 @@ object ParchedZombie: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.MOVEMENT_SPEED, -0.1, AttributeModifier.Operation.ADD_SCALAR, linear(150 to 200, ctx)),
                 VanillaKnockbackApply()
             )

@@ -25,7 +25,7 @@ object SmashingSpider : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.MINING_FATIGUE, linear(20 to 40, ctx), 0),
                 VanillaKnockbackApply()
             )

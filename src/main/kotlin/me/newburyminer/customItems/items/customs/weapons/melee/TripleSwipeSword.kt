@@ -46,8 +46,8 @@ class TripleSwipeSword: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 8.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
         .build()
@@ -59,7 +59,7 @@ class TripleSwipeSword: CustomItemDefinition {
             isRightClick(e)
         },
         {e ->
-            item.setCooldown(e.player, 15.0)
+            e.item?.setCooldown(e.player, 15.0)
             var k = 2
             //tasks.add()
             object : BukkitRunnable() { override fun run() {

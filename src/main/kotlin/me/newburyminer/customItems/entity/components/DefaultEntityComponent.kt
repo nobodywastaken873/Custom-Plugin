@@ -1,16 +1,19 @@
 package me.newburyminer.customItems.entity.components
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils.Companion.getExtraSlayer
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.items.CustomEnchantments
 import me.newburyminer.customItems.mobprovider.MobContext
 import me.newburyminer.customItems.mobprovider.MobDefinition
 import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.MobTier
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.LivingEntity
@@ -27,6 +30,7 @@ import kotlin.math.sqrt
 class DefaultEntityComponent(
     private val tier: MobTier,
     private val maxTargetRange: Double = 50.0,
+    private val damageMultiplier: Double = 1.0,
 ): EntityComponent {
 
     override fun serialize(): Map<String, Any> {
@@ -64,7 +68,19 @@ class DefaultEntityComponent(
             (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player)
         },
         {e ->
+
             if (e.damageSource.damageType == DamageType.MACE_SMASH) e.damage *= 0.15
+            e.damage *= damageMultiplier
+
+            if (e.damageSource.causingEntity is Player || e.damageSource.directEntity is Player) {
+                val player = e.damageSource.directEntity as? Player ?: e.damageSource.causingEntity as? Player ?: return@register
+                val weapon = player.equipment.itemInMainHand
+                if (weapon.type != Material.AIR) {
+                    val slayerLevel = weapon.getEnchantmentLevel(CustomEnchantments.MOB_SLAYER)
+                    e.damage *= (1 + slayerLevel * 0.1 + weapon.getExtraSlayer())
+                }
+            }
+
             if (tier != MobTier.MINIBOSS) return@register
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
                 (e.entity as LivingEntity).noDamageTicks = 0
@@ -98,7 +114,7 @@ class DefaultEntityComponent(
             val closestPlayer = validTargets
                 .minByOrNull { it.location.subtract(mob.location).length() } ?: return
 
-            if (heldTarget == null) {
+            if (heldTarget == null || mob.target !is Player) {
                 heldTarget = closestPlayer
             }
 
@@ -110,6 +126,10 @@ class DefaultEntityComponent(
                 heldTarget = closestPlayer
             }
 
+
+            if (closestPlayer.location.subtract(mob.location).length() > 128) {
+                mob.remove()
+            }
         }
     }
 

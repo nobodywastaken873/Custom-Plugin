@@ -32,7 +32,7 @@ object RopeswingerCrew : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(25.0 to 45.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(25.0 to 45.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

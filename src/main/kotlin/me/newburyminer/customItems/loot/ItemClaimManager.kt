@@ -1,12 +1,28 @@
 package me.newburyminer.customItems.loot
 
+import me.newburyminer.customItems.Utils.Companion.GRAY
+import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.eventbus.EventRegistry
+import me.newburyminer.customItems.eventbus.ListenerEntry
 import me.newburyminer.customItems.helpers.FileDatabase
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
 import java.util.Base64
 import java.util.UUID
 
 object ItemClaimManager: FileDatabase() {
+
+    fun registerEvents() {
+        EventRegistry.register(
+            ListenerEntry(PlayerJoinEvent::class, { e ->
+                getAllItems(e.player).isNotEmpty()
+            },
+            { e ->
+                e.player.sendMessage(text("You have items in your /itemclaims menu.", GRAY))
+            })
+        )
+    }
 
     override val fileName: String = "itemClaims.txt"
 

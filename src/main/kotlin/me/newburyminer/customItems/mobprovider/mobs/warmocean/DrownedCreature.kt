@@ -24,7 +24,7 @@ object DrownedCreature : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(23.0 to 46.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

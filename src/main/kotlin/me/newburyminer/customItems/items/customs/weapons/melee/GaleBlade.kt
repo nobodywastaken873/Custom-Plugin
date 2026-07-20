@@ -38,8 +38,8 @@ class GaleBlade: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 8.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
         .build()
@@ -51,7 +51,8 @@ class GaleBlade: CustomItemDefinition {
             isRightClick(e)
         },
         {e ->
-            item.setCooldown(e.player, 8.0)
+            e.item?.setCooldown(e.player, 8.0)
+            e.player.swingHand(e.hand ?: return@register)
             e.player.velocity = e.player.velocity.add(e.player.location.direction.normalize().multiply(1.2))
             CustomEffects.playSound(e.player.location, Sound.ENTITY_BREEZE_SHOOT, 0.4F, 0.8F)
         })

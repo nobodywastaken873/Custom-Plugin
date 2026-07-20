@@ -20,7 +20,7 @@ object BasicZombie : MobDefinition() {
             MeleeEffectAbility(
                 damage(
                     linear(20.0, 1.0, ctx),
-                    CustomDamageType.MELEE_NO_CD
+                    CustomDamageType.PROJECTILE
                 )
             )
         )

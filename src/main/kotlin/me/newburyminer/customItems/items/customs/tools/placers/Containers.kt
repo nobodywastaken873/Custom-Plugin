@@ -40,6 +40,7 @@ class Containers: CustomItemDefinition, ScrollCycler, MaterialPlacer {
             e.player.isSneaking
         },
         {e ->
+            val item = e.player.inventory.getItem(e.previousSlot) ?: return@register
             if (scrollCycle(item, e)) CustomEffects.playSoundToPlayer(e.player, Sound.UI_BUTTON_CLICK, 1.0F, 1.1F)
         })
 

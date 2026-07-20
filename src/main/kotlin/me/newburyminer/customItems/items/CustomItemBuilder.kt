@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items
 
+import io.papermc.paper.datacomponent.DataComponentType
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.*
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect
@@ -27,6 +28,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.trim.TrimMaterial
 import java.util.*
 
 class CustomItemBuilder(material: Material, custom: CustomItem) {
@@ -124,6 +126,26 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
 
     fun maxStack(size: Int): CustomItemBuilder {
         item.setData(DataComponentTypes.MAX_STACK_SIZE, size)
+        return this
+    }
+
+    fun deathProtection(vararg consumeEffects: ConsumeEffect): CustomItemBuilder {
+        item.setData(DataComponentTypes.DEATH_PROTECTION, DeathProtection.deathProtection(consumeEffects.toMutableList()))
+        return this
+    }
+
+    fun trimProvider(trimMaterial: TrimMaterial): CustomItemBuilder {
+        item.setData(DataComponentTypes.PROVIDES_TRIM_MATERIAL, trimMaterial)
+        return this
+    }
+
+    fun <T : Any> setData(type: DataComponentType.Valued<T>, data: T): CustomItemBuilder {
+        item.setData(type, data)
+        return this
+    }
+
+    fun setData(type: DataComponentType.NonValued): CustomItemBuilder {
+        item.setData(type)
         return this
     }
 

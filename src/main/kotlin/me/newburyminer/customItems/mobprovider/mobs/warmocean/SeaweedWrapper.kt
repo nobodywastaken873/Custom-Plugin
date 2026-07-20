@@ -27,7 +27,7 @@ object SeaweedWrapper : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE),
                 attribute(
                     Attribute.MOVEMENT_SPEED,
                     linear(-0.5 to -0.8, ctx),

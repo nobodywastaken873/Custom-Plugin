@@ -48,7 +48,7 @@ object GrapplingMaster : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE),
                 CustomKnockbackApply(Vector(-0.5, -0.5, -0.5))
             )
         )

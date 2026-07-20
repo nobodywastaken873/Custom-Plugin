@@ -42,7 +42,7 @@ object CastingBones : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE),
                 ProjectileKnockbackApply()
             )
         )
@@ -56,7 +56,7 @@ object CastingBones : MobDefinition() {
                 linear(200 to 120, ctx),
                 ParticleTheme.BLACKSTONE,
                 DisableShieldApply(ignoreDirection = true),
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.BURNING_NO_CD)
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.BURNING)
             )
         )
 

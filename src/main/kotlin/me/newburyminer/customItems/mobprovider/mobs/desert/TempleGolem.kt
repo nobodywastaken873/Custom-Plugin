@@ -23,7 +23,7 @@ object TempleGolem : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(35.0 to 70.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(35.0 to 70.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.ATTACK_SPEED, -0.05, AttributeModifier.Operation.ADD_NUMBER, linear(20 to 40, ctx)),
                 CustomKnockbackApply(Vector(0.5, 2.0, 0.5))
             )

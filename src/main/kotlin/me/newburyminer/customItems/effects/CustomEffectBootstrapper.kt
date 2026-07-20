@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.effects
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.effects.behaviors.DoubleChestLootEffect
 import me.newburyminer.customItems.effects.behaviors.ElytraDisableEffect
 import me.newburyminer.customItems.effects.factories.*
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -22,6 +23,11 @@ object CustomEffectBootstrapper {
                 CustomEffectType.FANG_STAFF_VEXING to FangStaffVexingEffectFactory(),
                 CustomEffectType.GRAVE_INVULNERABILITY to GraveInvulnerabilityEffectFactory(),
                 CustomEffectType.LAST_PRISM_ZAP to LastPrismZapEffectFactory(),
+                CustomEffectType.DOUBLE_GRAVE_LOOTING to DoubleGraveLootEffectFactory(),
+                CustomEffectType.POCKET_WORMHOLE_REMAINING to PocketWormholeRemainingEffectFactory(),
+                CustomEffectType.SURVIVAL_BUFFS to SurvivalBuffsEffectFactory(),
+                CustomEffectType.CHEST_LOOT_BUFFS to DoubleChestLootEffectFactory(),
+                CustomEffectType.QUADRUPLE_CHEST_LOOT to QuadrupleChestLootEffectFactory(),
             )
         )
 

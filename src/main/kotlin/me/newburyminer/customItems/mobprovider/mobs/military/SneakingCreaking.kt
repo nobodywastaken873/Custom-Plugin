@@ -20,7 +20,7 @@ object SneakingCreaking : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.SCALE, -0.8, AttributeModifier.Operation.ADD_SCALAR, linear(20 to 40, ctx)),
                 VanillaKnockbackApply()
             )

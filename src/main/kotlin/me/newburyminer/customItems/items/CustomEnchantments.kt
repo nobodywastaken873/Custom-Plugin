@@ -8,6 +8,12 @@ import org.bukkit.enchantments.Enchantment
 
 class CustomEnchantments {
     companion object {
+        val CREATURE_TACTICS: Enchantment = RegistryAccess.registryAccess()
+            .getRegistry(RegistryKey.ENCHANTMENT)
+            .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:creature_tactics")))
+        val MOB_SLAYER: Enchantment = RegistryAccess.registryAccess()
+            .getRegistry(RegistryKey.ENCHANTMENT)
+            .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:mob_slayer")))
         val AUTOSMELT: Enchantment = RegistryAccess.registryAccess()
             .getRegistry(RegistryKey.ENCHANTMENT)
             .getOrThrow(TypedKey.create(RegistryKey.ENCHANTMENT, Key.key("customitems:autosmelt")))

@@ -39,7 +39,7 @@ object HealingStingray : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

@@ -38,8 +38,8 @@ class DarkSteelRapier: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.MOVEMENT_SPEED, 0.01, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
@@ -62,6 +62,8 @@ class DarkSteelRapier: CustomItemDefinition {
         {e ->
             e.player.setCooldown(custom, 40.0)
             CustomEffects.playSound(e.player.location, Sound.BLOCK_CONDUIT_DEACTIVATE, 1.0f, 0.5f)
+
+            e.player.swingHand(e.hand ?: return@register)
 
             for (player in e.player.location.getNearbyPlayers(10.0)) {
                 if (e.player == player) continue

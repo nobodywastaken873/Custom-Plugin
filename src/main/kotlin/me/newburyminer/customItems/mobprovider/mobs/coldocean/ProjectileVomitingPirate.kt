@@ -43,7 +43,7 @@ object ProjectileVomitingPirate : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(20.0 to 45.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(20.0 to 45.0, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.POISON, linear(20 to 60, ctx), linear(2 to 3, ctx)),
                 VanillaKnockbackApply()
             )

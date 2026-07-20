@@ -25,7 +25,7 @@ class SniperProjectileAbility(
     val damage: Double,
     val cooldown: Int,
     val stunDuration: Int = 0,
-    val damageType: DamageType = CustomDamageType.PROJECTILE_NO_CD,
+    val damageType: DamageType = CustomDamageType.PROJECTILE,
     val projectileType: ProjectileType = ProjectileType.ARROW
 ): MobAbility {
 

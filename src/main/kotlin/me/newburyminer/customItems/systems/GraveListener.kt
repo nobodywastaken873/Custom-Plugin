@@ -12,11 +12,12 @@ import me.newburyminer.customItems.Utils.Companion.serializeAsBytes
 import me.newburyminer.customItems.Utils.Companion.setListTag
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.gui.combat.GraveItemsGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.items.CustomEnchantments
 import net.kyori.adventure.text.TextComponent
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.*
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
@@ -98,12 +99,19 @@ object GraveListener: Listener {
         armorStand.setTag("id", graveMarkerId)
         armorStand.setTag("currentlyopen", false)
         armorStand.setTag("owner", e.player.uniqueId)
-        if (e.damageSource.causingEntity is Player) {
-            armorStand.setTag("killer", (e.damageSource.causingEntity as Player).uniqueId)
-            armorStand.setTag("looted", 1)
-        } else if (e.player.lastDamageCause != null && e.player.lastDamageCause!!.damageSource.causingEntity is Player) {
-            armorStand.setTag("killer", (e.player.lastDamageCause!!.damageSource.causingEntity as Player).uniqueId)
-            armorStand.setTag("looted", 1)
+        val killer =
+            if (e.damageSource.causingEntity is Player) e.damageSource.causingEntity as Player
+            else if (e.player.lastDamageCause != null && e.player.lastDamageCause!!.damageSource.causingEntity is Player)
+                e.player.lastDamageCause!!.damageSource.causingEntity as Player
+            else null
+
+        if (killer != null) {
+            val stealCount =
+                if (EffectManager.hasEffect(killer, CustomEffectType.DOUBLE_GRAVE_LOOTING)) 2
+                else 1
+
+            armorStand.setTag("killer", killer.uniqueId)
+            armorStand.setTag("looted", stealCount)
         }
         textDisplay.text(text("${e.player.name}'s grave", arrayOf(199, 4, 30)))
         e.player.setTag("gravetpcooldown", (5 * 60 * 1000 + System.currentTimeMillis()))
@@ -166,15 +174,25 @@ object GraveListener: Listener {
     private fun findLoc(startLoc: Location): Location? {
         val loc = startLoc.clone()
         // If they die in the void, shift it to the lowest possible location
+        var void = false
         when (loc.world) {
             Bukkit.getServer().worlds[0] -> {
-                if (loc.y < -64.0) loc.y = -64.0
+                if (loc.y < -64.0) {
+                    loc.y = -64.0
+                    void = true
+                }
             }
             CustomItems.aridWorld -> {
-                if (loc.y < -256.0) loc.y = -256.0
+                if (loc.y < -256.0) {
+                    loc.y = -256.0
+                    void = true
+                }
             }
             else -> {
-                if (loc.y < 0.0) loc.y = 0.0
+                if (loc.y < 0.0) {
+                    loc.y = 0.0
+                    void = true
+                }
             }
         }
         // If inside of a block, start moving it up until you reach an empty block
@@ -186,6 +204,9 @@ object GraveListener: Listener {
                 }
             }
         }
+
+        if (void) return loc
+
         // Otherwise, move it down to the first nonpassable block
         else {
             while (loc.world.getBlockAt(loc).isPassable) {

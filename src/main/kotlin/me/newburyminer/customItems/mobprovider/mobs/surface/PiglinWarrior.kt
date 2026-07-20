@@ -26,7 +26,7 @@ object PiglinWarrior: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.ARMOR, -0.5, AttributeModifier.Operation.ADD_NUMBER, linear(40 to 80, ctx)),
                 VanillaKnockbackApply()
             )

@@ -32,7 +32,7 @@ object GraniteShell : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(35.0 to 70.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(35.0 to 70.0, ctx), CustomDamageType.MELEE),
                 CustomKnockbackApply(Vector(0.4, 1.0, 0.4))
             )
         )

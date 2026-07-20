@@ -22,7 +22,7 @@ object ExperiencedAssassin : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(32.0 to 64.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(32.0 to 64.0, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.BLINDNESS, linear(30 to 50, ctx), 0),
                 VanillaKnockbackApply()
             )

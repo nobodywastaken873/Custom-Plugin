@@ -37,8 +37,8 @@ class GravityHammer: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_SPEED, -3.3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_DAMAGE, 15.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -3.3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setLore(lore)
         .build()
@@ -48,7 +48,7 @@ class GravityHammer: CustomItemDefinition {
             slotMatches(e, EquipmentSlot.HAND, custom) &&
             e.damager is Player &&
             (e.damager as Player).offCooldown(custom) &&
-            (e.damager as Player).attackCooldown.toDouble() == 1.0
+            e.damage >= 15
         },
         {e ->
             val damager = e.damager as Player

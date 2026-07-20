@@ -21,7 +21,7 @@ object CaveAssassin: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(32.0 to 64.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(32.0 to 64.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

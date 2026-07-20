@@ -23,7 +23,7 @@ object VenomSpider: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(22.0 to 44.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.MOVEMENT_SPEED, -1.0, AttributeModifier.Operation.ADD_SCALAR, linear(10 to 20, ctx)),
                 attribute(Attribute.JUMP_STRENGTH, -1.0, AttributeModifier.Operation.ADD_SCALAR, linear(10 to 20, ctx)),
                 VanillaKnockbackApply()

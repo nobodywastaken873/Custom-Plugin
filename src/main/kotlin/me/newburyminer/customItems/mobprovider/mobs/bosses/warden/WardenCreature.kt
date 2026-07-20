@@ -23,7 +23,7 @@ object WardenCreature: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(15.0 to 30.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )
@@ -35,7 +35,7 @@ object WardenCreature: MobDefinition() {
         )
 
         health(
-            linear(27.0 to 54.0, ctx)
+            linear(22.0 to 44.0, ctx)
         )
 
         movementSpeed(

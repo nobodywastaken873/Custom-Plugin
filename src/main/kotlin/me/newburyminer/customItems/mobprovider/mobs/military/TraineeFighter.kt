@@ -22,7 +22,7 @@ object TraineeFighter : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(28.0 to 56.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(28.0 to 56.0, ctx), CustomDamageType.MELEE),
                 DisableShieldApply(),
                 VanillaKnockbackApply()
             )

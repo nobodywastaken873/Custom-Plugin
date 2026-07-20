@@ -9,6 +9,7 @@ import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.HomingSystem
 import me.newburyminer.customItems.helpers.ParticleTheme
 import org.bukkit.Bukkit
+import org.bukkit.Particle
 import org.bukkit.entity.Entity
 import java.util.UUID
 
@@ -84,11 +85,11 @@ class EffectAuraComponent(
             }
 
             // Use/create better particle manager way of doing this, also for this use a filled circle instead of a ring
-            CustomEffects.filledParticleCircle(particleSettings.particle, wrapper.entity.location, radius, particleSettings.concentration)
+            CustomEffects.filledParticleCircle(Particle.ENCHANTED_HIT.builder(), wrapper.entity.location, radius, 4.0)
         }
 
-        if (wrapper.entity.ticksLived % particleSettings.preParticleSeparation == 0) {
-            CustomEffects.particleCircle(particleSettings.preParticle, wrapper.entity.location, radius, (2*Math.PI*radius*particleSettings.concentration).toInt())
+        if (wrapper.entity.ticksLived % 2 == 0) {
+            CustomEffects.particleCircle(Particle.TRIAL_SPAWNER_DETECTION_OMINOUS.builder(), wrapper.entity.location, radius, (Math.PI*radius*4.0).toInt())
         }
     }
 }

@@ -37,7 +37,7 @@ object HuskyDuelist : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE),
                 attribute(Attribute.GRAVITY, 2.0, AttributeModifier.Operation.ADD_SCALAR, linear(20 to 40, ctx)),
                 VanillaKnockbackApply()
             )

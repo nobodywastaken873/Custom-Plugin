@@ -33,7 +33,7 @@ object SAMInfantry: MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(22.0 to 44.0, ctx), CustomDamageType.PROJECTILE_NO_CD)
+                damage(linear(22.0 to 44.0, ctx), CustomDamageType.PROJECTILE)
             )
         )
 

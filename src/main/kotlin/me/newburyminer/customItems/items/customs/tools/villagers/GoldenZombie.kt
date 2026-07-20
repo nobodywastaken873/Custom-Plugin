@@ -43,6 +43,7 @@ class GoldenZombie: CustomItemDefinition {
                 villager.zombify()
             }
             else if (e.rightClicked is ZombieVillager) {
+                e.player.swingHand(e.hand)
                 val zombieVillager: ZombieVillager = e.rightClicked as ZombieVillager
                 zombieVillager.conversionTime = 50
                 zombieVillager.conversionPlayer = e.player

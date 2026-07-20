@@ -42,7 +42,7 @@ object FireBombardier : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.BURNING_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.BURNING),
                 ProjectileKnockbackApply(0.3)
             )
         )

@@ -20,7 +20,6 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegis
 import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.gui.CustomGui
 import me.newburyminer.customItems.gui.GuiEventHandler
-import me.newburyminer.customItems.helpers.FileDatabase
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.DurabilityListener
 import me.newburyminer.customItems.items.ItemBootstrapper
@@ -42,6 +41,7 @@ import me.newburyminer.customItems.structures.CustomSpawningSystem
 import me.newburyminer.customItems.structures.locations.StructureBlockManager
 import me.newburyminer.customItems.structures.locations.StructureBounding
 import me.newburyminer.customItems.systems.KothSystem
+import me.newburyminer.customItems.systems.SurvivalTimeSystem
 import me.newburyminer.customItems.systems.TabMenuSystem
 import me.newburyminer.customItems.systems.materials.MaterialConverterBootstrapper
 import me.newburyminer.customItems.systems.ores.OreSystemManager
@@ -52,11 +52,9 @@ import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.GameRules
 import org.bukkit.World
-import org.bukkit.WorldCreator
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 
 class CustomItems : JavaPlugin() {
@@ -86,7 +84,9 @@ class CustomItems : JavaPlugin() {
         StructureRegistry.bootstrap(this)
         LootRegistry.bootstrap(this)
         OreSystemManager.registerEvents()
-        KothSystem.registerListeners()
+        KothSystem.registerEvents()
+        ItemClaimManager.registerEvents()
+        SurvivalTimeSystem.registerEvents()
 
         registerWorlds()
         loadBosses()
@@ -110,6 +110,7 @@ class CustomItems : JavaPlugin() {
         CustomSpawningSystem.runTaskTimer(this, 0L, 20L)
         KothSystem.runTaskTimer(this, 0L, 1200L)
         TabMenuSystem.runTaskTimer(this, 0L, 20L)
+        SurvivalTimeSystem.runTaskTimer(this, 0L, 20L)
         //entityListener.run()
         //bossListener.run()
 

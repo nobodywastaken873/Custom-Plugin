@@ -24,13 +24,13 @@ object WardenSkeleton: MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(22.0 to 44.0, ctx), CustomDamageType.PROJECTILE),
+                damage(linear(17.0 to 34.0, ctx), CustomDamageType.PROJECTILE),
                 ProjectileKnockbackApply()
             )
         )
 
         health(
-            linear(20.0 to 40.0, ctx)
+            linear(20.0 to 36.0, ctx)
         )
 
         movementSpeed(

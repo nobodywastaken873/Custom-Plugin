@@ -30,7 +30,7 @@ class ChocolateMilk: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name, false)
         .setLore(lore)
-        .food(0, 0F)
+        .food(0, 0F, true)
         .consumable(arrayOf(ConsumeEffect.removeEffects(
             RegistrySet.keySet(
                 RegistryKey.MOB_EFFECT,

@@ -2,17 +2,20 @@ package me.newburyminer.customItems.entity.hiteffects.effect
 
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
+import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.entity.hiteffects.HitEffect
 import me.newburyminer.customItems.entity.hiteffects.HitEffectDeserialization
 import me.newburyminer.customItems.entity.hiteffects.HitEffectType
 import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
+import net.kyori.adventure.key.Key
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.damage.DamageSource
 import org.bukkit.damage.DamageType
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import org.bukkit.tag.DamageTypeTags
 
 class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFrames: Int = 10, val overrideSource: Entity? = null): HitEffect {
 
@@ -28,6 +31,13 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
         //println("before damage: ${victim.velocity}")
         val oldVelocity = victim.velocity
 
+        val bypassesKey = DamageTypeTagKeys.create(Key.key("minecraft:bypasses_cooldown"))
+        val registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE)
+        val bypassesCooldown = registry.getTagValues(bypassesKey).contains(damageType)
+
+        // Manually ignore attacks
+        if (!bypassesCooldown && victim.noDamageTicks > 0) return
+
         victim.damage(
             amount,
             DamageSource.builder(damageType)
@@ -38,8 +48,13 @@ class CustomDamageApply(val amount: Double, val damageType: DamageType, val iFra
         )
 
         victim.velocity = oldVelocity
-        victim.noDamageTicks = iFrames
-        victim.lastDamage = 0.0
+
+        val newIframes =
+            if (bypassesCooldown) 0
+            else iFrames
+
+        victim.noDamageTicks = newIframes
+        if (newIframes == 0) victim.lastDamage = 0.0
     }
 
     override fun serialize(): Map<String, Any> {

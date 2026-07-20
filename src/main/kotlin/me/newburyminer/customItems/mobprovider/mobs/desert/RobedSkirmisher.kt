@@ -32,7 +32,7 @@ object RobedSkirmisher : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(35.0 to 65.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(35.0 to 65.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

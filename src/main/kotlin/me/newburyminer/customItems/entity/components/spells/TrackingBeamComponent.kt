@@ -13,6 +13,7 @@ import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -77,13 +78,13 @@ class TrackingBeamComponent(
             val newDirection = HomingSystem.aggressiveScalingTurn(currentDirection ?: return, targetDirection, angleChange, distance, 0.4)
             currentDirection = newDirection
 
-            if (wrapper.entity.ticksLived % particleSettings.particleSeperation == 0) {
+            if (wrapper.entity.ticksLived % 3 == 0) {
                 CustomEffects.raycastParticleLine(
-                    particleSettings.particle,
+                    Particle.ELECTRIC_SPARK.builder(),
                     wrapper.entity.eyeLocation,
                     currentDirection ?: return,
                     range,
-                    particleSettings.concentration,
+                    4.0,
                     collideEntity = !piercing,
                     predicate = { it is Player }
                 )

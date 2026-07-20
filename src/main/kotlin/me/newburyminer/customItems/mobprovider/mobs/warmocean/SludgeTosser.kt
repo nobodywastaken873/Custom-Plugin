@@ -45,7 +45,7 @@ object SludgeTosser : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE),
                 VanillaEffectApply(PotionEffectType.WEAKNESS, linear(60 to 100, ctx), linear(0 to 2, ctx)),
                 ProjectileKnockbackApply()
             )

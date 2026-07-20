@@ -120,9 +120,36 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("pitymenu", "Use to open your pity list GUI.", PityCommand())
             commands.register("itemclaims", "Use to open your item claims GUI.", ItemClaimCommand())
             commands.register("kothloot", "Use to check past and future KOTH loot.", KothLootCommand())
+            commands.register("survivaltime", "Use to check how long you have survived for and what your current buffs are.", SurvivalTimeCommand())
         }
         manager.registerEventHandler(RegistryEvents.ENCHANTMENT.compose().newHandler {
             event ->
+            event.registry().register( // The key of the registry
+                // Plugins should use their own namespace instead of minecraft or papermc
+                EnchantmentKeys.create(Key.key("customitems:creature_tactics")))
+            { b: EnchantmentRegistryEntry.Builder ->
+                b.description(Component.text("Creature Tactics"))
+                    .supportedItems(event.getOrCreateTag(ItemTypeTagKeys.ENCHANTABLE_ARMOR))
+                    .anvilCost(1)
+                    .maxLevel(2)
+                    .weight(1024)
+                    .minimumCost(EnchantmentRegistryEntry.EnchantmentCost.of(1, 1))
+                    .maximumCost(EnchantmentRegistryEntry.EnchantmentCost.of(1, 1))
+                    .activeSlots(EquipmentSlotGroup.ARMOR)
+            }
+            event.registry().register( // The key of the registry
+                // Plugins should use their own namespace instead of minecraft or papermc
+                EnchantmentKeys.create(Key.key("customitems:mob_slayer")))
+            { b: EnchantmentRegistryEntry.Builder ->
+                b.description(Component.text("Mob Slayer"))
+                    .supportedItems(event.getOrCreateTag(ItemTypeTagKeys.ENCHANTABLE_MELEE_WEAPON))
+                    .anvilCost(1)
+                    .maxLevel(8)
+                    .weight(1024)
+                    .minimumCost(EnchantmentRegistryEntry.EnchantmentCost.of(1, 1))
+                    .maximumCost(EnchantmentRegistryEntry.EnchantmentCost.of(1, 1))
+                    .activeSlots(EquipmentSlotGroup.MAINHAND)
+            }
             event.registry().register( // The key of the registry
                 // Plugins should use their own namespace instead of minecraft or papermc
                 EnchantmentKeys.create(Key.key("customitems:autosmelt")))

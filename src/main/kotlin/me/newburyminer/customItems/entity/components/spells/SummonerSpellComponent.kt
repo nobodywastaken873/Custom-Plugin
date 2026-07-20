@@ -14,6 +14,7 @@ import me.newburyminer.customItems.mobprovider.MobRegistry
 import me.newburyminer.customItems.mobprovider.mobs.BasicZombie
 import me.newburyminer.customItems.structures.StructureReference
 import org.bukkit.Location
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.util.Vector
@@ -55,13 +56,13 @@ class SummonerSpellComponent(
         val caster = wrapper.entity as? Mob ?: return
         reduceCooldown(1)
 
-        if (caster.ticksLived % particleSettings.preParticleSeparation == 0) {
+        if (caster.ticksLived % 3 == 0) {
             spawnLocs.forEach {
                 CustomEffects.particleLine(
-                    particleSettings.preParticle,
+                    Particle.SOUL_FIRE_FLAME.builder(),
                     it,
                     it.clone().add(Vector(0.0, 2.0, 0.0)),
-                    particleSettings.concentration
+                    6.0
                 )
             }
         }
@@ -90,7 +91,7 @@ class SummonerSpellComponent(
 
             val nearbyOfSummonedType = caster.location.getNearbyEntitiesByType(mob.getType().java, 12.0).size
 
-            if (caster.target != null && nearbyOfSummonedType < 25 && startCasting(wrapper)) {
+            if (caster.target != null && nearbyOfSummonedType < 8 && caster.hasLineOfSight(caster.target ?: return) && startCasting(wrapper)) {
                 val boundingBox = mob.getHitbox()
 
                 spawnLocs.addAll(caster.location.getValidSpawnLocs(boundingBox, count))

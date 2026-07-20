@@ -28,7 +28,7 @@ object AntiTankPersonnel : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE),
                 ProjectileKnockbackApply()
             )
         )

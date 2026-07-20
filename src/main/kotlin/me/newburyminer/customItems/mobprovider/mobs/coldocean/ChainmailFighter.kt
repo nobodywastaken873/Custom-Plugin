@@ -62,7 +62,7 @@ object ChainmailFighter : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(27.0 to 54.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(27.0 to 54.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

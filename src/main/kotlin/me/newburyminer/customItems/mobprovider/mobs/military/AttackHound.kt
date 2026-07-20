@@ -21,7 +21,7 @@ object AttackHound : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(22.0 to 44.4, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(22.0 to 44.4, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.WITHER, linear(40 to 60, ctx), linear(0 to 1, ctx)),
                 VanillaKnockbackApply()
             )

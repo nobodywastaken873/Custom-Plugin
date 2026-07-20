@@ -32,7 +32,7 @@ object CursedArcher : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE),
                 VanillaEffectApply(PotionEffectType.WEAKNESS, linear(100 to 200, ctx), linear(0 to 1, ctx)),
                 ProjectileKnockbackApply()
             )

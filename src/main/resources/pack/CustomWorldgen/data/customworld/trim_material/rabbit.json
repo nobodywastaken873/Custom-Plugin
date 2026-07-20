@@ -1,0 +1,7 @@
+{
+  "asset_name": "rabbit",
+  "description": {
+    "color": "#896D47",
+    "translate": "trim_material.customworld.rabbit"
+  },
+  "ingredient": "minecraft:rabbit_hide"}

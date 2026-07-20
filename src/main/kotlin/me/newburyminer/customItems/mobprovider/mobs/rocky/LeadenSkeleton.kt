@@ -25,7 +25,7 @@ object LeadenSkeleton : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.PROJECTILE),
                 VanillaEffectApply(PotionEffectType.WITHER, linear(30 to 60, ctx), linear(1 to 2, ctx)),
                 ProjectileKnockbackApply()
             )

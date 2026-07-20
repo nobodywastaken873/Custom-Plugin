@@ -20,7 +20,7 @@ object TrainedBeast : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply(0.5)
             )
         )

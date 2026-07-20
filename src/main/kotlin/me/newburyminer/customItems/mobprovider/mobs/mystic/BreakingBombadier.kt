@@ -36,7 +36,7 @@ object BreakingBombadier : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(20.0 to 40.0, ctx), CustomDamageType.PROJECTILE),
                 attribute(Attribute.ARMOR, -1.0, AttributeModifier.Operation.ADD_NUMBER, linear(100 to 150, ctx)),
                 ProjectileKnockbackApply()
             )

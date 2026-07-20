@@ -21,7 +21,7 @@ object FattenedMaggot : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(15.0 to 35.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(15.0 to 35.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

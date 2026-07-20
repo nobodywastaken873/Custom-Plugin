@@ -23,7 +23,7 @@ object JoustingKnight : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(24.0 to 48.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(24.0 to 48.0, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.SLOWNESS, linear(60 to 120, ctx), linear(1 to 2, ctx)),
                 VanillaKnockbackApply()
             )

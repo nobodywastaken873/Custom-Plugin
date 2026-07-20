@@ -1,0 +1,35 @@
+package me.newburyminer.customItems.items.customs.materials.trims
+
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
+import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import net.kyori.adventure.key.Key
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.trim.TrimMaterial
+
+class PastelBlue: CustomItemDefinition {
+
+    override val custom: CustomItem = CustomItem.PASTEL_BLUE
+
+    private val material = Material.LIGHT_BLUE_DYE
+    private val color = arrayOf(126, 206, 252)
+    private val name = text("Pastel Blue", color)
+    private val lore = Utils.loreBlockToList(
+        text("Trim material", Utils.GRAY),
+    )
+
+    private val trimMaterial = RegistryAccess.registryAccess()
+        .getRegistry(RegistryKey.TRIM_MATERIAL)
+        .get(Key.key("customworld", "blue_pastel")) ?: TrimMaterial.IRON
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name, false)
+        .setLore(lore)
+        .trimProvider(trimMaterial)
+        .build()
+
+}

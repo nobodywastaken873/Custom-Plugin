@@ -1,6 +1,20 @@
 {
   "values": [
     "minecraft:light_blue_dye",
-    "minecraft:pink_dye"
+    "minecraft:pink_dye",
+    "minecraft:poisonous_potato",
+    "minecraft:popped_chorus_fruit",
+    "minecraft:coal",
+    "minecraft:dragon_breath",
+    "minecraft:echo_shard",
+    "minecraft:ender_pearl",
+    "minecraft:fire_charge",
+    "minecraft:glowstone_dust",
+    "minecraft:leather",
+    "minecraft:nether_brick",
+    "minecraft:prismarine_shard",
+    "minecraft:rabbit_hide",
+    "minecraft:enchanted_golden_apple",
+    "minecraft:slime_ball"
   ]
 }

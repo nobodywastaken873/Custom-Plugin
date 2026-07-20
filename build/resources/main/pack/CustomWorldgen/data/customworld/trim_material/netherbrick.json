@@ -1,0 +1,7 @@
+{
+  "asset_name": "netherbrick",
+  "description": {
+    "color": "#552E34",
+    "translate": "trim_material.customworld.netherbrick"
+  },
+  "ingredient": "minecraft:nether_brick"}

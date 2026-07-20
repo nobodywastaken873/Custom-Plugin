@@ -76,6 +76,7 @@ class ExperienceFlask: CustomItemDefinition {
             }
 
             else if (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) {
+                e.player.swingHand(e.hand ?: return@register)
                 if (e.player.isSneaking) {
                     e.player.giveExp(storedExp.coerceAtMost(1395), false)
                     flask.setTag(expTag, storedExp - storedExp.coerceAtMost(1395))

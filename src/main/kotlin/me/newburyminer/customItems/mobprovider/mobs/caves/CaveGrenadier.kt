@@ -36,7 +36,7 @@ object CaveGrenadier: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )

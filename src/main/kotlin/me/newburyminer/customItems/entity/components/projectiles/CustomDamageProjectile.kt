@@ -47,7 +47,7 @@ class CustomDamageProjectile(private val damage: HitEffects): EntityComponent {
             e.isCancelled = true
 
             val damager =
-                if (e.damager is Projectile) (e.damager as Projectile).shooter as? Entity ?: return@register
+                if (e.damager is Projectile) (e.damager as Projectile).shooter as? Entity ?: e.damager
                 else e.damager
 
             damage.apply(damaged, damager, sourceLoc = wrapper.entity.location)

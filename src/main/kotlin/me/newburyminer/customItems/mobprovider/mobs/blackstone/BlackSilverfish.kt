@@ -20,7 +20,7 @@ object BlackSilverfish : MobDefinition() {
         component(
             SuicideBomberComponent(
                 HitEffects(
-                    damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE_NO_CD)
+                    damage(linear(30.0 to 60.0, ctx), CustomDamageType.MELEE)
                 )
             )
         )

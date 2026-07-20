@@ -36,7 +36,7 @@ object LeapingSpider : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(20.0 to 45.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(20.0 to 45.0, ctx), CustomDamageType.MELEE),
                 VanillaEffectApply(PotionEffectType.POISON, linear(40 to 80, ctx), linear(0 to 2, ctx)),
                 VanillaKnockbackApply()
             )

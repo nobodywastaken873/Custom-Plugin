@@ -46,6 +46,7 @@ import org.bukkit.util.Vector
 import java.nio.ByteBuffer
 import java.util.*
 import kotlin.math.*
+import kotlin.random.Random
 
 class Utils {
     companion object {
@@ -243,11 +244,15 @@ class Utils {
         }
         fun Player.addItemorClaim(item: ItemStack) {
             if (this.inventory.firstEmpty() == -1) {
-                ItemClaimManager.add(this.uniqueId, item)
-                this.sendMessage(text("An item has been added to your /itemclaims menu.", GRAY))
+                addClaim(this.uniqueId, item)
             } else {
                 this.inventory.addItem(item)
             }
+        }
+        fun addClaim(uuid: UUID, item: ItemStack) {
+            ItemClaimManager.add(uuid, item)
+            val player = Bukkit.getPlayer(uuid) ?: return
+            player.sendMessage(text("An item has been added to your /itemclaims menu.", GRAY))
         }
         fun Double.round(decimals: Int): Double {
             var multiplier = 1.0
@@ -373,6 +378,24 @@ class Utils {
                     if (it.isLowerCase()) it.titlecase() else it.toString()
                 }
             }
+        }
+        fun <T> Map<T, Double>.random(): T {
+            // 1. Calculate total sum of all integer weights
+            val totalWeight = this.values.sum()
+
+            // 2. Pick a random threshold
+            val randomValue = Random.nextDouble(totalWeight)
+
+            // 3. Linearly scan map entries to find the winning item
+            var currentSum = 0.0
+            for ((item, weight) in this) {
+                currentSum += weight
+                if (randomValue < currentSum) {
+                    return item
+                }
+            }
+
+            return this.keys.last()
         }
         fun toExpLevel(total: Int): Pair<Int, Int> {
             if (total in 0..352) {
@@ -1037,6 +1060,24 @@ class Utils {
         fun ItemStack.reduceDura(amount: Int): ItemStack {
             val damage = this.getData(DataComponentTypes.DAMAGE) ?: 0
             this.setData(DataComponentTypes.DAMAGE, damage + amount)
+            return this
+        }
+        fun ItemStack.addExtraSlayer(amount: Double): ItemStack {
+            this.setTag("mobslayer", amount)
+            return this
+        }
+        fun ItemStack.getExtraSlayer(): Double {
+            return this.getTag<Double>("mobslayer") ?: 0.0
+        }
+        fun ItemStack.addDoubleChestLoot(amount: Double): ItemStack {
+            this.setTag("doublechestloot", amount)
+            return this
+        }
+        fun ItemStack.getDoubleChestLoot(): Double {
+            return this.getTag<Double>("doublechestloot") ?: 0.0
+        }
+        fun ItemStack.setAmount(amount: Int): ItemStack {
+            this.amount = amount
             return this
         }
     }

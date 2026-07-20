@@ -26,7 +26,7 @@ object PirateCrew : MobDefinition() {
         ability(
             MeleeEffectAbility(
                 damage(
-                    linear(20.0 to 40.0, ctx), CustomDamageType.MELEE_NO_CD
+                    linear(20.0 to 40.0, ctx), CustomDamageType.MELEE
                 ),
                 VanillaKnockbackApply()
             )

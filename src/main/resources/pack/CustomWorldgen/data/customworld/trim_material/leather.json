@@ -1,0 +1,7 @@
+{
+  "asset_name": "leather",
+  "description": {
+    "color": "#5B3A25",
+    "translate": "trim_material.customworld.leather"
+  },
+  "ingredient": "minecraft:leather"}

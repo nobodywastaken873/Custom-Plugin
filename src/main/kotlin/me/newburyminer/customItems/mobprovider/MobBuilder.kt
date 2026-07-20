@@ -65,10 +65,19 @@ class MobBuilder(
             }
         }
 
+        val damageMultiplier =
+            if (health > 1000.0) {
+                health /= 4.0
+                0.25
+            } else {
+                1.0
+            }
+
         component(
             DefaultEntityComponent(
                 tier,
                 targetRange,
+                damageMultiplier
             )
         )
 
@@ -105,7 +114,7 @@ class MobBuilder(
             entity.isGlowing = true
         }
 
-        entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = 2000.0
+        entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = (health/2).coerceAtMost(100.0)
         entity.getAttribute(Attribute.MAX_HEALTH)?.baseValue = health
         entity.health = health
         entity.getAttribute(Attribute.MOVEMENT_SPEED)?.baseValue = movementSpeed

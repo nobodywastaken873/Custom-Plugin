@@ -18,6 +18,7 @@ import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -90,7 +91,7 @@ class SlashSpellComponent(
                 val hitPlayers = caster.world.arcTraceManyEntities(
                     caster.eyeLocation, direction, radius, spreadAngle, {it is Player}
                 ).filterIsInstance<Player>()
-                CustomEffects.rotatedArc(particleSettings.particle, caster.eyeLocation, radius, spreadAngle, particleSettings.concentration, direction)
+                CustomEffects.rotatedArc(Particle.CRIT.builder(), caster.eyeLocation, radius, spreadAngle, 6.0, direction)
 
                 hitPlayers.forEach { effects.apply(it, wrapper.entity) }
                 CustomEffects.playSound(caster.location, Sound.ENTITY_WITHER_SHOOT, 1.0F, 1.7F)

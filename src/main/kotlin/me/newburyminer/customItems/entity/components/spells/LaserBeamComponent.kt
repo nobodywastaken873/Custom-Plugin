@@ -13,6 +13,8 @@ import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -70,16 +72,16 @@ class LaserBeamComponent(
 
             if (followPlayer && !checkValidTarget(wrapper, targetPlayer)) {cancelCasting(wrapper); return}
 
-            if (wrapper.entity.ticksLived % particleSettings.preParticleSeparation == 0) {
+            if (wrapper.entity.ticksLived % 4 == 0) {
                 val direction = // Get the direction to the targetLoc or to the targetPlayer from eyes
                     ((if (followPlayer) targetPlayer?.getUpperCenter() else targetLoc) ?: return).clone()
                         .subtract(wrapper.entity.eyeLocation).toVector()
                 CustomEffects.raycastParticleLine(
-                    particleSettings.preParticle,
+                    Particle.FIREWORK.builder(),
                     wrapper.entity.eyeLocation,
                     direction,
                     range,
-                    particleSettings.concentration,
+                    4.0,
                     collideEntity = !piercing,
                     predicate = { it is Player }
                 )
@@ -89,11 +91,11 @@ class LaserBeamComponent(
                     ((if (followPlayer) targetPlayer?.getUpperCenter() else targetLoc) ?: return).clone()
                         .subtract(wrapper.entity.eyeLocation).toVector()
                 CustomEffects.raycastParticleLine(
-                    particleSettings.particle,
+                    Particle.BLOCK.builder().data(Material.AMETHYST_BLOCK.createBlockData()),
                     wrapper.entity.eyeLocation,
                     direction,
                     range,
-                    particleSettings.concentration,
+                    3.0,
                     collideEntity = !piercing,
                     predicate = { it is Player }
                 )

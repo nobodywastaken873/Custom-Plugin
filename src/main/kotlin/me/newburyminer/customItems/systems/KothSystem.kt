@@ -2,11 +2,9 @@ package me.newburyminer.customItems.systems
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
-import me.newburyminer.customItems.Utils.Companion.addItemorClaim
 import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.bosses.Collision
 import me.newburyminer.customItems.bosses.rendering.HollowCylinderRenderable
-import me.newburyminer.customItems.bosses.rendering.RectangularPrismRenderable
 import me.newburyminer.customItems.bosses.rendering.RenderManager
 import me.newburyminer.customItems.bosses.rendering.Transform
 import me.newburyminer.customItems.eventbus.EventRegistry
@@ -40,7 +38,7 @@ import kotlin.math.roundToInt
 
 object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
 
-    fun registerListeners() {
+    fun registerEvents() {
         EventRegistry.register(ListenerEntry(PlayerJoinEvent::class,
             {
                 kothRemaining > 0
@@ -239,31 +237,33 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
     private fun giveRewards() {
         val loot = dailyLoot[LocalDate.now(ZoneId.of("America/Los_Angeles"))] ?: return
         val sorted = scoreMap.toList()
-            .filter { (uuid, _) -> Bukkit.getPlayer(uuid) != null }
             .sortedBy { (_, value) -> value }
 
         if (sorted.isEmpty()) {
             Bukkit.getOnlinePlayers().forEach { it.sendMessage(Utils.text("Noone attended KOTH, it has finished.", Utils.BLUE)) }
         } else if (sorted.size == 1) {
-            val player = Bukkit.getPlayer(sorted.first().first) ?: return
-            Bukkit.getOnlinePlayers().forEach { it.sendMessage(Utils.text("Only ${player.name} attended KOTH, they have received both rewards for the day.", Utils.BLUE)) }
+            val name = Bukkit.getOfflinePlayer(sorted.first().first).name ?: ""
+            Bukkit.getOnlinePlayers().forEach { it.sendMessage(Utils.text("Only $name attended KOTH, they have received both rewards for the day.", Utils.BLUE)) }
             // give both rewards
             (loot.first + loot.second).forEach {
-                player.addItemorClaim(it)
+                Utils.addClaim(sorted.first().first, it)
             }
         } else {
-            val first = Bukkit.getPlayer(sorted[0].first) ?: return
-            val second = Bukkit.getPlayer(sorted[1].first) ?: return
+            val first = sorted[0].first
+            val second = sorted[1].first
+
+            val firstName = Bukkit.getOfflinePlayer(first).name ?: ""
+            val secondName = Bukkit.getOfflinePlayer(second).name ?: ""
 
             Bukkit.getOnlinePlayers().forEach { it.sendMessage(Utils.text(
-                "${first.name} and ${second.name} were the top two players for KOTH who are still online, they have each received their corresponding KOTH reward for the day.", Utils.BLUE
+                "$firstName and $secondName were the top two players for KOTH, they have each received their corresponding KOTH reward for the day.", Utils.BLUE
             )) }
             // give each their reward
             loot.first.forEach {
-                first.addItemorClaim(it)
+                Utils.addClaim(first, it)
             }
             loot.second.forEach {
-                second.addItemorClaim(it)
+                Utils.addClaim(second, it)
             }
         }
     }
@@ -292,9 +292,9 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
             .sortedBy { (_, value) -> value }
 
         val top = sorted.firstOrNull() ?:
-            return Utils.text("No online players with score", arrayOf(6, 89, 191))
+            return Utils.text("No players with score", arrayOf(6, 89, 191))
 
-        val name = (Bukkit.getPlayer(top.first) ?: return Utils.text("")).name
+        val name = Bukkit.getOfflinePlayer(top.first).name ?: ""
         return Utils.text("Top player: ${name} with ${top.second} seconds", arrayOf(6, 89, 191))
     }
 

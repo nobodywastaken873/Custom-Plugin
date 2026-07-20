@@ -26,7 +26,7 @@ object BeastRider : MobDefinition() {
 
         ability(
             ProjectileEffectAbility(
-                damage(linear(25.0 to 50.0, ctx), CustomDamageType.PROJECTILE_NO_CD),
+                damage(linear(25.0 to 50.0, ctx), CustomDamageType.PROJECTILE),
                 CustomKnockbackApply(Vector(0.4, 2.0, 0.4)),
                 attribute(
                     Attribute.FALL_DAMAGE_MULTIPLIER,

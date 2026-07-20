@@ -24,7 +24,7 @@ object EnragedSeaBeast : MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(34.0 to 68.0, ctx), CustomDamageType.MELEE_NO_CD),
+                damage(linear(34.0 to 68.0, ctx), CustomDamageType.MELEE),
                 attribute(
                     Attribute.MOVEMENT_SPEED,
                     -0.1,

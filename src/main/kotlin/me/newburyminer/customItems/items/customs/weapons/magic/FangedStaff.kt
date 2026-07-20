@@ -1,5 +1,8 @@
 package me.newburyminer.customItems.items.customs.weapons.magic
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.Consumable
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
@@ -35,6 +38,12 @@ class FangedStaff: CustomItemDefinition {
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
         .setLore(lore)
+        .setData(DataComponentTypes.CONSUMABLE, Consumable.consumable()
+            .animation(ItemUseAnimation.TRIDENT)
+            .consumeSeconds(32000.0F)
+            .hasConsumeParticles(false)
+            .build()
+        )
         .build()
 
     init {
@@ -44,8 +53,10 @@ class FangedStaff: CustomItemDefinition {
         {e ->
             val wand = e.item ?: return@register
             if ((e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) && wand.offCooldown(e.player, "Vexing")) {
-                heldActivation.used(e.player)
-            } else if ((e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) && wand.offCooldown(e.player, "Fangs")) {
+                CustomEffects.playSound(e.player.location, Sound.ENTITY_EVOKER_PREPARE_ATTACK, 1F, 0.3F)
+            }
+
+            else if ((e.action == Action.LEFT_CLICK_AIR || e.action == Action.LEFT_CLICK_BLOCK) && wand.offCooldown(e.player, "Fangs")) {
                 val result =
                     e.player.location.world.rayTraceBlocks(e.player.eyeLocation, e.player.location.direction, 80.0,
                         FluidCollisionMode.NEVER, true)?.hitPosition?.toLocation(e.player.world) ?:
@@ -62,24 +73,20 @@ class FangedStaff: CustomItemDefinition {
     }
 
     override val extraTasks: Map<Int, (Player) -> Unit>
-        get() = mapOf(6 to {player -> updateCounter(player)})
+        get() = mapOf(4 to {player -> updateCounter(player)})
 
-    private val heldActivation = HeldActivation(
-        activationTicks = 13,
-        resetOnActivate = true,
-    )
     private fun updateCounter(player: Player) {
-        val result = heldActivation.tick(player)
-        when (result) {
-            is HeldActivation.ActivationResult.Cancelled -> CustomEffects.playSound(player.location, Sound.BLOCK_ANVIL_PLACE, 0.7F, 1.2F)
-            is HeldActivation.ActivationResult.Charging -> CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_PREPARE_ATTACK, 1F, 1.2F)
-            is HeldActivation.ActivationResult.Activated -> {
-                player.setCooldown(custom, 55.0, "Vexing")
-                CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_CAST_SPELL, 1F, 0.9F)
-                EffectManager.applyEffect(player, CustomEffectType.FANG_STAFF_VEXING, 10 * 20)
-            }
-            else -> {}
+        if (!player.activeItem.isItem(custom)) return
+        if (!player.offCooldown(custom, "Vexing")) {
+            player.clearActiveItem()
         }
+
+        if (player.activeItemUsedTime < 80) return
+
+        player.setCooldown(custom, 45.0, "Vexing")
+        CustomEffects.playSound(player.location, Sound.ENTITY_EVOKER_CAST_SPELL, 1F, 0.9F)
+        EffectManager.applyEffect(player, CustomEffectType.FANG_STAFF_VEXING, 10 * 20)
+        player.clearActiveItem()
     }
 
 }

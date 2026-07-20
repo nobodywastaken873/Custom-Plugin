@@ -97,6 +97,8 @@ class ReinforcedCage: CustomItemDefinition {
             e.isCancelled = true
             val entity = e.rightClicked
 
+            e.player.swingHand(e.hand)
+
             EntityWrapperManager.removeWrapper(entity)
             val snapshot = (entity.createSnapshot() ?: return@register).asString
             item.setTag("storedmob", snapshot)
