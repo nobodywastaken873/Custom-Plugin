@@ -20,6 +20,7 @@ import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import kotlin.math.pow
 
 class XrayGoggles: CustomItemDefinition {
 
@@ -29,7 +30,7 @@ class XrayGoggles: CustomItemDefinition {
     private val color = arrayOf(44, 145, 22)
     private val name = text("X-ray Goggles", color)
     private val lore = Utils.loreBlockToList(
-        text("Sneak to give all entities within a 20 block radius glowing for 20 seconds, with a 20 second cooldown.", Utils.GRAY),
+        text("Sneak to give all entities within a 40 block radius glowing for 20 seconds, with a 20 second cooldown.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -50,8 +51,8 @@ class XrayGoggles: CustomItemDefinition {
             slotMatches(e, EquipmentSlot.HEAD, custom)
         },
         {e ->
-            for (entity in e.player.location.getNearbyEntities(20.0, 20.0, 20.0)) {
-                if (e.player.location.subtract(entity.location).length() > 20.0) continue
+            for (entity in e.player.location.getNearbyEntities(40.0, 40.0, 40.0)) {
+                if (e.player.location.subtract(entity.location).lengthSquared() > 40.0.pow(2)) continue
                 if (entity !is LivingEntity) continue
                 if (entity == e.player) continue
                 entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 400, 0, true, false, false))

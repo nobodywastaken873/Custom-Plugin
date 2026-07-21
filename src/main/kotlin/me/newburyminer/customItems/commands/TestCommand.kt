@@ -181,7 +181,7 @@ class TestCommand : BasicCommand {
         } else if (args[0] == "summon_test") {
             val definition = when (args[1].toInt()) {
                 0 -> {
-                    CaveGrenadier
+                    TraineeFighter
                 }
                 1 -> {
                     RPGSkeleton

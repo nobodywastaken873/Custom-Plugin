@@ -1,5 +1,6 @@
-package me.newburyminer.customItems.items.customs.armor.sets.warrior
+package me.newburyminer.customItems.items.customs.armor.sets.gladiator
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -13,14 +14,19 @@ import org.bukkit.attribute.AttributeModifier
 import org.bukkit.inventory.EquipmentSlotGroup
 import org.bukkit.inventory.ItemStack
 
-class WarriorBoots: CustomItemDefinition {
+class GladiatorBoots: CustomItemDefinition {
 
-    override val custom: CustomItem = CustomItem.WARRIOR_BOOTS
+    override val custom: CustomItem = CustomItem.GLADIATORS_BOOTS
 
     private val material = Material.NETHERITE_BOOTS
     private val color = arrayOf(204, 116, 2)
-    private val name = text("Warrior Boots", color)
-    private val lore = mutableListOf<Component>()
+    private val name = text("Gladiator Boots", color)
+    private val lore = Utils.loreBlockToList(
+        text("Deal an additional 10% damage with spears.", Utils.GRAY),
+        text(""),
+        text("Full Set Bonus (4 pieces): Gladiator's Set", Utils.GRAY),
+        text("Right click with a spear to charge forward, with a 7s cooldown. Gain 20% additional damage with spears.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -29,10 +35,10 @@ class WarriorBoots: CustomItemDefinition {
             SimpleModifier(Attribute.ARMOR, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
-            SimpleModifier(Attribute.MAX_HEALTH, 1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.MOVEMENT_SPEED, 0.005, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
         )
-        .setArmorSet(ArmorSet.WARRIOR)
+        .setArmorSet(ArmorSet.GLADIATOR)
         .build()
 
 }

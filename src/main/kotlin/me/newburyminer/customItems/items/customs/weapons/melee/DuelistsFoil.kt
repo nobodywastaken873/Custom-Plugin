@@ -39,8 +39,8 @@ class DuelistsFoil: CustomItemDefinition {
     private val color = arrayOf(172, 185, 189)
     private val name = text("Duelist's Foil", color)
     private val lore = Utils.loreBlockToList(
-        text("Right click to parry with this sword, reducing a hit's damage by 50%. " +
-                "You must begin parrying within 1/4 of a second (5 ticks) before being hit to reduce the damage.", Utils.GRAY)
+        text("Right click to parry with this sword, reducing a hit's damage by 66%. " +
+                "You must begin parrying within 1/3 of a second (7 ticks) before being hit to reduce the damage.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -66,9 +66,9 @@ class DuelistsFoil: CustomItemDefinition {
 
             val player = e.entity as? Player ?: return@register
             val activeTicks = player.activeItemUsedTime
-            if (activeTicks > 5) return@register
+            if (activeTicks > 7 || player.activeItem.type != Material.AIR) return@register
 
-            e.damage *= 0.5
+            e.damage *= 0.33
 
         })
     }

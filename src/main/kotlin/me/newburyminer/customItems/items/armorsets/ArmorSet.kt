@@ -4,7 +4,8 @@ enum class ArmorSet {
     IMMUNITY,
     TANK,
     ASSASSIN,
-    WARRIOR,
+    GLADIATOR,
+    MINER,
 
     ;
 }

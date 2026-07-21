@@ -126,7 +126,7 @@ class CustomEffects {
         }
 
         fun rotatedArc(particle: ParticleBuilder, loc: Location, radius: Double, totalAngleSpread: Double, concentration: Double, centerAxis: Vector, offset: Double = 0.0, extra: Double = 0.0) {
-            val count = radius.pow(2) * Math.PI * (totalAngleSpread / (2 * Math.PI)) * concentration
+            val count = radius.pow(2) * Math.PI * (totalAngleSpread / (2 * Math.PI)) * concentration * 4.0
             rotatedArc(particle, loc, radius, totalAngleSpread, count.toInt(), centerAxis, offset, extra)
         }
 

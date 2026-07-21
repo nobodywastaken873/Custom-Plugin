@@ -10,6 +10,7 @@ import me.newburyminer.customItems.Utils.Companion.rotateToAxis
 import me.newburyminer.customItems.Utils.Companion.setCooldown
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.helpers.arcTraceManyEntities
 import me.newburyminer.customItems.helpers.damage.DamageSettings
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
@@ -71,36 +72,18 @@ class TripleSwipeSword: CustomItemDefinition {
                     30.0, DamageType.PLAYER_ATTACK, e.player, iframes = 3
                 )
                 val radius = 4.0
-                val totalDegrees = 80.0
-                val toDamage = mutableSetOf<UUID>()
-
-                for (i in 0..totalDegrees.toInt()) {
-                    val currentDegree = -totalDegrees / 2 + i
-                    val currentRad = Math.toRadians(currentDegree)
-                    val vect = Vector(cos(currentRad), 0.0, sin(currentRad)).rotateToAxis(direction)
-                    val unit = vect.normalize().multiply(0.1)
-
-                    val currentLoc = startLoc.clone()
-                    for (j in 0..(radius * 10).toInt()) {
-                        currentLoc.add(unit)
-                        for (entity in currentLoc.getNearbyEntities(1.0, 1.0, 1.0)) {
-                            if (entity == e.player) continue
-                            if (entity !is LivingEntity) continue
-                            if (entity.boundingBox.containsLoc(currentLoc, entity.world)) {
-                                toDamage.add(entity.uniqueId)
-                            }
-                        }
-                    }
-                }
+                val totalRadians = Math.toRadians(80.0)
+                val toDamage = e.player.world.arcTraceManyEntities(e.player.eyeLocation, e.player.location.direction, radius, totalRadians,
+                    {it != e.player})
 
                 e.player.velocity = e.player.velocity.add(e.player.location.direction.normalize().multiply(0.55))
 
                 for (entity in toDamage) {
-                    (Bukkit.getEntity(entity) as LivingEntity?)?.applyDamage(damage)
+                    (entity as? LivingEntity)?.applyDamage(damage)
                 }
 
                 CustomEffects.playSound(e.player.location, Sound.ENTITY_WITHER_SHOOT, 1.0F, 1.2F)
-                CustomEffects.rotatedArc(Particle.ENCHANTED_HIT.builder(), startLoc, radius, totalDegrees, (Math.PI * radius.pow(2) * (totalDegrees/360.0) * 50).toInt(), direction, Utils.randomRange(-0.25, 0.25))
+                CustomEffects.rotatedArc(Particle.ENCHANTED_HIT.builder(), startLoc, radius, totalRadians, 5.0, direction)
 
                 k--
             }}.runTaskTimer(CustomItems.plugin, 0L, 4L).taskId

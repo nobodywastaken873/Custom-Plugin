@@ -184,7 +184,7 @@ class Utils {
             //theta += thetaOffset
             val radius = this.length()
 
-            return this.rotateAroundZ(phiOffset).rotateAroundY(-thetaOffset)
+            return this.clone().rotateAroundZ(phiOffset).rotateAroundY(-thetaOffset)
         }
         private fun Player.getHitboxHeight(): Double {
             return if (this.isGliding || this.isSwimming) 0.6 else if (this.isSneaking) 1.5 else 1.8
@@ -707,8 +707,8 @@ class Utils {
             this.setTag("armorset", armorSet.name)
             return this
         }
-        fun ItemStack.getArmorSet(): ArmorSet? {
-            return ArmorSet.valueOf(this.getTag<String>("armorset") ?: return null)
+        fun ItemStack?.getArmorSet(): ArmorSet? {
+            return ArmorSet.valueOf(this?.getTag<String>("armorset") ?: return null)
         }
         private fun Double.getDecimalPlaces(): Int {
             if (this % 1.0 < 0.001) return 0

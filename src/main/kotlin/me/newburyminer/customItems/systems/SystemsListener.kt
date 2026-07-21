@@ -42,6 +42,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitTask
 import org.bukkit.util.Vector
 import java.util.*
@@ -238,11 +240,28 @@ class SystemsListener: Listener, Runnable  {
             if (!player.isInCombat()) {
                 player.playSound(player, Sound.ITEM_SHIELD_BLOCK, 1.0F, 1.0F)
                 player.sendMessage(
-                    Utils.text(
+                    text(
                         "You are in combat. Do not logout or you will be killed.",
                         Utils.FAILED_COLOR
                     )
                 )
+
+                if (player.equipment.leggings.isItem(CustomItem.REACTIVE_CASING)) {
+                    player.addPotionEffects(listOf(
+                        PotionEffect(PotionEffectType.RESISTANCE, 200, 3),
+                        PotionEffect(PotionEffectType.FIRE_RESISTANCE, 400, 0),
+                        PotionEffect(PotionEffectType.REGENERATION, 400, 1),
+                    ))
+                }
+
+                if (player.equipment.leggings.isItem(CustomItem.AUTO_INJECTING_LEGGINGS)) {
+                    player.addPotionEffects(listOf(
+                        PotionEffect(PotionEffectType.STRENGTH, 4800, 1),
+                        PotionEffect(PotionEffectType.FIRE_RESISTANCE, 9600, 0),
+                        PotionEffect(PotionEffectType.SPEED, 4800, 1),
+                    ))
+                }
+
             }
             player.setTag("combattime", 1200)
             player.setTag("combattimestamp", System.currentTimeMillis())

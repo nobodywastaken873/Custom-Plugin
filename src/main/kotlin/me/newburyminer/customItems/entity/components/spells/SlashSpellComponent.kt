@@ -13,6 +13,7 @@ import me.newburyminer.customItems.entity.hiteffects.HitEffects
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.ParticleTheme
 import me.newburyminer.customItems.helpers.arcTraceManyEntities
+import me.newburyminer.customItems.helpers.getCenterLoc
 import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.helpers.rayTraceEntity
 import me.newburyminer.customItems.helpers.rayTraceManyEntities
@@ -83,7 +84,7 @@ class SlashSpellComponent(
             val ticksTillFirst = castingTicks - delay * (count - 1)
 
             if (ticksTillFirst <= 0 && ticksTillFirst % delay == 0) {
-                val direction = (targetPlayer ?: return).location.subtract(caster.eyeLocation).toVector()
+                val direction = (targetPlayer ?: return).getCenterLoc().subtract(caster.eyeLocation).toVector()
                 if (direction.length() > radius) {
                     caster.velocity = caster.velocity.add(direction.add(Vector(0, 1, 0)).normalize().multiply(dashStrength))
                 }
