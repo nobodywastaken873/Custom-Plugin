@@ -555,20 +555,20 @@ class Utils {
             return enumValues<T>().firstOrNull { it.name == value }
         }
         inline fun <reified T> ItemStack.setTag(tag: String, value: T): ItemStack {
-            val newMeta = this.itemMeta
-            when (T::class) {
-                Int::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER, value as Int)
-                String::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.STRING, value as String)
-                Boolean::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BOOLEAN, value as Boolean)
-                Float::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.FLOAT, value as Float)
-                Double::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.DOUBLE, value as Double)
-                ByteArray::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
-                IntArray::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
-                ItemStack::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
-                Location::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.LOCATION, value as Location)
-                UUID::class -> newMeta.persistentDataContainer.set(cachedTag(tag), PersistentCustomType.UUID, value as UUID)
+            this.editPersistentDataContainer { pdc ->
+                when (T::class) {
+                    Int::class -> pdc.set(cachedTag(tag), PersistentDataType.INTEGER, value as Int)
+                    String::class -> pdc.set(cachedTag(tag), PersistentDataType.STRING, value as String)
+                    Boolean::class -> pdc.set(cachedTag(tag), PersistentDataType.BOOLEAN, value as Boolean)
+                    Float::class -> pdc.set(cachedTag(tag), PersistentDataType.FLOAT, value as Float)
+                    Double::class -> pdc.set(cachedTag(tag), PersistentDataType.DOUBLE, value as Double)
+                    ByteArray::class -> pdc.set(cachedTag(tag), PersistentDataType.BYTE_ARRAY, value as ByteArray)
+                    IntArray::class -> pdc.set(cachedTag(tag), PersistentDataType.INTEGER_ARRAY, value as IntArray)
+                    ItemStack::class -> pdc.set(cachedTag(tag), PersistentCustomType.ITEMSTACK, value as ItemStack)
+                    Location::class -> pdc.set(cachedTag(tag), PersistentCustomType.LOCATION, value as Location)
+                    UUID::class -> pdc.set(cachedTag(tag), PersistentCustomType.UUID, value as UUID)
+                }
             }
-            this.itemMeta = newMeta
             return this
         }
         inline fun <reified T> ItemStack.setListTag(tag: String, value: MutableList<T>): ItemStack {
@@ -582,27 +582,27 @@ class Utils {
             return this
         }
         inline fun <reified T> ItemStack.getTag(tag: String): T? {
-            if (this.itemMeta == null) return null
+            if (this.type.isAir) return null
             when (T::class) {
-                Int::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER) as T?
-                String::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.STRING) as T?
-                Boolean::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BOOLEAN) as T?
-                Float::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.FLOAT) as T?
-                Double::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.DOUBLE) as T?
-                ByteArray::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BYTE_ARRAY) as T?
-                IntArray::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER_ARRAY) as T?
-                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.ITEMSTACK) as T?
-                Location::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.LOCATION) as T?
-                UUID::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.UUID) as T?
+                Int::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER) as T?
+                String::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.STRING) as T?
+                Boolean::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BOOLEAN) as T?
+                Float::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.FLOAT) as T?
+                Double::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.DOUBLE) as T?
+                ByteArray::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.BYTE_ARRAY) as T?
+                IntArray::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.INTEGER_ARRAY) as T?
+                ItemStack::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.ITEMSTACK) as T?
+                Location::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.LOCATION) as T?
+                UUID::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentCustomType.UUID) as T?
             }
             return null
         }
         inline fun <reified T> ItemStack.getListTag(tag: String): MutableList<T>? {
             if (this.itemMeta == null) return null
             when (T::class) {
-                ItemStack::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
-                Location::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
-                Int::class -> return this.itemMeta.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER)) as MutableList<T>?
+                ItemStack::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.ITEMSTACK)) as MutableList<T>?
+                Location::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentCustomType.LOCATION)) as MutableList<T>?
+                Int::class -> return this.persistentDataContainer.get(cachedTag(tag), PersistentDataType.LIST.listTypeFrom(PersistentDataType.INTEGER)) as MutableList<T>?
             }
             return null
         }
@@ -1076,7 +1076,7 @@ class Utils {
         fun ItemStack.getDoubleChestLoot(): Double {
             return this.getTag<Double>("doublechestloot") ?: 0.0
         }
-        fun ItemStack.setAmount(amount: Int): ItemStack {
+        fun ItemStack.setCount(amount: Int): ItemStack {
             this.amount = amount
             return this
         }

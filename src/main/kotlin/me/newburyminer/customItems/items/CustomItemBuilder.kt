@@ -154,6 +154,11 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
         return this
     }
 
+    fun hideAttributes(): CustomItemBuilder {
+        item.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().addHiddenComponents(DataComponentTypes.ATTRIBUTE_MODIFIERS).build())
+        return this
+    }
+
     fun build(): ItemStack {
         val description = item.lore()?.toMutableList() ?: mutableListOf()
         // If it has modifiers, and it is not equippable (equippable attributes work fine, just attack speed that doesnt)

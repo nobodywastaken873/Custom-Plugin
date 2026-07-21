@@ -55,6 +55,7 @@ class MachineGun: CustomItemDefinition {
             .hasConsumeParticles(false)
             .build()
         )
+        .hideAttributes()
         .build()
 
     init {

@@ -11,7 +11,8 @@ enum class CustomEffectType(val title: String, val color: Array<Int>) {
     POCKET_WORMHOLE_REMAINING("Pocket Wormhole Remaining", arrayOf(211, 158, 240)),
     SURVIVAL_BUFFS("Survival Buffs", arrayOf(43, 130, 44)),
     CHEST_LOOT_BUFFS("+25% Double Chest Loot Chance", arrayOf(145, 129, 86)),
-    QUADRUPLE_CHEST_LOOT("+400% Double Chest Loot Chance", arrayOf(145, 129, 86))
+    QUADRUPLE_CHEST_LOOT("+400% Double Chest Loot Chance", arrayOf(145, 129, 86)),
+    MOB_ENRAGED("Mob Enraged", arrayOf(237, 98, 33)),
 
     ;
 }

@@ -28,6 +28,7 @@ object CustomEffectBootstrapper {
                 CustomEffectType.SURVIVAL_BUFFS to SurvivalBuffsEffectFactory(),
                 CustomEffectType.CHEST_LOOT_BUFFS to DoubleChestLootEffectFactory(),
                 CustomEffectType.QUADRUPLE_CHEST_LOOT to QuadrupleChestLootEffectFactory(),
+                CustomEffectType.MOB_ENRAGED to MobEnragedEffectFactory(),
             )
         )
 

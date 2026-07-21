@@ -2,6 +2,8 @@ package me.newburyminer.customItems.entity.components
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils.Companion.getExtraSlayer
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
@@ -77,7 +79,12 @@ class DefaultEntityComponent(
                 val weapon = player.equipment.itemInMainHand
                 if (weapon.type != Material.AIR) {
                     val slayerLevel = weapon.getEnchantmentLevel(CustomEnchantments.MOB_SLAYER)
-                    e.damage *= (1 + slayerLevel * 0.1 + weapon.getExtraSlayer())
+
+                    val extraMultiplier = slayerLevel * 0.1 +
+                            weapon.getExtraSlayer() +
+                            if (EffectManager.hasEffect(player, CustomEffectType.MOB_ENRAGED)) 0.25 else 0.0
+
+                    e.damage *= (1 + extraMultiplier)
                 }
             }
 

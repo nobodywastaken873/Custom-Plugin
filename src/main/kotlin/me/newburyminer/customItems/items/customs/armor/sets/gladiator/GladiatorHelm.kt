@@ -25,7 +25,7 @@ class GladiatorHelm: CustomItemDefinition {
         text("Deal an additional 10% damage with spears.", Utils.GRAY),
         text(""),
         text("Full Set Bonus (4 pieces): Gladiator's Set", Utils.GRAY),
-        text("Right click with a spear to charge forward, with a 7s cooldown. Gain 20% additional damage with spears.", Utils.GRAY),
+        text("Right click with a spear to charge forward, with a 5s cooldown. Gain 20% additional damage with spears.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)

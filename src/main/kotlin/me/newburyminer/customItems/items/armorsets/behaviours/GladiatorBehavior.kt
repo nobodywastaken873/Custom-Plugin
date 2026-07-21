@@ -36,11 +36,13 @@ class GladiatorBehavior : ArmorSetBehavior {
 
             val player = e.player
 
-            e.player.velocity = e.player.velocity.add(e.player.location.direction.normalize().multiply(1.4))
+            val velocityMult = if (player.equipment.itemInMainHand.isItem(CustomItem.GLADIATORS_SPEAR)) 1.25 else 1.0
+
+            e.player.velocity = e.player.velocity.add(e.player.location.direction.normalize().multiply(1.4 * velocityMult))
             CustomEffects.playSound(e.player.location, Sound.ITEM_SPEAR_LUNGE_3, 1.0F, 1.0F)
 
             for (custom in arrayOf(CustomItem.GLADIATORS_HELM, CustomItem.GLADIATORS_CHESTPLATE, CustomItem.GLADIATORS_GREAVES, CustomItem.GLADIATORS_BOOTS)) {
-                player.setCooldown(custom, 7.0)
+                player.setCooldown(custom, 5.0)
             }
         })
 

@@ -1,0 +1,78 @@
+package me.newburyminer.customItems.items.customs.weapons.melee.swords
+
+import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.offCooldown
+import me.newburyminer.customItems.Utils.Companion.setCooldown
+import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.effects.AttributeData
+import me.newburyminer.customItems.effects.CustomEffectType
+import me.newburyminer.customItems.effects.EffectData
+import me.newburyminer.customItems.effects.EffectManager
+import me.newburyminer.customItems.helpers.CustomEffects
+import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.CustomItemBuilder
+import me.newburyminer.customItems.items.CustomItemDefinition
+import me.newburyminer.customItems.items.SimpleModifier
+import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.inventory.EquipmentSlot
+import org.bukkit.inventory.EquipmentSlotGroup
+import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+
+class FrozenShard: CustomItemDefinition {
+
+    override val custom: CustomItem = CustomItem.FROZEN_SHARD
+
+    private val material = Material.IRON_SWORD
+    private val color = arrayOf(102, 193, 209)
+    private val name = text("Frozen Shard", color)
+    private val lore = Utils.loreBlockToList(
+        text("On hit, prevent a player from walking, jumping, or taking knockback for 6 seconds, with a 60s cooldown. They can still pearl or use other movement items. This sword also has a 1/5 chance of inflicting Slowness 1 on hit for 5 seconds.", Utils.GRAY)
+    )
+
+    override val item: ItemStack = CustomItemBuilder(material, custom)
+        .setName(name)
+        .setAttributes(
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+        )
+        .setLore(lore)
+        .build()
+
+    init {
+        register(EntityDamageByEntityEvent::class, { e ->
+            slotMatches(e, EquipmentSlot.HAND, custom) &&
+            e.damager is Player
+        },
+        {e ->
+            if (Math.random() < 1.0 / 5.0 && e.entity is LivingEntity) {
+                (e.entity as LivingEntity).addPotionEffect(PotionEffect(PotionEffectType.SLOWNESS, 100, 0))
+            }
+
+            val damager = e.damager as Player
+            if (!damager.offCooldown(custom)) return@register
+            val hitPlayer = e.entity as? Player ?: return@register
+
+            CustomEffects.particleCloud(Particle.SNOWFLAKE.builder(), hitPlayer.location, 50, 1.0, 0.0)
+            CustomEffects.playSound(hitPlayer.location, Sound.ENTITY_PLAYER_HURT_FREEZE, 1F, 0.8F)
+
+            EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.MOVEMENT_SPEED, AttributeModifier.Operation.ADD_SCALAR)))
+            EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                EffectData(6 * 20, attributeData = AttributeData(-100.0, Attribute.JUMP_STRENGTH, AttributeModifier.Operation.ADD_SCALAR)))
+            EffectManager.applyEffect(hitPlayer, CustomEffectType.ATTRIBUTE,
+                EffectData(6 * 20, attributeData = AttributeData(100.0, Attribute.KNOCKBACK_RESISTANCE, AttributeModifier.Operation.ADD_NUMBER)))
+
+            damager.setCooldown(custom, 60.0)
+        })
+    }
+
+}
