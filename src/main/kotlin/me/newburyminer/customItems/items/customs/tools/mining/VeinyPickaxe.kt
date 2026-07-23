@@ -1,9 +1,12 @@
 package me.newburyminer.customItems.items.customs.tools.mining
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.helpers.CustomEffects
@@ -38,11 +41,22 @@ class VeinyPickaxe: CustomItemDefinition, VeinFinder {
         register(BlockBreakEvent::class, { e ->
             e.player.inventory.itemInMainHand.isItem(custom) &&
             e.block.state !is Container &&
-            e.player.offCooldown(custom)
+            e.player.offCooldown(custom) &&
+            e.player.getTag<Boolean>("excavatoractive") != true
         },
         {e ->
             val pickaxe = e.player.inventory.itemInMainHand
             val vein = getConnected(e.block, 32)
+
+            if (e.player.world == CustomItems.aridWorld) {
+                e.player.setTag("excavatoractive", true)
+                vein.forEach {
+                    e.player.breakBlock(it.block)
+                }
+                e.player.setTag("excavatoractive", false)
+                pickaxe.setCooldown(e.player, 3.0)
+                return@register
+            }
 
             val drops: MutableList<ItemStack> = mutableListOf()
             var total = 1

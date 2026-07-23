@@ -24,7 +24,7 @@ class AxeOfPeace: CustomItemDefinition {
     private val color = arrayOf(117, 2, 4)
     private val name = text("Axe of Peace", color)
     private val lore = Utils.loreBlockToList(
-        text("Heals you for 0.75 health on a fully charged hit.", Utils.GRAY)
+        text("Heals you for 2.0 health on a fully charged hit.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -44,7 +44,7 @@ class AxeOfPeace: CustomItemDefinition {
         },
         {e ->
             val damager = e.damager as? LivingEntity ?: return@register
-            damager.heal(1.5, EntityRegainHealthEvent.RegainReason.REGEN)
+            damager.heal(2.0, EntityRegainHealthEvent.RegainReason.REGEN)
         })
     }
 

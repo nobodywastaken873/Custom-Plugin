@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.chestplates
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomItem
@@ -23,7 +24,9 @@ class MaceShieldedPlating: CustomItemDefinition {
     private val material = Material.NETHERITE_CHESTPLATE
     private val color = arrayOf(89, 84, 92)
     private val name = text("Mace Shielded Plating", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Take 40% reduced damage from mace.", Utils.GRAY),
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -43,7 +46,7 @@ class MaceShieldedPlating: CustomItemDefinition {
             e.damageSource.damageType == DamageType.MACE_SMASH
         },
         {e ->
-            e.damage *= 0.4
+            e.damage *= 0.6
         })
     }
 

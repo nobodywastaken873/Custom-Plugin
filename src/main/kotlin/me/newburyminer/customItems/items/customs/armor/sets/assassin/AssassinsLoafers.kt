@@ -33,7 +33,7 @@ class AssassinsLoafers: CustomItemDefinition {
         .setAttributes(
             SimpleModifier(Attribute.ARMOR, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.MOVEMENT_SPEED, 0.005, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
             SimpleModifier(Attribute.ATTACK_SPEED, 0.05, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET),
         )

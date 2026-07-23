@@ -19,7 +19,7 @@ class TradingScrambler: CustomItemDefinition {
 
     override val custom: CustomItem = CustomItem.TRADING_SCRAMBLER
 
-    private val material = Material.TURTLE_SCUTE
+    private val material = Material.LIME_DYE
     private val color = arrayOf(132, 207, 168)
     private val name = text("Trading Scrambler", color)
     private val lore = Utils.loreBlockToList(

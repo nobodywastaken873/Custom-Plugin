@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack
 
 //NEED NBT IN NON-CUSTOM ITEMS AND MAYBE CUSTOM TOO
 //advancement check
-data class Recipe(val items: List<List<RecipeItemBase?>>, private val resultItem: ItemStack) {
+data class Recipe(val items: List<List<RecipeItemBase?>>, private val resultItem: ItemStack, val transferSlot: Int?) {
 
     val ingredients: Map<RecipeItemBase, Int> = generateIngredients()
 

@@ -17,7 +17,6 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionType
 import java.io.File
-import kotlin.collections.iterator
 
 class RecipeCreationGui: CustomGui() {
     override val inv: Inventory = Bukkit.createInventory(this, 27, Utils.text("Recipe Creation").style(Style.style(TextDecoration.BOLD)))
@@ -39,8 +38,8 @@ class RecipeCreationGui: CustomGui() {
         val chest2 = inv.getItem(13) ?: return
 
         val grid = getGrid(
-            chest1.getData(DataComponentTypes.CONTAINER)?.contents() ?: return,
-            chest2.getData(DataComponentTypes.CONTAINER)?.contents() ?: return
+            (chest1.getData(DataComponentTypes.CONTAINER)?.contents() ?: return).toMutableList(),
+            (chest2.getData(DataComponentTypes.CONTAINER)?.contents() ?: return).toMutableList(),
         )
 
         /*
@@ -69,12 +68,13 @@ class RecipeCreationGui: CustomGui() {
 
         val outputFile = File("outrecipe.txt")
         if (!outputFile.exists()) outputFile.createNewFile()
-        outputFile.writeText(finalString)
+        val current = outputFile.readText()
+        outputFile.writeText(current + "\n" + finalString)
     }
 
-    private fun getGrid(storedInv1: MutableList<ItemStack>, storedInv2: MutableList<ItemStack>): MutableList<MutableList<ItemStack>> {
+    private fun getGrid(storedInv1: MutableList<ItemStack>, storedInv2: MutableList<ItemStack>): MutableList<MutableList<ItemStack?>> {
         val grid = mutableListOf(
-            mutableListOf<ItemStack>(),
+            mutableListOf<ItemStack?>(),
             mutableListOf(),
             mutableListOf(),
             mutableListOf(),
@@ -82,28 +82,29 @@ class RecipeCreationGui: CustomGui() {
         )
 
         for (i in 0..4) {
-            grid[0].add(storedInv1[i])
-            grid[3].add(storedInv2[i])
+            grid[0].add(storedInv1.getOrNull(i))
+            grid[3].add(storedInv2.getOrNull(i))
         }
         for (i in 9..13) {
-            grid[1].add(storedInv1[i])
-            grid[4].add(storedInv2[i])
+            grid[1].add(storedInv1.getOrNull(i))
+            grid[4].add(storedInv2.getOrNull(i))
         }
         for (i in 18..22) {
-            grid[2].add(storedInv1[i])
+            grid[2].add(storedInv1.getOrNull(i))
         }
 
         return grid
     }
-    private fun itemToCode(item: ItemStack): String {
+    private fun itemToCode(item: ItemStack?): String {
+        if (item == null) return "null"
         if (item.type == Material.AIR) return "null"
         val amountComponent = if (item.amount == 1) "" else ", ${item.amount}"
         if (item.getCustom() != null) return "custom(CustomItem.${item.getCustom()}${amountComponent})"
 
         var baseItem = "item(Material.${item.type}${amountComponent})"
-        if (item.enchantments.keys.contains(CustomEnchantments.DUPLICATE)) {
+
+        if (item.type.name.endsWith("_SMITHING_TEMPLATE") && !item.enchantments.keys.contains(CustomEnchantments.DUPLICATE)) {
             baseItem += ".checkOriginal()"
-            item.removeEnchantment(CustomEnchantments.DUPLICATE)
         }
 
         if (item.enchantments.isNotEmpty()) {

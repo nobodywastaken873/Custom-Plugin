@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack
 
 abstract class BossLoot (
     val material: Material,
-    val normal: LootTable,
-    val hard: LootTable,
     val color: Array<Int> = arrayOf(108, 110, 135),
 ): LootProvider {
+
+    abstract val normal: LootTable
+    abstract val hard: LootTable
 
     override fun getMarker(amount: Int, context: LootContext): ItemStack {
         val item = ItemStack(material)

@@ -1,7 +1,10 @@
 package me.newburyminer.customItems.items.customs.tools.mining
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
+import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.smelt
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.items.CustomEnchantments
@@ -33,10 +36,22 @@ class Excavator: CustomItemDefinition, CubeHarvester {
 
     init {
         register(BlockBreakEvent::class, { e ->
-            e.player.inventory.itemInMainHand.isItem(custom)
+            e.player.inventory.itemInMainHand.isItem(custom) &&
+            e.player.getTag<Boolean>("excavatoractive") != true
         },
         {e ->
             val pickaxe = e.player.inventory.itemInMainHand
+
+            if (e.player.world == CustomItems.aridWorld) {
+                e.player.setTag("excavatoractive", true)
+                val toBreak = getAround(e.block.location)
+                toBreak.forEach {
+                    e.player.breakBlock(it.block)
+                }
+                e.player.setTag("excavatoractive", false)
+                return@register
+            }
+
             val drops = mutableListOf<ItemStack>()
             for (block in getAround(e.block.location)) {
                 if (e.block.world.getBlockAt(block).type.hardness.toInt() == -1) continue

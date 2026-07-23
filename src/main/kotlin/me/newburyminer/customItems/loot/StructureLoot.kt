@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack
 
 abstract class StructureLoot(
     val material: Material,
-    val spawner: LootTable,
-    val vault: LootTable,
     val color: Array<Int> = arrayOf(135, 130, 108),
 ): LootProvider {
+
+    abstract val spawner: LootTable
+    abstract val vault: LootTable
 
     override fun getMarker(amount: Int, context: LootContext): ItemStack {
         val item = ItemStack(material)

@@ -32,7 +32,7 @@ object SurvivalTimeSystem: BukkitRunnable() {
 
     private val actionTimestamp = mutableMapOf<UUID, Int>()
 
-    private const val MAX_BUFF_SECONDS = 60 * 60 * 12
+    private const val MAX_BUFF_SECONDS = 60 * 60 * 20
     private const val MIN_BUFF_SECONDS = 60 * 60 * 4
 
     fun registerEvents() {
@@ -157,7 +157,7 @@ object SurvivalTimeSystem: BukkitRunnable() {
             if (survivedSeconds >= MIN_BUFF_SECONDS) {
                 val fraction = getBuffFraction(survivedSeconds)
                 EffectManager.applyEffect(it, CustomEffectType.SURVIVAL_BUFFS,
-                    EffectData(20 * 60, AttributeData(fraction * 10, Attribute.MINING_EFFICIENCY, AttributeModifier.Operation.ADD_NUMBER), true)
+                    EffectData(20 * 61, AttributeData(fraction * 10, Attribute.MINING_EFFICIENCY, AttributeModifier.Operation.ADD_NUMBER), true)
                 )
             }
 

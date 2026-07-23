@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.structures.structure
 
 import me.newburyminer.customItems.loot.StructureLoot
-import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShipLoot
 import me.newburyminer.customItems.mobprovider.MobProvider
 import me.newburyminer.customItems.mobprovider.mobs.desert.CastingCorpse
 import me.newburyminer.customItems.mobprovider.mobs.desert.CursedArcher
@@ -32,6 +32,6 @@ object PyramidOfAnubis : StructureDefinition {
     )
 
     override val lootProvider: StructureLoot =
-        AbandonedShip
+        AbandonedShipLoot
 
 }

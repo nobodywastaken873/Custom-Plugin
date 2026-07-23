@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.items.armorsets.behaviours
 
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.event.entity.EntityLungeEvent
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys
@@ -42,7 +43,7 @@ class GladiatorBehavior : ArmorSetBehavior {
             CustomEffects.playSound(e.player.location, Sound.ITEM_SPEAR_LUNGE_3, 1.0F, 1.0F)
 
             for (custom in arrayOf(CustomItem.GLADIATORS_HELM, CustomItem.GLADIATORS_CHESTPLATE, CustomItem.GLADIATORS_GREAVES, CustomItem.GLADIATORS_BOOTS)) {
-                player.setCooldown(custom, 5.0)
+                player.setCooldown(custom, 6.0)
             }
         })
 
@@ -53,9 +54,26 @@ class GladiatorBehavior : ArmorSetBehavior {
         },
         {e ->
             val pieceCount = (e.damager as Player).equipment.armorContents.count { it?.getArmorSet() == set }
-            val multiplier = if (pieceCount == 4) 0.6 else pieceCount * 0.1
+            val multiplier = if (pieceCount == 4) 0.4 else pieceCount * 0.08
 
             e.damage *= 1.0 + multiplier
+        })
+
+        register(EntityLungeEvent::class, { e ->
+            e.entity is Player &&
+            getPieces(e.entity as Player, set) == 4
+        },
+        {e ->
+            val lungeLevel = e.lungePower
+            val hungerGain = lungeLevel - 1
+
+            val player = e.entity as Player
+            if (player.foodLevel >= 20) {
+                player.saturation = (player.saturation + hungerGain).coerceAtMost(20.0F)
+            }
+            else {
+                player.foodLevel = (player.foodLevel + hungerGain).coerceAtMost(20)
+            }
         })
     }
 

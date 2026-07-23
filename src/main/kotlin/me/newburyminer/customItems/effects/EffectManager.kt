@@ -37,7 +37,7 @@ object EffectManager: BukkitRunnable(), TabMenuSystem.Provider {
         val effect = ActiveEffect(behavior, effectData.duration, effectData, effectType)
         if (effectData.unique) {
             effectList.forEach {
-                if (it.type == effectType && it.data == effectData) {
+                if (it.type == effectType && (it.data == effectData || it.type == CustomEffectType.SURVIVAL_BUFFS)) {
                     it.remaining = it.remaining.coerceAtLeast(effectData.duration)
                     return
                 }
@@ -175,6 +175,13 @@ object EffectManager: BukkitRunnable(), TabMenuSystem.Provider {
             if (it.type == type || type == null) {
                 removeEffect(player, it)
             }
+        }
+    }
+
+    fun removeAllEffects() {
+        activeEffects.keys.forEach {
+            val player = Bukkit.getPlayer(it) ?: return@forEach
+            removeEffect(player)
         }
     }
 

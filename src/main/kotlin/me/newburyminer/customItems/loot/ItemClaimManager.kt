@@ -56,7 +56,7 @@ object ItemClaimManager: FileDatabase() {
         entries.forEach {entry ->
             val splitIndex = entry.indexOf(":")
             val uuid = UUID.fromString(entry.substring(0, splitIndex))
-            val loot = entry.substring(splitIndex + 1).split(";").map {
+            val loot = entry.substring(splitIndex + 1).split(";").filter { it.isNotEmpty() }.map {
                 ItemStack.deserializeBytes(Base64.getDecoder().decode(it))
             }.toMutableList()
             itemMap[uuid] = loot

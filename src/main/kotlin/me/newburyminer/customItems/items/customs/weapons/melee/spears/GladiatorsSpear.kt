@@ -32,14 +32,14 @@ class GladiatorsSpear: CustomItemDefinition {
     private val name = text("Gladiator's Spear", color)
     private val lore = Utils.loreBlockToList(
         text("Spear-type weapon:", Utils.GRAY),
-        text("Damage Multiplier: 2.05, Charge Delay: 6 ticks, Hitbox Margins: +0.4 blocks, Reach: 0.5-4.5 blocks", Utils.GRAY),
+        text("Damage Multiplier: 1.85, Charge Delay: 6 ticks, Hitbox Margins: +0.4 blocks, Reach: 0.5-4.5 blocks", Utils.GRAY),
         text("Adds an additional 25% velocity to the Gladiator Set dash ability.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
-        .setName(name, false)
+        .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 6.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 6.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_SPEED, -3.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setData(DataComponentTypes.KINETIC_WEAPON, KineticWeapon.kineticWeapon()
@@ -47,7 +47,7 @@ class GladiatorsSpear: CustomItemDefinition {
             .damageConditions(KineticWeapon.condition(200, 1.0F, 0.5F))
             .knockbackConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
             .dismountConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
-            .damageMultiplier(1.75F)
+            .damageMultiplier(1.57F)
             .delayTicks(6)
             .forwardMovement(0.0F)
             .sound(Registry.SOUNDS.getKey(Sound.ITEM_SPEAR_USE)!!)

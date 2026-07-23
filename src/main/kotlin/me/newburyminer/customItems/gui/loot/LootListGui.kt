@@ -97,7 +97,6 @@ class LootListGui(private val player: Player, page: Int = 0): PagedGui(page) {
     }
 
     private fun openLoot(amount: Int) {
-
         val lootEntry = loot[openLoot ?: return]
         val correctedAmount = amount.coerceAtMost(lootEntry.second)
         val provider = LootRegistry.getProvider(lootEntry.first.id)

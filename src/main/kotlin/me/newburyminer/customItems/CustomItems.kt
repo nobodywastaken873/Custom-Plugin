@@ -16,6 +16,7 @@ import me.newburyminer.customItems.effects.EffectEventHandler
 import me.newburyminer.customItems.effects.EffectManager
 import me.newburyminer.customItems.entity.ComponentSerializationRegistry
 import me.newburyminer.customItems.entity.EntityWrapperManager
+import me.newburyminer.customItems.entity.components.villager.VillagerTradeComponent
 import me.newburyminer.customItems.entity.hiteffects.HitEffectSerializationRegistry
 import me.newburyminer.customItems.eventbus.EventBus
 import me.newburyminer.customItems.gui.CustomGui
@@ -40,6 +41,7 @@ import me.newburyminer.customItems.systems.TestingSystem
 import me.newburyminer.customItems.structures.CustomSpawningSystem
 import me.newburyminer.customItems.structures.locations.StructureBlockManager
 import me.newburyminer.customItems.structures.locations.StructureBounding
+import me.newburyminer.customItems.systems.AridLandsSystem
 import me.newburyminer.customItems.systems.KothSystem
 import me.newburyminer.customItems.systems.SurvivalTimeSystem
 import me.newburyminer.customItems.systems.TabMenuSystem
@@ -52,7 +54,9 @@ import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.GameRules
 import org.bukkit.World
+import org.bukkit.entity.Villager
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.inventory.MerchantInventory
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitTask
@@ -87,6 +91,7 @@ class CustomItems : JavaPlugin() {
         KothSystem.registerEvents()
         ItemClaimManager.registerEvents()
         SurvivalTimeSystem.registerEvents()
+        AridLandsSystem.registerEvents()
 
         registerWorlds()
         loadBosses()
@@ -111,6 +116,7 @@ class CustomItems : JavaPlugin() {
         KothSystem.runTaskTimer(this, 0L, 1200L)
         TabMenuSystem.runTaskTimer(this, 0L, 20L)
         SurvivalTimeSystem.runTaskTimer(this, 0L, 20L)
+        AridLandsSystem.runTaskTimer(this, 0L, 20L)
         //entityListener.run()
         //bossListener.run()
 
@@ -204,10 +210,12 @@ class CustomItems : JavaPlugin() {
     }
 
     override fun onDisable() {
+        EffectManager.removeAllEffects()
         fileRegistries.forEach {
             it.pushToFile()
             it.backup()
         }
+        closeMenus()
         EntityWrapperManager.removeAllWrappers()
         BossManager.cancelAllBosses()
         cooldownTask.cancel()
@@ -215,14 +223,22 @@ class CustomItems : JavaPlugin() {
         //bossListener.cancelAll()
         systemsListener.cancel()
         PlayerTaskHandler.cancelAll()
-        closeMenus()
     }
 
     private fun closeMenus() {
         for (player in Bukkit.getServer().onlinePlayers) {
             val openInventory = player.openInventory
+
             if (openInventory.topInventory.holder is CustomGui) {
                 (openInventory.topInventory.holder as CustomGui).onClose(InventoryCloseEvent(openInventory, InventoryCloseEvent.Reason.UNKNOWN))
+            }
+            else if (openInventory.topInventory is MerchantInventory) {
+                val villager = (openInventory.topInventory as MerchantInventory).holder as? Villager
+                if (villager != null) {
+                    val wrapper = EntityWrapperManager.getWrapper(villager.uniqueId)
+                    val component = wrapper?.getComponents(VillagerTradeComponent::class)
+                    (component?.firstOrNull() as VillagerTradeComponent?)?.closeInventory(wrapper)
+                }
             }
 
             player.closeInventory()

@@ -1,5 +1,7 @@
 package me.newburyminer.customItems.gui.crafting
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.ItemArmorTrim
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.addItemorDrop
@@ -21,7 +23,11 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.meta.trim.ArmorTrim
+import org.bukkit.inventory.meta.trim.TrimMaterial
+import org.bukkit.inventory.meta.trim.TrimPattern
 import java.util.*
+import kotlin.io.path.createTempDirectory
 
 class CraftingGui: CustomGui() {
     override val inv: Inventory = Bukkit.createInventory(this, 54, Utils.text("Custom Crafting Table").style(Style.style(TextDecoration.BOLD)))
@@ -49,11 +55,23 @@ class CraftingGui: CustomGui() {
 
             if (e.action != InventoryAction.PICKUP_ALL) { e.isCancelled = true; return }
 
+            val result = RecipeRegistry.checkForRecipe(inv) ?: return
+
             if (clickedItem?.getCustom()?.stackable != true) {
                 clickedItem?.setTag("uniquesalt", UUID.randomUUID().toString())
             }
 
-            val result = RecipeRegistry.checkForRecipe(inv) ?: return
+            if (result.transferSlot != null) {
+                val transferItem = clickedInventory.getItem(result.transferSlot + 1)
+                transferItem?.enchantments?.forEach { (enchantment, level) ->
+                    clickedItem?.addUnsafeEnchantment(enchantment, level)
+                }
+                if (transferItem?.hasData(DataComponentTypes.TRIM) == true) {
+                    clickedItem?.setData(DataComponentTypes.TRIM, transferItem.getData(DataComponentTypes.TRIM) ?:
+                    ItemArmorTrim.itemArmorTrim(ArmorTrim(TrimMaterial.IRON, TrimPattern.RIB)).build())
+                }
+            }
+
             RecipeRegistry.takeRecipeIngredients(inv, result)
 
             Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {

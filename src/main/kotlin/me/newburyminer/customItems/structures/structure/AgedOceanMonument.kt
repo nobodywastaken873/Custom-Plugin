@@ -1,7 +1,7 @@
 package me.newburyminer.customItems.structures.structure
 
 import me.newburyminer.customItems.loot.StructureLoot
-import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShipLoot
 import me.newburyminer.customItems.mobprovider.MobProvider
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.DeepSeaman
 import me.newburyminer.customItems.mobprovider.mobs.warmocean.DrownedCreature
@@ -35,6 +35,6 @@ object AgedOceanMonument : StructureDefinition {
         GiantSquid * 1.2
     )
 
-    override val lootProvider: StructureLoot = AbandonedShip
+    override val lootProvider: StructureLoot = AbandonedShipLoot
 
 }

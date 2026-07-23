@@ -16,13 +16,13 @@ import org.bukkit.inventory.ItemStack
 
 class WardenSpawner: CustomItemDefinition {
 
-    override val custom: CustomItem = CustomItem.WARDEN_SPAWNER
+    override val custom: CustomItem = CustomItem.NORMAL_WARDEN_SPAWNER
 
     private val material = Material.POPPED_CHORUS_FRUIT
     private val color = arrayOf(1, 69, 92)
-    private val name = text("Warden Spawner", color)
+    private val name = text("Normal Warden Spawner", color)
     private val lore = Utils.loreBlockToList(
-        text("Right click to consume this item and begin the custom warden boss. It will teleport players within 10 blocks of you as well. You cannot use this while being tracked, while in combat, or if someone else is fighting the boss already.", Utils.GRAY)
+        text("Right click to consume this item and begin the normal difficulty custom warden boss. It will teleport players within 10 blocks of you as well. You cannot use this while being tracked, while in combat, or if someone else is fighting the boss already.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)

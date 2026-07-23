@@ -1,0 +1,28 @@
+{
+  "feature": "customworld:ores/knowledge_fragment",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:trapezoid",
+        "max_inclusive": {
+          "absolute": -80
+        },
+        "min_inclusive": {
+          "absolute": -320
+        },
+        "plateau": 120
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -43,7 +43,7 @@ class MoltenChestplate: CustomItemDefinition {
         get() = mapOf(60 to {player -> runTask(player)})
 
     private fun runTask(player: Player) {
-        if (player.inventory.chestplate?.isItem(CustomItem.MOLTEN_CHESTPLATE) == true)
+        if (player.inventory.chestplate.isItem(CustomItem.MOLTEN_CHESTPLATE))
             player.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, 65, 0, false, false))
     }
 

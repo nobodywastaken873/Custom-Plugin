@@ -26,10 +26,10 @@ class GladiatorGreaves: CustomItemDefinition {
     private val color = arrayOf(204, 116, 2)
     private val name = text("Gladiator Greaves", color)
     private val lore = Utils.loreBlockToList(
-        text("Deal an additional 10% damage with spears. Take 10% less damage from maces.", Utils.GRAY),
+        text("Deal an additional 8% damage with spears. Take 10% less damage from maces.", Utils.GRAY),
         text(""),
         text("Full Set Bonus (4 pieces): Gladiator's Set", Utils.GRAY),
-        text("Right click with a spear to charge forward, with a 5s cooldown. Gain 20% additional damage with spears.", Utils.GRAY),
+        text("Right click with a spear to charge forward, with a 6s cooldown. Gain 8% additional damage with spears. Reduces the hunger loss from Lunge by 75%.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -40,7 +40,6 @@ class GladiatorGreaves: CustomItemDefinition {
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.15, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
             SimpleModifier(Attribute.MOVEMENT_SPEED, 0.005, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS),
         )
         .setArmorSet(ArmorSet.GLADIATOR)
         .build()

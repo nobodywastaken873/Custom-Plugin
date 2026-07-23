@@ -23,7 +23,7 @@ class RepellantPants: CustomItemDefinition {
     private val color = arrayOf(27, 2, 64)
     private val name = text("Repellant Pants", color)
     private val lore = Utils.loreBlockToList(
-        text("When your totem is popped, launch all nearby enemies away.", Utils.GRAY),
+        text("Removed.", Utils.FAILED_COLOR),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)

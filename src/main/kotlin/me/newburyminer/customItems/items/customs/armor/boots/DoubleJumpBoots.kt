@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.armor.boots
 
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.offCooldown
 import me.newburyminer.customItems.Utils.Companion.setCooldown
@@ -26,7 +27,9 @@ class DoubleJumpBoots: CustomItemDefinition {
     private val material = Material.NETHERITE_BOOTS
     private val color = arrayOf(171, 230, 245)
     private val name = text("Double Jump Boots", color)
-    private val lore = mutableListOf<Component>()
+    private val lore = Utils.loreBlockToList(
+        text("Double press your spacebar in midair to double jump, with a 4s cooldown.", Utils.GRAY)
+    )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
         .setName(name)
@@ -50,12 +53,12 @@ class DoubleJumpBoots: CustomItemDefinition {
             if (!e.player.offCooldown(CustomItem.DOUBLE_JUMP_BOOTS)) return@register
 
             e.player.velocity = e.player.location.direction.multiply(1.0).setY(0.7)
-            e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 5.0)
+            e.player.setCooldown(CustomItem.DOUBLE_JUMP_BOOTS, 4.0)
         })
     }
 
     override val extraTasks: Map<Int, (Player) -> Unit>
-        get() = mapOf(5 to {player -> resetDoubleJump(player)})
+        get() = mapOf(4 to {player -> resetDoubleJump(player)})
 
     private fun resetDoubleJump(player: Player) {
         if (player.allowFlight) return

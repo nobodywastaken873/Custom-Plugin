@@ -4,7 +4,6 @@ import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.round
-import me.newburyminer.customItems.gui.InfoGui
 import me.newburyminer.customItems.systems.SurvivalTimeSystem
 import org.bukkit.entity.Player
 import java.time.Duration
@@ -20,7 +19,7 @@ class SurvivalTimeCommand: BasicCommand {
 
         val duration = Duration.ofSeconds(totalTime.toLong())
         val buffStartDuration = Duration.ofSeconds((4 * 3600L - totalTime.toLong()).coerceAtLeast(0))
-        val buffMaxDuration = Duration.ofSeconds((12 * 3600L - totalTime.toLong()).coerceAtLeast(0))
+        val buffMaxDuration = Duration.ofSeconds((20 * 3600L - totalTime.toLong()).coerceAtLeast(0))
 
         player.sendMessage(Utils.text("You have survived for ${duration.toHours()} hours and ${duration.toMinutesPart()} minutes. " +
                 if (buffFraction > 0.0) "This gives you ${10 * buffFraction.round(2)} mining efficiency and +${40 * buffFraction.round(3)}% chance for double chest loot, ${(buffFraction * 100).roundToInt()}% of the total buffs. " else {""} +

@@ -25,9 +25,7 @@
   "features": [
     [],
     [],
-    [
-      "minecraft:amethyst_geode"
-    ],
+    [],
     [],
     [],
     [],
@@ -59,7 +57,13 @@
       "minecraft:disk_sand",
       "minecraft:disk_clay",
       "minecraft:disk_gravel",
-      "customworld:ores/soulstone"
+      "customworld:ores/ancient_fossil",
+      "customworld:ores/bronze",
+      "customworld:ores/enriched_amethyst",
+      "customworld:ores/knowledge_fragment",
+      "customworld:ores/mythril",
+      "customworld:ores/silver",
+      "customworld:ores/soul_shard"
     ],
     [],
     [

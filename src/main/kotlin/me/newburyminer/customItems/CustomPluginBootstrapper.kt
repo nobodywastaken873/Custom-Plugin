@@ -23,6 +23,18 @@ import me.newburyminer.customItems.Utils.Companion.isAfk
 import me.newburyminer.customItems.Utils.Companion.isInCombat
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.commands.*
+import me.newburyminer.customItems.commands.gui.Craft
+import me.newburyminer.customItems.commands.gui.GraveCommand
+import me.newburyminer.customItems.commands.gui.InfoCommand
+import me.newburyminer.customItems.commands.gui.ItemClaimCommand
+import me.newburyminer.customItems.commands.gui.KothLootCommand
+import me.newburyminer.customItems.commands.gui.LootCommand
+import me.newburyminer.customItems.commands.gui.PityCommand
+import me.newburyminer.customItems.commands.gui.RecipeCommand
+import me.newburyminer.customItems.commands.operator.AridOpenCommand
+import me.newburyminer.customItems.commands.operator.EndFightCommand
+import me.newburyminer.customItems.commands.operator.MakeRecipeCommand
+import me.newburyminer.customItems.commands.operator.RestoreGraveCommand
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.recipes.RecipeRegistry
@@ -114,7 +126,9 @@ class CustomPluginBootstrapper: PluginBootstrap {
             commands.register("graves", "Use to open a list of your graves.", GraveCommand())
             commands.register("restoregrave", "Use to restore a grave from the stored graves file.", RestoreGraveCommand())
             commands.register("info", "Use to view all info about what this plugin changes.", InfoCommand())
+            commands.register("aridinfo", "Use to view info about what is added in the Arid Lands dimension.", InfoCommand())
             commands.register("endfight", "Use to begin the end fight.", EndFightCommand())
+            commands.register("aridopen", "Use to open the Arid Lands.", AridOpenCommand())
             commands.register("createrecipe", "Use to open the recipe creation GUI.", MakeRecipeCommand())
             commands.register("lootmenu", "Use to open your loot list GUI.", LootCommand())
             commands.register("pitymenu", "Use to open your pity list GUI.", PityCommand())

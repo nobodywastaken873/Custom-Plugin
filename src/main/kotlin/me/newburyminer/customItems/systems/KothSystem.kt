@@ -83,6 +83,13 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
         if (kothRemaining <= 0 && objective.displaySlot != null) { objective.displaySlot = null }
         val currentTime = LocalTime.now(zone)
 
+        if (currentTime.isAfter(LocalTime.of(13, 0)) && currentTime.isBefore(LocalTime.of(13, 1))) {
+            Bukkit.getOnlinePlayers().forEach { player ->
+                player.sendMessage(Utils.text("KOTH will start in 1 hour, at 2 PM. There must be at least 5 active, non-AFK players online at some point between" +
+                        " 2:00 and 2:30 in order for KOTH to start. You can use /kothloot to check the rewards for the day.", Utils.BLUE))
+            }
+        }
+
         val startTime = LocalTime.of(14, 0)
         val endTime = LocalTime.of(14, 30)
 
@@ -232,7 +239,31 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
     }
 
     private val dailyLoot: Map< LocalDate, Pair<List<ItemStack>, List<ItemStack>> > = mapOf(
-        LocalDate.of(2026, 7, 12) to (listOf(ItemRegistry.get(CustomItem.REFRESHING_EMERALD)) to listOf(ItemRegistry.get(CustomItem.REINFORCED_CAGE)))
+        LocalDate.of(2026, 7, 23) to (listOf(
+            ItemRegistry.get(CustomItem.REFRESHING_EMERALD)
+        ) to listOf(
+            ItemRegistry.get(CustomItem.REINFORCED_CAGE), ItemRegistry.get(CustomItem.ENCHANTED_EMERALD_APPLE)
+        )),
+        LocalDate.of(2026, 7, 24) to (listOf(
+            ItemRegistry.get(CustomItem.GOLDEN_ZOMBIE), ItemRegistry.get(CustomItem.POCKETKNIFE_MULTITOOL), ItemRegistry.get(CustomItem.POCKETKNIFE_MULTITOOL),
+        ) to listOf(
+            ItemRegistry.get(CustomItem.ITEM_NODE), ItemRegistry.get(CustomItem.ITEM_NODE), ItemRegistry.get(CustomItem.ITEM_NODE), ItemRegistry.get(CustomItem.ITEM_NODE),
+        )),
+        LocalDate.of(2026, 7, 25) to (listOf(
+            ItemRegistry.get(CustomItem.JERRY_IDOL), ItemRegistry.get(CustomItem.PEGASUS_ARMOR)
+        ) to listOf(
+            ItemRegistry.get(CustomItem.REDSTONE_AMALGAMATION)
+        )),
+        LocalDate.of(2026, 7, 26) to (listOf(
+            ItemRegistry.get(CustomItem.EXPERIENCE_FLASK)
+        ) to listOf(
+            ItemRegistry.get(CustomItem.TRACKING_COMPASS)
+        )),
+        LocalDate.of(2026, 7, 27) to (listOf(
+            ItemRegistry.get(CustomItem.DRINKING_HAT)
+        ) to listOf(
+            ItemRegistry.get(CustomItem.JETPACK_CONTROLLER_SET)
+        ))
     )
     private fun giveRewards() {
         val loot = dailyLoot[LocalDate.now(ZoneId.of("America/Los_Angeles"))] ?: return

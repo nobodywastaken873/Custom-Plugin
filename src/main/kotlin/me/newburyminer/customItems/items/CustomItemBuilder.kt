@@ -176,8 +176,8 @@ class CustomItemBuilder(material: Material, custom: CustomItem) {
                     val attribute = modifier.attribute()
                     val amount = modifier.modifier().amount
                     val roundedAmount =
-                        if (attribute == Attribute.ATTACK_SPEED) (4 + amount).round(3)
-                        else amount.round(3)
+                        if (attribute == Attribute.ATTACK_SPEED) (4 + amount).round(5)
+                        else amount.round(5)
                     val decimals = roundedAmount.getDecimalPlaces()
 
                     val trimmedAmount = "%.${decimals}f".format(roundedAmount)

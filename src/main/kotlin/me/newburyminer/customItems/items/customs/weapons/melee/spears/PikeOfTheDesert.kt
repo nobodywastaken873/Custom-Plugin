@@ -26,13 +26,13 @@ class PikeOfTheDesert: CustomItemDefinition {
     private val name = text("Pike of the Desert", color)
     private val lore = Utils.loreBlockToList(
         text("Spear-type weapon:", Utils.GRAY),
-        text("Damage Multiplier: 2.20, Charge Delay: 5 ticks, Hitbox Margins: +0.35 blocks, Reach: 0.8-4.8 blocks", Utils.GRAY)
+        text("Damage Multiplier: 2.00, Charge Delay: 5 ticks, Hitbox Margins: +0.35 blocks, Reach: 0.8-4.8 blocks", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
-        .setName(name, false)
+        .setName(name)
         .setAttributes(
-            SimpleModifier(Attribute.ATTACK_DAMAGE, 7.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
+            SimpleModifier(Attribute.ATTACK_DAMAGE, 6.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_SPEED, -3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
         )
         .setData(DataComponentTypes.KINETIC_WEAPON, KineticWeapon.kineticWeapon()
@@ -40,7 +40,7 @@ class PikeOfTheDesert: CustomItemDefinition {
             .damageConditions(KineticWeapon.condition(200, 1.0F, 0.5F))
             .knockbackConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
             .dismountConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
-            .damageMultiplier(1.87F)
+            .damageMultiplier(1.7F)
             .delayTicks(5)
             .forwardMovement(0.2F)
             .sound(Registry.SOUNDS.getKey(Sound.ITEM_SPEAR_USE)!!)

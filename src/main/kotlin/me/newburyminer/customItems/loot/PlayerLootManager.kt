@@ -21,7 +21,7 @@ object PlayerLootManager: FileDatabase() {
         entries.forEach {entry ->
             val splitIndex = entry.indexOf(":")
             val uuid = UUID.fromString(entry.substring(0, splitIndex))
-            val loot = entry.substring(splitIndex + 1).split(",").map {
+            val loot = entry.substring(splitIndex + 1).split(",").filter { it.isNotEmpty() }.map {
                 val split = it.split("=")
                 LootContext.fromStringData(split[0]) to split[1].toInt()
             }

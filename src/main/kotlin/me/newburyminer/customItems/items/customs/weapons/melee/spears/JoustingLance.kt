@@ -32,12 +32,12 @@ class JoustingLance: CustomItemDefinition {
     private val name = text("Jousting Lance", color)
     private val lore = Utils.loreBlockToList(
         text("Spear-type weapon:", Utils.GRAY),
-        text("Damage Multiplier: 1.90, Charge Delay: 8 ticks, Hitbox Margins: +0.1 blocks, Reach: 1.0-5.5 blocks", Utils.GRAY),
-        text("Deals 50% increased damage if you are riding a mob.", Utils.GRAY),
+        text("Damage Multiplier: 1.80, Charge Delay: 8 ticks, Hitbox Margins: +0.1 blocks, Reach: 1.0-5.5 blocks", Utils.GRAY),
+        text("Deals 15% increased damage if you are riding a mob.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
-        .setName(name, false)
+        .setName(name)
         .setAttributes(
             SimpleModifier(Attribute.ATTACK_DAMAGE, 6.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_SPEED, -3.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
@@ -47,7 +47,7 @@ class JoustingLance: CustomItemDefinition {
             .damageConditions(KineticWeapon.condition(200, 1.0F, 0.5F))
             .knockbackConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
             .dismountConditions(KineticWeapon.condition(150, 1.0F, 0.5F))
-            .damageMultiplier(1.62F)
+            .damageMultiplier(1.53F)
             .delayTicks(8)
             .forwardMovement(0.6F)
             .sound(Registry.SOUNDS.getKey(Sound.ITEM_SPEAR_USE)!!)
@@ -71,7 +71,7 @@ class JoustingLance: CustomItemDefinition {
             val vehicle = player.vehicle ?: return@register
             if (vehicle !is LivingEntity) return@register
 
-            e.damage *= 1.5
+            e.damage *= 1.15
         })
     }
 

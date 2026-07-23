@@ -1,7 +1,9 @@
 package me.newburyminer.customItems.structures.structure
 
+import me.newburyminer.customItems.loot.LootTable
 import me.newburyminer.customItems.loot.StructureLoot
-import me.newburyminer.customItems.loot.providers.structure.AbandonedShip
+import me.newburyminer.customItems.loot.WeightedTable
+import me.newburyminer.customItems.loot.providers.structure.AbandonedShipLoot
 import me.newburyminer.customItems.mobprovider.MobProvider
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.BrutishSailor
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.Buccaneer
@@ -13,6 +15,9 @@ import me.newburyminer.customItems.mobprovider.mobs.coldocean.ProjectileVomiting
 import me.newburyminer.customItems.mobprovider.mobs.coldocean.SickenedPirate
 import me.newburyminer.customItems.structures.EncounterStyle
 import me.newburyminer.customItems.structures.StructureDefinition
+import me.newburyminer.customItems.structures.StructureReference
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 object AbandonedShip : StructureDefinition {
 
@@ -33,5 +38,26 @@ object AbandonedShip : StructureDefinition {
         ChainmailFighter
     )
 
-    override val lootProvider: StructureLoot = AbandonedShip
+    override val lootProvider: StructureLoot = object : StructureLoot(
+        Material.SPRUCE_BOAT,
+    ) {
+        override val spawner: LootTable = weighted(1..1,
+            weightedReward(1..5
+
+            ) to 2.0,
+            weightedReward(1..1,
+                item({getKey(StructureReference.Difficulty.NORMAL)}, 1) to 2.0,
+                        item({getKey(StructureReference.Difficulty.OMINOUS)}, 1) to 1.0
+            ) to 1.0
+        )
+        override val vault: LootTable = weighted(1..1,
+            weightedReward(1..5
+
+            ) to 2.0,
+            weightedReward(1..1,
+                item({getKey(StructureReference.Difficulty.NORMAL)}, 1) to 2.0,
+                item({getKey(StructureReference.Difficulty.OMINOUS)}, 1) to 1.0
+            ) to 1.0
+        )
+    }
 }

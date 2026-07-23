@@ -40,6 +40,18 @@ class CustomEffects {
             }
         }
 
+        fun particleBox(particle: ParticleBuilder, corner1: Location, corner2: Location, count: Int, receivers: List<Player>? = null) {
+            val calcedReceivers = receivers ?: corner1.getNearbyPlayers(60.0)
+            val center = corner1.toVector().add(corner2.toVector()).multiply(0.5)
+            val size = corner1.toVector().subtract(corner2.toVector())
+            particle.clone()
+                .count(count)
+                .location(center.toLocation(corner1.world))
+                .offset(size.x / 2.0, size.y / 2.0, size.z / 2.0)
+                .receivers(calcedReceivers)
+                .spawn()
+        }
+
         fun particle(particle: ParticleBuilder, loc: Location, count: Int, offset: Double = 0.0, extra: Double = 0.0, receivers: List<Player>? = null) {
             val calcedReceivers = receivers ?: loc.getNearbyPlayers(60.0)
             particle.clone()

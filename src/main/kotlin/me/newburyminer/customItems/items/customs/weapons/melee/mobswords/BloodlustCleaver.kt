@@ -47,7 +47,7 @@ class BloodlustCleaver: CustomItemDefinition {
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
-        .setName(name, false)
+        .setName(name)
         .setAttributes(
             SimpleModifier(Attribute.ATTACK_DAMAGE, 11.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),
             SimpleModifier(Attribute.ATTACK_SPEED, -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND),

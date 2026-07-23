@@ -19,7 +19,7 @@ class EnragingTotem: CustomItemDefinition {
 
     private val material = Material.TOTEM_OF_UNDYING
     private val color = arrayOf(235, 146, 30)
-    private val name = Utils.text("", color)
+    private val name = Utils.text("Enraging Totem", color)
     private val lore = Utils.loreBlockToList(
         Utils.text("Gives the same effects as a normal totem, along with Strength III (15s), Resistance II (15s) and Speed III (30s).", Utils.GRAY),
     )

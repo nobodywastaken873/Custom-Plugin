@@ -9,6 +9,69 @@ import org.bukkit.potion.PotionType
 object MaterialRecipeBootstrapper: RecipeBootstrapper {
     override val recipeType: RecipeType = RecipeType.MATERIAL
     override fun bootstrap() {
+
+        recipe {
+            grid {
+                row(null, null, item(Material.COPPER_CHAIN, 8), null, null)
+                row(null, item(Material.RABBIT_HIDE), item(Material.STICK, 16), item(Material.RABBIT_HIDE), null)
+                row(item(Material.IRON_CHAIN, 8), item(Material.STICK, 16), item(Material.LEATHER, 8), item(Material.STICK, 16), item(Material.IRON_CHAIN, 8))
+                row(null, item(Material.RABBIT_HIDE), item(Material.STICK, 16), item(Material.RABBIT_HIDE), null)
+                row(null, null, item(Material.COPPER_CHAIN, 8), null, null)
+            }
+            result(CustomItem.TOOL_HANDLE)
+        }
+        recipe {
+            grid {
+                row(null, item(Material.LIGHTNING_ROD, 2), item(Material.BREEZE_ROD, 4), item(Material.LIGHTNING_ROD, 2), null)
+                row(null, item(Material.LIGHTNING_ROD, 2), item(Material.BREEZE_ROD, 4), item(Material.LIGHTNING_ROD, 2), null)
+                row(null, item(Material.IRON_INGOT, 24), custom(CustomItem.TOOL_HANDLE), item(Material.IRON_INGOT, 24), null)
+                row(null, item(Material.IRON_CHAIN, 8), item(Material.BLAZE_ROD, 4), item(Material.IRON_CHAIN, 8), null)
+                row(null, item(Material.IRON_CHAIN, 8), item(Material.BLAZE_ROD, 4), item(Material.IRON_CHAIN, 8), null)
+            }
+            result(CustomItem.REINFORCED_HANDLE)
+        }
+        recipe {
+            grid {
+                row(item(Material.DIAMOND, 2), item(Material.BONE_MEAL, 4), item(Material.STRING, 8), item(Material.BONE_MEAL, 4), item(Material.DIAMOND, 2))
+                row(item(Material.BONE_MEAL, 4), item(Material.AMETHYST_SHARD, 4), item(Material.SUGAR, 16), item(Material.AMETHYST_SHARD, 4), item(Material.BONE_MEAL, 4))
+                row(item(Material.STRING, 8), item(Material.SUGAR, 16), item(Material.BREEZE_ROD, 8), item(Material.SUGAR, 16), item(Material.STRING, 8))
+                row(item(Material.BONE_MEAL, 4), item(Material.AMETHYST_SHARD, 4), item(Material.SUGAR, 16), item(Material.AMETHYST_SHARD, 4), item(Material.BONE_MEAL, 4))
+                row(item(Material.DIAMOND, 2), item(Material.BONE_MEAL, 4), item(Material.STRING, 8), item(Material.BONE_MEAL, 4), item(Material.DIAMOND, 2))
+            }
+            result(CustomItem.ENRICHED_FEATHER)
+        }
+        recipe {
+            grid {
+                row(item(Material.CHARCOAL, 4), item(Material.COAL_ORE, 2), item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.IRON_ORE, 2), item(Material.CHARCOAL, 4))
+                row(item(Material.IRON_ORE, 2), item(Material.COAL_BLOCK, 8), item(Material.IRON_BLOCK, 8), item(Material.BLAZE_ROD, 12), item(Material.COAL_ORE, 2))
+                row(item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.IRON_BLOCK, 8), item(Material.RAW_IRON_BLOCK, 8), item(Material.IRON_BLOCK, 8), item(Material.DEEPSLATE_IRON_ORE, 2))
+                row(item(Material.COAL_ORE, 2), item(Material.BLAZE_ROD, 12), item(Material.IRON_BLOCK, 8), item(Material.COAL_BLOCK, 8), item(Material.IRON_ORE, 2))
+                row(item(Material.CHARCOAL, 4), item(Material.IRON_ORE, 2), item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.COAL_ORE, 2), item(Material.CHARCOAL, 4))
+            }
+            result(CustomItem.STEEL_PLATING)
+        }
+        recipe {
+            grid {
+                row(null, item(Material.FIRE_CHARGE, 2), item(Material.LAVA_BUCKET), item(Material.FIRE_CHARGE, 2), null)
+                row(item(Material.FIRE_CHARGE, 2), item(Material.BLAZE_ROD, 4), item(Material.MAGMA_BLOCK, 16), item(Material.BLAZE_ROD, 4), item(Material.FIRE_CHARGE, 2))
+                row(item(Material.LAVA_BUCKET), item(Material.MAGMA_BLOCK, 16), item(Material.MAGMA_CREAM, 8), item(Material.MAGMA_BLOCK, 16), item(Material.LAVA_BUCKET))
+                row(item(Material.FIRE_CHARGE, 2), item(Material.BLAZE_ROD, 4), item(Material.MAGMA_BLOCK, 16), item(Material.BLAZE_ROD, 4), item(Material.FIRE_CHARGE, 2))
+                row(null, item(Material.FIRE_CHARGE, 2), item(Material.LAVA_BUCKET), item(Material.FIRE_CHARGE, 2), null)
+            }
+            result(CustomItem.FIRE_RESISTANT_RESIN)
+        }
+        recipe {
+            grid {
+                row(null, null, null, null, null)
+                row(null, item(Material.GLOW_INK_SAC, 8), item(Material.HONEY_BOTTLE, 16), item(Material.BLAZE_POWDER, 8), null)
+                row(null, item(Material.GOLD_INGOT, 16), item(Material.ENCHANTED_GOLDEN_APPLE), item(Material.GOLD_INGOT, 16), null)
+                row(null, item(Material.BLAZE_POWDER, 8), item(Material.RAW_GOLD, 16), item(Material.GLOW_INK_SAC, 8), null)
+                row(null, null, null, null, null)
+            }
+            result(CustomItem.ENCHANTED_CATALYST)
+        }
+
+
         recipe {
             grid {
                 row(null, null, null, null, null)
@@ -98,66 +161,6 @@ object MaterialRecipeBootstrapper: RecipeBootstrapper {
                 row(null, item(Material.PACKED_ICE, 2), item(Material.POWDER_SNOW_BUCKET), item(Material.PACKED_ICE, 2), null)
             }
             result(CustomItem.CONDENSED_ICE)
-        }
-        recipe {
-            grid {
-                row(item(Material.CHARCOAL, 4), item(Material.COAL_ORE, 2), item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.IRON_ORE, 2), item(Material.CHARCOAL, 4))
-                row(item(Material.IRON_ORE, 2), item(Material.COAL_BLOCK, 4), item(Material.IRON_BLOCK, 8), item(Material.COAL_BLOCK, 4), item(Material.COAL_ORE, 2))
-                row(item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.IRON_BLOCK, 8), item(Material.RAW_IRON_BLOCK, 8), item(Material.IRON_BLOCK, 8), item(Material.DEEPSLATE_IRON_ORE, 2))
-                row(item(Material.COAL_ORE, 2), item(Material.COAL_BLOCK, 4), item(Material.IRON_BLOCK, 8), item(Material.COAL_BLOCK, 4), item(Material.IRON_ORE, 2))
-                row(item(Material.CHARCOAL, 4), item(Material.IRON_ORE, 2), item(Material.DEEPSLATE_IRON_ORE, 2), item(Material.COAL_ORE, 2), item(Material.CHARCOAL, 4))
-            }
-            result(CustomItem.STEEL_CHUNK)
-        }
-        recipe {
-            grid {
-                row(null, item(Material.FIRE_CHARGE, 2), item(Material.LAVA_BUCKET), item(Material.FIRE_CHARGE, 2), null)
-                row(item(Material.FIRE_CHARGE, 2), item(Material.BLAZE_ROD, 4), item(Material.MAGMA_BLOCK, 16), item(Material.BLAZE_ROD, 4), item(Material.FIRE_CHARGE, 2))
-                row(item(Material.LAVA_BUCKET), item(Material.MAGMA_BLOCK, 16), item(Material.MAGMA_CREAM, 8), item(Material.MAGMA_BLOCK, 16), item(Material.LAVA_BUCKET))
-                row(item(Material.FIRE_CHARGE, 2), item(Material.BLAZE_ROD, 4), item(Material.MAGMA_BLOCK, 16), item(Material.BLAZE_ROD, 4), item(Material.FIRE_CHARGE, 2))
-                row(null, item(Material.FIRE_CHARGE, 2), item(Material.LAVA_BUCKET), item(Material.FIRE_CHARGE, 2), null)
-            }
-            result(CustomItem.MOLTEN_MIXTURE)
-        }
-        recipe {
-            grid {
-                row(null, null, item(Material.COPPER_CHAIN, 4), null, null)
-                row(null, item(Material.RABBIT_HIDE), item(Material.STICK, 16), item(Material.RABBIT_HIDE), null)
-                row(item(Material.COPPER_CHAIN, 4), item(Material.STICK, 16), item(Material.LEATHER, 8), item(Material.STICK, 16), item(Material.COPPER_CHAIN, 4))
-                row(null, item(Material.RABBIT_HIDE), item(Material.STICK, 16), item(Material.RABBIT_HIDE), null)
-                row(null, null, item(Material.COPPER_CHAIN, 4), null, null)
-            }
-            result(CustomItem.HANDLE_BINDING)
-        }
-        recipe {
-            grid {
-                row(null, item(Material.LIGHTNING_ROD, 2), item(Material.BREEZE_ROD, 4), item(Material.LIGHTNING_ROD, 2), null)
-                row(null, item(Material.LIGHTNING_ROD, 2), item(Material.BREEZE_ROD, 4), item(Material.LIGHTNING_ROD, 2), null)
-                row(null, item(Material.IRON_INGOT, 16), item(Material.IRON_INGOT, 16), item(Material.IRON_INGOT, 16), null)
-                row(null, item(Material.IRON_CHAIN, 8), item(Material.BLAZE_ROD, 4), item(Material.IRON_CHAIN, 8), null)
-                row(null, item(Material.IRON_CHAIN, 8), item(Material.BLAZE_ROD, 4), item(Material.IRON_CHAIN, 8), null)
-            }
-            result(CustomItem.STRENGTHENING_RODS)
-        }
-        recipe {
-            grid {
-                row(null, null, null, null, null)
-                row(null, item(Material.GLOW_INK_SAC, 8), item(Material.HONEY_BOTTLE, 8), item(Material.BLAZE_POWDER, 8), null)
-                row(null, item(Material.GOLD_INGOT, 16), item(Material.ENCHANTED_GOLDEN_APPLE), item(Material.GOLD_INGOT, 16), null)
-                row(null, item(Material.BLAZE_POWDER, 8), item(Material.HONEY_BOTTLE, 8), item(Material.GLOW_INK_SAC, 8), null)
-                row(null, null, null, null, null)
-            }
-            result(CustomItem.MAGICAL_FLASK)
-        }
-        recipe {
-            grid {
-                row(null, item(Material.BONE_MEAL, 4), item(Material.STRING, 8), item(Material.BONE_MEAL, 4), null)
-                row(item(Material.BONE_MEAL, 4), item(Material.AMETHYST_SHARD, 4), item(Material.SUGAR, 16), item(Material.AMETHYST_SHARD, 4), item(Material.BONE_MEAL, 4))
-                row(item(Material.STRING, 8), item(Material.SUGAR, 16), item(Material.BREEZE_ROD, 8), item(Material.SUGAR, 16), item(Material.STRING, 8))
-                row(item(Material.BONE_MEAL, 4), item(Material.AMETHYST_SHARD, 4), item(Material.SUGAR, 16), item(Material.AMETHYST_SHARD, 4), item(Material.BONE_MEAL, 4))
-                row(null, item(Material.BONE_MEAL, 4), item(Material.STRING, 8), item(Material.BONE_MEAL, 4), null)
-            }
-            result(CustomItem.LIGHTWEIGHT_AMALGAMATION)
         }
     }
 }

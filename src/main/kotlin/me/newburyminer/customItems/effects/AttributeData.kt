@@ -7,7 +7,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 
-class AttributeData(
+data class AttributeData(
     val amount: Double,
     val attribute: Attribute,
     val operation: AttributeModifier.Operation,

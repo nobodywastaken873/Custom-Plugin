@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import kotlin.math.pow
+import kotlin.math.roundToInt
 
 class CompassGui(val player: Player): CustomGui() {
     override val inv: Inventory = Bukkit.createInventory(this, 54, Utils.text("Tracking Compass").style(
@@ -69,11 +70,11 @@ class CompassGui(val player: Player): CustomGui() {
 
     private fun getCost(player: Player): Array<Int> {
         val uses = (player.getTag<Int>("compassuses") ?: 0) + 1
-        val rawIronBlocks = (6 * uses.toDouble().pow(0.3)).toInt()
-        val rawGoldBlocks = (2 * uses.toDouble().pow(0.3)).toInt()
-        val diamonds = (10 * uses.toDouble().pow(0.3)).toInt()
-        val netherite = uses.toDouble().pow(0.6).toInt()
-        val totems = (uses.toDouble().pow(0.5)).toInt()
+        val rawIronBlocks = (6 * uses.toDouble().pow(0.5)).roundToInt()
+        val rawGoldBlocks = (2 * uses.toDouble().pow(0.5)).roundToInt()
+        val diamonds = (10 * uses.toDouble().pow(0.3)).roundToInt()
+        val netherite = uses.toDouble().pow(0.6).roundToInt()
+        val totems = (uses.toDouble().pow(0.5)).roundToInt()
         return arrayOf(rawIronBlocks, rawGoldBlocks, diamonds, netherite, totems)
     }
 

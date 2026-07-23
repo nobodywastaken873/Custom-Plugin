@@ -4,6 +4,7 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getItemAction
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.lock
+import me.newburyminer.customItems.Utils.Companion.loreBlock
 import me.newburyminer.customItems.Utils.Companion.name
 import me.newburyminer.customItems.Utils.Companion.setItemAction
 import me.newburyminer.customItems.Utils.Companion.setTag
@@ -50,6 +51,14 @@ class KothLootGui(private val player: Player, page: Int = 0): PagedGui(page) {
                 .setItemAction(ItemAction.OPEN_SUBMENU)
             inv.addItem(item)
         }
+
+        inv.setItem(49, ItemStack(Material.BARRIER)
+            .lock()
+            .name(Utils.text("NOTICE", Utils.FAILED_COLOR))
+            .loreBlock(
+                Utils.text("Rewards are subject to change up to 2 hours before the KOTH. Rewards are likely not final, especially the further out you look.")
+            )
+        )
 
         // we want 0-35 items to be 1 page, 36-70 to be 2, etc
         val pages = (kothData.size - 1) / itemsPerPage + 1

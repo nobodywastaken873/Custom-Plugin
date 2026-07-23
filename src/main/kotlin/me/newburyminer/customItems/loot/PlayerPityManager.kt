@@ -28,7 +28,7 @@ object PlayerPityManager: FileDatabase() {
         entries.forEach {entry ->
             val splitIndex = entry.indexOf(":")
             val uuid = UUID.fromString(entry.substring(0, splitIndex))
-            val loot = entry.substring(splitIndex + 1).split(",").map {
+            val loot = entry.substring(splitIndex + 1).split(",").filter { it.isNotEmpty() }.map {
                 val split = it.split("=")
                 split[0] to PityProgress(split[1].toDouble(), Material.valueOf(split[2]))
             }

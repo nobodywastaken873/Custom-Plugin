@@ -13,6 +13,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockBurnEvent
 import org.bukkit.event.block.BlockExplodeEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.world.AsyncStructureGenerateEvent
 import org.bukkit.event.world.AsyncStructureSpawnEvent
@@ -88,6 +89,16 @@ object StructureBounding {
             })
         )
 
+        EventRegistry.register(ListenerEntry(BlockPlaceEvent::class,
+            { e ->
+                e.block.world == CustomItems.aridWorld
+            },
+            {e ->
+                if (!isInStructure(e.block)) return@ListenerEntry
+                // we now know it is in a structure, cancel
+                e.isCancelled = true
+            })
+        )
 
     }
 

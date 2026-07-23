@@ -295,6 +295,7 @@ class SystemsListener: Listener, Runnable  {
 
     @EventHandler fun onPlayerJoin(e: PlayerJoinEvent) {
         e.player.getAttribute(Attribute.MAX_ABSORPTION)!!.baseValue = 2048.0
+        e.player.sendMessage(Utils.text("Learn more about what this server changes in /info!", Utils.GRAY))
     }
     @EventHandler fun onCooldownSet(e: PlayerItemGroupCooldownEvent) {
         if (e.cooldownGroup.namespace != "customitems") return

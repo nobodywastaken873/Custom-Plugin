@@ -49,7 +49,7 @@ enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String =
     WITHER_COATING(stackable = true),
     REINFORCING_STRUTS(stackable = true),
     SHULKER_FRUIT,
-    WARDEN_SPAWNER(stackable = true),
+    NORMAL_WARDEN_SPAWNER(stackable = true),
     WITHER_SPAWNER(stackable = true),
     BASTION_SPAWNER(stackable = true),
     MONUMENT_SPAWNER(stackable = true),
@@ -213,6 +213,17 @@ enum class CustomItem(val cds: Array<String> = arrayOf(), var realName: String =
     SHARPENED_GREATSWORD,
     BLOODLUST_CLEAVER(isArtifact = true),
     ITEM_NODE,
+    DULL_REFRESHING_EMERALD(arrayOf("")),
+    REFINED_REFRESHING_EMERALD,
+    SOUL_SHARD(stackable = true),
+    ANCIENT_FOSSIL(stackable = true),
+    KNOWLEDGE_FRAGMENT(stackable = true),
+    BRONZE_CHUNK(stackable = true),
+    SILVER_CHUNK(stackable = true),
+    MYTHRIL_SCRAP(stackable = true),
+    ENRICHED_AMETHYST(stackable = true),
+    PEGASUS_ARMOR,
+    HARD_WARDEN_SPAWNER(stackable = true),
 
 
     /*

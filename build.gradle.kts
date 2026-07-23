@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.1.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.reflections:reflections:0.10.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

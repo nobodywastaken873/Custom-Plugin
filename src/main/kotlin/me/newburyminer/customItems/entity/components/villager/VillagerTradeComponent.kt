@@ -5,11 +5,17 @@ import me.newburyminer.customItems.entity.DeserializationInterface
 import me.newburyminer.customItems.entity.EntityComponent
 import me.newburyminer.customItems.entity.EntityComponentType
 import me.newburyminer.customItems.entity.EntityWrapper
+import me.newburyminer.customItems.helpers.CustomDamageType.Companion.isCustom
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.Tag
+import org.bukkit.damage.DamageType
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Villager
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.MerchantRecipe
 
@@ -175,6 +181,32 @@ class VillagerTradeComponent(startingTrades: MutableList<MerchantRecipe> = mutab
                 newTrade.demand = currentTrades[index].demand
                 newTrade.uses = currentTrades[index].uses
             }
+        }
+    }
+
+    private var defaultMaxUses: MutableList<Int> = mutableListOf()
+    fun maxMaxUses(wrapper: EntityWrapper) {
+        val villager  = wrapper.entity as Villager
+        defaultMaxUses = villager.recipes.map { it.maxUses }.toMutableList()
+        villager.recipes.forEach {
+            it.maxUses = 100000
+        }
+    }
+
+    override fun registerListeners(wrapper: EntityWrapper) {
+        register(InventoryCloseEvent::class, wrapper.entity.uniqueId, { e ->
+            e.inventory.holder == wrapper.entity
+        },
+        {
+            if ((wrapper.entity as Villager).recipes.any { it.maxUses == 100000 })
+                closeInventory(wrapper)
+        })
+    }
+
+    fun closeInventory(wrapper: EntityWrapper) {
+        val villager = wrapper.entity as Villager
+        villager.recipes.forEachIndexed { i, recipe ->
+            recipe.maxUses = defaultMaxUses[i]
         }
     }
 

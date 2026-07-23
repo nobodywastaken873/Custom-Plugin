@@ -23,7 +23,7 @@ class CowboyHat: CustomItemDefinition {
     private val color = arrayOf(219, 124, 77)
     private val name = text("Cowboy Hat", color)
     private val lore = Utils.loreBlockToList(
-        text("While wearing this, any horse you are riding will recieve Swiftness 3, Leaping 5, and will become invulnerable to damage.", Utils.GRAY),
+        text("Removed.", Utils.FAILED_COLOR),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -31,7 +31,7 @@ class CowboyHat: CustomItemDefinition {
         .setLore(lore)
         .build()
 
-    init {
+    /*init {
         register(EntityMountEvent::class, { e ->
             e.mount is AbstractHorse &&
             e.entity is Player &&
@@ -54,6 +54,6 @@ class CowboyHat: CustomItemDefinition {
             if ((e.dismounted as AbstractHorse).hasPotionEffect(PotionEffectType.RESISTANCE))
                 (e.dismounted as AbstractHorse).clearActivePotionEffects()
         })
-    }
+    }*/
 
 }
