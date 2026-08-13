@@ -103,6 +103,7 @@ object GraveListener: Listener {
         armorStand.setTag("owner", e.player.uniqueId)
         val killer =
             if (e.damageSource.causingEntity is Player) e.damageSource.causingEntity as Player
+            else if (e.player.killer != null) e.player.killer as Player
             else if (e.player.lastDamageCause != null && e.player.lastDamageCause!!.damageSource.causingEntity is Player)
                 e.player.lastDamageCause!!.damageSource.causingEntity as Player
             else null

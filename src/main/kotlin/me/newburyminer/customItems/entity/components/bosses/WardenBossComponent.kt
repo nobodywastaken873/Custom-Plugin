@@ -43,6 +43,7 @@ class WardenBossComponent(private val instance: WardenInstance?): EntityComponen
 
             e.damage *= (1.0 / (12.0 * instance.playerCount)) * difficultyFactor */
 
+            if (e.damage < 7.0) e.damage = 0.0001
             instance.reduceHp(e.damage, e.damageSource.damageType)
             e.damage = 0.0
 

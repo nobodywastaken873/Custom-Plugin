@@ -18,6 +18,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.damage.DamageType
+import org.bukkit.entity.Enderman
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
@@ -25,6 +26,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.event.entity.EntityPotionEffectEvent
+import org.bukkit.event.entity.EntityTeleportEvent
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -100,6 +102,14 @@ class DefaultEntityComponent(
         {e ->
             e.drops.clear()
             e.droppedExp *= sqrt(MobContext.calculateDifficulty(e.entity.location)).roundToInt()
+        })
+
+        register(EntityTeleportEvent::class, wrapper.entity.uniqueId, { e ->
+            e.entity == wrapper.entity &&
+            e.entity is Enderman
+        },
+        {e ->
+            e.isCancelled = true
         })
     }
 

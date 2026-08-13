@@ -10,6 +10,8 @@ import me.newburyminer.customItems.Utils.Companion.setCount
 import me.newburyminer.customItems.Utils.Companion.setTag
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.gui.CustomGui
+import me.newburyminer.customItems.gui.crafting.CraftingGui
+import me.newburyminer.customItems.gui.inventory.ShulkerGui
 import me.newburyminer.customItems.helpers.CustomEffects
 import me.newburyminer.customItems.helpers.getUpperCenter
 import me.newburyminer.customItems.items.CustomItem
@@ -41,7 +43,7 @@ class ItemNode: CustomItemDefinition {
         text(""),
         text("Can store an infinite amount of any one item. Right click in your inventory to deposit a stack of items. " +
             "Right click with an empty cursor to retrieve a stack. Can also automatically deposit picked-up items, sneak-left click in your mainhand to toggle. " +
-            "Sneak right click to dump up to 100 stacks on the ground. Does not work in combat.", Utils.GRAY)
+            "Sneak right click to dump up to 150 stacks on the ground. Does not work in combat.", Utils.GRAY)
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)
@@ -55,7 +57,7 @@ class ItemNode: CustomItemDefinition {
             e.whoClicked is Player &&
             !(e.whoClicked as Player).isInCombat() &&
             (e.action == InventoryAction.PICKUP_HALF || e.action == InventoryAction.SWAP_WITH_CURSOR) &&
-            e.inventory.holder !is CustomGui &&
+            (e.inventory.holder !is CustomGui || e.inventory.holder is ShulkerGui || e.inventory.holder is CraftingGui) &&
             e.clickedInventory?.getItem(e.slot).isItem(custom)
         }, 
         {e ->
@@ -116,10 +118,10 @@ class ItemNode: CustomItemDefinition {
             if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
 
                 if (count == 0 || storedItem == null) return@register
-                if (e.player.location.getNearbyEntitiesByType(Item::class.java, 20.0).size > 100) return@register
+                if (e.player.location.getNearbyEntitiesByType(Item::class.java, 20.0).size > 150) return@register
                 val maxStack = storedItem.maxStackSize
 
-                val stackCount = (count / maxStack).coerceAtMost(100)
+                val stackCount = (count / maxStack).coerceAtMost(150)
                 val extra = count % maxStack
 
                 repeat(stackCount) {
@@ -208,7 +210,7 @@ class ItemNode: CustomItemDefinition {
                 text(""),
                 text("Can store an infinite amount of any one item. Right click in your inventory to deposit a stack of items. " +
                         "Right click with an empty cursor to retrieve a stack. Can also automatically deposit picked-up items, sneak-left click in your mainhand to toggle. " +
-                        "Sneak right click to dump up to 100 stacks on the ground. Does not work in combat.", Utils.GRAY)
+                        "Sneak right click to dump up to 150 stacks on the ground. Does not work in combat.", Utils.GRAY)
             )
         )
     }

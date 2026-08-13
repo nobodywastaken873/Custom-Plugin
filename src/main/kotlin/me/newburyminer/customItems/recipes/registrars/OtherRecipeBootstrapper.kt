@@ -31,6 +31,16 @@ object OtherRecipeBootstrapper: RecipeBootstrapper {
         }
         recipe {
             grid {
+                row(null, null, null, null, null)
+                row(null, item(Material.DRIED_KELP, 32), item(Material.COARSE_DIRT, 8), item(Material.ROTTEN_FLESH, 32), null)
+                row(item(Material.DIAMOND, 6), item(Material.ROOTED_DIRT, 8), item(Material.COOKED_BEEF, 16), item(Material.DIRT, 8), item(Material.DIAMOND, 6))
+                row(null, item(Material.ROTTEN_FLESH, 32), item(Material.DIAMOND_SHOVEL).ench("EF5","MN1","UN3"), item(Material.DRIED_KELP, 32), null)
+                row(null, null, null, null, null)
+            }
+            result(CustomItem.GRAVEDIGGERS_BREAKFAST)
+        }
+        recipe {
+            grid {
                 row(item(Material.BLAST_FURNACE, 4), item(Material.LAVA_BUCKET), item(Material.FURNACE, 8), item(Material.LAVA_BUCKET), item(Material.BLAST_FURNACE, 4))
                 row(item(Material.CHARCOAL, 32), item(Material.GOLD_ORE, 8), item(Material.DEEPSLATE_DIAMOND_ORE), item(Material.DEEPSLATE_IRON_ORE, 8), item(Material.AMETHYST_BLOCK, 32))
                 row(item(Material.LIGHTNING_ROD), item(Material.DEEPSLATE_DIAMOND_ORE), custom(CustomItem.FIRE_RESISTANT_RESIN), item(Material.DEEPSLATE_DIAMOND_ORE), item(Material.LIGHTNING_ROD))
@@ -98,6 +108,16 @@ object OtherRecipeBootstrapper: RecipeBootstrapper {
                 row(null, null, null, null, null)
             }
             result(CustomItem.HARD_WARDEN_SPAWNER)
+        }
+        recipe {
+            grid {
+                row(null, null, null, null, null)
+                row(null, null, item(Material.EMERALD_BLOCK, 64), null, null)
+                row(null, item(Material.EMERALD_BLOCK, 64), item(Material.ENCHANTED_GOLDEN_APPLE), item(Material.EMERALD_BLOCK, 64), null)
+                row(null, null, item(Material.DEEPSLATE_EMERALD_ORE), null, null)
+                row(null, null, null, null, null)
+            }
+            result(CustomItem.ENCHANTED_EMERALD_APPLE)
         }
 
 

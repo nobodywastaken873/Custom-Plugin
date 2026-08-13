@@ -10,7 +10,7 @@ interface PotionEffectCancel: ItemPredicate {
     val potionEffects: List<PotionEffectType>
     fun potionEffectMatches(e: EntityPotionEffectEvent, slot: EquipmentSlot, custom: CustomItem): Boolean {
         return slotMatches(e, slot, custom) &&
-                e.newEffect!!.type in potionEffects &&
+                e.newEffect?.type in potionEffects &&
                 (e.action == EntityPotionEffectEvent.Action.ADDED || e.action == EntityPotionEffectEvent.Action.CHANGED)
     }
     fun cancelPotionEffect(e: EntityPotionEffectEvent) {

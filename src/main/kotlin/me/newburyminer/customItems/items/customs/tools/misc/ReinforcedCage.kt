@@ -1,5 +1,6 @@
 package me.newburyminer.customItems.items.customs.tools.misc
 
+import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.getTag
 import me.newburyminer.customItems.Utils.Companion.isItem
@@ -58,7 +59,8 @@ class ReinforcedCage: CustomItemDefinition {
         register(PlayerInteractEvent::class, { e ->
             e.item.isItem(custom) &&
             e.player.offCooldown(custom) &&
-            e.action == Action.RIGHT_CLICK_BLOCK
+            e.action == Action.RIGHT_CLICK_BLOCK &&
+            e.player.world != CustomItems.bossWorld
         },
         {e ->
 
@@ -85,7 +87,8 @@ class ReinforcedCage: CustomItemDefinition {
         register(PlayerInteractAtEntityEvent::class, { e ->
             e.rightClicked.type !in invalidPickups &&
             e.player.inventory.getItem(e.hand).isItem(custom) &&
-            e.player.offCooldown(custom)
+            e.player.offCooldown(custom) &&
+            e.player.world != CustomItems.bossWorld
         },
         {e ->
             val item = e.player.inventory.getItem(e.hand)

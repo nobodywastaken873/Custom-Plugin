@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
+import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.loot.BossLoot
 import me.newburyminer.customItems.loot.LootContext
 import me.newburyminer.customItems.loot.PlayerLootManager
@@ -25,13 +26,15 @@ abstract class BossInstance(
     abstract val maxHp: Double
     abstract var currentHp: Double
         protected set
+    abstract val damageResist: Double
     fun reduceHp(amount: Double, damageType: DamageType) {
         currentHp -=
-            if (damageType == DamageType.MACE_SMASH) amount * 0.1
-            else amount
+            (
+                if (damageType == DamageType.MACE_SMASH) amount * 0.1
+                else amount
+            ) * damageResist
 
         if (currentHp <= 0.0) {
-            boss.remove()
             bossWin()
         }
     }
@@ -56,7 +59,7 @@ abstract class BossInstance(
 
     abstract val loot: BossLoot
     fun bossWin() {
-        val toLoot = players.toMutableList()
+        val toLoot = players.toList()
         endBoss()
         giveLoot(toLoot)
     }
@@ -65,6 +68,8 @@ abstract class BossInstance(
             val diff = if (difficulty == BossDifficulty.EASY) "normal" else "hard"
             val context = LootContext(loot.id, diff, 0)
             PlayerLootManager.addLoot(context, player)
+            player.sendMessage(Utils.text("Loot has been added to your /lootmenu!", Utils.GRAY))
+            player.playSound(player.location, Sound.BLOCK_VAULT_EJECT_ITEM, 1.0F, 1.0F)
         }
     }
 
@@ -80,7 +85,8 @@ abstract class BossInstance(
 
 
     val playerCount: Int get() = players.size
-    val currentPlayers: List<Player> = players.toList()
+    val currentPlayers: List<Player>
+        get() {return players.toList()}
     fun removePlayer(player: Player) {
         if (player !in players) return
         players.remove(player)
@@ -89,7 +95,7 @@ abstract class BossInstance(
         bossBar.removePlayer(player)
     }
     fun prunePlayers() {
-        players.iterator().forEach {
+        players.toList().forEach {
             if (it.world != CustomItems.bossWorld)
                 removePlayer(it)
         }
@@ -141,7 +147,7 @@ abstract class BossInstance(
 
     fun playSound(loc: Location, sound: Sound, volume: Float, pitch: Float) {
         players.forEach {
-            it.playSound(loc, sound, volume, pitch)
+            it.playSound(loc, sound, SoundCategory.HOSTILE, volume, pitch, 1L)
         }
     }
 

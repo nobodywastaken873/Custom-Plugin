@@ -58,7 +58,7 @@ object PlayerPityManager: FileDatabase() {
                 if (progress.progress >= 1.0) {
                     player.sendMessage(Utils.text("Pity threshold reached and reset for ${pity.name}. You have received the drop.", arrayOf(237, 223, 24)))
                     progress.progress = 0.0
-                    entry.evaluate(scaler, player).forEach { player.addItemorDrop(it) }
+                    entry.reward.evaluate(scaler, player).forEach { player.addItemorDrop(it) }
                 }
             }
             else {

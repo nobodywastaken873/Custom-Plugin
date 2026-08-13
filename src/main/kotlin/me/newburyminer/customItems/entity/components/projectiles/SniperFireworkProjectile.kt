@@ -36,7 +36,7 @@ class SniperFireworkProjectile(private val scalingPerBlock: Double): EntityCompo
             val ticksFlown = firework.ticksFlown
 
             // ~9 blocks per tick
-            val damage = HitEffects(CustomDamageApply(ticksFlown * 9 * scalingPerBlock, CustomDamageType.EXPLOSION, overrideSource = firework.shooter as Entity?))
+            val damage = HitEffects(CustomDamageApply(ticksFlown * 9 * scalingPerBlock, CustomDamageType.EXPLOSION_NO_CD, overrideSource = firework.shooter as Entity?))
 
             for (entity in firework.location.getNearbyEntities(3.0, 3.0, 3.0)) {
                 if (entity is LivingEntity) damage.apply(entity, e.entity)

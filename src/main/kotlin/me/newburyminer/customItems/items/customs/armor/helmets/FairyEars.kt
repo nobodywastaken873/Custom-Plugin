@@ -38,7 +38,7 @@ class FairyEars: CustomItemDefinition {
             SimpleModifier(Attribute.ARMOR_TOUGHNESS, 3.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
             SimpleModifier(Attribute.KNOCKBACK_RESISTANCE, 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD),
             SimpleModifier(Attribute.SCALE, -0.5, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.HEAD),
-            SimpleModifier(Attribute.MAX_HEALTH, -0.75, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.HEAD),
+            SimpleModifier(Attribute.MAX_HEALTH, -0.4, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.HEAD),
         )
         .build()
 

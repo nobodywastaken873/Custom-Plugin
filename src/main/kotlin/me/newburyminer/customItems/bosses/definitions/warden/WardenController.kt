@@ -71,6 +71,7 @@ class WardenController(
             when (phase) {
                 Phase.Phase1 -> {
                     add(WardenAttacks.centerPusher(buildContext()))
+                    add(WardenAttacks.repeatingSpawn(buildContext()))
                 }
                 Phase.Phase2 -> {
                     add(WardenAttacks.summonWardenMini(buildContext()))
@@ -94,6 +95,7 @@ class WardenController(
         when (phase) {
             Phase.Phase1 -> {
                 add(WardenAttacks.centerPusher(context))
+                add(WardenAttacks.repeatingSpawn(buildContext()))
                 add(selectAttack())
             }
             Phase.Phase2 -> {
@@ -129,7 +131,6 @@ class WardenController(
                         WardenAttacks::safeCircles to 0.65,
                         WardenAttacks::flameLasers to 1.0,
                         WardenAttacks::sonicBoom to 1.0,
-                        WardenAttacks::mobWave to (if (summonedMobWave) 0.7 else 0.0),
                         WardenAttacks::flameSquares to (if (attackCounter > 3) 0.7 else 0.0)
                     )
 

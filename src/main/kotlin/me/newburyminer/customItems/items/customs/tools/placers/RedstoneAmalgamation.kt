@@ -48,11 +48,11 @@ class RedstoneAmalgamation: CustomItemDefinition, SwapCycler, MaterialPlacer {
         })
 
         register(PlayerSwapHandItemsEvent::class, { e ->
-            e.mainHandItem.isItem(custom) &&
+            e.player.equipment.itemInMainHand.isItem(custom) &&
             e.player.isSneaking
         },
         {e ->
-            swapCycle(e.mainHandItem, 0..3)
+            swapCycle(e.player.equipment.itemInMainHand, 0..3)
             e.isCancelled = true
         })
 

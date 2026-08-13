@@ -49,7 +49,7 @@ class WardenMinibossComponent(private val instance: WardenInstance?, hp: Double)
             }
 
             e.damage *= (1.0 / (5.0 * instance.playerCount).pow(0.8)) * difficultyFactor*/
-
+            if (e.damage < 7.0) e.damage = 0.0001
             health -= e.finalDamage
             e.damage = 0.0
 

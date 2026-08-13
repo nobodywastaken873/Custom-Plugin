@@ -24,13 +24,13 @@ object WardenZombie: MobDefinition() {
 
         ability(
             MeleeEffectAbility(
-                damage(linear(14.0 to 28.0, ctx), CustomDamageType.MELEE),
+                damage(linear(18.0 to 36.0, ctx), CustomDamageType.MELEE),
                 VanillaKnockbackApply()
             )
         )
 
         health(
-            linear(25.0 to 50.0, ctx)
+            linear(25.0 to 40.0, ctx)
         )
 
         movementSpeed(

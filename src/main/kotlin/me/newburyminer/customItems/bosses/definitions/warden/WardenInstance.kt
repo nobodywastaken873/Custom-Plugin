@@ -21,7 +21,9 @@ class WardenInstance(players: MutableList<Player>, difficulty: BossDifficulty): 
 
     override val loot: BossLoot = WardenLoot
     override val bossCenter: Location = Location(CustomItems.bossWorld, -58.5, 203.0, -15.5)
-    override val maxHp: Double = players.size * 3000.0 * (if (difficulty == BossDifficulty.EASY) 1.0 else 1.8)
+    override val damageResist: Double
+        get() = 1.0 / players.size
+    override val maxHp: Double = 3000.0 * (if (difficulty == BossDifficulty.EASY) 1.0 else 1.8)
     override var currentHp: Double = maxHp
 
     init {

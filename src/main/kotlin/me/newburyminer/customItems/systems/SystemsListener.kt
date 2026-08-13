@@ -27,12 +27,15 @@ import me.newburyminer.customItems.items.CustomItem
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.*
 import org.bukkit.attribute.Attribute
+import org.bukkit.block.Crafter
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.block.CrafterCraftEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -41,6 +44,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerTeleportEvent
+import org.bukkit.inventory.CrafterInventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -150,6 +154,10 @@ class SystemsListener: Listener, Runnable  {
     }
 
     @EventHandler fun entityDamageByEntity(e: EntityDamageEvent) {
+        handleCombat(e)
+        preventDamagingTrusted(e)
+    }
+    private fun handleCombat(e: EntityDamageEvent) {
         if (e.entity !is Player) return
         val player = e.entity as Player
         val selfInflicted = e.damageSource.causingEntity == player
@@ -169,6 +177,18 @@ class SystemsListener: Listener, Runnable  {
             val hitter = e.damageSource.causingEntity as Player
             putInCombat(player, hitter)
             putInCombat(hitter, player)
+        }
+    }
+    private fun preventDamagingTrusted(e: EntityDamageEvent) {
+        if (e.entity !is Player) return
+        val player = e.entity as Player
+        val selfInflicted = e.damageSource.causingEntity == player
+        if (e.damageSource.causingEntity !is Player || selfInflicted) return
+        val hitter = e.damageSource.causingEntity as Player
+
+        if (!TrustSystem.trusts(player, hitter)) return
+        if (e.entity.world == CustomItems.bossWorld || e.entity.world == CustomItems.aridWorld || hitter.isInCombat()) {
+            e.isCancelled = true
         }
     }
     @EventHandler fun onPlayerLogout(e: PlayerQuitEvent) {
@@ -268,6 +288,7 @@ class SystemsListener: Listener, Runnable  {
         })
     }
     @EventHandler fun onPlayerClickInv(e: InventoryClickEvent) {
+
         if (e.whoClicked !is Player) return
         if (!(e.whoClicked as Player).isBeingTracked()) return
         if (e.inventory.type != InventoryType.ENDER_CHEST) return
@@ -327,6 +348,21 @@ class SystemsListener: Listener, Runnable  {
             ShulkerGui(clickedItem).open(player)
         })
     }
+    private val trims = arrayOf(
+        Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
+        Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
+        Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,
+        Material.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
+        Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Material.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
+    )
+    @EventHandler fun onCrafterCraft(e: CrafterCraftEvent) {
+        val crafter = e.block.state as Crafter
+        val inv = crafter.inventory
+        if (inv.any { (it != null) && (it.getCustom() != null || it.type in trims) }) {
+            e.isCancelled = true
+            return
+        }
+    }
     @EventHandler fun onItemCraft(e: CraftItemEvent) {
         cancelCustomCrafts(e)
         duplicateArmorTrims(e)
@@ -341,32 +377,40 @@ class SystemsListener: Listener, Runnable  {
     // Unique trim duplicating
     private fun duplicateArmorTrims(e: CraftItemEvent) {
         val result = e.recipe.result
-
-        if (result.type !in arrayOf(
-                Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE, Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
-                Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.HOST_ARMOR_TRIM_SMITHING_TEMPLATE,
-                Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE, Material.WARD_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,
-                Material.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.RIB_ARMOR_TRIM_SMITHING_TEMPLATE, Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,
-                Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, Material.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
-            )) return
+        if (e.isCancelled) return
+        if (e.result == Event.Result.DENY || e.result == Event.Result.DEFAULT) return
+        if (result.type !in trims) return
         if (e.inventory.getItem(2)!!.enchantments[CustomEnchantments.DUPLICATE] == 1) {
             e.whoClicked.sendMessage(text("You cannot use duplicated trims in this recipe.", Utils.FAILED_COLOR))
             (e.whoClicked as Player).playSound(e.whoClicked, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F)
             e.isCancelled = true
             return
         }
+        /*if (e.click != ClickType.LEFT) {
+            e.isCancelled = true
+            return
+        }
+        if (
+            (e.cursor.type != e.inventory.getItem(2)!!.type || e.cursor.getEnchantmentLevel(CustomEnchantments.DUPLICATE) != 1 || !result.isSimilar(e.cursor)) &&
+            e.cursor.type != Material.AIR
+            ) {
+            e.isCancelled = true
+            return
+        }*/
         if (e.isShiftClick) {
             e.isCancelled = true
             return
         }
+        val currentCount = e.inventory.getItem(2)?.amount ?: 1
+        val trimType = e.inventory.getItem(2)?.type ?: Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE
         Bukkit.getScheduler().runTask(CustomItems.plugin, Runnable {
             // If it turns into air after crafting, put one back
-            if (e.inventory.getItem(2)?.type != result.type) {
-                val newResult = ItemStack(result.type)
+            if (e.inventory.getItem(2)?.type != trimType) {
+                val newResult = ItemStack(trimType)
                 e.inventory.setItem(2, newResult)
             // Otherwise, increase the amount by 1
             } else {
-                e.inventory.getItem(2)?.amount += 1
+                e.inventory.getItem(2)?.amount = currentCount
             }
         })
     }

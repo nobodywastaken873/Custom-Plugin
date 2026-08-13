@@ -22,7 +22,7 @@ class SurvivalTimeCommand: BasicCommand {
         val buffMaxDuration = Duration.ofSeconds((20 * 3600L - totalTime.toLong()).coerceAtLeast(0))
 
         player.sendMessage(Utils.text("You have survived for ${duration.toHours()} hours and ${duration.toMinutesPart()} minutes. " +
-                if (buffFraction > 0.0) "This gives you ${10 * buffFraction.round(2)} mining efficiency and +${40 * buffFraction.round(3)}% chance for double chest loot, ${(buffFraction * 100).roundToInt()}% of the total buffs. " else {""} +
+                if (buffFraction > 0.0) "This gives you ${(10 * buffFraction).round(2)} mining efficiency and +${(40 * buffFraction).round(3)}% chance for double chest loot, ${(buffFraction * 100).roundToInt()}% of the total buffs. " else {""} +
                 if (buffFraction <= 0.0000001) "You have ${buffStartDuration.toHours()} hours and ${buffStartDuration.toMinutesPart()} minutes until you start receiving buffs." else {""} +
                 if (buffFraction < 0.9999999 && buffFraction > 0.0000001) "You have ${buffMaxDuration.toHours()} hours and ${buffMaxDuration.toMinutesPart()} minutes until you have max buffs." else {""},
         Utils.SUCCESS_COLOR))

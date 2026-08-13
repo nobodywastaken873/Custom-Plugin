@@ -57,7 +57,7 @@ class BossSystemHandler: Listener {
     // Prevent teleporting out of fight/dimension in any other way
     @EventHandler fun onPlayerTeleport(e: PlayerTeleportEvent) {
         if (e.player.world != CustomItems.bossWorld) return
-        if (!e.to.block.isPassable) e.isCancelled = true
+        if (!e.to.block.isPassable && e.to.world == CustomItems.bossWorld) e.isCancelled = true
         if (e.to.world != CustomItems.bossWorld && e.cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) e.isCancelled = true
     }
     // Remove players from the boss world on logout, death

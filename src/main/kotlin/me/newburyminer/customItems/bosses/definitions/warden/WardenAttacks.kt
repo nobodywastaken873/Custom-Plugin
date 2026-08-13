@@ -7,6 +7,7 @@ import me.newburyminer.customItems.bosses.AttackContext
 import me.newburyminer.customItems.bosses.AttackHelper
 import me.newburyminer.customItems.bosses.BossAction
 import me.newburyminer.customItems.bosses.actions.DelayedAction
+import me.newburyminer.customItems.bosses.actions.FixedRepeatAction
 import me.newburyminer.customItems.bosses.actions.MultiAction
 import me.newburyminer.customItems.bosses.actions.ParticleCylinderAttack
 import me.newburyminer.customItems.bosses.actions.ParticleLineAttack
@@ -59,12 +60,16 @@ object WardenAttacks : AttackHelper {
     )
     private val floorSettings = ParticleSettings(
         Particle.DUST.builder().data(DustOptions(Color.fromRGB(247, 2, 2), 3.0F)), 5,
-        Particle.DUST.builder().data(DustOptions(Color.fromRGB(125, 1, 11), 3.0F)), preConcentration = 2.5, concentration = 2.5
+        Particle.DUST.builder().data(DustOptions(Color.fromRGB(125, 1, 11), 3.0F)), preConcentration = 1.0, concentration = 2.0
+    )
+    private val cylinderSettings = ParticleSettings(
+        Particle.DUST.builder().data(DustOptions(Color.fromRGB(102, 226, 232), 1.0F)), 5,
+        Particle.DUST.builder().data(DustOptions(Color.fromRGB(50, 117, 120), 1.0F)), preConcentration = 0.7, concentration = 0.7
     )
 
     fun flameSquares(ctx: AttackContext<WardenController.Phase>): BossAction {
         val circleCount = 4 - ctx.cycle
-        val circles = getCorners(ctx.boss.getLowerCenter().toVector(), 8.5).take(circleCount).map {
+        val circles = getCorners(ctx.boss.getLowerCenter().toVector(), 8.5).shuffled().take(circleCount).map {
             ShapeLayer(Polygon(getCorners(it, 3.0), ctx.boss.bottomY), ShapeLayer.Operation.SUBTRACT)
         }.toTypedArray()
 
@@ -100,9 +105,9 @@ object WardenAttacks : AttackHelper {
     fun safeCircles(ctx: AttackContext<WardenController.Phase>): BossAction {
         val attackProvider = {
             val circles = mutableListOf<ShapeLayer>()
-            repeat(4) {
-                val angle = Random.nextDouble() * 2 * Math.PI
-                val radius = Random.nextDouble() * 12.0 + 3.0
+            for (i in 0..3) {
+                val angle = Random.nextDouble() * Math.PI / 2.0 + (Math.PI / 2.0 * i)
+                val radius = Random.nextDouble() * 10.0 + 5.0
                 val offset = Vector(radius * cos(angle), 0.0, radius * sin(angle))
                 circles.add(ShapeLayer(Circle(ctx.boss.bottomY, ctx.boss.getLowerCenter().toVector().add(offset),
                     linear(3.0 to 2.0, ctx)), ShapeLayer.Operation.SUBTRACT))
@@ -153,7 +158,7 @@ object WardenAttacks : AttackHelper {
             )
         }
 
-        return RepeatAction(ctx.boss, attackProvider, linear(4 to 9, ctx), linear(15 to 8, ctx))
+        return FixedRepeatAction(ctx.boss, attackProvider, linear(4 to 9, ctx), linear(30 to 10, ctx))
     }
 
     fun sonicBoom(ctx: AttackContext<WardenController.Phase>): BossAction {
@@ -169,7 +174,7 @@ object WardenAttacks : AttackHelper {
                         linear(1.4 to 1.8, ctx),
                         linear(60 to 30, ctx),
                         0,
-                        particleSettings,
+                        cylinderSettings,
                         SoundSettings(Sound.BLOCK_AMETHYST_BLOCK_BREAK, 0.5F, 1.5F, 10, Sound.ENTITY_WARDEN_SONIC_BOOM),
                         HitEffects(damage(linear(10.0 to 18.0, ctx), CustomDamageType.ALL_BYPASS_NO_CD),
                             CustomKnockbackApply(1.5, 1.0, 1.5))
@@ -216,14 +221,32 @@ object WardenAttacks : AttackHelper {
             {
                 SummonMobsAction(ctx.boss,
                     spawningProvider,
-                    (linear(2 to 4, ctx) * ctx.boss.playerCount.toDouble().pow(0.7)).roundToInt(),
-                    linear(80 to 60, ctx),
+                    (linear(2.0 to 3.0, ctx) * ctx.boss.playerCount.toDouble().pow(0.7)).roundToInt(),
+                    linear(120 to 100, ctx),
                     particleSettings,
                     ctx,
                     SoundSettings(Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 0.5F, 0.5F, 1, Sound.ITEM_TRIDENT_RETURN)
                 )
             }, linear(3 to 3, ctx),
             separation = delay
+        )
+    }
+
+    fun repeatingSpawn(ctx: AttackContext<WardenController.Phase>): BossAction {
+        val delay = 300
+        return RepeatAction(ctx.boss,
+            {
+                SummonMobsAction(ctx.boss,
+                    spawningProvider,
+                    (linear(2 to 3, ctx) * ctx.boss.playerCount.toDouble().pow(0.7)).roundToInt(),
+                    linear(80 to 60, ctx),
+                    particleSettings,
+                    ctx,
+                    SoundSettings(Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 0.5F, 0.5F, 1, Sound.ITEM_TRIDENT_RETURN)
+                )
+            }, linear(200 to 200, ctx),
+            separation = delay,
+            category = ActionCategory.SECONDARY
         )
     }
 

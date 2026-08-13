@@ -19,7 +19,7 @@ class RidableCrossbow: CustomItemDefinition {
     private val color = arrayOf(173, 94, 49)
     private val name = text("Ridable Crossbow", color)
     private val lore = Utils.loreBlockToList(
-        text("Shoot to launch an arrow that you will ride on.", Utils.GRAY),
+        text("Shoot to launch an arrow that you will ride on. 60s cooldown.", Utils.GRAY),
     )
 
     override val item: ItemStack = CustomItemBuilder(material, custom)

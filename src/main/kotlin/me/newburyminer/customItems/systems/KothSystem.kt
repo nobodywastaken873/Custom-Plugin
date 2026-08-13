@@ -269,6 +269,7 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
         val loot = dailyLoot[LocalDate.now(ZoneId.of("America/Los_Angeles"))] ?: return
         val sorted = scoreMap.toList()
             .sortedBy { (_, value) -> value }
+            .reversed()
 
         if (sorted.isEmpty()) {
             Bukkit.getOnlinePlayers().forEach { it.sendMessage(Utils.text("Noone attended KOTH, it has finished.", Utils.BLUE)) }
@@ -322,7 +323,7 @@ object KothSystem: BukkitRunnable(), TabMenuSystem.Provider {
             .filter { (uuid, _) -> Bukkit.getPlayer(uuid) != null }
             .sortedBy { (_, value) -> value }
 
-        val top = sorted.firstOrNull() ?:
+        val top = sorted.lastOrNull() ?:
             return Utils.text("No players with score", arrayOf(6, 89, 191))
 
         val name = Bukkit.getOfflinePlayer(top.first).name ?: ""

@@ -92,7 +92,7 @@ class ParticleCylinderAttack(
                 effects.apply(player, boss.boss)
         }
 
-        CustomEffects.rotatedCylinder(particleSettings.preParticle, start, end, radius, particleSettings.preConcentration)
+        CustomEffects.rotatedCylinder(particleSettings.particle, start, end, radius, particleSettings.concentration)
         boss.playSound(boss.getCenter(), soundSettings.postSound, 1.5F, soundSettings.getEndPitch())
 
     }

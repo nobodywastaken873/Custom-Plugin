@@ -1,6 +1,8 @@
 package me.newburyminer.customItems.recipes.registrars
 
+import me.newburyminer.customItems.Utils.Companion.setCount
 import me.newburyminer.customItems.items.CustomItem
+import me.newburyminer.customItems.items.ItemRegistry
 import me.newburyminer.customItems.recipes.RecipeBootstrapper
 import me.newburyminer.customItems.recipes.RecipeType
 import org.bukkit.Material
@@ -295,13 +297,13 @@ object ToolRecipeBootstrapper: RecipeBootstrapper {
         }
         recipe {
             grid {
-                row(null, null, item(Material.DIAMOND), null, null)
-                row(null, item(Material.AMETHYST_SHARD, 8), item(Material.BLAZE_ROD, 2), item(Material.RAW_GOLD, 4), null)
-                row(null, item(Material.ENDER_PEARL, 8), item(Material.ENDER_EYE, 4), item(Material.ENDER_PEARL, 8), null)
-                row(null, item(Material.RAW_GOLD, 4), item(Material.BLAZE_ROD, 2), item(Material.AMETHYST_SHARD, 8), null)
-                row(null, null, item(Material.DIAMOND), null, null)
+                row(null, item(Material.BLAZE_ROD, 2), item(Material.DIAMOND, 4), item(Material.BLAZE_ROD, 2), null)
+                row(item(Material.BLAZE_ROD, 2), item(Material.ENDER_PEARL, 16), item(Material.AMETHYST_SHARD, 16), item(Material.ENDER_PEARL, 16), item(Material.BLAZE_ROD, 2))
+                row(item(Material.DIAMOND, 4), item(Material.AMETHYST_SHARD, 16), item(Material.ENDER_EYE, 16), item(Material.AMETHYST_SHARD, 16), item(Material.DIAMOND, 4))
+                row(item(Material.BLAZE_ROD, 2), item(Material.ENDER_PEARL, 16), item(Material.AMETHYST_SHARD, 16), item(Material.ENDER_PEARL, 16), item(Material.BLAZE_ROD, 2))
+                row(null, item(Material.BLAZE_ROD, 2), item(Material.DIAMOND, 4), item(Material.BLAZE_ROD, 2), null)
             }
-            result(CustomItem.POCKET_WORMHOLE)
+            result(ItemRegistry.get(CustomItem.POCKET_WORMHOLE).setCount(8))
         }
         recipe {
             grid {
@@ -315,11 +317,11 @@ object ToolRecipeBootstrapper: RecipeBootstrapper {
         }
         recipe {
             grid {
-                row(null, item(Material.BAMBOO_CHEST_RAFT), item(Material.ECHO_SHARD), item(Material.SPRUCE_CHEST_BOAT), null)
-                row(item(Material.JUNGLE_CHEST_BOAT), item(Material.CHEST_MINECART), item(Material.COPPER_CHEST, 8), item(Material.CHEST_MINECART), item(Material.ACACIA_CHEST_BOAT))
+                row(null, item(Material.SPRUCE_CHEST_BOAT), item(Material.ECHO_SHARD, 2), item(Material.SPRUCE_CHEST_BOAT), null)
+                row(item(Material.SPRUCE_CHEST_BOAT), item(Material.CHEST_MINECART), item(Material.COPPER_CHEST, 8), item(Material.CHEST_MINECART), item(Material.SPRUCE_CHEST_BOAT))
                 row(item(Material.SHULKER_SHELL, 4), item(Material.CHEST, 16), item(Material.ENDER_CHEST, 2), item(Material.CHEST, 16), item(Material.SHULKER_SHELL, 4))
-                row(item(Material.DARK_OAK_CHEST_BOAT), item(Material.CHEST_MINECART), item(Material.COPPER_CHEST, 8), item(Material.CHEST_MINECART), item(Material.MANGROVE_CHEST_BOAT))
-                row(null, item(Material.CHERRY_CHEST_BOAT), item(Material.ECHO_SHARD), item(Material.PALE_OAK_CHEST_BOAT), null)
+                row(item(Material.SPRUCE_CHEST_BOAT), item(Material.CHEST_MINECART), item(Material.COPPER_CHEST, 8), item(Material.CHEST_MINECART), item(Material.SPRUCE_CHEST_BOAT))
+                row(null, item(Material.SPRUCE_CHEST_BOAT), item(Material.ECHO_SHARD, 2), item(Material.SPRUCE_CHEST_BOAT), null)
             }
             result(CustomItem.ITEM_NODE)
         }
@@ -333,7 +335,16 @@ object ToolRecipeBootstrapper: RecipeBootstrapper {
             }
             result(CustomItem.WIND_CHARGE_CANNON)
         }
-
+        recipe {
+            grid {
+                row(null, item(Material.GLOW_INK_SAC), item(Material.QUARTZ, 32), item(Material.GLOW_INK_SAC), null)
+                row(item(Material.GLOW_INK_SAC), item(Material.DIAMOND, 12), item(Material.EMERALD_BLOCK, 16), item(Material.DIAMOND, 12), item(Material.GLOW_INK_SAC))
+                row(item(Material.AMETHYST_SHARD, 32), item(Material.EMERALD_BLOCK, 16), item(Material.ECHO_SHARD, 4), item(Material.EMERALD_BLOCK, 16), item(Material.AMETHYST_SHARD, 32))
+                row(item(Material.GLOW_INK_SAC), item(Material.DIAMOND, 12), item(Material.EMERALD_BLOCK, 16), item(Material.DIAMOND, 12), item(Material.GLOW_INK_SAC))
+                row(null, item(Material.GLOW_INK_SAC), item(Material.QUARTZ, 32), item(Material.GLOW_INK_SAC), null)
+            }
+            result(ItemRegistry.get(CustomItem.VAULT_REFRESHER).setCount(16))
+        }
 
 
     }

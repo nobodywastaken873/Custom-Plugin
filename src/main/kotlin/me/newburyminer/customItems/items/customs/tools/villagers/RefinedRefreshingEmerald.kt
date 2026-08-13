@@ -49,6 +49,7 @@ class RefinedRefreshingEmerald: CustomItemDefinition {
                     newComponent
                 }
 
+            tradingComponent.refreshTrades(wrapper)
             tradingComponent.maxMaxUses(wrapper)
         })
     }
