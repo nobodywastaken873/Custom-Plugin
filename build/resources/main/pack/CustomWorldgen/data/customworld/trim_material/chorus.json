@@ -1,7 +1,7 @@
 {
-  "asset_name": "chorus",
+  "palette_id": "customworld:trim/chorus",
   "description": {
     "color": "#B58BB5",
     "translate": "trim_material.customworld.chorus"
-  },
-  "ingredient": "minecraft:popped_chorus_fruit"}
+  }
+}

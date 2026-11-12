@@ -1,7 +1,7 @@
 {
-  "asset_name": "rabbit",
+  "palette_id": "customworld:trim/rabbit",
   "description": {
     "color": "#896D47",
     "translate": "trim_material.customworld.rabbit"
-  },
-  "ingredient": "minecraft:rabbit_hide"}
+  }
+}

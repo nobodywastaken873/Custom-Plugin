@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.loot
 
 import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.structures.StructureDefinition
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
 import org.reflections.Reflections
@@ -24,6 +25,17 @@ object LootRegistry {
             val mobObject = kClass.objectInstance ?: continue
 
             register(mobObject)
+        }
+
+        val structureClasses = reflections.getSubTypesOf(StructureDefinition::class.java)
+            .filter { !Modifier.isAbstract(it.modifiers) && !it.isInterface }
+        for (cls in structureClasses) {
+            val kClass = cls.kotlin
+            val obj = kClass.objectInstance ?: continue
+
+            if (obj.lootProvider !in registry.values) {
+                register(obj.lootProvider)
+            }
         }
         plugin.logger.info("Successfully registered all loot providers")
     }

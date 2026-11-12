@@ -9,6 +9,7 @@ import org.bukkit.Material
 
 object AbandonedShipLoot: StructureLoot(
     Material.SPRUCE_BOAT,
+    "abandoned_ship"
 ) {
     override val spawner: LootTable = weighted(1..1,
         weightedReward(1..5

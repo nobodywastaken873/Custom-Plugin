@@ -14,6 +14,7 @@ class CustomKnockbackApply(val vec: Vector): HitEffect {
     constructor(x: Int, y: Int, z: Int): this(Vector(x, y, z))
 
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
+
         val source = sourceLoc?.clone() ?: damager.location
         if (victim.location.subtract(source).length() < 0.001) return
 

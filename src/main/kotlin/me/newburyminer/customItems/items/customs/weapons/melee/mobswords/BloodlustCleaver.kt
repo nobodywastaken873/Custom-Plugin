@@ -60,7 +60,7 @@ class BloodlustCleaver: CustomItemDefinition {
                 .sound(Registry.SOUNDS.getKey(Sound.ENTITY_PLAYER_ATTACK_SWEEP)!!).build()
         )
         .setData(
-            DataComponentTypes.SWING_ANIMATION,
+            DataComponentTypes.ATTACK_ANIMATION,
             SwingAnimation.swingAnimation().type(SwingAnimation.Animation.WHACK).duration(7).build()
         )
         .setData(DataComponentTypes.MINIMUM_ATTACK_CHARGE, 0.5F)

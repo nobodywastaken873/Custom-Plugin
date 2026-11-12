@@ -1,7 +1,7 @@
 {
-  "asset_name": "dragon",
+  "palette_id": "customworld:trim/dragon",
   "description": {
     "color": "#C54883",
     "translate": "trim_material.customworld.dragon"
-  },
-  "ingredient": "minecraft:dragon_breath"}
+  }
+}

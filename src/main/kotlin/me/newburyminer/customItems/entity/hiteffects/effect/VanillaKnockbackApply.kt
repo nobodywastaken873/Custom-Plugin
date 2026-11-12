@@ -15,6 +15,7 @@ class VanillaKnockbackApply(val strength: Double = 0.30): HitEffect {
     override fun apply(victim: LivingEntity, damager: Entity, sourceLoc: Location?) {
         val source = sourceLoc?.clone() ?: damager.location
         if (victim.location.subtract(source).toVector().setY(0).length() < 0.001) return
+        if (victim.noDamageTicks > 0) return
 
         val newStr = strength * (1.0 - (victim.getAttribute(Attribute.KNOCKBACK_RESISTANCE)?.value ?: 0.0))
         if (newStr <= 0) return

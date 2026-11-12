@@ -25,7 +25,7 @@ object TrustSystem {
         if (!otherTrustedSet.contains(source.name)) {
             toTrust.sendMessage(
                 Utils.text("Click here to trust them back.", Utils.GRAY).clickEvent(
-                    ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/trust add ${source.name}")
+                    ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, ClickEvent.Payload.string("/trust add ${source.name}"))
                 )
             )
         }

@@ -1,7 +1,7 @@
 {
-  "asset_name": "rainbow",
+  "palette_id": "customworld:trim/rainbow",
   "description": {
     "color": "#FFFFFF",
     "translate": "trim_material.customworld.rainbow"
-  },
-  "ingredient": "minecraft:enchanted_golden_apple"}
+  }
+}

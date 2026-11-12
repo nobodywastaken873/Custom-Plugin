@@ -40,6 +40,7 @@ object AbandonedShip : StructureDefinition {
 
     override val lootProvider: StructureLoot = object : StructureLoot(
         Material.SPRUCE_BOAT,
+        id
     ) {
         override val spawner: LootTable = weighted(1..1,
             weightedReward(1..5

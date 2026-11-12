@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block_pile",
+    "state_provider": {
+      "type": "minecraft:weighted",
+      "entries": [
+        {
+          "weight": 3,
+          "data": {
+            "id": "minecraft:stone"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "id": "minecraft:cobblestone"
+          }
+        }
+      ]
+    }
+}

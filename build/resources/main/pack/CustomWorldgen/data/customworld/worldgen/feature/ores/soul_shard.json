@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:ore",
+    "discard_chance_on_air_exposure": 0,
+    "size": 4,
+    "targets": [
+      {
+        "state": {
+          "id": "minecraft:quartz_block"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "customworld:obsidian_replaceable"
+        }
+      },
+      {
+        "state": {
+          "id": "minecraft:quartz_block"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "customworld:blackstone_replaceable"
+        }
+      }
+    ]
+}

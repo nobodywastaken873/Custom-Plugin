@@ -1,7 +1,7 @@
 {
-  "asset_name": "coal",
+  "palette_id": "customworld:trim/coal",
   "description": {
     "color": "#3B3B42",
     "translate": "trim_material.customworld.coal"
-  },
-  "ingredient": "minecraft:coal"}
+  }
+}

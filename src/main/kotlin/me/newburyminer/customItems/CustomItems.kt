@@ -66,11 +66,9 @@ class CustomItems : JavaPlugin() {
         lateinit var plugin: Plugin
         lateinit var aridWorld: World
         lateinit var bossWorld: World
-        //lateinit var bossListener: BossListeners
     }
 
     private lateinit var cooldownTask: BukkitTask
-    //private lateinit var entityListener: EntityListeners
     private lateinit var systemsListener: SystemsListener
     private lateinit var wrapperManager: EntityWrapperManager
 
@@ -95,7 +93,6 @@ class CustomItems : JavaPlugin() {
 
         registerWorlds()
         loadBosses()
-        //CustomBoss.init()
 
         //entityListener = EntityListeners()
         //bossListener = BossListeners()

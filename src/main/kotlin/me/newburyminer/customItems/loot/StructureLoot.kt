@@ -1,6 +1,7 @@
 package me.newburyminer.customItems.loot
 
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.Utils.Companion.beautify
 import me.newburyminer.customItems.Utils.Companion.lore
 import me.newburyminer.customItems.Utils.Companion.maxStack
 import me.newburyminer.customItems.Utils.Companion.name
@@ -10,8 +11,14 @@ import org.bukkit.inventory.ItemStack
 
 abstract class StructureLoot(
     val material: Material,
+    val structureId: String,
     val color: Array<Int> = arrayOf(135, 130, 108),
 ): LootProvider {
+
+    override val id: String
+        get() = this.structureId
+    override val name: String
+        get() = id.beautify()
 
     abstract val spawner: LootTable
     abstract val vault: LootTable

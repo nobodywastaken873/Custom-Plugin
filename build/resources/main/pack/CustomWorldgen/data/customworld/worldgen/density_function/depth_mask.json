@@ -4,11 +4,11 @@
   "max": 1,
   "input": {
     "type": "minecraft:mul",
-    "argument1": 0.5,
-    "argument2": {
+    "left": 0.5,
+    "right": {
       "type": "minecraft:add",
-      "argument1": 0.5,
-      "argument2": "customworld:sloped_cheese"
+      "left": 0.5,
+      "right": "customworld:sloped_cheese"
     }
   }
 }

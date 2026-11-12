@@ -1,7 +1,7 @@
 {
-  "asset_name": "blue_pastel",
+  "palette_id": "customworld:trim/blue_pastel",
   "description": {
     "color": "#7ECEFC",
     "translate": "trim_material.customworld.blue_pastel"
-  },
-  "ingredient": "minecraft:light_blue_dye"}
+  }
+}
