@@ -114,6 +114,8 @@ class MobBuilder(
             entity.isGlowing = true
         }
 
+        extraApplications.forEach { entity.it() }
+
         entity.getAttribute(Attribute.MAX_ABSORPTION)?.baseValue = (health/2).coerceAtMost(100.0)
         entity.getAttribute(Attribute.MAX_HEALTH)?.baseValue = health
         entity.health = health
@@ -122,8 +124,6 @@ class MobBuilder(
         entity.getAttribute(Attribute.SCALE)?.baseValue = scale
 
         val wrapper = EntityWrapperManager.getWrapperorNew(entity)
-
-        extraApplications.forEach { entity.it() }
 
         // double check for no duplicate components of certain types
         components.forEach { wrapper.addComponent(it) }

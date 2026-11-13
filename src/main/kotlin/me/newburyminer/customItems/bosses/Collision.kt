@@ -10,26 +10,43 @@ import kotlin.math.pow
 object Collision {
 
     fun cylinderIntersects(start: Location, end: Location, radius: Double, box: BoundingBox): Boolean {
-
         val axis = end.toVector().subtract(start.toVector())
-        val length = axis.length()
-        val unit = axis.normalize()
+        val lengthSquared = axis.lengthSquared()
 
-        for (corner in box.getCorners(start.world)) {
-            val relative = corner.toVector().subtract(start.toVector())
-
-            val along = relative.dot(unit)
-
-            if (along !in 0.0..length)
-                continue
-
-            val closest = start.toVector().add(unit.multiply(along))
-
-            if (corner.distanceSquared(closest.toLocation(start.world)) < radius.pow(2))
-                return true
+        if (lengthSquared == 0.0) {
+            val closest = Vector(
+                start.x.coerceIn(box.minX, box.maxX),
+                start.y.coerceIn(box.minY, box.maxY),
+                start.z.coerceIn(box.minZ, box.maxZ)
+            )
+            return closest.distanceSquared(start.toVector()) <= radius * radius
         }
 
-        return false
+        // Iteratively find the closest point between the axis segment and AABB.
+        var t = 0.5
+
+        repeat(10) {
+            val point = start.toVector().add(axis.clone().multiply(t))
+
+            val closest = Vector(
+                point.x.coerceIn(box.minX, box.maxX),
+                point.y.coerceIn(box.minY, box.maxY),
+                point.z.coerceIn(box.minZ, box.maxZ)
+            )
+
+            t = ((closest.subtract(start.toVector()).dot(axis)) /
+                    lengthSquared).coerceIn(0.0, 1.0)
+        }
+
+        val point = start.toVector().add(axis.multiply(t))
+
+        val closest = Vector(
+            point.x.coerceIn(box.minX, box.maxX),
+            point.y.coerceIn(box.minY, box.maxY),
+            point.z.coerceIn(box.minZ, box.maxZ)
+        )
+
+        return point.distanceSquared(closest) <= radius * radius
     }
 
 }

@@ -2,6 +2,9 @@ package me.newburyminer.customItems.bosses
 
 import me.newburyminer.customItems.CustomItems
 import me.newburyminer.customItems.Utils
+import me.newburyminer.customItems.entity.EntityComponent
+import me.newburyminer.customItems.entity.EntityComponentType
+import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.loot.BossLoot
 import me.newburyminer.customItems.loot.LootContext
 import me.newburyminer.customItems.loot.PlayerLootManager
@@ -16,6 +19,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import java.util.*
 import kotlin.math.max
+import kotlin.reflect.KClass
 
 abstract class BossInstance(
     protected val players: MutableList<Player>,
@@ -108,6 +112,12 @@ abstract class BossInstance(
     private fun checkEntities() {
         activeEntities.removeIf {
             !it.isValid
+        }
+    }
+    fun <T: EntityComponent> anyHasComponent(kClass: KClass<T>): Boolean {
+        return activeEntities.any {
+            val wrapper = EntityWrapperManager.getWrapper(it.uniqueId) ?: return@any false
+            wrapper.hasComponent(kClass)
         }
     }
 

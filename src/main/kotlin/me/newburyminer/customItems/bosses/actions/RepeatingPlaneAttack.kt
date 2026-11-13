@@ -46,7 +46,7 @@ class RepeatingPlaneAttack(
             cellsize,
             Material.YELLOW_CONCRETE,
             Particle.DUST.builder().color(235, 225, 52),
-            0.25,
+            0.15,
             world
         )
         timeline.after(0) {

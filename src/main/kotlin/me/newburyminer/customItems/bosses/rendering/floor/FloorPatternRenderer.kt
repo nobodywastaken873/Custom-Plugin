@@ -130,6 +130,8 @@ class FloorPatternRenderer(
     }
 
     private fun updateQuad(quad: QuadRenderable, tile: FloorTile) {
+
+
         quad.center = tile.center
         quad.normal = tile.normal
         quad.up = tile.up

@@ -11,8 +11,8 @@ class ShapeRasterizer(
 
         val bounds = shape.bounds
 
-        val rows = ceil(bounds.widthX / cellSize).toInt()
-        val columns = ceil(bounds.widthZ / cellSize).toInt()
+        val rows = ceil(bounds.widthZ / cellSize).toInt()
+        val columns = ceil(bounds.widthX / cellSize).toInt()
 
         val grid = BooleanGrid(
             origin = bounds.min.clone(),

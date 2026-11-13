@@ -36,8 +36,6 @@ class WitherController(
         private set
     var state: BossState = BossState.ACTIVE
         private set
-    var cycle: Int = 0
-        private set
     private var attackCounter = 0
 
     override fun tick() {
@@ -57,7 +55,8 @@ class WitherController(
         bossEntity.teleport(bossEntity.location.add(Vector(0.0, 6.0, 0.0)))
         endTasks(ActionCategory.PRIMARY, ActionCategory.SECONDARY, ActionCategory.PASSIVE)
 
-        add(WitherAttacks.summonWitherMini(buildContext()))
+        add(WitherAttacks.summonMiniboss(buildContext()))
+        add(WitherAttacks.rotatingBeam(buildContext()))
         //for (player in boss.currentPlayers) player.sendMessage(Utils.text("The boss is stunned!", Utils.GRAY))
     }
     fun endStun() {
@@ -66,42 +65,32 @@ class WitherController(
         bossEntity.setGravity(true)
         bossEntity.teleport(bossEntity.location.add(Vector(0.0, -6.0, 0.0)))
 
-        add() //TODO: corruption back
+        cancelAll()
+        add(WitherAttacks.corruptionSpread(buildContext()))
     }
-    fun reachedStunThreshold(): Boolean {
-        return state == BossState.STUNNED && (boss.hpPercent < (
-                phase.threshold - ((cycle + 1) * (phase.threshold - phase.next().threshold) / phase.cycles)
-            ) ||
-                boss.hpPercent < phase.next().threshold)
+    fun checkStun() {
+        if (boss.hpPercent < phase.next().threshold && !phase.isLast()) {
+            startPhase(phase.next())
+        }
     }
 
     fun startPhase(phase: Phase) {
         this.phase = phase
-        val context = buildContext()
-        cycle = 0
         when (phase) {
             Phase.Phase1 -> {
-                add(WardenAttacks.centerPusher(context))
-                add(WardenAttacks.repeatingSpawn(buildContext()))
+                cancelAll()
+                add(WitherAttacks.corruptionSpread(buildContext()))
                 add(selectAttack())
             }
             Phase.Phase2 -> {
-                add(WardenAttacks.summonWardenMini(buildContext()))
-                add(WardenAttacks.centerPusher(context))
-                add(selectAttack())
+                cancelAll()
+                stun()
             }
-            Phase.Enraged -> {
-                bossEntity.isInvulnerable = false
-                bossEntity.setAI(true)
-                add(selectAttack())
-            }
+            Phase.Enraged -> {}
             Phase.Intro -> {}
         }
 
-        CustomEffects.playSound(boss.getCenter(), Sound.ENTITY_WARDEN_ROAR, 3.0F, 0.8F + 0.2F * (phase.ordinal - 1))
-        bossEntity.location.getNearbyPlayers(6.0).forEach {
-            it.velocity = it.location.subtract(bossEntity.location).toVector().normalize().add(Vector(0.0, 0.2, 0.0)).multiply(3.0)
-        }
+        CustomEffects.playSound(boss.getCenter(), Sound.ENTITY_WITHER_SPAWN, 1.0F, 0.8F + 0.2F * (phase.ordinal - 1))
     }
 
     private fun selectAttack(): BossAction {
@@ -109,41 +98,54 @@ class WitherController(
         //println("picking $ctx")
         val selected = when (phase) {
             Phase.Phase1 -> {
-                if (attackCounter >= 7) {
-                    WardenAttacks.flameSquares(ctx)
+                if (attackCounter >= 4) {
+                    attackCounter = 0
+                    WitherAttacks.summonBlob(ctx)
                 } else {
-                    val random = Math.random()
-
                     val attackWeights = mapOf(
-                        WardenAttacks::safeCircles to 0.65,
-                        WardenAttacks::flameLasers to 1.0,
-                        WardenAttacks::sonicBoom to 1.0,
-                        WardenAttacks::flameSquares to (if (attackCounter > 3) 0.7 else 0.0)
+                        WitherAttacks::gridLasers to 1.0,
+                        WitherAttacks::decayCircles to 0.8,
+                        WitherAttacks::laserSpray to 1.2,
+                        WitherAttacks::mobCircles to 0.7,
+                        WitherAttacks::sectorSweep to 1.4,
                     )
 
                     val attack = attackWeights.random()
-                    if (attack == WardenAttacks::mobWave) {summonedMobWave = true}
                     attack(ctx)
                 }
             }
             Phase.Phase2 -> {
-                if (!summonedMobWave) {
-                    val random = Math.random()
-                    when {
-                        random < 0.35 -> WardenAttacks.flameLasers(ctx)
-                        random < 0.70 -> WardenAttacks.sonicBoom(ctx)
-                        else -> {summonedMobWave = true; WardenAttacks.mobWave(ctx)}
-                    }
+                if (attackCounter >= 4) {
+                    attackCounter = 0
+                    WitherAttacks.summonBlob(ctx)
                 } else {
-                    val random = Math.random()
-                    when {
-                        random < 0.5 -> WardenAttacks.flameLasers(ctx)
-                        else -> WardenAttacks.sonicBoom(ctx)
-                    }
+                    val attackWeights = mapOf(
+                        WitherAttacks::gridLasers to 1.0,
+                        WitherAttacks::decayCircles to 0.8,
+                        WitherAttacks::laserSpray to 1.2,
+                        WitherAttacks::mobCircles to 0.7,
+                        WitherAttacks::sectorSweep to 1.4,
+                    )
+
+                    val attack = attackWeights.random()
+                    attack(ctx)
                 }
             }
             Phase.Enraged -> {
-                WardenAttacks.mobWave(ctx)
+                if (attackCounter >= 4) {
+                    attackCounter = 0
+                    WitherAttacks.summonBlob(ctx)
+                } else {
+                    val attackWeights = mapOf(
+                        WitherAttacks::gridLasers to 1.0,
+                        WitherAttacks::decayCircles to 0.8,
+                        WitherAttacks::laserSpray to 1.2,
+                        WitherAttacks::sectorSweep to 1.4,
+                    )
+
+                    val attack = attackWeights.random()
+                    attack(ctx)
+                }
             }
             else -> {
                 DelayAction(boss, 10)
@@ -162,7 +164,7 @@ class WitherController(
             Phase.Enraged -> 2
             else -> 0
         }
-        val ctx = AttackContext(phase, cycle, scalingCycle, 2, boss.difficulty, boss)
+        val ctx = AttackContext(phase, scalingCycle, scalingCycle, 2, boss.difficulty, boss)
         return ctx
     }
 

@@ -10,7 +10,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 
 class QuadRenderable(
-    var origin: Vector,
+    origin: Vector,
     var center: Vector,
     var normal: Vector,
     var up: Vector,
@@ -22,6 +22,13 @@ class QuadRenderable(
 ) : DisplayRenderable() {
 
     private lateinit var display: DisplayWrapper
+
+    private var invalidOrigin = false
+    var origin: Vector = origin
+        set(value) {
+            invalidOrigin = true
+            field = value.clone()
+        }
 
     override fun spawn(world: World) {
 
@@ -76,8 +83,10 @@ class QuadRenderable(
             Vector3f(width, height, thickness),
             Quaternionf()
         )
-
-        display.block?.teleport(origin.toLocation(display.block?.world ?: return))
+        if (invalidOrigin) {
+            display.block?.teleport(origin.toLocation(display.block?.world ?: return))
+            invalidOrigin = false
+        }
     }
 
     fun activate() {

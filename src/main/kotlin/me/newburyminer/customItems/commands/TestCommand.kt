@@ -264,7 +264,7 @@ class TestCommand : BasicCommand {
 
             val cylinder = CylinderCombinator(
                 Transform(
-                    position = Vector(0.0, 100.0, 0.0),
+                    position = Vector(0.0, 200.0, 0.0),
                     Transform.lookRotation(Vector(0, 0, 1))
                 ),
                 radius = 1.0,
@@ -301,7 +301,7 @@ class TestCommand : BasicCommand {
             Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
 
             val quad = QuadRenderable(
-                origin = Vector(0, 100, 0),
+                origin = Vector(0, 200, 0),
                 center = sender.location.toVector(),
                 normal = Vector(0,1,1),
                 up = Vector(0,1,0),
@@ -320,9 +320,9 @@ class TestCommand : BasicCommand {
             val manager = RenderManager()
             Bukkit.getScheduler().runTaskTimer(CustomItems.plugin, Runnable {manager.tick()}, 1L, 1L)
 
-            val y = 100.0
-            val circle = Circle(y, Vector(0, 100, 0), 6.0)
-            val secondCircle = Circle(y, Vector(0, 100, 0), 6.0)
+            val y = 200.0
+            val circle = Circle(y, Vector(0, 200, 0), 6.0)
+            val secondCircle = Circle(y, Vector(0, 200, 0), 6.0)
             val floorPattern = FloorCombinator(
                 NegativeShape(
                     y,
@@ -354,7 +354,7 @@ class TestCommand : BasicCommand {
 
             val rectangle = PrismCombinator(
                 Transform(
-                    position = Vector(0, 99, 0),
+                    position = Vector(0, 200, 0),
                     rotation = Transform.lookRotation(Vector(0, 0, 1), Vector(1, 1, 0))
                 ),
                 2.0F,
@@ -369,7 +369,7 @@ class TestCommand : BasicCommand {
 
             val rectangle2 = PrismCombinator(
                 Transform(
-                    position = Vector(0, 99, 0),
+                    position = Vector(0, 200, 0),
                     rotation = Transform.lookRotation(Vector(0, 0, -1), Vector(-1, 1, 0))
                 ),
                 2.0F,

@@ -17,7 +17,7 @@ class Transform(
         private val LOCAL_UP = Vector3f(0f, 1f, 0f)
         private val LOCAL_RIGHT = Vector3f(1f, 0f, 0f)
 
-        fun lookRotation(
+        /*fun lookRotation(
             normal: Vector,
             up: Vector = Vector(0, 1, 0)
         ): Quaternionf {
@@ -36,6 +36,28 @@ class Transform(
 
             return Quaternionf()
                 .lookAlong(forward.negate(), upVec)
+                .invert()
+        }*/
+
+        fun lookRotation(
+            normal: Vector,
+            up: Vector = Vector(0, 1, 0)
+        ): Quaternionf {
+
+            val forward = Vector3f(
+                normal.x.toFloat(),
+                normal.y.toFloat(),
+                normal.z.toFloat()
+            ).normalize()
+
+            val upVec = Vector3f(
+                up.x.toFloat(),
+                up.y.toFloat(),
+                up.z.toFloat()
+            ).normalize()
+
+            return Quaternionf()
+                .lookAlong(forward, upVec)
                 .invert()
         }
     }

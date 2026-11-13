@@ -3,6 +3,7 @@ package me.newburyminer.customItems.bosses
 import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.text
 import me.newburyminer.customItems.bosses.definitions.warden.WardenInstance
+import me.newburyminer.customItems.bosses.definitions.wither.WitherInstance
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
@@ -44,7 +45,9 @@ object BossManager: BukkitRunnable() {
                 WardenInstance(players.toMutableList(), difficulty)
             }
             CustomBossType.GUARDIAN -> TODO()
-            CustomBossType.WITHER -> TODO()
+            CustomBossType.WITHER -> {
+                WitherInstance(players.toMutableList(), difficulty)
+            }
             CustomBossType.PIGLIN -> TODO()
             CustomBossType.HUSK -> TODO()
         }

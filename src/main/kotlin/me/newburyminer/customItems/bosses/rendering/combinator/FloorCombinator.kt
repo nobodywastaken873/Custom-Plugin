@@ -4,6 +4,7 @@ import com.destroystokyo.paper.ParticleBuilder
 import me.newburyminer.customItems.bosses.rendering.Renderable
 import me.newburyminer.customItems.bosses.rendering.floor.FloorPatternRenderer
 import me.newburyminer.customItems.bosses.rendering.floor.GreedyShapeMesher
+import me.newburyminer.customItems.bosses.rendering.floor.GridShapeMesher
 import me.newburyminer.customItems.bosses.rendering.shapes.Shape
 import me.newburyminer.customItems.helpers.CustomEffects
 import org.bukkit.Material

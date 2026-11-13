@@ -8,6 +8,7 @@ import me.newburyminer.customItems.bosses.CustomBossType
 import me.newburyminer.customItems.bosses.definitions.warden.WardenController
 import me.newburyminer.customItems.entity.EntityWrapperManager
 import me.newburyminer.customItems.entity.components.bosses.WardenBossComponent
+import me.newburyminer.customItems.entity.components.bosses.WitherBossComponent
 import me.newburyminer.customItems.loot.BossLoot
 import me.newburyminer.customItems.loot.providers.boss.WardenLoot
 import org.bukkit.Location
@@ -25,12 +26,12 @@ class WitherInstance(players: MutableList<Player>, difficulty: BossDifficulty): 
     override val bossCenter: Location = Location(CustomItems.bossWorld, -58.5, 201.0, 59.5)
     override val damageResist: Double
         get() = 1.0 / players.size
-    override val maxHp: Double = 3000.0 * (if (difficulty == BossDifficulty.EASY) 1.0 else 1.8)
+    override val maxHp: Double = 4500.0 * (if (difficulty == BossDifficulty.EASY) 1.0 else 1.8)
     override var currentHp: Double = maxHp
 
     init {
         boss = spawnBoss()
-        //EntityWrapperManager.getWrapperorNew(boss).addComponent(WardenBossComponent(this)) // TODO
+        EntityWrapperManager.getWrapperorNew(boss).addComponent(WitherBossComponent(this))
     }
 
     override val actionController: WitherController = WitherController(this)
@@ -49,16 +50,12 @@ class WitherInstance(players: MutableList<Player>, difficulty: BossDifficulty): 
         }
         return wither
     }
-    override fun endBoss() {
-        super.endBoss()
-    }
 
-    fun checkStunning() {
-        if (actionController.reachedStunThreshold())
-            actionController.endStun()
+    fun checkStun() {
+        actionController.checkStun()
     }
-    fun stun() {
-        actionController.stun()
+    fun endStun() {
+        actionController.endStun()
     }
     fun start() {
         actionController.startPhase(WitherController.Phase.Phase1)

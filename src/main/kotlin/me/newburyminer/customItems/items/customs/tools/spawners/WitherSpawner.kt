@@ -4,6 +4,9 @@ import me.newburyminer.customItems.Utils
 import me.newburyminer.customItems.Utils.Companion.isBeingTracked
 import me.newburyminer.customItems.Utils.Companion.isItem
 import me.newburyminer.customItems.Utils.Companion.text
+import me.newburyminer.customItems.bosses.BossDifficulty
+import me.newburyminer.customItems.bosses.BossManager
+import me.newburyminer.customItems.bosses.CustomBossType
 import me.newburyminer.customItems.items.CustomItem
 import me.newburyminer.customItems.items.CustomItemBuilder
 import me.newburyminer.customItems.items.CustomItemDefinition
@@ -34,11 +37,11 @@ class WitherSpawner: CustomItemDefinition {
             !e.player.isBeingTracked()
         },
         {e ->
-            //val boss = CustomBossType.WARDEN
-            //val players = e.player.location.getNearbyPlayers(20.0)
+            val boss = CustomBossType.WITHER
+            val players = e.player.location.getNearbyPlayers(20.0)
 
-            //val spawnedBoss = BossManager.spawnBoss(boss, e.player, players.toList())
-            //if (spawnedBoss) e.item?.amount -= 1
+            val spawnedBoss = BossManager.spawnBoss(boss, BossDifficulty.EASY, e.player, players.toList())
+            if (spawnedBoss) e.item?.amount -= 1
         })
     }
 

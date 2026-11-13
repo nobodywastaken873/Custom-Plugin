@@ -58,7 +58,7 @@ class CustomEffects {
                 .count(count)
                 .location(loc.clone())
                 .offset(offset, offset, offset)
-                .extra(extra)
+                .speed(extra)
                 .receivers(calcedReceivers)
                 .spawn()
 
@@ -74,7 +74,7 @@ class CustomEffects {
                     .location(newLoc)
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
@@ -96,7 +96,7 @@ class CustomEffects {
                     .location(newLoc)
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
             }
@@ -130,7 +130,7 @@ class CustomEffects {
                     .location(newLoc)
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
@@ -143,6 +143,7 @@ class CustomEffects {
         }
 
         fun rotatedCylinder(particle: ParticleBuilder, start: Location, end: Location, radius: Double, concentration: Double) {
+            if (concentration == 0.0) return
             val receivers = midpoint(start, end).getNearbyPlayers(60.0).toList()
             val direction = end.clone().subtract(start)
 
@@ -175,7 +176,7 @@ class CustomEffects {
                     .location(newLoc)
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
                 //newLoc.world.spawnParticle(particle, newLoc, 1, offset, offset, offset, extra)
@@ -232,7 +233,7 @@ class CustomEffects {
                     .location(newLoc)
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
             }
@@ -254,11 +255,11 @@ class CustomEffects {
         }
         fun particleLine(particle: ParticleBuilder, startLoc: Location, endLoc: Location, density: Double, offset: Double = 0.0, extra: Double = 0.0) {
 
-            val receivers = (
-                startLoc.getNearbyPlayers(60.0) +
-                endLoc.getNearbyPlayers(60.0) +
-                midpoint(startLoc, endLoc).getNearbyPlayers(60.0)
-            ).toSet()
+            val receivers = buildList {
+                addAll(startLoc.getNearbyPlayers(60.0))
+                addAll(endLoc.getNearbyPlayers(60.0))
+                addAll(this@Companion.midpoint(startLoc, endLoc).getNearbyPlayers(60.0))
+            }.toSet()
 
             val totalDistance = endLoc.clone().subtract(startLoc)
             val newCount = (totalDistance.length() * density).toInt()
@@ -271,7 +272,7 @@ class CustomEffects {
                     .location(newStart.clone().add(distBetween.clone().multiply(i)))
                     .count(1)
                     .offset(offset, offset, offset)
-                    .extra(extra)
+                    .speed(extra)
                     .receivers(receivers)
                     .spawn()
                 //startLoc.world.spawnParticle(particle, startLoc.add(distBetween.clone().multiply(i)), 1, offset, offset, offset, extra)
@@ -287,7 +288,7 @@ class CustomEffects {
                 .location(loc.clone())
                 .count(count)
                 .offset(offset, offset, offset)
-                .extra(extra)
+                .speed(extra)
                 .receivers(receivers)
                 .spawn()
             //loc.world.spawnParticle(particle, loc, count, offset, offset, offset, extra)

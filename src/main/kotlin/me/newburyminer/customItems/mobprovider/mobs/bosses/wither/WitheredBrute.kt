@@ -1,0 +1,99 @@
+package me.newburyminer.customItems.mobprovider.mobs.bosses.wither
+
+import me.newburyminer.customItems.entity.components.bosses.WitherMinibossComponent
+import me.newburyminer.customItems.entity.components.spells.HealthThresholdComponent
+import me.newburyminer.customItems.entity.hiteffects.HitEffects
+import me.newburyminer.customItems.entity.hiteffects.effect.CustomKnockbackApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaEffectApply
+import me.newburyminer.customItems.entity.hiteffects.effect.VanillaKnockbackApply
+import me.newburyminer.customItems.helpers.CustomDamageType
+import me.newburyminer.customItems.helpers.ParticleTheme
+import me.newburyminer.customItems.mobprovider.ColorTheme
+import me.newburyminer.customItems.mobprovider.MobBuilder
+import me.newburyminer.customItems.mobprovider.MobContext
+import me.newburyminer.customItems.mobprovider.MobDefinition
+import me.newburyminer.customItems.mobprovider.MobTier
+import me.newburyminer.customItems.mobprovider.ability.MeleeEffectAbility
+import me.newburyminer.customItems.mobprovider.ability.spell.BasicSlashAbility
+import me.newburyminer.customItems.mobprovider.ability.spell.MultiMissileAbility
+import me.newburyminer.customItems.mobprovider.ability.spell.SummonerAbility
+import me.newburyminer.customItems.mobprovider.mobs.blackstone.FireBombardier
+import me.newburyminer.customItems.mobprovider.mobs.coldocean.Buccaneer
+import me.newburyminer.customItems.mobprovider.mobs.coldocean.HoppingExplosives
+import me.newburyminer.customItems.mobprovider.mobs.coldocean.PirateMachineGunner
+import org.bukkit.Material
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
+import org.bukkit.entity.EntityType
+import org.bukkit.inventory.meta.trim.TrimPattern
+import org.bukkit.potion.PotionEffectType
+import org.bukkit.util.Vector
+
+object WitheredBrute : MobDefinition() {
+
+    override val colorTheme: ColorTheme = ColorTheme.BLACKSTONE
+    override val trim: TrimPattern = TrimPattern.SILENCE
+	override val tier: MobTier = MobTier.MINIBOSS
+    override fun build(ctx: MobContext): MobBuilder = mob(EntityType.WITHER_SKELETON) {
+
+        ability(
+            MeleeEffectAbility(
+                damage(linear(45.0 to 60.0, ctx), CustomDamageType.MELEE),
+                VanillaEffectApply(PotionEffectType.WITHER, linear(60 to 180, ctx), 1),
+                VanillaKnockbackApply()
+            )
+        )
+
+        /*ability(
+            SummonerAbility(
+                linear(2 to 4, ctx),
+                FireBombardier,
+                linear(30 to 20, ctx),
+                linear(400 to 300, ctx),
+                ParticleTheme.BLACKSTONE
+            )
+        )*/
+
+        ability(
+            BasicSlashAbility(
+                linear(3 to 4, ctx),
+                linear(24.0 to 48.0, ctx),
+                linear(100 to 70, ctx),
+                ParticleTheme.BLACKSTONE
+            )
+        )
+
+        ability(
+            MultiMissileAbility(
+                linear(10.0 to 15.0, ctx),
+                linear(2 to 4, ctx),
+                linear(25.0 to 50.0, ctx),
+                CustomKnockbackApply(Vector(-0.8, 0.5, -0.8)),
+                linear(0.8 to 1.2, ctx),
+                linear(30 to 20, ctx),
+                linear(200 to 140, ctx),
+                ParticleTheme.BLACKSTONE
+            )
+        )
+
+        health(
+            linear(800.0 to 1600.0, ctx)
+        )
+
+        movementSpeed(
+            linear(1.1 to 1.3, ctx)
+        )
+
+        scale(
+            1.2
+        )
+
+        equipment {
+            mainhand(Material.NETHERITE_SWORD)
+            offhand(Material.NETHER_STAR)
+            setArmor(colorTheme.color, trim)
+        }
+
+    }
+
+}

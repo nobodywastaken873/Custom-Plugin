@@ -44,7 +44,7 @@ class ParticleCylinderAttack(
             start.clone().subtract(end).length(),
             Material.YELLOW_STAINED_GLASS,
             Particle.DUST.builder().color(235, 225, 52),
-            0.25,
+            0.5,
             boss.boss.world
         )
         timeline.after(0) {
